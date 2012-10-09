@@ -1,0 +1,15 @@
+!!!
+%html
+  %head
+    %title TeacherMgnt
+    = stylesheet_link_tag    "application", :media => "all"
+    = javascript_include_tag "application"
+    = csrf_meta_tags
+  %body
+    .container
+      .pull-right= render(:partial => "shared/user_box") if user_signed_in?
+      .clearfix
+      .header
+      #menu
+        = render "shared/menu"
+      = yield

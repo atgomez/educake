@@ -1,0 +1,13 @@
+.login {
+  margin-top: 150px !important;
+  form {
+    .form-inputs {
+      width: 200px;
+      .control-group.optional {
+        label {
+          text-align: left;
+        }
+      }
+    }
+  }
+}
