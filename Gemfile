@@ -25,9 +25,16 @@ gem 'rmagick'
 gem 'faker'
 gem 'bootstrap-will_paginate'
 gem "cancan"
+
 group :development do 
   gem "haml-rails"
   gem 'heroku_san'
   gem 'rails-erd'
 end
 
+group :development, :test do
+  gem "rspec-rails", ">= 2.11.0"
+  gem "capybara"
+  gem "database_cleaner", '>= 0.8.0'
+  gem "faker"
+end
