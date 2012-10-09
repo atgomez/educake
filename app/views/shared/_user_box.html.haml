@@ -1,0 +1,5 @@
+%span
+  = current_user.try(:full_name)
+%span= "|"
+%span
+  = link_to("Sign Out", destroy_user_session_path, :method => "delete", :id => "sign_out")
