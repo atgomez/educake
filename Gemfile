@@ -1,11 +1,11 @@
 source 'https://rubygems.org'
 
 gem 'rails', '3.2.8'
+gem 'thin'
 
 # Remember to update bundler to pre by $gem install bundler --pre
 ruby '1.9.3'
 gem 'pg'
-
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -25,11 +25,16 @@ gem 'rmagick'
 gem 'faker'
 gem 'bootstrap-will_paginate'
 gem "cancan"
+gem 'json'
 
 group :development do 
   gem "haml-rails"
   gem 'heroku_san'
   gem 'rails-erd'
+
+  # For HAML
+  gem 'ruby_parser', '>= 2.3.1'
+  gem "hpricot", ">= 0.8.5"
 end
 
 group :development, :test do
