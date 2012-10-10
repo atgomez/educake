@@ -1,5 +1,8 @@
 .teacher{
   .student-container{
+    .well{ background-color: #FAFAFA; }
+    &:hover .well{ background-color: #F5F5F5; }
+
     margin-top: 10px;
 
     .avatar-container, .student-avatar, .default-avatar {
