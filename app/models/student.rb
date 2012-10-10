@@ -14,6 +14,8 @@ class Student < ActiveRecord::Base
 
   # VALIDATION
   validates_presence_of :first_name, :last_name
+  validates :first_name, :uniqueness => { :scope => :teacher_id,
+    :message => "should not be duplicated name" }
 end
 
 # == Schema Information
