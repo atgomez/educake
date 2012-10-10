@@ -10,6 +10,7 @@
       = f.input :birthday, :as => :string, :input_html => {:class => "select-date", :value => f.object.birthday}, :label => "DOB"
       = f.label :gender, :class => 'pull-left gender'
       = f.collection_radio_buttons :gender, [[true, 'Male'] ,[false, 'Female']], :first, :last
+      = f.hidden_field :teacher_id, :value => current_user.id
       .clearfix
     .pull-left
       - if f.object.new_record?
