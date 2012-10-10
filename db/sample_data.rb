@@ -19,7 +19,7 @@
         :birthday => Time.now - 16.years
       })
     end
-  rescue Exception
+  rescue Exception => e
     puts "[Sampler] Error in creating sample teacher: #{e.inspect}"
   end
 end
