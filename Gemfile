@@ -21,7 +21,6 @@ gem "haml"
 gem "devise"
 gem "simple_form"
 gem 'paperclip'
-gem 'aws-s3'
 gem "aws-sdk" 
 gem 'rmagick'
 gem 'faker'
