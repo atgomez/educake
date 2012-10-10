@@ -1,0 +1,33 @@
+form#student-form {
+  width: 650px;
+  .form-inputs {
+    .pull-right {
+      width: 350px;
+      .control-group.string {
+        label {
+          width: 100px;
+          float:left;
+         }
+       }
+      span {
+        #student_gender_true {
+          float:left;
+          margin-right: 10px;
+        }
+        .collection_radio_buttons {
+          float: left;
+          margin-right: 20px;
+        }
+        #student_gender_false {
+          float: left;
+          margin-right: 10px;
+        }
+      }
+    } 
+  }
+  .gender {
+    margin-right: 61px;
+  }
+
+}
+  

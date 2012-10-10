@@ -1,0 +1,20 @@
+= simple_form_for(@student, :html => { :multipart => true, :id => "student-form" } ) do |f|
+  = f.error_notification
+  .form-actions
+    = link_to "Cancel", :back, :class => "btn"
+    = f.button :submit, :value => "Add Student"
+  .form-inputs
+    .pull-right
+      = f.input :first_name
+      = f.input :last_name
+      = f.input :birthday, :as => :string, :input_html => {:class => "select-date", :value => f.object.birthday}, :label => "DOB"
+      = f.label :gender, :class => 'pull-left gender'
+      = f.collection_radio_buttons :gender, [[true, 'Male'] ,[false, 'Female']], :first, :last
+      .clearfix
+    .pull-left
+      - if f.object.new_record?
+        = image_tag "missing.png", :size => '200x200'
+      - else 
+        = image_tag f.object.photo.url(:small), :size => '200x200'
+      = f.input :photo, :as => :file, :label => "Upload photo"
+  

@@ -21,9 +21,12 @@ gem "haml"
 gem "devise"
 gem "simple_form"
 gem 'paperclip'
+gem 'aws-s3'
+gem "aws-sdk" 
 gem 'rmagick'
 gem 'faker'
 gem 'bootstrap-will_paginate'
+#gem 'event-calendar', :require => 'event_calendar'
 gem "cancan"
 gem 'json'
 

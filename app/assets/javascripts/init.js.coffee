@@ -1,0 +1,3 @@
+$ ->
+  studentObject.setup()
+  return
