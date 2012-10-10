@@ -2,4 +2,22 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
-  hello: "Hello world"
+  common:
+    gender:
+      male: "Male"
+      female: "Female"
+      unknown: "Unknown"
+
+  time:
+    formats:
+      long_date: "%A, %b %d %Y"
+      short_date: "%B %d, %Y"
+      date_with_time: "%A, %b %d %Y at %H:%M"
+      api: "%Y-%m-%d %H:%M:%S"
+
+  date:
+    formats:
+      default: "%m/%d/%Y"
+      short: "%b %e, %Y"
+      long: "%B %e, %Y"
+      api: "%Y-%m-%d"

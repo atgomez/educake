@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121009040353) do
+ActiveRecord::Schema.define(:version => 20121010030201) do
 
   create_table "curriculums", :force => true do |t|
     t.string   "name",       :null => false
@@ -33,6 +33,20 @@ ActiveRecord::Schema.define(:version => 20121009040353) do
   add_index "goals", ["curriculum_id"], :name => "index_goals_on_curriculum_id"
   add_index "goals", ["subject_id"], :name => "index_goals_on_subject_id"
 
+  create_table "invitations", :force => true do |t|
+    t.string   "name",       :null => false
+    t.string   "email",      :null => false
+    t.integer  "role_id"
+    t.integer  "student_id", :null => false
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "invitations", ["email"], :name => "index_invitations_on_email"
+  add_index "invitations", ["name"], :name => "index_invitations_on_name"
+  add_index "invitations", ["role_id"], :name => "index_invitations_on_role_id"
+  add_index "invitations", ["student_id"], :name => "index_invitations_on_student_id"
+
   create_table "statuses", :force => true do |t|
     t.integer  "goal_id",    :null => false
     t.date     "due_date"
@@ -44,13 +58,17 @@ ActiveRecord::Schema.define(:version => 20121009040353) do
   add_index "statuses", ["goal_id"], :name => "index_statuses_on_goal_id"
 
   create_table "students", :force => true do |t|
-    t.string   "first_name", :null => false
-    t.string   "last_name",  :null => false
+    t.string   "first_name",         :null => false
+    t.string   "last_name",          :null => false
     t.date     "birthday"
     t.integer  "teacher_id"
     t.boolean  "gender"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
+    t.string   "photo_file_name"
+    t.string   "photo_content_type"
+    t.integer  "photo_file_size"
+    t.datetime "photo_updated_at"
   end
 
   add_index "students", ["first_name"], :name => "index_students_on_first_name"

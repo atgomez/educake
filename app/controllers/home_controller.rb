@@ -1,6 +1,8 @@
 class HomeController < ApplicationController
   layout "common"
-  def index
 
+  # TODO: change the redirect link.
+  def index
+    redirect_to("/teachers")
   end
 end
