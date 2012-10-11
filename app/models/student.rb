@@ -12,12 +12,13 @@ class Student < ActiveRecord::Base
  # validates_attachment_content_type :photo, :content_type => ['image/jpeg', 'image/png']
 
   # ASSOCIATION
-  has_many :invitations, :dependent => :destroy
+  has_many :goals, :dependent => :destroy
+  has_many :sharing, :class_name => "StudentSharing", :dependent => :destroy
 
   # VALIDATION
   validates_presence_of :first_name, :last_name, :birthday
-  validates :first_name, :uniqueness => { :scope => :teacher_id,
-    :message => "should not be duplicated name" }
+  validates :first_name, :uniqueness => { :scope => [:last_name, :teacher_id],
+    :message => "student's name should not be duplicated" }
 
   # Class methods
   class << self
@@ -66,6 +67,17 @@ class Student < ActiveRecord::Base
     ::Util.date_to_string(self.birthday)
   end
 
+  # Override property setter.
+  def birthday=(date)
+    if date.is_a?(String)
+      date = ::Util.format_date(date)
+      if date
+        date = date.to_date
+      end
+    end
+    self.send(:write_attribute, :birthday, date)
+  end
+  
   def gender_string
     if self.gender.nil?
       I18n.t('common.gender.unknown')
@@ -81,13 +93,17 @@ end
 #
 # Table name: students
 #
-#  id         :integer          not null, primary key
-#  first_name :string(255)      not null
-#  last_name  :string(255)      not null
-#  birthday   :date
-#  teacher_id :integer
-#  gender     :boolean
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id                 :integer          not null, primary key
+#  first_name         :string(255)      not null
+#  last_name          :string(255)      not null
+#  birthday           :date
+#  teacher_id         :integer
+#  gender             :boolean
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
+#  photo_file_name    :string(255)
+#  photo_content_type :string(255)
+#  photo_file_size    :integer
+#  photo_updated_at   :datetime
 #
 

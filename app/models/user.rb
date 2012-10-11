@@ -14,7 +14,9 @@ class User < ActiveRecord::Base
   has_many :children, :class_name => "User"
   belongs_to :parent, :class_name => "User", :foreign_key => 'parent_id'
   
-  has_many :students, :foreign_key => "teacher_id"
+  has_many :students, :foreign_key => "teacher_id", :dependent => :destroy
+  has_many :student_sharings, :dependent => :destroy
+  has_many :shared_students, :through => :student_sharings, :source => :student
   
   validates_presence_of :first_name, :last_name
 

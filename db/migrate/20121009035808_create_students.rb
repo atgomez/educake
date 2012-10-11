@@ -10,7 +10,6 @@ class CreateStudents < ActiveRecord::Migration
       t.timestamps
     end
 
-    add_index :students, :first_name
-    add_index :students, :last_name
+    add_index :students, [:first_name, :last_name, :teacher_id], :unique => true
   end
 end

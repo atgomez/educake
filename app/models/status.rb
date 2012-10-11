@@ -1,6 +1,26 @@
 class Status < ActiveRecord::Base
   attr_accessible :accuracy, :due_date, :goal_id
-  belongs_to :goal 
+  belongs_to :goal
+
+  # VALIDATION
+  validates_presence_of :accuracy, :due_date
+  
+  # Instance methods.
+  
+  def due_date_string
+    ::Util.date_to_string(self.due_date)
+  end
+
+  # Override property setter.
+  def due_date=(date)
+    if date.is_a?(String)
+      date = ::Util.format_date(date)
+      if date
+        date = date.to_date
+      end
+    end
+    self.send(:write_attribute, :due_date, date)
+  end
 end
 
 # == Schema Information
