@@ -12,3 +12,8 @@ admin.assign_attributes({
 })
 
 admin.save!
+
+3.times do |i|
+  Curriculum.create!(:name => "Curriculum #{i}")
+  Subject.create!(:name => "Subject #{i}")
+end

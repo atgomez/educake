@@ -7,7 +7,7 @@ window.studentObject =
     return
     
   addDatePicker: ->
-    $("#student_birthday").datepicker({"format": "dd-mm-yyyy"})
+    $("#student_birthday").datepicker({"format": "mm-dd-yyyy"})
   
   clickOnGoal: -> 
     $(".status").delegate 'a.goal', 'click', () -> 
@@ -54,5 +54,3 @@ window.studentObject =
         error: (errors, status)->
           $(".ajax-loading").addClass "hidden"
           return
-      
- 

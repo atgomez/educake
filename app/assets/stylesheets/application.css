@@ -11,3 +11,10 @@
  *= require_self
  *= require_tree .
  */
+
+.horizontal-bar{
+  display: block;
+  border-top: 1px solid #E1E1E8;
+  border-bottom: none;
+  height: 1px;
+}

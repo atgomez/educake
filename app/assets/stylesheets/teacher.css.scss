@@ -1,6 +1,10 @@
 .teacher, .show-student, .show-other-students{
   .student-container{
-    .well{ background-color: #FAFAFA; }
+    .well{ 
+      background-color: #FAFAFA;
+      padding: 10px
+    }
+
     &:hover .well{ background-color: #F5F5F5; }
 
     margin-top: 10px;
@@ -20,7 +24,7 @@
 
     .info{
       display: inline-block;
-      height: 48px;
+      height: 68px;
       width: 500px;
       margin-left: 2px;
       margin-bottom: 0;

@@ -17,7 +17,12 @@ en:
 
   date:
     formats:
-      default: "%m/%d/%Y"
+      default: "%m-%d-%Y"
       short: "%b %e, %Y"
       long: "%B %e, %Y"
       api: "%Y-%m-%d"
+
+  goal:
+    student_not_found: "Could not find the student"
+    created_successfully: "Goal was created successfully"
+    save_failed: "Could not save the goal"

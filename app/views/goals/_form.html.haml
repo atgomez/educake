@@ -1,0 +1,41 @@
+- goal ||= Goal.build_goal
+- student ||= Student.new
+
+#goal-dialog.modal.hide.fade{:tabindex => "-1"}
+  = simple_form_for(goal, :url => goals_path(:student_id => student), 
+        :html => { :id => 'goal-form', :class => 'form-horizontal goal-form' }) do |f|
+    .modal-header
+      %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} &times;
+      %h4 Add a Goal
+    .modal-body
+      - if notification = f.error_notification
+        .alert.alert-error.fade.in
+          %a{:class => "close", 'data-dismiss' => "alert", :href => "#"} &times;
+          = notification
+
+      = f.association :curriculum, :label => "Curriculum Core"
+      = f.association :subject, :label => "Subject & Standard"
+      = f.input(:due_date, :as => :string, :input_html => {:class => "select-date", 
+                :value => goal.due_date_string}, :label => "Due Date")
+      = f.input :accuracy, :label => "% Accuracy"
+      
+      .horizontal-bar
+      
+      .progress-report-container
+        - goal.statuses.each_with_index do |status, idx|
+          = f.simple_fields_for(:statuses, status) do |f_status|
+            %label.status-name= "Progress Report #{idx + 1}"
+            = f_status.input(:due_date, :as => :string, :input_html => {:class => "select-date", 
+                  :value => status.due_date_string}, :label => "Due Date")
+            = f_status.input :accuracy, :label => "% Accuracy"
+            
+    .modal-footer
+      %button.btn{"aria-hidden" => "true", "data-dismiss" => "modal", :class => "close-dialog"} Cancel
+      = f.submit "Save", :class => 'btn btn-primary'
+
+- content_for(:js) do
+  = javascript_include_tag("goal.js")
+  :javascript
+    $(function(){
+      goal.setup();
+    });
