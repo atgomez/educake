@@ -61,5 +61,8 @@ module TeacherMgnt
     config.assets.version = '1.0'
     
     config.assets.initialize_on_precompile = false
+
+    # Configure to compress responses.
+    config.middleware.insert_before(0, Rack::Deflater)
   end
 end
