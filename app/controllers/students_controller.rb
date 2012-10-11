@@ -12,6 +12,7 @@ class StudentsController < ApplicationController
 
   def show
     @student = Student.find(params[:id])
+    @students = Student.where("teacher_id = ?  and id !=?", current_user.id, params[:id]).limit 4
   end
 
  
