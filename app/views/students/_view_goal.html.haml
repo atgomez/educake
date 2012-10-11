@@ -1,2 +1,17 @@
-.invited-user 
-  = link_to "Add a goal", "#", :class => "icon-plus-sign"
+%p
+  %a{:href=>"#aaa", "data-toggle" =>"tab", "data-dismiss"=>"div", :class => "icon-plus goal"}= " Goal 1"
+      
+  .tab-content
+    .details_goal.tab-pane{:id => "aaa"}
+      .pull-left{:style=>"width: 200px"} This is content of goal
+      .pull-left{:style=>"width: 200px"} "name of goal"
+      .pull-left{:style=>"width: 150px"} progress
+      .clearfix
+      .introduce{:style=>"width: 400px;margin-top: 10px;"} 
+        When verbally told a number (any numeral up to 100), will write the numeral or use cards with numbers on them to display the correct numeral with 80% accuracy on 9 out of 10 trial days as measured by data.
+      %center
+        %div progress name 1
+        %div progress name 2
+        %div progress name 3
+
+            

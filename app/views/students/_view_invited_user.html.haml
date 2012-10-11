@@ -1,2 +1,8 @@
-.invited-user.model
-  = link_to "Add a user", "#", :class => "icon-plus-sign"
+%center
+  .width-users
+    - invited_users.each do |user|
+      .pull-left.width-name= user.name
+      .pull-left.width-email= user.email 
+      .pull-left.width-role role
+      .pull-left.width-action= link_to "Delete", "#"
+          

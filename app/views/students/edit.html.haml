@@ -2,5 +2,9 @@
 
 %center= render 'form'
 .clearfix
-= render "view_goal"
-= render "view_invited_user"
+.invited-user 
+  = link_to " Add a goal", "#", :class => "icon-plus-sign"
+  = render "view_goal"
+.invited-user.model
+  = link_to " Add a user", "#", :class => "icon-plus-sign"
+  = render "view_invited_user", :invited_users => @invited_users

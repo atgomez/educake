@@ -1,4 +1,4 @@
-.teacher{
+.teacher, .show-student, .show-other-students{
   .student-container{
     .well{ background-color: #FAFAFA; }
     &:hover .well{ background-color: #F5F5F5; }
@@ -26,5 +26,54 @@
       margin-bottom: 0;
       float: left;
     }
+  }
+  .tabbable {
+    margin-top: 20px;
+    width: 633px;
+    ul.nav {
+      margin-bottom: 0px !important;
+    }
+    .status, .users { 
+      border-bottom: 1px solid #ddd;
+      border-right: 1px solid #ddd;
+      border-left: 1px solid #ddd;
+      min-height: 500px;
+      padding: 20px 0px 10px;
+      a.add {
+        margin: 100px 0 0 30px;
+      }
+      .export {
+        margin-right: 20px;
+      }
+      #content-status {
+        margin: 0 30px 30px 30px;
+      }
+      .width-users {
+        width:400px;
+        .width-name { 
+          width:100px;
+        }
+        .width-email {
+          width:200px;
+        }
+        .width-role { 
+          width:50px;
+        } 
+        .width-action { 
+          width:50px;
+        }
+      }
+    }
+  }
+}
+.show-other-students {
+  margin-top: 20px;
+  .info{
+    display: inline-block;
+    height: 48px;
+    width: 365px !important;
+    margin-left: 2px;
+    margin-bottom: 0;
+    float: left;
   }
 }
