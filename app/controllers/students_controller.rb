@@ -23,7 +23,7 @@ class StudentsController < ApplicationController
   def edit
     @student = Student.find(params[:id])
     @goals = Goal.where(:student_id => params[:id])
-    @invited_users = Invitation.where(:student_id => params[:id])
+    @invited_users = StudentSharing.where(:student_id => params[:id])
   end
 
 
@@ -55,9 +55,10 @@ class StudentsController < ApplicationController
   end
   
   def load_users 
-    users = Invitation.where(:student_id => params[:id])
+    users = StudentSharing.where(:student_id => params[:id])
     render :partial => "view_invited_user", :locals => {:invited_users => users}
-  end 
+  end
+  
   def load_status
     goals = Goal.where(:student_id => params[:id])
     render :partial => "view_goal", :locals => {:goals => goals}
