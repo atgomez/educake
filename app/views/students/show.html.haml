@@ -1,0 +1,65 @@
+
+.show-student.pull-left
+  = link_to "All students", teachers_path
+  .student-container.clearfix
+    .avatar-container.well
+      - unless @student.photo_url.blank?
+        = image_tag(@student.photo_url, :class => "student-avatar")
+      - else
+        .default-avatar
+    .info.well.pull-left
+      .pull-left
+        %strong.name
+          = link_to(@student.full_name, student_path(@student))
+        .birthday
+          %span= "Born on:"
+          %span= @student.birthday_string
+        .gender
+          %span= "Gender:"
+          %span= @student.gender_string
+      .edit.pull-right
+        %span= link_to "Edit", edit_student_path(@student)
+  = hidden_field_tag "student_id", params[:id]
+  .tabbable
+    %ul.nav.nav-tabs
+      %li#status.active
+        = link_to "Status", "#"
+      %li#users
+        = link_to "Users", "#"
+    .users.hide
+      = link_to " Add a user", "#", :class => "icon-plus-sign add"
+      #content-users
+    .status
+      .pull-left= link_to " Add a goal", "#", :class => "icon-plus-sign add"
+      .pull-right= link_to "Export Progress", "#", :class => "btn export"
+      .clearfix
+      %div{:style=>"border-top: 2px solid #ddd; margin: 10px 0"}
+      #content-status
+        = render "view_goal"
+      
+.show-other-students.pull-right
+  %div View other students
+  - @students.each do |student|
+    .student-container.clearfix
+      .avatar-container.well
+        - unless student.photo_url.blank?
+          = image_tag(student.photo_url, :class => "student-avatar")
+        - else
+          .default-avatar
+      .info.well.pull-left
+        .pull-left
+          %strong.name
+            = link_to(student.full_name, student_path(student))
+          .birthday
+            %span= "Born on:"
+            %span= student.birthday_string
+          .gender
+            %span= "Gender:"
+            %span= student.gender_string
+            
+            
+            
+
+  
+  
+}
