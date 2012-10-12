@@ -59,3 +59,17 @@ form#student-form {
     margin-top: 10px;
   }
 }
+
+
+.progress {
+    background-color: blue !important;
+    background-image: none !important;
+    background-repeat: repeat-x;
+    border-radius: 4px 4px 4px 4px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) inset;
+    height: 20px;
+    margin-bottom: 20px;
+    overflow: hidden;
+    width: 150px;
+}
+    
