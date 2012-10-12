@@ -11,13 +11,17 @@ window.studentObject =
   
   clickOnGoal: -> 
     $(".status").delegate 'a.goal', 'click', () -> 
+      id_content = $(this).attr("href")
       cl = $(this).attr("class").split("goal").join("").trim()
+      console.log $(this)
+      console.log $(id_content)
       if cl == "icon-plus" 
         $(this).removeClass("icon-plus").addClass("icon-minus")
-        $("#aaa").attr("style","display:block;")
+        $(id_content).attr("style","display:block;")
+        console.log $(id_content)
       else if cl == "icon-minus"
         $(this).removeClass("icon-minus").addClass("icon-plus")
-        $("#aaa").attr("style","display:none;")
+        $(id_content).attr("style","display:none;")
       return
       
   clickOnStatus: ->

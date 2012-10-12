@@ -30,12 +30,12 @@
       = link_to " Add a user", "#", :class => "icon-plus-sign add"
       #content-users
     .status
-      .pull-left= link_to " Add a goal", "#", :class => "icon-plus-sign add"
+      .pull-left= link_to " Add a status", "#", :class => "icon-plus-sign add"
       .pull-right= link_to "Export Progress", "#", :class => "btn export"
       .clearfix
       %div{:style=>"border-top: 2px solid #ddd; margin: 10px 0"}
       #content-status
-        = render "view_goal"
+        = render "view_goal", :goals => @student.goals
       
 .show-other-students.pull-right
   %div View other students
@@ -62,4 +62,4 @@
 
   
   
-}
+

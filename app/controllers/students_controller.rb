@@ -22,7 +22,6 @@ class StudentsController < ApplicationController
 
   def edit
     @student = Student.find(params[:id])
-    @goals = Goal.where(:student_id => params[:id])
     @invited_users = StudentSharing.where(:student_id => params[:id])
   end
 
