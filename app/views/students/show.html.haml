@@ -37,25 +37,26 @@
       #content-status
         = render "view_goal", :goals => @student.goals
       
-.show-other-students.pull-right
-  %div View other students
-  - @students.each do |student|
-    .student-container.clearfix
-      .avatar-container.well
-        - unless student.photo_url.blank?
-          = image_tag(student.photo_url, :class => "student-avatar")
-        - else
-          .default-avatar
-      .info.well.pull-left
-        .pull-left
-          %strong.name
-            = link_to(student.full_name, student_path(student))
-          .birthday
-            %span= "Born on:"
-            %span= student.birthday_string
-          .gender
-            %span= "Gender:"
-            %span= student.gender_string
+.show-other-students.pull-left
+  - unless @students.empty?
+    %div View other students 
+    - @students.each do |student|
+      .student-container.clearfix
+        .avatar-container.well
+          - unless student.photo_url.blank?
+            = image_tag(student.photo_url, :class => "student-avatar")
+          - else
+            .default-avatar
+        .info.well.pull-left
+          .pull-left
+            %strong.name
+              = link_to(student.full_name, student_path(student))
+            .birthday
+              %span= "Born on:"
+              %span= student.birthday_string
+            .gender
+              %span= "Gender:"
+              %span= student.gender_string
             
             
             
