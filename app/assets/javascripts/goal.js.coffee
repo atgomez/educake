@@ -17,6 +17,11 @@ window.goal =
       $('#goal-dialog').modal('show')
     )
 
+    $("#goal-form #btn-save-goal").livequery('click', (e) -> 
+      e.preventDefault()
+      $("#goal-form").submit()
+    )
+
     $("#goal-form").livequery('submit', (e) ->
       e.preventDefault()
 
@@ -32,15 +37,11 @@ window.goal =
         ,
 
         error: (xhr, textStatus, error) -> 
-          console.log("error")
-          console.log(xhr)
-
           try
             res = $.parseJSON(xhr.responseText)
           catch exc
             res = null
 
-          console.log(res)
           if res and res.html
             goal_dialog = $(res.html)
             $("#goal-dialog").html(goal_dialog.html())
