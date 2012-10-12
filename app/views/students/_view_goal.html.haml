@@ -1,16 +1,16 @@
 
 - goals.each do |goal|
-  %p{:style=>"margin-top:10px;"}
-    .pull-left{:style=>"width: 200px"}
+  .cont
+    .width-subject.pull-left
       %a{:href=>"#goal_#{goal.id}", "data-toggle" =>"tab", "data-dismiss"=>"div", :class => "icon-plus goal"}= " " + goal.subject.name + " " + goal.curriculum.name
-    .pull-left{:style=>"width: 200px"}= goal.accuracy.to_s + "% by " + goal.due_date.strftime("%m/%Y")
+    .width-subject.pull-left= goal.accuracy.to_s + "% by " + goal.due_date.strftime("%m/%Y")
     .pull-left.progress.progress-success
       .bar{:style => "width: #{goal.accuracy}%"}
     .clearfix
     .tab-content
       .details_goal.tab-pane{:id => "goal_#{goal.id}"}
         .clearfix
-        .introduce{:style=>"width: 400px;margin-top: 10px;"} 
+        .introduce
           When verbally told a number (any numeral up to 100), will write the numeral or use cards with numbers on them to display the correct numeral with 80% accuracy on 9 out of 10 trial days as measured by data.
         %center
           - goal.statuses.each do |status|
