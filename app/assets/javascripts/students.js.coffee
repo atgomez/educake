@@ -13,9 +13,7 @@ window.studentObject =
     $(".status").delegate 'a.goal', 'click', () -> 
       id_content = $(this).attr("href")
       cl = $(this).attr("class").split("goal").join("").trim()
-      console.log $(this)
-      console.log $(id_content)
-      if cl == "icon-plus" 
+      if cl == "icon-plus"
         $(this).removeClass("icon-plus").addClass("icon-minus")
         $(id_content).attr("style","display:block;")
         console.log $(id_content)

@@ -2,10 +2,10 @@
 
 %center= render 'form'
 .clearfix
-.invited-user 
+.invited-user.status 
   = link_to(" Add a goal", "#", :class => "icon-plus-sign", :id => "add-goal")
   = render(:partial => "view_goal", :locals => {:goals => @student.goals})
   = render(:partial => "goals/form", :locals => {:student => @student})
 .invited-user.model
   = link_to " Add a user", "#", :class => "icon-plus-sign"
-  = render "view_invited_user", :invited_users => @invited_users
+  = render "view_invited_user", :invited_users => @student.sharing

@@ -7,7 +7,7 @@
     .pull-right
       = f.input :first_name
       = f.input :last_name
-      = f.input :birthday, :as => :string, :input_html => {:class => "select-date", :value => f.object.birthday}, :label => "DOB"
+      = f.input :birthday, :as => :string, :input_html => {:class => "select-date", :value => f.object.birthday_string}, :label => "DOB"
       = f.label :gender, :class => 'pull-left gender'
       = f.collection_radio_buttons :gender, [[true, 'Male'] ,[false, 'Female']], :first, :last
       = f.hidden_field :teacher_id, :value => current_user.id
