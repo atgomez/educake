@@ -13,7 +13,10 @@ admin.assign_attributes({
 
 admin.save!
 
-3.times do |i|
-  Curriculum.create!(:name => "Curriculum #{i}")
-  Subject.create!(:name => "Subject #{i}")
+["SEACO FPI 5.1", "SEACO FPI 5.2"].each do |curriculum|
+  Curriculum.create!(:name => curriculum)  
+end
+
+["Math", "French"].each do |subject|
+  Subject.create!(:name => subject)  
 end
