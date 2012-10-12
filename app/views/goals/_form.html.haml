@@ -33,9 +33,3 @@
       %button.btn{"aria-hidden" => "true", "data-dismiss" => "modal", :class => "close-dialog"} Cancel
       = f.submit "Save", :class => 'btn btn-primary'
 
-- content_for(:js) do
-  = javascript_include_tag("goal.js")
-  :javascript
-    $(function(){
-      goal.setup();
-    });
