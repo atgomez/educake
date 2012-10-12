@@ -15,5 +15,6 @@
 //= require bootstrap-datepicker
 //= require students
 //= require init
+//= require goal
 //= require highcharts/js/highcharts
 
