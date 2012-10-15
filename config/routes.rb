@@ -9,4 +9,10 @@ TeacherMgnt::Application.routes.draw do
   end
   resources :goals
   devise_for :users
+  
+  get '/admin', :to => "admin/base_admin#index"
+  namespace :admin do
+    resources :teachers
+    resources :students
+  end
 end

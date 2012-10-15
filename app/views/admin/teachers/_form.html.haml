@@ -1,0 +1,24 @@
+- teacher ||= User.new
+
+#teacher-dialog.modal.hide.fade{:tabindex => "-1"}
+  = simple_form_for(teacher, :url => admin_teachers_path(:teacher_id => teacher), 
+        :html => { :id => 'teacher-form', :class => 'form-horizontal teacher-form' }) do |f|
+    .modal-header
+      %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} &times;
+      %h4 Add a Teacher
+    .modal-body
+      - if notification = f.error_notification
+        .alert.alert-error.fade.in
+          %a{:class => "close", 'data-dismiss' => "alert", :href => "#"} &times;
+          = notification
+
+      = f.input :first_name
+      = f.input :last_name
+      = f.input :email, :required => true
+      = f.input(:classroom, :label => "Classroom (opt)", :required => false)
+      = f.input(:phone, :label => "Phone (opt)", :required => false)
+            
+    .modal-footer
+      %button.btn{"aria-hidden" => "true", "data-dismiss" => "modal", :class => "close-dialog"} Cancel
+      %button.btn.btn-primary{:id => "btn-save-teacher"} Save
+

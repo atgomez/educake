@@ -1,0 +1,27 @@
+!!!
+%html
+  %head
+    %title TeacherMgnt
+    = stylesheet_link_tag    "application", :media => "all"
+    = javascript_include_tag "//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"
+    = javascript_include_tag "application"
+    = csrf_meta_tags
+  %body
+    .container
+      .pull-right= render(:partial => "shared/user_box") if user_signed_in?
+      .clearfix
+      .header
+        %a.logo{:href => "/"}
+
+      - if notice
+        %div{:class => "alert alert-success fade in", 'data-alert' => "alert"}
+          %a{:class => "close", 'data-dismiss' => 'alert', :href => "#"} &times;
+          = notice
+
+      - if alert
+        %div{:class => "alert alert-error fade in", 'data-alert' => "alert"}
+          %a{:class => "close", 'data-dismiss' => "alert", :href => "#"} &times;
+          = alert
+          
+      = yield
+  = yield :js
