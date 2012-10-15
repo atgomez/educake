@@ -8,7 +8,8 @@ admin.assign_attributes({
   :first_name => "Super",
   :last_name => "Mario",
   :password => "123456",
-  :password_confirmation => "123456"
+  :password_confirmation => "123456",
+  :school_name => "Public School"
 })
 
 admin.save!
