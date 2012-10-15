@@ -10,10 +10,14 @@
 }
 
 .header {
-  background-image: url("../assets/logo.jpg");
-  background-repeat: no-repeat;
-  background-position: left;
-  height: 100px;
+  .logo{
+    background-image: url("../assets/logo.jpg");
+    background-repeat: no-repeat;
+    background-position: left;
+    height: 100px;
+    width: 100px;
+    display: inline-block;
+  }
 }
 a {
   &:hover {

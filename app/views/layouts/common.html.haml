@@ -11,6 +11,7 @@
       .pull-right= render(:partial => "shared/user_box") if user_signed_in?
       .clearfix
       .header
+        %a.logo{:href => "/"}
       #menu
         = render "shared/menu"
 
