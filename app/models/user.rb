@@ -9,19 +9,32 @@ class User < ActiveRecord::Base
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me, :first_name, 
-  :last_name, :phone, :classroom
+  :last_name, :phone, :classroom, :school_name
   
-  has_many :children, :class_name => "User"
-  belongs_to :parent, :class_name => "User", :foreign_key => 'parent_id'
-  
+  # ASSOCIATIONS
+  has_many :children, :class_name => "User", :foreign_key => 'parent_id' 
+  belongs_to :parent, :class_name => "User", :foreign_key => 'parent_id'  
   has_many :students, :foreign_key => "teacher_id", :dependent => :destroy
   has_many :student_sharings, :dependent => :destroy
   has_many :shared_students, :through => :student_sharings, :source => :student
   
+  has_attached_file :photo, :styles => { :small => "200x200>", :medium => "300x300>" }, 
+                   :storage => :s3,
+                   :s3_credentials => "#{Rails.root}/config/amazon_s3.yml",
+                   :default_url => 'default-avatar.jpeg',
+                   :path => "photos/users/:id/:style.:extension"
+
+  # VALIDATION
   validates_presence_of :first_name, :last_name
+
+  # Instance methods
 
   def full_name
     "#{self.first_name} #{self.last_name}"
+  end
+
+  def photo_url(style = :small)
+    self.photo.url(style)
   end
 end
 

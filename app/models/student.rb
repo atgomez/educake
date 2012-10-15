@@ -6,7 +6,7 @@ class Student < ActiveRecord::Base
   has_attached_file :photo, :styles => { :small => "200x200>", :medium => "300x300>" }, 
                    :storage => :s3,
                    :s3_credentials => "#{Rails.root}/config/amazon_s3.yml",
-                   :default_url => 'missing.png',
+                   :default_url => 'default-avatar.jpeg',
                    :path => "photos/:id/:style.:extension"
   #validates_attachment_size :photo, :less_than => 5.megabytes
  # validates_attachment_content_type :photo, :content_type => ['image/jpeg', 'image/png']
@@ -56,7 +56,7 @@ class Student < ActiveRecord::Base
   # Instance methods
 
   def photo_url(style = :small)
-    self.photo_file_name.blank? ? "" : self.photo.url(style)
+    self.photo.url(style)
   end
 
   def full_name
