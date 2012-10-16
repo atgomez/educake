@@ -35,7 +35,27 @@ window.teacher =
     $("#teacher-form").livequery('submit', (e) ->
       e.preventDefault()
 
-      # TODO: implement this method
+      data = $("#teacher-form").serialize()
+      url = $("#teacher-form").attr('action')
+
+      $.ajax({
+        url: url,
+        type: 'POST',
+        data: data,
+        success: (res) -> 
+          window.location.reload()
+        ,
+
+        error: (xhr, textStatus, error) -> 
+          try
+            res = $.parseJSON(xhr.responseText)
+          catch exc
+            res = null
+
+          if res and res.html
+            teacher_dialog = $(res.html)
+            $("#teacher-dialog").html(teacher_dialog.html())
+      })
       
       return false
     )
