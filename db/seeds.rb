@@ -11,7 +11,7 @@ admin.assign_attributes({
   :password_confirmation => "123456",
   :school_name => "Public School"
 })
-
+admin.skip_confirmation!
 admin.save!
 
 ["SEACO FPI 5.1", "SEACO FPI 5.2"].each do |curriculum|

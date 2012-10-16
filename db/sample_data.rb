@@ -13,6 +13,7 @@ admin = User.first
       :password_confirmation => "123456",
     })
     teacher.parent = admin
+    teacher.skip_confirmation!
     teacher.save!
     puts "[Sampler] Created teacher #{teacher.email} / 123456"
 
