@@ -34,4 +34,19 @@ TeacherMgnt::Application.configure do
 
   # Expands the lines which load the assets
   config.assets.debug = true
+
+  # Config mailer
+  config.action_mailer.default_url_options = { :host => 'localhost:3000' }
+  config.action_mailer.delivery_method = :smtp
+  
+  # GMAIL
+  config.action_mailer.smtp_settings = {
+    :address              => "smtp.gmail.com",
+    :port                 => 587,
+    :domain               => 'gmail.com',
+    :user_name            => 'tpl.teacher.mailer',
+    :password             => 'TplTeacher123456',
+    :authentication       => 'plain',
+    :enable_starttls_auto => true
+  }
 end
