@@ -1,10 +1,11 @@
 class User < ActiveRecord::Base
   ROLES = %w[admin principal teacher parent]
+  DUMMY_PASSWORD = "123456"
 
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
   # :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :registerable,
+  devise :database_authenticatable, :confirmable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
   # Setup accessible (or protected) attributes for your model
@@ -27,6 +28,16 @@ class User < ActiveRecord::Base
   # VALIDATION
   has_one :student_sharing
   validates_presence_of :first_name, :last_name
+
+  # Class methods
+  class << self
+    # Create new User object with default password in case of no password is specified.
+    def new_with_default_password(attrs)
+      attrs[:password] = DUMMY_PASSWORD if attrs[:password].blank?
+      attrs[:password_confirmation] = DUMMY_PASSWORD if attrs[:password_confirmation].blank?
+      self.new(attrs)
+    end
+  end # End class methods.
 
   # Instance methods
 
