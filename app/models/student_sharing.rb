@@ -1,13 +1,23 @@
 class StudentSharing < ActiveRecord::Base
-  attr_accessible :email, :name, :student_id, :user_id
+  attr_accessible :email, :first_name, :last_name, :student_id, :user_id, :role_id, :confirm_token
 
   # ASSOCIATION
   belongs_to :student
   belongs_to :user
+  belongs_to :role
   
   # VALIDATION
-  validates :name, :email, :student_id, :presence => true
+  validates :first_name, :last_name, :email, :student_id, :role_id, :presence => true
   validates_format_of :email, :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i, :on => :create
+  validates :email, :uniqueness => { :scope => [:student_id]}
+  after_create :save_token
+  def save_token 
+    self.update_attribute(:confirm_token, Digest::SHA1.hexdigest(self.email))
+  end
+  
+  def full_name
+    [self.first_name, self.last_name].join(" ")
+  end  
 end
 
 # == Schema Information

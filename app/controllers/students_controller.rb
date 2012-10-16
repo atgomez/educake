@@ -1,5 +1,6 @@
 class StudentsController < ApplicationController
   layout "common"
+  before_filter :destroy_session, :except => [:show, :destroy]
   
   def index
     @students = Student.all
@@ -13,15 +14,18 @@ class StudentsController < ApplicationController
   def show
     @student = Student.find(params[:id])
     @students = Student.where("teacher_id = ?  and id !=?", current_user.id, params[:id]).limit 4
+    session[:student_id] = params[:id]
   end
 
  
   def new
     @student = Student.new
   end
-
+  
+  
   def edit
     @student = Student.find(params[:id])
+    session[:student_id] = params[:id]
     @invited_users = StudentSharing.where(:student_id => params[:id])
   end
 
@@ -61,5 +65,10 @@ class StudentsController < ApplicationController
   def load_status
     goals = Goal.where(:student_id => params[:id])
     render :partial => "view_goal", :locals => {:goals => goals}
+  end
+  
+  private
+  def destroy_session  
+    session.delete :tab
   end 
 end

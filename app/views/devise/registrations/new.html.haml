@@ -1,10 +1,29 @@
-%h2 Sign up
-= simple_form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f|
+.header
+.text-head
+  Hello John Doe!
+.text-head
+  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce sed tempus sem.
+  Vivamus vitae orci nec enim porta viverra ut vitae dui. Pellentesque lobortis, lectus sit
+  amet consequat fringilla, nulla massa accumsan nunc, non rutrum urna lorem in eros.
+  Donec diam arcu, lacinia at vestibulum quis, posuere sed nulla.
+  Text will include
+  information and differ
+  depending on role.
+  
+.text-head  Aliquam in mi quis orci lacinia hendrerit at hendrerit velit.
+- if params[:user_token]
+  - sharing = StudentSharing.find_by_confirm_token(params[:user_token])
+- else 
+  - email = ''
+= simple_form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => {:class=>"sign-up"}) do |f|
   = f.error_notification
   .form-inputs
-    = f.input :email, :required => true, :autofocus => true
+    = f.input :first_name, :disabled => true, :required => true, :autofocus => true, :input_html => {:value => sharing.first_name}
+    = f.input :last_name, :disabled => true, :required => true, :input_html => {:value => sharing.last_name}
+    = f.input :email, :disabled => true, :required => true, :input_html => {:value => sharing.email}
     = f.input :password, :required => true
     = f.input :password_confirmation, :required => true
+    = f.input :phone
+    = f.input :classroom
   .form-actions
-    = f.button :submit, "Sign up"
-= render "devise/shared/links"
+    = f.button :submit, "Create Account", :class =>  "btn btn-primary"

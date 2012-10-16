@@ -1,0 +1,24 @@
+#invite_user.modal.hide.fade
+  .modal-header
+    %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} ×
+    %h4= label
+  .modal-body
+    = simple_form_for(@user, :url => url,:method => method, :remote => true) do |f|
+      = f.error_notification
+      .form-inputs
+        = f.input :first_name, :disabled=> !f.object.new_record?, :input_html => {:class => "pull-left"}
+        #firstname_error.pull-right
+        .clearfix
+        = f.input :last_name, :disabled=> !f.object.new_record?, :input_html => {:class => "pull-left"}
+        #lastname_error.pull-right
+        .clearfix
+        = f.input :email, :disabled=> !f.object.new_record?, :input_html => {:class => "pull-left"}
+        #email_error.pull-right
+        .clearfix
+        = f.input :role_id, :collection => Role.order("name ASC"), :prompt => "Select one", :input_html => {:class => "pull-left"}
+        #role_error.pull-right
+        = f.hidden_field :student_id, :value => session[:student_id]
+        .clearfix
+      .modal-footer
+        %a.btn{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} Cancel
+        = f.submit "Save", :class => "btn btn-primary", :id => "save-user"

@@ -54,15 +54,18 @@
         margin: 0 30px 30px 30px;
       }
       .width-users {
-        width:400px;
+        width:550px;
         .width-name { 
-          width:100px;
+          width:150px;
+          word-wrap: break-word;
         }
         .width-email {
-          width:200px;
+          width:250px;
+          word-wrap: break-word;
         }
         .width-role { 
-          width:50px;
+          width:100px;
+          word-wrap: break-word;
         } 
         .width-action { 
           width:50px;

@@ -11,3 +11,27 @@
     }
   }
 }
+form.sign-up {
+  margin-top: 20px;
+  .form-inputs {
+    width: 470px;
+    .control-group {
+      label {
+        width: 200px;
+        float:left;
+        text-align: right;
+       }
+      
+    }
+  }
+}
+
+.text-head {
+  width: 500px;
+  text-align: left;
+}
+#lastname_error, #firstname_error, #email_error, #role_error {
+  text-align: left;
+  width: 200px;
+  color: red;
+}

@@ -1,6 +1,6 @@
-
 .show-student.pull-left
   = link_to "All students", teachers_path
+  = hidden_field_tag "tab", session[:tab]
   .student-container.clearfix
     .avatar-container.well
       - unless @student.photo_url.blank?
@@ -27,7 +27,8 @@
       %li#users
         = link_to "Users", "#"
     .users.hide
-      = link_to " Add a user", "#", :class => "icon-plus-sign add"
+      = link_to " Add a user", new_invitation_path, :remote => true, :class => "icon-plus-sign add"
+      #render_invite_user
       #content-users
     .status
       .pull-left= link_to " Add a status", "#", :class => "icon-plus-sign add"

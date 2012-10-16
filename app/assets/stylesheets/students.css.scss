@@ -8,7 +8,8 @@ form#student-form {
           width: 100px;
           float:left;
          }
-       }
+        
+      }
       span {
         #student_gender_true {
           float:left;
@@ -31,15 +32,34 @@ form#student-form {
   .gender {
     margin-right: 61px;
   }
-
+  
 }
 
 .invited-user {
   margin-top: 25px;
+  margin-bottom: 20px;
   padding-top: 10px;
   width: 60%;
   min-height: 100px;
   border: 1px solid #DDD;
+  .width-users {
+    width:550px;
+    .width-name { 
+      width:150px;
+      word-wrap: break-word;
+    }
+    .width-email {
+      width:250px;
+      word-wrap: break-word;
+    }
+    .width-role { 
+      width:100px;
+      word-wrap: break-word;
+    } 
+    .width-action { 
+      width:50px;
+    }
+  }
   a {
     padding-left: 10px;
     &:hover {
@@ -72,4 +92,15 @@ form#student-form {
     overflow: hidden;
     width: 150px;
 }
-    
+
+form#new_student_sharing, form.edit_student_sharing {
+  .form-inputs {
+    // width: 350px;
+    .control-group {
+      label {
+        width: 100px;
+        float:left;
+       }
+     }
+   }
+}

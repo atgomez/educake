@@ -1,0 +1,6 @@
+- if @user.errors.any?
+  - @user.errors.full_messages.each do |error| 
+    - if error.include?("Role") 
+      $("#role_error").html("#{ escape_javascript ( error )}");
+- else
+  location.reload()

@@ -1,0 +1,2 @@
+$("#render_invite_user").html("#{escape_javascript render 'form', :url => invitation_path(@user), :method => :put, :label => 'Edit a user'}")
+$("#invite_user").modal('show');

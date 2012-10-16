@@ -56,7 +56,7 @@ module TeacherMgnt
 
     # Enable the asset pipeline
     config.assets.enabled = true
-
+    config.action_mailer.default_url_options = {:host => "localhost:3000"}#{ :host => "teacher-mgnt-staging.herokuapp.com" }
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
     
@@ -66,3 +66,13 @@ module TeacherMgnt
     config.middleware.insert_before(0, Rack::Deflater)
   end
 end
+ActionMailer::Base.delivery_method = :smtp
+ActionMailer::Base.smtp_settings = {
+  :address              => "smtp.gmail.com",
+  :port                 => 587,
+  :domain               => 'hiringapp.com',
+  :user_name            => 'tpldev1',
+  :password             => 'tpldev1@',
+  :authentication       => 'plain',
+  :enable_starttls_auto => true
+}

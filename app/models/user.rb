@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
   # :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, 
+  devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
   # Setup accessible (or protected) attributes for your model
@@ -25,6 +25,7 @@ class User < ActiveRecord::Base
                    :path => "photos/users/:id/:style.:extension"
 
   # VALIDATION
+  has_one :student_sharing
   validates_presence_of :first_name, :last_name
 
   # Instance methods
@@ -36,6 +37,7 @@ class User < ActiveRecord::Base
   def photo_url(style = :small)
     self.photo.url(style)
   end
+
 end
 
 # == Schema Information
