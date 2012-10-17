@@ -17,4 +17,6 @@ TeacherMgnt::Application.routes.draw do
     resources :teachers
     resources :students
   end
+
+  resources :curriculum
 end
