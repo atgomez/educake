@@ -25,5 +25,6 @@
     = f.input :password_confirmation, :required => true
     = f.input :phone
     = f.input :classroom
+    = f.hidden_field :role_id, :value => sharing.role_id
   .form-actions
     = f.button :submit, "Create Account", :class =>  "btn btn-primary"

@@ -4,8 +4,9 @@ window.studentObject =
     @clickOnGoal()
     @clickOnStatus()
     @clickOnUsers()
-    return
+    @activeTab()
     
+    return
   addDatePicker: ->
     $("#student_birthday").datepicker({"format": "mm-dd-yyyy"})
   
@@ -21,10 +22,15 @@ window.studentObject =
         $(this).removeClass("icon-minus").addClass("icon-plus")
         $(id_content).attr("style","display:none;")
       return
-      
+  
+  activeTab: ->
+    if $("#tab").val() == "user"
+      $("#users").addClass("active")
+      $("#status").removeClass("active")
+      loadUser()
+    return
   clickOnStatus: ->
     $("#status").click ->
-      console.log "how are you?"
       $(this).addClass("active")
       $("#users").removeClass("active")
       $.ajax
@@ -39,20 +45,24 @@ window.studentObject =
         error: (errors, status)->
           $(".ajax-loading").addClass "hidden"
           return
+      
+  
   clickOnUsers: -> 
     $("#users").click ->
-      console.log "Are you bad?"
       $(this).addClass("active")
       $("#status").removeClass("active")
-      $.ajax
-        type: "GET"
-        url: $("#student_id").val()+"/load_users"
-        data: {}
-        success: (data)->
-          $(".users").attr("style","display:block")
-          $(".status").attr("style","display:none")
-          $("#content-users").html(data)
-          return
-        error: (errors, status)->
-          $(".ajax-loading").addClass "hidden"
-          return
+      loadUser()
+      
+loadUser = ->
+  $.ajax
+    type: "GET"
+    url: $("#student_id").val()+"/load_users"
+    data: {}
+    success: (data)->
+      $(".users").attr("style","display:block")
+      $(".status").attr("style","display:none")
+      $("#content-users").html(data)
+      return
+    error: (errors, status)->
+      $(".ajax-loading").addClass "hidden"
+      return

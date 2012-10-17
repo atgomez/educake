@@ -37,11 +37,3 @@
 
   = render('form')
 
-- content_for(:js) do
-  = javascript_include_tag('app/admin/teacher.js')
-  :javascript
-    $(function(){
-      $(document).ready(function() {
-        teacher.setup();
-      });
-    });
