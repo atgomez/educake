@@ -1,5 +1,6 @@
 class Admin::TeachersController < Admin::BaseAdminController
   layout "common"
+  
   def index
     @teachers = current_user.children.all
   end
