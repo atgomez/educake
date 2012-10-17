@@ -1,7 +1,7 @@
 %ul.nav.nav-tabs
   %li
     %a.placeholder
-  %li.active
+  %li{:class => @current_tab == 'classroom' ? "active" : ""}
     %a{:href => "/teachers"} Classroom
-  %li
+  %li{:class => @current_tab == 'curriculum' ? "active" : ""}
     %a{:href => "/curriculum"} Curriculum

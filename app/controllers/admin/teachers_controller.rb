@@ -34,4 +34,9 @@ class Admin::TeachersController < Admin::BaseAdminController
     @teacher = User.find params[:id]
     @students = @teacher.students.load_data(filtered_params)
   end 
+  protected
+
+  def set_current_tab
+    @current_tab = 'classroom'
+  end
 end

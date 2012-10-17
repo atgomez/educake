@@ -14,14 +14,8 @@ class StudentsController < ApplicationController
   def show
     @student = Student.find(params[:id])
     @teacher = @student.teacher 
-    @teachers = []
     @students = Student.where("teacher_id = ?  and id !=?", @teacher.id, params[:id]).limit 4
     session[:student_id] = params[:id]
-    if params[:related]
-      @teachers << @teacher 
-      @teachers += StudentSharing.where(:student_id => params[:id]).map(&:user)
-      #@teachers.sort { |a,b| a.full_name.downcase <=> b.full_name.downcase }
-    end 
   end
 
  
@@ -72,6 +66,12 @@ class StudentsController < ApplicationController
   def load_status
     goals = Goal.where(:student_id => params[:id])
     render :partial => "view_goal", :locals => {:goals => goals}
+  end
+  
+  protected
+
+  def set_current_tab
+    @current_tab = 'classroom'
   end
   
   private

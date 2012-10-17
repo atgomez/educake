@@ -1,0 +1,92 @@
+
+- goals.each do |goal|
+  .cont
+    .width-subject.pull-left
+      %a{:href=>"#goal_#{goal.id}", "data-toggle" =>"tab", "data-dismiss"=>"div", :class => "icon-plus goal"}= " " + goal.subject.name + " " + goal.curriculum.name
+    .width-subject.pull-left= goal.accuracy.to_s + "% by " + goal.due_date.strftime("%m/%Y")
+    .pull-left.progress.progress-success
+      .bar{:style => "width: #{goal.accuracy}%"}
+    .clearfix
+    .tab-content
+      .details_goal.tab-pane{:id => "goal_#{goal.id}"}
+        .clearfix
+        .introduce
+          When verbally told a number (any numeral up to 100), will write the numeral or use cards with numbers on them to display the correct numeral with 80% accuracy on 9 out of 10 trial days as measured by data.
+        %center
+          - goal.statuses.each do |status|
+            %div= status.accuracy.to_s + "% by " + status.due_date.strftime("%m/%Y")
+        .goal-chart-container{:id => "goal-chart-container-#{goal.id}", 
+                              :style => "min-width: 500px; height: 400px; margin: 10px"}
+
+  - content_for(:js) do
+    :javascript
+      $(function(){
+        var chart;
+
+        $(document).ready(function() {
+          chart = new Highcharts.Chart({
+            chart: {
+              renderTo: "goal-chart-container-#{ goal.id }",
+              type: 'scatter',
+              zoomType: 'xy'
+            },
+            title: {
+              text: null
+            },
+            xAxis: {
+              title: {
+                  enabled: true,
+                  text: null
+              },
+              startOnTick: true,
+              endOnTick: true,
+              showLastLabel: true,
+
+              categories: ['Oct 09, 2012', 'Oct 10, 2012', 'Oct 11, 2012', 'Oct 12, 2012']
+            },
+            yAxis: {
+              title: {
+                  text: 'Accuracy'
+              }
+            },
+            tooltip: {
+              formatter: function() {
+                return this.y + '%';
+              }
+            },
+            legend: {
+              enabled: false
+            },
+            credits: {
+                enabled: false
+            },
+            plotOptions: {
+              scatter: {
+                marker: {
+                  radius: 5,
+                  states: {
+                    hover: {
+                        enabled: true,
+                        lineColor: 'rgb(100,100,100)'
+                    }
+                  }
+                },
+                states: {
+                  hover: {
+                    marker: {
+                        enabled: false
+                    }
+                  }
+                }
+              }
+            },
+
+            series: [{
+                name: '',
+                color: 'rgba(223, 83, 83, .5)',
+                data: [50, 60, 65, 70]
+            }]
+
+          });
+        });
+      });

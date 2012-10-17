@@ -7,7 +7,7 @@ class TeachersController < ApplicationController
 
   protected
 
-    def set_current_tab
-      @current_tab = 'classroom'
-    end
+  def set_current_tab
+    @current_tab = 'classroom'
+  end
 end
