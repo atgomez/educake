@@ -91,7 +91,7 @@
               %span= "Gender:"
               %span= student.gender_string
 
-  .add-student= link_to 'Add Student', new_student_path+"?teacher=#{@teacher.id}", :class => 'btn'
+  .add-student= link_to 'Add Student', new_admin_student_path+"?teacher=#{@teacher.id}", :class => 'btn'
             
             
 

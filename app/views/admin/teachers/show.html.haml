@@ -20,7 +20,7 @@
           %span= "Phone:"
           %span= @teacher.phone
   
-%div{:style=>"margin-top: 10px;"}= link_to 'Add Student', new_student_path, :class => 'btn'
+%div{:style=>"margin-top: 10px;"}= link_to 'Add Student', new_admin_student_path+"?teacher=#{@teacher.id}", :class => 'btn'
 .teacher
   - unless @students.blank?
     - @students.each do |student|
