@@ -1,0 +1,16 @@
+!!!
+%html
+  %head
+    %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
+  %body
+    %h1
+      Hi, #{@user.full_name}
+    %p
+      You have just been invited for student: 
+      = [@user.student.first_name, @user.student.last_name].join(" ")
+      , your email is: #{@user.email}.
+      %br/
+    %p
+      To signup to the site, just follow this link:
+      = "#{@url}?user_token=#{@user.confirm_token}"
+    %p Thanks for joining and have a great day!

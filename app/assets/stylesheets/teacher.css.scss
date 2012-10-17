@@ -87,6 +87,13 @@
     float: left;
   }
 }
+.border-teacher {
+  border: 1px solid black; 
+  background-color: #ededed; 
+  padding: 10px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+}
 .cont {
   margin-top:10px;
   .width-subject {

@@ -1,4 +1,5 @@
 class Admin::TeachersController < Admin::BaseAdminController
+  layout "common"
   def index
     @teachers = current_user.children.all
   end
@@ -27,4 +28,9 @@ class Admin::TeachersController < Admin::BaseAdminController
 
     render(:json => result, :status => status_code)
   end
+  
+  def show 
+    @teacher = User.find params[:id]
+    @students = @teacher.students.load_data(filtered_params)
+  end 
 end

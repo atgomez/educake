@@ -1,0 +1,46 @@
+.show-student
+  = link_to "All Teachers", admin_teachers_path
+  .student-container.border-teacher.clearfix
+    .avatar-container.well
+      - unless @teacher.photo_url.blank?
+        = image_tag(@teacher.photo_url, :class => "student-avatar")
+      - else
+        .default-avatar
+    .info.well.pull-left
+      .pull-left
+        %strong.name
+          = @teacher.full_name
+        .birthday
+          %span= "Classroom:"
+          %span= @teacher.classroom
+        .gender
+          %span= "Email:"
+          %span= @teacher.email
+        .phone
+          %span= "Phone:"
+          %span= @teacher.phone
+  
+%div{:style=>"margin-top: 10px;"}= link_to 'Add Student', new_student_path, :class => 'btn'
+.teacher
+  - unless @students.blank?
+    - @students.each do |student|
+      - student_home_url = student_path(student)
+      .student-container.clearfix
+        .avatar-container.well
+          %a{:href => student_home_url}
+            - unless student.photo_url.blank?
+              = image_tag(student.photo_url, :class => "student-avatar")
+            - else
+              .default-avatar
+
+        .info.well
+          %strong.name
+            = link_to(student.full_name, student_home_url)
+
+          .birthday
+            %span= "Born on:"
+            %span= student.birthday_string
+          .gender
+            %span= "Gender:"
+            %span= student.gender_string
+= render_pagination @students
