@@ -29,7 +29,9 @@ class User < ActiveRecord::Base
   has_one :student_sharing
   validates_presence_of :first_name, :last_name
   
+  # CALLBACK
   after_create :update_user_for_student_sharing
+
   # Class methods
   class << self
     # Create new User object with default password in case of no password is specified.
@@ -49,9 +51,12 @@ class User < ActiveRecord::Base
   def photo_url(style = :small)
     self.photo.url(style)
   end
+  
   def update_user_for_student_sharing
     st_sharing = StudentSharing.find_by_email(self.email)
-    st_sharing.update_attribute(:user_id, self.id)
+    unless st_sharing.blank?
+      st_sharing.update_attribute(:user_id, self.id)
+    end
   end
 end
 
