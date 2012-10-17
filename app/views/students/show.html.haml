@@ -1,5 +1,38 @@
+- if params[:related]
+  .show-student
+    = link_to "All Teachers", admin_teachers_path
+    - cl = @teachers.count > 3 ? 'multi' : 'single'
+    .student-container.border-teacher.clearfix{:class => "align-border-#{cl}"}
+      - @teachers.each do |teacher|
+        .avatar-container.well
+          - unless teacher.photo_url.blank?
+            = image_tag(teacher.photo_url, :class => "default-avatar-teacher")
+          - else
+            .default-avatar-teacher
+        .info-invited-teacher.well.pull-left
+          .pull-left
+            %strong.name
+              = teacher.full_name
+            .birthday
+              %div.pull-left= "Classroom:"
+              .wordwrap.pull-right= teacher.classroom
+              .clearfix
+            .gender
+              %div.pull-left= "Email:"
+              .pull-right.wordwrap{:title => teacher.email}= truncate(teacher.email, :length => 30)
+              .clearfix
+            .phone
+              %div.pull-left= "Phone:"
+              .wordwrap.pull-right= teacher.phone
+              .clearfix
+      - if @teachers.count > 3
+        .see-users-link.pull-right= link_to "See all StudentName's teachers", "#", :id => "show_user"
+
 .show-student.pull-left
-  = link_to "All students", teachers_path
+  - if params[:related]
+    .top-align= link_to "All Teacher #{@teacher.full_name}'s Students", admin_teacher_path(@teacher)
+  -else 
+    = link_to "All students", teachers_path
   = hidden_field_tag "tab", session[:tab]
   .student-container.clearfix
     .avatar-container.well
@@ -37,7 +70,6 @@
       %div{:style=>"border-top: 2px solid #ddd; margin: 10px 0"}
       #content-status
         = render "view_goal", :goals => @student.goals
-      
 .show-other-students.pull-left
   - unless @students.empty?
     %div View other students 

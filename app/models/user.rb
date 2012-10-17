@@ -10,7 +10,7 @@ class User < ActiveRecord::Base
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me, :first_name, 
-  :last_name, :phone, :classroom, :school_name
+  :last_name, :phone, :classroom, :school_name, :role_id
   
   # ASSOCIATIONS
   has_many :children, :class_name => "User", :foreign_key => 'parent_id' 
@@ -28,7 +28,8 @@ class User < ActiveRecord::Base
   # VALIDATION
   has_one :student_sharing
   validates_presence_of :first_name, :last_name
-
+  
+  after_create :update_user_for_student_sharing
   # Class methods
   class << self
     # Create new User object with default password in case of no password is specified.
@@ -48,7 +49,10 @@ class User < ActiveRecord::Base
   def photo_url(style = :small)
     self.photo.url(style)
   end
-
+  def update_user_for_student_sharing
+    st_sharing = StudentSharing.find_by_email(self.email)
+    st_sharing.update_attribute(:user_id, self.id)
+  end
 end
 
 # == Schema Information

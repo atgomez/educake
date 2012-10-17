@@ -13,8 +13,15 @@ class StudentsController < ApplicationController
 
   def show
     @student = Student.find(params[:id])
-    @students = Student.where("teacher_id = ?  and id !=?", current_user.id, params[:id]).limit 4
+    @teacher = @student.teacher 
+    @teachers = []
+    @students = Student.where("teacher_id = ?  and id !=?", @teacher.id, params[:id]).limit 4
     session[:student_id] = params[:id]
+    if params[:related]
+      @teachers << @teacher 
+      @teachers += StudentSharing.where(:student_id => params[:id]).map(&:user)
+      #@teachers.sort { |a,b| a.full_name.downcase <=> b.full_name.downcase }
+    end 
   end
 
  

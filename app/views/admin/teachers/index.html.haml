@@ -26,8 +26,7 @@
               = pluralize(student_count, 'Student')
             .teacher-student.hide.clearfix{:id => "teacher-students-#{teacher.id}"}
               - teacher.students.each do |student|
-                %a.student-link{:href => admin_student_path(student), :title => student.full_name, 
-                                :rel => "tooltip" }
+                = link_to admin_student_path(student)+"?related=true", :title => student.full_name, :rel => "tooltip", :class => "student-link" do 
                   = image_tag(student.photo_url, 
                       :alt => student.full_name,
                       :class => "student-avatar", 

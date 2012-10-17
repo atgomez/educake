@@ -19,8 +19,11 @@
   = f.error_notification
   .form-inputs
     = f.input :first_name, :disabled => true, :required => true, :autofocus => true, :input_html => {:value => sharing.first_name}
+    = f.hidden_field :first_name, :value => sharing.first_name
     = f.input :last_name, :disabled => true, :required => true, :input_html => {:value => sharing.last_name}
+    = f.hidden_field :last_name, :value => sharing.last_name
     = f.input :email, :disabled => true, :required => true, :input_html => {:value => sharing.email}
+    = f.hidden_field :email, :value => sharing.email
     = f.input :password, :required => true
     = f.input :password_confirmation, :required => true
     = f.input :phone

@@ -1,6 +1,6 @@
 .show-student
   = link_to "All Teachers", admin_teachers_path
-  .student-container.border-teacher.clearfix
+  .student-container.border-teacher.align-border-single.clearfix
     .avatar-container.well
       - unless @teacher.photo_url.blank?
         = image_tag(@teacher.photo_url, :class => "default-avatar-teacher")

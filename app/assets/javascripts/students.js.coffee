@@ -52,7 +52,13 @@ window.studentObject =
       $(this).addClass("active")
       $("#status").removeClass("active")
       loadUser()
+      return
       
+    $("#show_user").click ->
+     $("#users").addClass("active")
+     $("#status").removeClass("active")
+     loadUser()
+     return 
 loadUser = ->
   $.ajax
     type: "GET"
