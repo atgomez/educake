@@ -3,10 +3,10 @@
   .student-container.border-teacher.clearfix
     .avatar-container.well
       - unless @teacher.photo_url.blank?
-        = image_tag(@teacher.photo_url, :class => "student-avatar")
+        = image_tag(@teacher.photo_url, :class => "default-avatar-teacher")
       - else
-        .default-avatar
-    .info.well.pull-left
+        .default-avatar-teacher
+    .info-teacher.well.pull-left
       .pull-left
         %strong.name
           = @teacher.full_name
