@@ -8,7 +8,8 @@ class Admin::StudentsController < StudentsController
     session[:student_id] = params[:id]
     if params[:related]
       @teachers << @teacher 
-      @teachers += StudentSharing.where(:student_id => params[:id]).map(&:user)
+      user_ids = StudentSharing.where(:student_id => params[:id]).map(&:user_id)
+      @teachers += User.find user_ids
       #@teachers.sort { |a,b| a.full_name.downcase <=> b.full_name.downcase }
     end 
   end
