@@ -26,15 +26,6 @@ class GoalsController < ApplicationController
   
     render(:json => result, :status => status_code)
   end
-
-  def update_status
-    @goal = Goal.find_by_id params[:id]
-    if @goal and @goal.update_attribute(:name, "dagdgd")
-      # success
-    else
-      #false
-    end
-  end
   
   def new_status 
     @status = Status.new
@@ -42,7 +33,8 @@ class GoalsController < ApplicationController
     if student 
       @goals = student.goals.map{|g| [[g.subject.name, g.curriculum.name].join(" "), g.id]}
     end 
-  end 
+  end
+  
   def add_status
     @status = Status.new params[:status]
     @status.save 
