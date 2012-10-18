@@ -10,6 +10,9 @@ window.goal =
     $("#goal-form .select-date").livequery( ->
       $(this).datepicker({"format": "mm-dd-yyyy"})
     )
+    $("#status_due_date").livequery( ->
+      $(this).datepicker({"format": "mm-dd-yyyy"})
+    )
 
   setup_form: ->
     $('#add-goal').click((e) -> 

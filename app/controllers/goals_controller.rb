@@ -26,5 +26,16 @@ class GoalsController < ApplicationController
 
     render(:json => result, :status => status_code)
   end
-
+  
+  def new_status 
+    @status = Status.new
+    student = Student.find(session[:student_id])
+    if student 
+      @goals = student.goals.map{|g| [[g.subject.name, g.curriculum.name].join(" "), g.id]}
+    end 
+  end 
+  def add_status
+    @status = Status.new params[:status]
+    @status.save 
+  end
 end

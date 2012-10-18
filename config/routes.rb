@@ -8,17 +8,18 @@ TeacherMgnt::Application.routes.draw do
       get :load_status
     end 
   end
-  resources :goals
+  resources :goals do 
+    collection do 
+      get :new_status 
+      post :add_status
+    end 
+  end 
 
   devise_for :users
   
   get '/admin', :to => "admin/base_admin#index"
   namespace :admin do
-    resources :teachers do 
-      member do 
-        get :show_teacher_student
-      end 
-    end 
+    resources :teachers 
     resources :students do 
       member do 
         get :load_users

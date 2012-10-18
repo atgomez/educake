@@ -1,16 +1,7 @@
 class StudentsController < ApplicationController
   layout "common"
   before_filter :destroy_session, :except => [:show, :destroy]
-  
-  def index
-    @students = Student.all
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @students }
-    end
-  end
-
+    
   def show
     @student = Student.find(params[:id])
     @teacher = @student.teacher 
