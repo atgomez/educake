@@ -56,6 +56,7 @@ class User < ActiveRecord::Base
     st_sharing = StudentSharing.find_by_email(self.email)
     unless st_sharing.blank?
       st_sharing.update_attribute(:user_id, self.id)
+      self.update_attribute(:confirmed_at, Time.now)
     end
   end
 end
