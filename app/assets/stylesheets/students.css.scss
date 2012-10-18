@@ -60,6 +60,20 @@ form#student-form {
       width:50px;
     }
   }
+
+  .width-subject.accuracy{
+    width: 150px;
+  }
+
+  .complete-checkbox {
+    margin-left: 10px;
+    display: inline-block;
+    label {
+      margin-left: 10px;
+      display: inline-block;
+    }
+  }
+
   a {
     padding-left: 10px;
     &:hover {

@@ -23,8 +23,17 @@ class GoalsController < ApplicationController
                           :locals => {:student => @student, :goal => @goal})
       end
     end
-
+  
     render(:json => result, :status => status_code)
+  end
+
+  def update_status
+    @goal = Goal.find_by_id params[:id]
+    if @goal and @goal.update_attribute(:name, "dagdgd")
+      # success
+    else
+      #false
+    end
   end
 
 end
