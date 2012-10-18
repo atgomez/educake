@@ -48,11 +48,11 @@ class Admin::TeachersController < Admin::BaseAdminController
 
       case params[:type]
         when 'student' then
-          @students = Student.load_data(filtered_params)
+          @students = Student.students_of_teacher(current_user).search_data(query, filtered_params)
         when 'teacher' then
           @teachers = current_user.children.search_data(query, filtered_params).includes(:students)
         else
-          @students = Student.load_data(filtered_params)
+          @students = Student.students_of_teacher(current_user).search_data(query, filtered_params)
           @teachers = current_user.children.search_data(query, filtered_params).includes(:students)
       end
     end

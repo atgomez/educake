@@ -9,7 +9,7 @@ class Student < ActiveRecord::Base
                    :default_url => 'default-avatar.jpeg',
                    :path => "photos/:id/:style.:extension"
   #validates_attachment_size :photo, :less_than => 5.megabytes
- # validates_attachment_content_type :photo, :content_type => ['image/jpeg', 'image/png']
+  # validates_attachment_content_type :photo, :content_type => ['image/jpeg', 'image/png']
 
   # ASSOCIATION
   has_many :goals, :dependent => :destroy
@@ -19,6 +19,17 @@ class Student < ActiveRecord::Base
   validates_presence_of :first_name, :last_name, :birthday
   validates :first_name, :uniqueness => { :scope => [:last_name, :teacher_id],
     :message => "student's name should not be duplicated" }
+
+  # SCOPE
+
+  # Get all students in scope of the input teacher
+  scope :students_of_teacher, lambda { |teacher|
+    # Get all teacher ids instead of joining two tables :users and :students.
+    # Maybe faster?
+    teacher_ids = teacher.children.select([:id, :parent_id]).collect(&:id)
+    teacher_ids << teacher.id
+    where(:teacher_id => teacher_ids)
+  }
 
   # Class methods
   class << self
