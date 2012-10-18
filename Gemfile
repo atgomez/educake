@@ -28,6 +28,7 @@ gem 'bootstrap-will_paginate'
 #gem 'event-calendar', :require => 'event_calendar'
 gem "cancan"
 gem 'json'
+gem 'meta_search'
 
 group :development do 
   gem "haml-rails"
