@@ -1,0 +1,4 @@
+%form{:class => "navbar-search pull-right", :action => '/admin/teachers/search', :method => 'get'}
+  %input{ :type => "search", :class => "search-query", 
+        :name => 'query', :value => params[:query],
+        :placeholder => "Search name"}

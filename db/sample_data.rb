@@ -3,7 +3,7 @@
 
 admin = User.first
 
-5.times do 
+25.times do 
   begin
     teacher = User.new({
       :email => Faker::Internet.email,
@@ -17,7 +17,7 @@ admin = User.first
     teacher.save!
     puts "[Sampler] Created teacher #{teacher.email} / 123456"
 
-    20.times do
+    50.times do
       teacher.students.create!({
         :first_name => Faker::Name.first_name,
         :last_name => Faker::Name.last_name,
@@ -28,6 +28,7 @@ admin = User.first
     puts "[Sampler] Error in creating sample teacher: #{e.inspect}"
   end
 end
+
 Role.create(:name => "Teacher")
 Role.create(:name => "Admin")
 Role.create(:name => "Parent")

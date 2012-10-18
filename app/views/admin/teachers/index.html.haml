@@ -3,36 +3,8 @@
   = link_to 'Add Teacher', new_admin_teacher_path, :class => 'btn', :id => "add-teacher"
 
   - unless @teachers.blank?
-    %form{:class => "navbar-search pull-right", :action => '/admin/teachers', :method => 'get'}
-      %input{ :type => "search", :class => "search-query", 
-            :name => 'query', :value => params[:query],
-            :placeholder => "Search name"}
-
-    - @teachers.each do |teacher|
-      - teacher_home_url = admin_teacher_path(teacher)
-      .teacher-container.clearfix
-        .avatar-container.well
-          %a{:href => teacher_home_url, :title => teacher.full_name}
-            = image_tag(teacher.photo_url, :alt => teacher.full_name, :class => "teacher-avatar")
-
-        .info.well
-          %strong.name
-            = link_to(teacher.full_name, teacher_home_url)
-
-          .classroom= teacher.classroom
-          .students-container
-            - student_count = teacher.students.count
-            %a{:href=>"#teacher-students-#{teacher.id}", :class => "icon-plus teacher-student-handler"}
-              = pluralize(student_count, 'Student')
-            .teacher-student.hide.clearfix{:id => "teacher-students-#{teacher.id}"}
-              - teacher.students.each do |student|
-                = link_to admin_student_path(student)+"?related=true", :title => student.full_name, :rel => "tooltip", :class => "student-link" do 
-                  = image_tag(student.photo_url, 
-                      :alt => student.full_name,
-                      :class => "student-avatar", 
-                      :id => "teacher-student-#{teacher.id}-#{student.id}")
-
-    =# render_pagination @teachers
-
+    = render('search_box')
+    = render('teachers_list', :teachers => @teachers)
+    
   = render('form')
 

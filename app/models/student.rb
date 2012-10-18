@@ -41,6 +41,28 @@ class Student < ActiveRecord::Base
       return results
     end
 
+    # Do a simple search
+    #
+    # === Parameters
+    #
+    #   * query(String): the query string
+    #   * params[:page_size]
+    #   * params[:page_id]
+    #
+    def search_data(query, params = {})
+      return [] if query.blank?
+      meta_keys = %w(first_name last_name)
+
+      meta_key = build_meta_search_query(meta_keys)
+      meta_query = {meta_key => query}
+
+      paging_info = parse_paging_options(params)
+      
+      return self.search(meta_query).paginate(:page => paging_info.page_id,
+                      :per_page => paging_info.page_size,
+                      :order => paging_info.sort_string)
+    end
+
     protected
 
       # Parse params to PagingInfo object.
@@ -52,6 +74,13 @@ class Student < ActiveRecord::Base
           }
         end
         paging_options(options, default_opts)
+      end
+
+      # Build query string for meta_search
+      def build_meta_search_query(meta_keys)
+        keys = meta_keys.join("_or_")
+        keys << "_contains"
+        return keys
       end
       
   end # End class methods.

@@ -2,7 +2,7 @@ class Admin::TeachersController < Admin::BaseAdminController
   layout "common"
   
   def index
-    @teachers = current_user.children.all
+    @teachers = current_user.children.load_data(filtered_params).includes(:students)
   end
 
   def create
@@ -35,10 +35,32 @@ class Admin::TeachersController < Admin::BaseAdminController
     @students = @teacher.students.load_data(filtered_params)
     student_ids = StudentSharing.where(:user_id => @teacher.id).map(&:student_id)
     @sharing_students = Student.load_data(filtered_params, student_ids)
-  end 
+  end
+
+  # GET: /admin/teacher/search?query=<QUERY>
+  # TODO: optimize this method
+  def search
+    query = params[:query]
+    if query.blank?
+      redirect_to(:action => 'index')
+    else
+      query.strip!
+
+      case params[:type]
+        when 'student' then
+          @students = Student.load_data(filtered_params)
+        when 'teacher' then
+          @teachers = current_user.children.search_data(query, filtered_params).includes(:students)
+        else
+          @students = Student.load_data(filtered_params)
+          @teachers = current_user.children.search_data(query, filtered_params).includes(:students)
+      end
+    end
+  end
+
   protected
 
-  def set_current_tab
-    @current_tab = 'classroom'
-  end
+    def set_current_tab
+      @current_tab = 'classroom'
+    end
 end

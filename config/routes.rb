@@ -19,7 +19,12 @@ TeacherMgnt::Application.routes.draw do
   
   get '/admin', :to => "admin/base_admin#index"
   namespace :admin do
-    resources :teachers 
+    resources :teachers do
+      collection do
+        get :search
+      end
+    end
+
     resources :students do 
       member do 
         get :load_users

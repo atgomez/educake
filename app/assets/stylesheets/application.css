@@ -18,3 +18,19 @@
   border-bottom: none;
   height: 1px;
 }
+
+.pagination{
+  vertical-align: middle;
+}
+
+.pagination a, .pagination span{
+  padding: 0 12px !important;
+}
+
+.loading{
+  display: inline-block;
+  background-image: url("/assets/loading-small.gif");
+  width: 16px;
+  height: 16px;
+  vertical-align: middle;
+}

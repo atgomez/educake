@@ -3,9 +3,10 @@ window.teacher =
     @setup_student_panel()
     $('.teacher-student a.student-link').tooltip()
     @setup_teacher_dialog()
+    @setup_search()
 
   setup_student_panel: ->
-    $('.students-container a.teacher-student-handler').click((e) -> 
+    $('.students-container a.teacher-student-handler').livequery('click', (e) -> 
       target = $(this).attr('href')
       if $(this).hasClass('icon-plus')
         $(this).removeClass('icon-plus').addClass('icon-minus')
@@ -16,7 +17,7 @@ window.teacher =
         $(this).removeClass('icon-minus').addClass('icon-plus')
         $(target).slideUp('fast', ->
           $(target).addClass('hide')
-        )       
+        )     
 
       return false
     )
@@ -59,3 +60,26 @@ window.teacher =
       
       return false
     )
+
+  setup_search: ->
+    ajax_paging_link = (target) ->      
+      $('.admin.search .result-container ' + target + ' .pagination a').livequery('click', (e) ->
+        e.preventDefault()
+        url = $.trim($(this).attr('href'))
+        if url != '#' && url != ''
+          $(target).find('.loading').removeClass('hide')
+          
+          $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'script',
+            complete: (xhr) ->
+              if xhr.status == 200
+                $(target).html(xhr.responseText)
+          })
+          
+          return false
+      )
+
+    ajax_paging_link('#teachers-list')
+    ajax_paging_link('#students-list')

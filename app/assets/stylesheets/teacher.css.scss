@@ -160,30 +160,60 @@
 }
 
 .admin{
-  .teacher-container {
-    .teacher-student {
-      max-height: 200px;
-      overflow-y: auto;
+  &.teacher {
+    .teacher-container {
+      .teacher-student {
+        max-height: 200px;
+        overflow-y: auto;
 
-      .student-avatar{
-        display: inline-block;
-        width: 28px;
-        height: 28px;
-        margin-bottom: 8px;
-        margin-right: 8px;
-        float: left;
-        padding: 0;
+        .student-avatar{
+          display: inline-block;
+          width: 28px;
+          height: 28px;
+          margin-bottom: 8px;
+          margin-right: 8px;
+          float: left;
+          padding: 0;
+        }
+
+        .student-link{
+          display: inline-block;
+          float: left;
+        }
       }
 
-      .student-link{
+      .info{
+        min-height: 68px;
+        height: auto;
+      }
+    }
+  }
+
+  &.search{
+    display: block;        
+    .search-header{
+      .search-title{
         display: inline-block;
-        float: left;
       }
     }
 
-    .info{
-      min-height: 68px;
-      height: auto;
+    .result-container{
+      display: inline-block;
+      float: left;
+
+      &.teachers-result{
+        margin-right: 20px; 
+      }
+
+      .teacher-container, .student-container{
+        .info{
+          width: 340px;
+        }
+      }
+
+      .pagination{
+        display: inline-block;
+      }
     }
   }
 }
