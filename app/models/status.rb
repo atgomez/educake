@@ -3,10 +3,13 @@ class Status < ActiveRecord::Base
   belongs_to :goal
 
   # VALIDATION
-  validates_presence_of :accuracy, :due_date
+  validates_presence_of :accuracy, :due_date, :goal_id, :if => :condition_goal
   
   # Instance methods.
-  
+   
+  def condition_goal 
+    !:goal_id.nil?
+  end 
   def due_date_string
     ::Util.date_to_string(self.due_date)
   end

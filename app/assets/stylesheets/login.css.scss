@@ -30,7 +30,8 @@ form.sign-up {
   width: 500px;
   text-align: left;
 }
-#lastname_error, #firstname_error, #email_error, #role_error {
+#lastname_error, #firstname_error, #email_error, #role_error, 
+#goal_error, #duedate_error, #accuracy_error {
   text-align: left;
   width: 200px;
   color: red;
