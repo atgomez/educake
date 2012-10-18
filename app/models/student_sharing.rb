@@ -13,6 +13,10 @@ class StudentSharing < ActiveRecord::Base
   after_create :save_token
   def save_token 
     self.update_attribute(:confirm_token, Digest::SHA1.hexdigest(self.email))
+    user = User.find_by_email(self.email)
+    if user
+      self.update_attribute(:user_id, user.id)
+    end
   end
   
   def full_name

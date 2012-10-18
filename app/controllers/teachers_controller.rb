@@ -3,6 +3,8 @@ class TeachersController < ApplicationController
 
   def index
     @students = current_user.students.load_data(filtered_params)
+    student_ids = StudentSharing.where(:user_id => current_user.id).map(&:student_id)
+    @sharing_students = Student.load_data(filtered_params, student_ids)
   end
 
   protected

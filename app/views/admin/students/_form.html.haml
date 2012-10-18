@@ -1,4 +1,4 @@
-= simple_form_for(@student, :html => { :multipart => true, :id => "student-form" } ) do |f|
+= simple_form_for([:admin, @student], :html => { :multipart => true, :id => "student-form" } ) do |f|
   = f.error_notification
   .form-actions
     = link_to "Cancel", :back, :class => "btn"

@@ -35,10 +35,10 @@
       #render_add_status
       .pull-right= link_to "Export Progress", "#", :class => "btn export"
       .clearfix
-      %div{:style=>"border-top: 2px solid #ddd; margin: 10px 0"}
+      .line
       #content-status
         = render "view_goal", :goals => @student.goals
-.show-other-students.pull-left
+.show-other-students.pull-right
   - unless @students.empty?
     %div View other students 
     - @students.each do |student|
@@ -58,10 +58,5 @@
             .gender
               %span= "Gender:"
               %span= student.gender_string
-            
-            
-            
 
-  
-  
 

@@ -11,6 +11,10 @@
       , your email is: #{@user.email}.
       %br/
     %p
-      To signup to the site, just follow this link:
-      = "#{@url}?user_token=#{@user.confirm_token}"
+      - if @existed
+        To login to the site, just follow this link:
+        = "#{@url}"
+      - else 
+        To signup to the site, just follow this link:
+        = "#{@url}?user_token=#{@user.confirm_token}"
     %p Thanks for joining and have a great day!

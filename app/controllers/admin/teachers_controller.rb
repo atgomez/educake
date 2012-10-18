@@ -33,6 +33,8 @@ class Admin::TeachersController < Admin::BaseAdminController
   def show 
     @teacher = User.find params[:id]
     @students = @teacher.students.load_data(filtered_params)
+    student_ids = StudentSharing.where(:user_id => @teacher.id).map(&:student_id)
+    @sharing_students = Student.load_data(filtered_params, student_ids)
   end 
   protected
 

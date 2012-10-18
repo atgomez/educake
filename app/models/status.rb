@@ -4,7 +4,7 @@ class Status < ActiveRecord::Base
 
   # VALIDATION
   validates_presence_of :accuracy, :due_date, :goal_id, :if => :condition_goal
-  
+  validates :accuracy, :numericality => true
   # Instance methods.
    
   def condition_goal 

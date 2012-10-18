@@ -76,6 +76,10 @@
       border-left: 1px solid #ddd;
       min-height: 500px;
       padding: 20px 0px 10px;
+      .line {
+        border-top: 2px solid #ddd; 
+        margin: 10px 0;
+      }
       a.add {
         margin: 100px 0 0 30px;
       }

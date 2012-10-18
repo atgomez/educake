@@ -30,12 +30,15 @@ class Student < ActiveRecord::Base
     #   * params[:page_size]
     #   * params[:page_id]
     #
-    def load_data(params = {})
+    def load_data(params = {}, ids = [])
       paging_info = parse_paging_options(params)
       # Paginate with Will_paginate.
-      self.paginate(:page => paging_info.page_id,
-        :per_page => paging_info.page_size,
-        :order => paging_info.sort_string)
+      
+      results = self.paginate(:page => paging_info.page_id,
+          :per_page => paging_info.page_size,
+          :order => paging_info.sort_string)
+      results = results.where(:id => ids) unless ids.empty?
+      return results
     end
 
     protected

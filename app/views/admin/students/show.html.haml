@@ -3,7 +3,7 @@
     = link_to "All Teachers", admin_teachers_path
     - cl = @teachers.count > 3 ? 'multi' : 'single'
     .student-container.border-teacher.clearfix{:class => "align-border-#{cl}"}
-      - @teachers.each do |teacher|
+      - @teachers.slice(0,3).each do |teacher|
         .avatar-container.well
           - unless teacher.photo_url.blank?
             = image_tag(teacher.photo_url, :class => "default-avatar-teacher")
@@ -12,18 +12,18 @@
         .info-invited-teacher.well.pull-left
           .pull-left
             %strong.name
-              = teacher.full_name
+              = link_to teacher.full_name, admin_teacher_path(teacher)
             .birthday
               %div.pull-left= "Classroom:"
-              .wordwrap.pull-right= teacher.classroom
+              .wordwrap.pull-left= teacher.classroom
               .clearfix
             .gender
               %div.pull-left= "Email:"
-              .pull-right.wordwrap{:title => teacher.email}= truncate(teacher.email, :length => 30)
+              .pull-left.wordwrap{:title => teacher.email}= truncate(teacher.email, :length => 30)
               .clearfix
             .phone
               %div.pull-left= "Phone:"
-              .wordwrap.pull-right= teacher.phone
+              .wordwrap.pull-left= teacher.phone
               .clearfix
       - if @teachers.count > 3
         .see-users-link.pull-right= link_to "See all StudentName's teachers", "#", :id => "show_user"
@@ -68,10 +68,10 @@
       #render_add_status
       .pull-right= link_to "Export Progress", "#", :class => "btn export"
       .clearfix
-      %div{:style=>"border-top: 2px solid #ddd; margin: 10px 0"}
+      .line
       #content-status
         = render "view_goal", :goals => @student.goals
-.show-other-students.pull-left
+.show-other-students.pull-right
   - unless @students.empty?
     %div View other students 
     - @students.each do |student|

@@ -10,7 +10,7 @@ class User < ActiveRecord::Base
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me, :first_name, 
-  :last_name, :phone, :classroom, :school_name, :role_id
+  :last_name, :phone, :classroom, :school_name, :role_id, :confirmed_at, :parent_id
   
   # ASSOCIATIONS
   has_many :children, :class_name => "User", :foreign_key => 'parent_id' 
@@ -54,9 +54,10 @@ class User < ActiveRecord::Base
   
   def update_user_for_student_sharing
     st_sharing = StudentSharing.find_by_email(self.email)
+     
     unless st_sharing.blank?
       st_sharing.update_attribute(:user_id, self.id)
-      self.update_attribute(:confirmed_at, Time.now)
+      self.update_attributes({:confirmed_at => Time.now, :parent_id => st_sharing.student.teacher.parent_id})
     end
   end
 end
