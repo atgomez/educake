@@ -24,7 +24,7 @@
 .teacher.pull-left
   - unless @students.blank?
     - @students.each do |student|
-      - student_home_url = student_path(student)
+      - student_home_url = admin_student_path(student)
       .student-container.clearfix
         .avatar-container.well
           %a{:href => student_home_url}

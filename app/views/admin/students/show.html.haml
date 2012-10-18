@@ -43,7 +43,7 @@
     .info.well.pull-left
       .pull-left
         %strong.name
-          = link_to(@student.full_name, student_path(@student))
+          = link_to(@student.full_name, admin_student_path(@student))
         .birthday
           %span= "Born on:"
           %span= @student.birthday_string
@@ -84,7 +84,7 @@
         .info.well.pull-left
           .pull-left
             %strong.name
-              = link_to(student.full_name, student_path(student))
+              = link_to(student.full_name, admin_student_path(student))
             .birthday
               %span= "Born on:"
               %span= student.birthday_string
