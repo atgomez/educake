@@ -10,8 +10,6 @@ class Admin::BaseAdminController < ApplicationController
 
     # TODO: implement this method
     def authenticate_admin!
-      unless current_user.is?(:admin)
-        raise CanCan::AccessDenied
-      end
+      authorize_action!(User, :manage)
     end
 end

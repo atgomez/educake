@@ -1,7 +1,7 @@
 %span
   = "Welcome, #{current_user.try(:full_name)}"
 %span= "|"
-- if current_user.is?(:admin)
+- if can?(:manage, User)
   %span
     = link_to("Admin", "/admin")
   %span= "|"

@@ -15,7 +15,7 @@ class Ability
 
       if user.is?(:admin)
         can :read, User
-        can [:create, :update, :destroy], User do |a_user|
+        can :manage, User do |a_user|
           # Only able to manage new user or the 'sub' user.
           (a_user.new_record? || a_user.parent_id == user.id)
         end
