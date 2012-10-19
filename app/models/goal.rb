@@ -5,6 +5,7 @@ class Goal < ActiveRecord::Base
   belongs_to :subject 
   belongs_to :curriculum
   
+  validates :accuracy, :numericality => true
   validates_presence_of :accuracy, :due_date, :curriculum_id, :subject_id
   accepts_nested_attributes_for :statuses, :reject_if => lambda { |a| 
     a['accuracy'].blank? || a['due_date'].blank?

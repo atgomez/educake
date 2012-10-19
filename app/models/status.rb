@@ -8,8 +8,9 @@ class Status < ActiveRecord::Base
   # Instance methods.
    
   def condition_goal 
-    !:goal_id.nil?
-  end 
+    !goal_id.nil?
+  end
+   
   def due_date_string
     ::Util.date_to_string(self.due_date)
   end
