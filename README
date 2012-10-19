@@ -4,4 +4,4 @@
   rake db:bootstrap : drop, create, seed, and sample_data
   rake db:reset : drop, create, and seed data
 
-  annotate (require https://github.com/ctran/annotate_models gem)
+  annotate -p after (require https://github.com/ctran/annotate_models gem)
