@@ -1,6 +1,4 @@
 class Admin::TeachersController < Admin::BaseAdminController
-  layout "common"
-  
   def index
     @teachers = current_user.children.load_data(filtered_params).includes(:students)
   end

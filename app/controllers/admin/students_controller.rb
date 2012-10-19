@@ -1,5 +1,4 @@
 class Admin::StudentsController < StudentsController
-  layout "common"
   def show
     @student = Student.find(params[:id])
     @teacher = @student.teacher 
