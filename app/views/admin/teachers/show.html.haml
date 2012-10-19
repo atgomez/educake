@@ -43,7 +43,7 @@
           .gender
             %span= "Gender:"
             %span= student.gender_string
-= render_pagination @students
+  = render_pagination @students
 .show-other-students.pull-right
   - unless @sharing_students.empty?
     %div View sharing students 
