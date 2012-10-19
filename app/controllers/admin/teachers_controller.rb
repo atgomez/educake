@@ -34,7 +34,11 @@ class Admin::TeachersController < Admin::BaseAdminController
     @teacher = User.find params[:id]
     @students = @teacher.students.load_data(filtered_params)
     student_ids = StudentSharing.where(:user_id => @teacher.id).map(&:student_id)
-    @sharing_students = Student.load_data(filtered_params, student_ids)
+    if student_ids.empty?
+      @sharing_students = []
+    else
+      @sharing_students = Student.load_data(filtered_params, student_ids)
+    end
   end
 
   # GET: /admin/teacher/search?query=<QUERY>
