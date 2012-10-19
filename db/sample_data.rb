@@ -2,6 +2,7 @@
 # The data can then be loaded with the rake db:sample_data.
 
 admin = User.first
+teacher_role = Role.find_by_name('Teacher')
 
 25.times do 
   begin
@@ -12,6 +13,7 @@ admin = User.first
       :password => "123456",
       :password_confirmation => "123456",
     })
+    teacher.role = teacher_role
     teacher.parent = admin
     teacher.skip_confirmation!
     teacher.save!
@@ -28,8 +30,3 @@ admin = User.first
     puts "[Sampler] Error in creating sample teacher: #{e.inspect}"
   end
 end
-
-Role.create(:name => "Teacher")
-Role.create(:name => "Admin")
-Role.create(:name => "Parent")
-

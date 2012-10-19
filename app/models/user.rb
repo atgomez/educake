@@ -1,7 +1,5 @@
 class User < ActiveRecord::Base
-  include ::SharedMethods::Paging
-
-  ROLES = %w[admin principal teacher parent]
+  include ::SharedMethods::Paging  
   DUMMY_PASSWORD = "123456"
 
   # Include default devise modules. Others available are:
@@ -12,7 +10,7 @@ class User < ActiveRecord::Base
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me, :first_name, 
-  :last_name, :phone, :classroom, :school_name, :role_id, :confirmed_at, :parent_id
+  :last_name, :phone, :classroom, :school_name, :confirmed_at, :parent_id
   
   # ASSOCIATIONS
   has_many :children, :class_name => "User", :foreign_key => 'parent_id' 
@@ -20,7 +18,8 @@ class User < ActiveRecord::Base
   has_many :students, :foreign_key => "teacher_id", :dependent => :destroy
   has_many :student_sharings, :dependent => :destroy
   has_many :shared_students, :through => :student_sharings, :source => :student
-  
+  belongs_to :role
+
   has_attached_file :photo, :styles => { :small => "200x200>", :medium => "300x300>" }, 
                    :storage => :s3,
                    :s3_credentials => "#{Rails.root}/config/amazon_s3.yml",
@@ -121,6 +120,11 @@ class User < ActiveRecord::Base
       self.update_attributes({:confirmed_at => Time.now, :parent_id => st_sharing.student.teacher.parent_id})
     end
   end
+
+  # Check user's role
+  def is?(role_name)
+    self.role.try(:name).to_s.downcase == role_name.to_s
+  end
 end
 
 # == Schema Information
@@ -149,5 +153,11 @@ end
 #  confirmation_sent_at   :datetime
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
+#  school_name            :string(255)
+#  photo_file_name        :string(255)
+#  photo_content_type     :string(255)
+#  photo_file_size        :integer
+#  photo_updated_at       :datetime
+#  is_admin               :boolean
 #
 
