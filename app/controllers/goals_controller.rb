@@ -39,4 +39,14 @@ class GoalsController < ApplicationController
     @status = Status.new params[:status]
     @status.save 
   end
+
+  def update_status
+    @goal = Goal.find(params[:id])
+    if @goal.update_attribute(:is_completed, params[:status])
+      render(:json => {:message => "Success"})
+    else
+
+    end
+  end
+
 end

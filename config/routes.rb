@@ -12,7 +12,11 @@ TeacherMgnt::Application.routes.draw do
     collection do 
       get :new_status 
       post :add_status
-    end 
+    end
+
+    member do
+      put :update_status
+    end
   end 
 
   devise_for :users

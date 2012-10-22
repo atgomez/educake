@@ -9,8 +9,8 @@
 
     - if params[:action] == 'edit'
       .complete-checkbox
-        = check_box_tag("complete", goal.is_completed, goal.is_completed)
-        = label_tag('complete', 'Goal complete')
+        = check_box_tag("complete_checkbox", goal.is_completed, goal.is_completed, :url => update_status_goal_path(goal))
+        = label_tag('complete_label', 'Goal complete')
     
     .clearfix
     .tab-content

@@ -4,6 +4,7 @@ window.goal =
   setup: ->
     @add_date_picker()
     @setup_form()
+    @update_status()
     return
     
   add_date_picker: ->
@@ -52,3 +53,65 @@ window.goal =
 
       return false
     )
+
+  update_status: ->
+    $("#complete_checkbox").live 'click', ->
+      value = $("#complete_checkbox").attr('value')
+      url = $("#complete_checkbox").attr('url')
+      data = {status: value}
+
+      $.ajax({
+        url: url,
+        type: 'PUT'
+        data: data,
+        success: (res) ->
+          $("#error_edit_student").addClass('alert alert-success fade in')
+          $("#error_edit_student").text('Goal was successfully updated.')
+        ,
+
+        error: (xhr, textStatus, error) ->
+          $("#error_edit_student").addClass('error_notification')
+          $("#error_edit_student").text('Goal was updated failed.')
+      })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
