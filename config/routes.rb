@@ -2,7 +2,7 @@ TeacherMgnt::Application.routes.draw do
   root :to => "home#index"
   resources :teachers
   resources :invitations
-  
+
   resources :students do 
     member do 
       get :load_users
@@ -21,7 +21,7 @@ TeacherMgnt::Application.routes.draw do
     end
   end 
 
-  devise_for :users
+  devise_for :users, :controllers => { :registrations => 'user_registrations'}
   
   get '/admin', :to => "admin/base_admin#index"
   namespace :admin do

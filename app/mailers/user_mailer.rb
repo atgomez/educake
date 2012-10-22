@@ -4,9 +4,9 @@ class UserMailer < ActionMailer::Base
     @user = user
     @existed = User.exists?(:email => user.email)
     if @existed
-      @url = url_for :controller=>'devise/sessions', :action=>'new'
+      @url = url_for :controller=>'devise/sessions', :action => 'new'
     else
-      @url = url_for :controller=>'devise/registrations', :action=>'new'
+      @url = url_for :controller=>'/user_registrations', :action => 'new'
     end 
     mail(:to => user.email, :subject => "Confirmation for inviting")
   end

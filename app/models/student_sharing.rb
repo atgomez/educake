@@ -10,18 +10,30 @@ class StudentSharing < ActiveRecord::Base
   validates :first_name, :last_name, :email, :student_id, :role_id, :presence => true
   validates_format_of :email, :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i, :on => :create
   validates :email, :uniqueness => { :scope => [:student_id]}
+
+  # CALLBACK
   after_create :save_token
-  def save_token 
-    self.update_attribute(:confirm_token, Digest::SHA1.hexdigest(self.email))
-    user = User.find_by_email(self.email)
-    if user
-      self.update_attribute(:user_id, user.id)
-    end
-  end
-  
+
+  # Instance methods
+
   def full_name
     [self.first_name, self.last_name].join(" ")
   end  
+
+  # Check if the sharing is confirmed or not
+  def confirmed?
+    !self.user_id.blank?
+  end
+
+  protected
+
+    def save_token 
+      self.update_attribute(:confirm_token, Digest::SHA1.hexdigest(self.email))
+      user = User.find_by_email(self.email)
+      if user
+        self.update_attribute(:user_id, user.id)
+      end
+    end  
 end
 
 # == Schema Information
