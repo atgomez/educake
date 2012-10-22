@@ -115,9 +115,18 @@ class User < ActiveRecord::Base
   def update_user_for_student_sharing
     st_sharing = StudentSharing.find_by_email(self.email)
      
-    unless st_sharing.blank?
+    if !st_sharing.blank? && st_sharing.user_id.blank?
+      # For the new user.
       st_sharing.update_attribute(:user_id, self.id)
-      self.update_attributes({:confirmed_at => Time.now, :parent_id => st_sharing.student.teacher.parent_id})
+      parent_teacher = st_sharing.student.teacher
+      parent_teacher_id = nil
+      if parent_teacher.parent_id.blank?
+        # Set the inviter as the parent teacher.
+        parent_teacher_id = parent_teacher.id
+      else
+        parent_teacher_id = parent_teacher.parent_id
+      end
+      self.update_attributes({:confirmed_at => Time.now, :parent_id => parent_teacher_id})
     end
   end
 

@@ -1,7 +1,7 @@
 # This file should contain dummy records creation needed to demonstrate the app or to test.
 # The data can then be loaded with the rake db:sample_data.
 
-admin = User.first
+admin = User.find_by_email 'admin@teacher.com'
 teacher_role = Role.find_by_name('Teacher')
 
 25.times do 
