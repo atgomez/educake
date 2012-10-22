@@ -34,3 +34,13 @@
   height: 16px;
   vertical-align: middle;
 }
+
+.container{
+  min-height: 500px;
+}
+
+#app-version{
+  font-size: 11px;
+  padding: 10px;
+  text-align: center;
+}

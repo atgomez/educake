@@ -2,12 +2,14 @@ TeacherMgnt::Application.routes.draw do
   root :to => "home#index"
   resources :teachers
   resources :invitations
+  
   resources :students do 
     member do 
       get :load_users
       get :load_status
     end 
   end
+
   resources :goals do 
     collection do 
       get :new_status 
