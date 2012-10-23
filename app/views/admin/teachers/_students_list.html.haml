@@ -17,6 +17,18 @@
         %span= "Gender:"
         %span= student.gender_string
 
+      .teachers-container
+        %a{:href => "#student-teachers-#{student.id}", :class => "icon-plus student-teacher-handler"}
+          = "Teachers"
+        .teacher-student.hide.clearfix{:id => "student-teachers-#{student.id}"}
+          - teachers = student.shared_teachers + [student.teacher]
+          - teachers.each do |teacher|
+            = link_to admin_teacher_path(teacher), :title => teacher.full_name, :rel => "tooltip", :class => "teacher-link" do 
+              = image_tag(teacher.photo_url, 
+                  :alt => teacher.full_name,
+                  :class => "teacher-avatar", 
+                  :id => "student-teacher-#{student.id}-#{teacher.id}")
+
 .clearfix
 - pagination_params ||= {}
 = render_pagination(students, {:type => 'student'}, pagination_params)

@@ -13,8 +13,9 @@ class Student < ActiveRecord::Base
 
   # ASSOCIATION
   has_many :goals, :dependent => :destroy
-  has_many :sharing, :class_name => "StudentSharing", :dependent => :destroy
-
+  has_many :sharings, :class_name => "StudentSharing", :dependent => :destroy
+  has_many :shared_users, :through => :sharings, :source => :user
+  
   # VALIDATION
   validates_presence_of :first_name, :last_name, :birthday
   validates :first_name, :uniqueness => { :scope => [:last_name, :teacher_id],
@@ -130,6 +131,18 @@ class Student < ActiveRecord::Base
       I18n.t('common.gender.female')
     end    
   end
+
+  def shared_users_with_role(role_name)
+    role = Role.where(:name => role_name.to_s.titleize).first
+    # Detect shared users base on sharing role.
+    self.shared_users.where("#{StudentSharing.table_name}.role_id = ?", role.try(:id))
+  end
+
+  # Return list of all teachers, including shared teachers.
+  def shared_teachers
+    self.shared_users_with_role(:teacher)
+  end
+
 end
 
 # == Schema Information

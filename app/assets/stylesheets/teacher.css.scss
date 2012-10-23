@@ -161,12 +161,12 @@
 
 .admin{
   &.teacher {
-    .teacher-container {
-      .teacher-student {
+    .teacher-container, .student-container {
+      .teacher-student, .student-teacher {
         max-height: 200px;
         overflow-y: auto;
 
-        .student-avatar{
+        .student-avatar, .teacher-avatar{
           display: inline-block;
           width: 28px;
           height: 28px;
@@ -176,7 +176,7 @@
           padding: 0;
         }
 
-        .student-link{
+        .student-link, .teacher-link{
           display: inline-block;
           float: left;
         }
