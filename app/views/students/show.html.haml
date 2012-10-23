@@ -18,7 +18,7 @@
           %span= "Gender:"
           %span= @student.gender_string
       .edit.pull-right
-        %span= link_to "Edit", edit_student_path(@student)
+        %span= link_to "Edit", edit_student_path(@student), :class => "btn"
   = hidden_field_tag "student_id", params[:id]
   .tabbable
     %ul.nav.nav-tabs
@@ -31,14 +31,13 @@
       #render_invite_user
       #content-users
     .status
-      .pull-left= link_to " Add a status", new_status_goals_path, :remote => true, :class => "icon-plus-sign add"
       #render_add_status
       .pull-right= link_to "Export Progress", "#", :class => "btn export"
+      .pull-right= link_to " Add a status", new_status_goals_path, :remote => true, :class => "btn export"
       .clearfix
       .line
       #content-status
-        = render "view_goal", :goals => @student.goals
-
+        = render "view_goal", :goals => @goals
 .show-other-students.pull-right
   - unless @students.empty?
     %div View other students 

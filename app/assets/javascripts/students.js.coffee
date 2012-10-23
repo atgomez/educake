@@ -6,6 +6,7 @@ window.studentObject =
     @clickOnUsers()
     @activeTab()
     @clickOnStudents() 
+    @clickPage()
     return
 
   addDatePicker: ->
@@ -31,6 +32,11 @@ window.studentObject =
       loadUser()
     return
 
+    
+  clickPage: ->
+    $("#content-status").delegate('.pagination ul li a', 'click', loadPage)   
+    return 
+   
   clickOnStatus: ->
     $("#status").click ->
       $(this).addClass("active")
@@ -48,6 +54,7 @@ window.studentObject =
           $(".ajax-loading").addClass "hidden"
           return      
   
+    
   clickOnUsers: -> 
     $("#users").click ->
       $(this).addClass("active")
@@ -80,3 +87,26 @@ loadUser = ->
     error: (errors, status)->
       $(".ajax-loading").addClass "hidden"
       return
+      
+loadPage= (evt) ->
+  # Prevent loading page
+  evt.preventDefault()
+  
+  # Mask loading
+  #$('#content-status').addClass 'loading'
+
+  sender = evt.target
+  
+  $.ajax({
+    url: sender.href
+    type: 'GET'
+    success: (data) ->
+      $('#content-status').html data
+      return
+    error: (data) ->
+      return
+    complete: () ->
+      $('#content-status').removeClass 'loading'
+  })
+  return
+

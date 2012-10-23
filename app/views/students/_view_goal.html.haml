@@ -23,6 +23,7 @@
             %div= status.accuracy.to_s + "% by " + status.due_date.strftime("%m/%Y")
         .goal-chart-container{:id => "goal-chart-container-#{goal.id}", 
                               :style => "min-width: 500px; height: 400px; margin: 10px"}
+  
 
   - content_for(:js) do
     :javascript
@@ -96,3 +97,5 @@
           });
         });
       });
+      
+.pull-right= render_pagination goals

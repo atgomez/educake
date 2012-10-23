@@ -6,6 +6,11 @@ class StudentsController < ApplicationController
     @student = Student.find(params[:id])
     @teacher = @student.teacher 
     @students = Student.where("teacher_id = ?  and id !=?", @teacher.id, params[:id]).limit 4
+    @goals = @student.goals.load_data(filtered_params)
+    if request.xhr?
+      @goals = @student.goals.load_data(filtered_params)
+      render :partial => "view_goal", :locals => {:goals => @goals}
+    end 
     session[:student_id] = params[:id]
   end
 
@@ -55,7 +60,7 @@ class StudentsController < ApplicationController
   end
   
   def load_status
-    goals = Goal.where(:student_id => params[:id])
+    goals = Goal.load_data(filtered_params).where(:student_id => params[:id])
     render :partial => "view_goal", :locals => {:goals => goals}
   end
   
