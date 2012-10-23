@@ -6,7 +6,7 @@
       %a{:href => student_home_url, :title => student.full_name}
         = image_tag(student.photo_url, :alt => student.full_name, :class => "student-avatar")
 
-    .info.well
+    .info.well.link{:href => student_home_url}
       %strong.name
         = link_to(student.full_name, student_home_url)
 

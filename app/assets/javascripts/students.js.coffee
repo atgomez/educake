@@ -5,8 +5,9 @@ window.studentObject =
     @clickOnStatus()
     @clickOnUsers()
     @activeTab()
-    
+    @clickOnStudents() 
     return
+
   addDatePicker: ->
     $("#student_birthday").datepicker({"format": "mm-dd-yyyy"})
   
@@ -29,6 +30,7 @@ window.studentObject =
       $("#status").removeClass("active")
       loadUser()
     return
+
   clickOnStatus: ->
     $("#status").click ->
       $(this).addClass("active")
@@ -44,8 +46,7 @@ window.studentObject =
           return
         error: (errors, status)->
           $(".ajax-loading").addClass "hidden"
-          return
-      
+          return      
   
   clickOnUsers: -> 
     $("#users").click ->
@@ -58,7 +59,14 @@ window.studentObject =
      $("#users").addClass("active")
      $("#status").removeClass("active")
      loadUser()
-     return 
+     return
+
+  clickOnStudents: ->
+    $(".student-container .link").click ->
+      url = $(this).attr('href')
+      if $.trim(url) != ''
+        window.location.href = url
+
 loadUser = ->
   $.ajax
     type: "GET"

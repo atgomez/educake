@@ -6,6 +6,7 @@ window.teacher =
     )
     @setup_teacher_dialog()
     @setup_search()
+    @setup_block_link()
 
   setup_student_panel: ->
     $('.students-container a.teacher-student-handler, 
@@ -23,6 +24,13 @@ window.teacher =
         )     
 
       return false
+    )
+
+  setup_block_link: ->
+    $(".student-container .link, .teacher-container .link").livequery('click', (e) ->
+      url = $(this).attr('href')
+      if $.trim(url) != ''
+        window.location.href = url
     )
 
   setup_teacher_dialog: ->
