@@ -1,0 +1,35 @@
+body{
+  background: url("/assets/bg-body.png") repeat scroll 0 0 transparent;
+}
+
+.white{
+  color: white;
+}
+
+.brown{
+  color: #E17C25;
+  &:hover{
+    color: #D77018;
+  }
+}
+
+.gray {
+  color: #6D6E71;
+}
+
+.bg-brown{
+  background: url("/assets/bg-button.png") repeat-x scroll center center transparent;
+}
+
+.btn.bg-brown:hover{
+  background-color: #CD7036;
+  color: #ffffff;
+}
+
+.thumbnail{
+  padding: 8px;
+  background-color: white;
+  -webkit-box-shadow:rgba(0,0,0,.30) 0 2px 3px;
+     -moz-box-shadow:rgba(0,0,0,.30) 0 2px 3px;
+          box-shadow:rgba(0,0,0,.30) 0 2px 3px;
+}
