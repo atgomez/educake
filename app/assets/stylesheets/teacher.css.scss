@@ -1,12 +1,78 @@
 $color-font: #E17C25;
-.teacher, .show-student, .show-other-students, .admin{
+.teacher, .show-student, .admin{
   .top-align {
     margin-top: 15px;
   }
-  .student-container, .teacher-container{
+  .one-student {
+    border: 1px solid $color-font;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
     .well{ 
       background-color: #FAFAFA;
-      padding: 10px
+      padding: 10px;
+      border: none !important;
+      margin-top: 10px !important;
+    }
+
+    &:hover .well{ background-color: #F5F5F5; }
+
+    margin-top: 10px;
+
+    .avatar-container {
+      display: inline-block;
+      width: 88px;
+      height: 88px;
+      margin: 10px;
+      float: left;
+      padding: 0;
+    }
+    .default-avatar-teacher {
+      display: inline-block;
+      width: 88px;
+      height: 98px;
+      margin-bottom: 0;
+      float: left;
+      padding: 0;
+    }
+    .default-avatar, .default-avatar-teacher{
+      background: url("/assets/default-avatar.jpeg") no-repeat scroll center center transparent;
+    }
+
+    .info{
+      display: inline-block;
+      height: 68px;
+      width: 85%;
+      margin-left: 10px 10px 0px 10px;
+      float: left;
+    }
+    .info-teacher{
+      display: inline-block;
+      height: 78px;
+      width: 500px;
+      margin-left: 2px;
+      margin-bottom: 0;
+      float: left;
+    }
+    .info-invited-teacher {
+      display: inline-block;
+      height: 78px;
+      width: 250px;
+      margin-left: 2px;
+      margin-bottom: 0;
+      float: left;
+      margin-right: 16px;
+    }
+    .see-users-link {
+      padding-top: 5px; 
+      padding-right: 20px;
+    }
+    
+  }
+   .student-container, .teacher-container{
+    .well{ 
+      background-color: #FAFAFA;
+      padding: 10px;
     }
 
     &:hover .well{ background-color: #F5F5F5; }
@@ -67,7 +133,7 @@ $color-font: #E17C25;
 
   .tabbable {
     margin-top: 20px;
-    width: 633px;
+    width: 100%;
     
     .nav-tabs > li > a {
       border-top: 1px solid $color-font;
@@ -155,17 +221,28 @@ $color-font: #E17C25;
 .show-other-students {
   margin-top: 20px;
   margin-left: 20px;
-  .info{
-    display: inline-block;
-    height: 48px;
-    width: 365px !important;
-    margin-left: 2px;
-    margin-bottom: 0;
-    float: left;
-  }
-  .add-student {
-    margin-top: 20px;
-    text-align:right;
+  .each {
+    border: 1px solid $color-font;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    width: 210px;
+    border-radius: 3px;
+    height: 250px;
+    margin-right: 20px;
+    .avatar-container {
+      width: 200px; 
+      height: 170px;
+    }
+    .info{
+      display: inline-block;
+      height: 48px;
+      width: 365px !important;
+      margin: 10px 0 0 10px;
+    }
+    .add-student {
+      margin-top: 20px;
+      text-align:right;
+    }
   }
 }
 .border-teacher {
@@ -192,7 +269,7 @@ $color-font: #E17C25;
 .cont {
   margin-top:10px;
   .width-subject {
-    width: 200px
+    width: 337px
   }
   .introduce {
     width: 400px;

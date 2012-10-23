@@ -1,7 +1,7 @@
-.show-student.pull-left
+.show-student
   = link_to "All students", teachers_path
   = hidden_field_tag "tab", session[:tab]
-  .student-container.clearfix
+  .one-student.clearfix
     .avatar-container.well
       - unless @student.photo_url.blank?
         = image_tag(@student.photo_url, :class => "student-avatar")
@@ -38,27 +38,27 @@
       .line
       #content-status
         = render "view_goal", :goals => @goals
-.show-other-students.pull-right
+        
+.show-other-students
   - unless @students.empty?
-    %div View other students 
+    %div Other Students 
     - @students.each do |student|
       - student_home_url = student_path(student)
-      .student-container.clearfix
-        .avatar-container.well
+      .each.pull-left
+        .avatar-container
           %a{:href => student_home_url}
             - unless student.photo_url.blank?
               = image_tag(student.photo_url, :class => "student-avatar")
             - else
               .default-avatar
-        .info.well.pull-left.link{:href => student_home_url}
-          .pull-left
-            %strong.name
-              = link_to(student.full_name, student_home_url)
-            .birthday
-              %span= "Born on:"
-              %span= student.birthday_string
-            .gender
-              %span= "Gender:"
-              %span= student.gender_string
+        .info.link{:href => student_home_url}
+          %strong.name
+            = link_to(student.full_name, student_path(student))
+          .birthday
+            %span= "Born on:"
+            %span= student.birthday_string
+          .gender
+            %span= "Gender:"
+            %span= student.gender_string
 
 
