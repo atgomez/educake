@@ -162,14 +162,8 @@ a {
 }
 
 .btn {
-    -moz-border-bottom-colors: none;
-    -moz-border-image: none;
-    -moz-border-left-colors: none;
-    -moz-border-right-colors: none;
-    -moz-border-top-colors: none;
     background-color: $color-font !important;
-    background-image: -moz-linear-gradient(center top , $color-font, $color-font);
-    background-repeat: repeat-x;
+    background: url("/assets/bg-button.png") repeat-x scroll center center transparent;
     border-color: $color-font $color-font $color-font;
     border-radius: 4px 4px 4px 4px;
     border-style: solid;
@@ -187,10 +181,7 @@ a {
     vertical-align: middle;
     font-weight: bold;
     &:hover {
-      -moz-transition: background-position 0.1s linear 0s;
-      /*background-color: #f3c79f !important;*/
-      background-position: 0 -15px;
-      color: #333333;
-      text-decoration: none;
+      background-color: #E47028;
+      color: #ffffff;
     }
 }
