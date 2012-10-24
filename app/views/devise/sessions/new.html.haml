@@ -21,17 +21,13 @@
       = simple_form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f|
         #logo-login
           = image_tag("logo.png", :width => "295", :height => "46", :alt => "")
-        .font22.bold.white.line-height{:style => "padding-top:5px; height: 28px;"}
+        .font22.bold.white.padding-top20.height28
           Sign in with your account.
         %ul{:id => "login-input-list"}
-          %li.font18.red.bold.line-height
+          %li.font18.red.bold.padding-bottom10
             Error will be here
-          %li.font18.brown.bold.line-height
-            Email
           %li
             = f.input :email, :required => false, :autofocus => true
-          %li.font18.brown.bold
-            Password
           %li
             = f.input :password, :required => false
 
