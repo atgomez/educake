@@ -10,20 +10,26 @@ $color-font: #E17C25;
     -moz-border-radius: 3px;
     border-radius: 3px;
     
+    margin-top: 10px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-left: 15px;
+
     .well{ 
-      background-color: #FAFAFA;
-      padding: 10px;
-      border: none !important;
-      margin-top: 10px !important;
+      border: none;
+      background-color: transparent;
+      box-shadow: none;
+      padding: 10px
     }
 
-    .avatar-container {
+    &:hover { background-color: white; }
+
+    .avatar-container, .teacher-avatar, .student-avatar, .default-avatar {
       display: inline-block;
       width: 88px;
       height: 88px;
-      margin: 10px;
+      margin-bottom: 0;
       float: left;
-      padding: 0;
     }
     .default-avatar-teacher {
       display: inline-block;
@@ -40,26 +46,17 @@ $color-font: #E17C25;
     .info{
       display: inline-block;
       height: 68px;
-      width: 85%;
-      margin-left: 10px 10px 0px 10px;
-      float: left;
-    }
-    .info-teacher{
-      display: inline-block;
-      height: 78px;
-      width: 500px;
       margin-left: 2px;
       margin-bottom: 0;
       float: left;
+      color: #6D6E71;
+
+      .name{
+        font-size: 16px;
+      }
     }
-    .info-invited-teacher {
-      display: inline-block;
-      height: 78px;
-      width: 250px;
-      margin-left: 2px;
-      margin-bottom: 0;
-      float: left;
-      margin-right: 16px;
+    .edit {
+      margin-right: 20px;
     }
     .see-users-link {
       padding-top: 5px; 
@@ -229,17 +226,21 @@ $color-font: #E17C25;
 .show-other-students {
   margin-top: 20px;
   margin-left: 20px;
+  .title {
+    margin-bottom: 10px;
+  }
   .each {
     border: 1px solid $color-font;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
-    width: 210px;
+    width: 234px;
     border-radius: 3px;
-    height: 250px;
+    height: 293px;
     margin-right: 20px;
     .avatar-container {
       width: 200px; 
       height: 170px;
+      margin: 10px;
     }
     .info{
       display: inline-block;

@@ -1,8 +1,8 @@
 .show-student
-  = link_to "All students", teachers_path
+  = link_to "All students", teachers_path,  :class => "brown"
   = hidden_field_tag "tab", session[:tab]
   .one-student.clearfix
-    .avatar-container.well
+    .avatar-container.thumbnail
       - unless @student.photo_url.blank?
         = image_tag(@student.photo_url, :class => "student-avatar")
       - else
@@ -10,15 +10,15 @@
     .info.well.pull-left
       .pull-left
         %strong.name
-          = link_to(@student.full_name, student_path(@student))
+          = link_to @student.full_name, student_path(@student),  :class => "brown"
         .birthday
           %span= "Born on:"
           %span= @student.birthday_string
         .gender
           %span= "Gender:"
           %span= @student.gender_string
-      .edit.pull-right
-        %span= link_to "Edit", edit_student_path(@student), :class => "btn"
+    .edit.pull-right
+      %span= link_to "Edit", edit_student_path(@student), :class => "btn"
   = hidden_field_tag "student_id", params[:id]
   .tabbable
     %ul.nav.nav-tabs
@@ -41,11 +41,11 @@
         
 .show-other-students
   - unless @students.empty?
-    %div Other Students 
+    .title.orange Other Students 
     - @students.each do |student|
       - student_home_url = student_path(student)
       .each.pull-left
-        .avatar-container
+        .avatar-container.thumbnail
           %a{:href => student_home_url}
             - unless student.photo_url.blank?
               = image_tag(student.photo_url, :class => "student-avatar")
@@ -53,7 +53,7 @@
               .default-avatar
         .info.link{:href => student_home_url}
           %strong.name
-            = link_to(student.full_name, student_path(student))
+            = link_to student.full_name, student_path(student), :class => "brown"
           .birthday
             %span= "Born on:"
             %span= student.birthday_string

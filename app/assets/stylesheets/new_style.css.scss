@@ -1,3 +1,4 @@
+$color-font: #E17C25;
 body{
   background: url("/assets/bg-body.png") repeat scroll 0 0 transparent;
 }
@@ -7,10 +8,14 @@ body{
 }
 
 .brown{
-  color: #E17C25;
+  color: $color-font;
   &:hover{
     color: #D77018;
   }
+}
+
+.orange {
+  color: $color-font;
 }
 
 .gray {
