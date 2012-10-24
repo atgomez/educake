@@ -29,6 +29,10 @@ body{
   }
 }
 
+.red {
+  color:red;
+}
+
 .gray {
   color: #6D6E71;
 }
@@ -48,6 +52,10 @@ body{
   -webkit-box-shadow:rgba(0,0,0,.30) 0 2px 3px;
      -moz-box-shadow:rgba(0,0,0,.30) 0 2px 3px;
           box-shadow:rgba(0,0,0,.30) 0 2px 3px;
+}
+
+ul{
+  list-style: none;
 }
 
 /* End global styles */

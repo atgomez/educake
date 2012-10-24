@@ -22,7 +22,6 @@ class Admin::StudentsController < StudentsController
       render action: "new"
     end
   end
-
  
   def update
     @student = Student.find(params[:id])
@@ -36,12 +35,13 @@ class Admin::StudentsController < StudentsController
   
   protected
 
-  def set_current_tab
-    @current_tab = 'classroom'
-  end
+    def set_current_tab
+      @current_tab = 'classroom'
+    end
   
   private
-  def destroy_session  
-    session.delete :tab
-  end 
+  
+    def destroy_session  
+      session.delete :tab
+    end 
 end
