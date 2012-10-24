@@ -5,7 +5,7 @@
       %a{:href=>"#goal_#{goal.id}", "data-toggle" =>"tab", "data-dismiss"=>"div", :class => "icon-plus goal"}= " " + goal.subject.name + " " + goal.curriculum.name
     .width-subject.pull-left.accuracy= goal.accuracy.to_s + "% by " + goal.due_date.strftime("%m/%Y")
     .pull-left.progress.progress-success
-      .bar{:style => "width: #{goal.accuracy}%"}
+      .bar.custom-bar{:style => "width: #{goal.accuracy}%"}
 
     - if params[:action] == 'edit'
       .complete-checkbox
