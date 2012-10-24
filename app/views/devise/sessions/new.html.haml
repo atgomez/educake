@@ -1,10 +1,47 @@
-.login 
-  %h2 Sign in
-  = simple_form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f|
-    .form-inputs
-      = f.input :email, :required => false, :autofocus => true
-      = f.input :password, :required => false
-      = f.input :remember_me, :inline_label => "Remember me", :label => false, :as => :boolean if devise_mapping.rememberable?
-    .form-actions
-      = f.button :submit, "Sign in"
-  = render "devise/shared/links"
+/ .login 
+/   %h2 Sign in
+/   = simple_form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f|
+/     .form-inputs
+/       = f.input :email, :required => false, :autofocus => true
+/       = f.input :password, :required => false
+/       = f.input :remember_me, :inline_label => "Remember me", :label => false, :as => :boolean if devise_mapping.rememberable?
+/     .form-actions
+/       = f.button :submit, "Sign in"
+/   = render "devise/shared/links"
+
+#main-content
+  #login-form
+    #login-form-top-left-egde
+      = image_tag("login-form-top-left-egde.png", :width => "457", :height => "21", :alt => "")
+    #login-form-right-egde
+      = image_tag("login-form-right-egde.png", :width => "21", :height => "474", :alt => "")
+    #login-form-left-egde
+      = image_tag("login-form-left-egde.png", :width => "19", :height => "433", :alt => "")
+    #login-form-main
+      = simple_form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f|
+        #logo-login
+          = image_tag("logo.png", :width => "295", :height => "46", :alt => "")
+        .font22.bold.white.line-height{:style => "padding-top:5px; height: 28px;"}
+          Sign in with your account.
+        %ul{:id => "login-input-list"}
+          %li.font18.red.bold.line-height
+            Error will be here
+          %li.font18.brown.bold.line-height
+            Email
+          %li
+            = f.input :email, :required => false, :autofocus => true
+          %li.font18.brown.bold
+            Password
+          %li
+            = f.input :password, :required => false
+
+          <!-- Should change it by using Simple Form or Form -->
+          %li.font18.brown.bold.left
+            = f.input :remember_me, :inline_label => "Remember me", :label => false, :as => :boolean if devise_mapping.rememberable?
+          %br.clear
+
+        #login-button
+          %input{:type => "image", :src => "/assets/login-button.png", :width => "143", :height => "38", :border => "0", :alt => "SUBMIT!"}
+
+    #login-form-bottom-egde
+      = image_tag("login-form-bottom-egde.png", :width => "455", :height => "19", :alt => "")

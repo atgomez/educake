@@ -1,38 +1,108 @@
-.login {
-  margin-top: 150px !important;
-  form {
-    .form-inputs {
-      width: 200px;
-      .control-group.optional {
-        label {
-          text-align: left;
-        }
-      }
-    }
-  }
-}
-form.sign-up {
-  margin-top: 20px;
-  .form-inputs {
-    width: 470px;
-    .control-group {
-      label {
-        width: 200px;
-        float:left;
-        text-align: right;
-       }
-      
-    }
-  }
+body{
+  padding: 0;
+  margin: 0;
+  line-height: 0px;
 }
 
-.text-head {
-  width: 500px;
-  text-align: left;
+ul{
+  list-style-type: none;
 }
-#lastname_error, #firstname_error, #email_error, #role_error, 
-#goal_error, #duedate_error, #accuracy_error {
-  text-align: left;
-  width: 200px;
-  color: red;
+
+#main-content {
+  margin:0 auto;
+  width:960px;
+  min-height:800px;
+}
+
+#login-form {
+  margin:0 auto;
+  padding:0;
+  height:478px;
+  width:478px;
+  padding-top:50px;
+}
+
+#login-form-top-left-egde{
+  float:left;
+  margin-left:-2px;
+}
+
+#login-form-right-egde{
+  float:right;
+  margin-right:2px;
+}
+
+#login-form-left-egde{
+  float:left;
+}
+
+#login-form-main{
+  height:433px;
+  width:436px;
+  background:#3d321e;
+  float:left;
+  text-align:center;
+}
+
+.clear{
+  clear:both
+}
+
+#login-button{
+}
+
+#login-form-bottom-egde{
+  float:left;
+}
+
+#logo-login{
+  padding-top: 15px;
+  padding-bottom: -5px;
+}
+
+.font18 {
+  font-size:18px;
+}
+
+.font20 {
+  font-size:20px;
+}
+
+.font22 {
+  font-size:22px;
+}
+
+.font24 {
+  font-size:24px;
+}
+
+.line-height {
+  line-height: 24px;
+}
+
+.bold {
+  font-weight:bold;
+}
+
+.red {
+  color:red;
+}
+
+.white{
+  color:white;
+}
+
+.brown{
+  color:#e17c25;
+}
+
+.left{
+  float:left;
+}
+
+#login-input-list{
+  padding: 15px;
+  margin: 0px;
+  text-align:left;
+  line-height: 24px;
 }
