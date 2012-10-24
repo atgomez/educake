@@ -1,10 +1,39 @@
 .admin.teacher
   %h3.school-name= current_user.school_name
-  = link_to 'Add Teacher', new_admin_teacher_path, :class => 'btn', :id => "add-teacher"
+  .clearfix.toolbar
+    = link_to 'Add Teacher', new_admin_teacher_path, :class => 'btn', :id => "add-teacher"
+    - unless @teachers.blank?
+      = render('search_box')
+
+  - if params[:page_id].blank?
+    - teacher = current_user
+    - student_count = teacher.students.length
+    - if student_count > 0
+      .teacher-container.clearfix
+        - teacher_home_url = "/teachers"
+        .avatar-container.well
+          %a{:href => teacher_home_url, :title => teacher.full_name}
+            = image_tag(teacher.photo_url, :alt => teacher.full_name, :class => "teacher-avatar")
+
+        .info.well.link{:href => teacher_home_url}
+          %strong.name
+            = link_to(teacher.full_name, teacher_home_url)
+
+          .classroom= teacher.classroom
+          .students-container
+            
+            - if student_count > 0
+              %a{:href=>"#teacher-students-#{teacher.id}", :class => "icon-plus teacher-student-handler"}
+                = pluralize(student_count, 'Student')
+              .teacher-student.hide.clearfix{:id => "teacher-students-#{teacher.id}"}
+                - teacher.students.each do |student|
+                  = link_to admin_student_path(student, :related => true), :title => student.full_name, :rel => "tooltip", :class => "student-link" do 
+                    = image_tag(student.photo_url, 
+                        :alt => student.full_name,
+                        :class => "student-avatar", 
+                        :id => "teacher-student-#{teacher.id}-#{student.id}")
 
   - unless @teachers.blank?
-    = render('search_box')
     = render('teachers_list', :teachers => @teachers)
     
   = render('form')
-

@@ -314,6 +314,14 @@ $color-font: #E17C25;
         height: auto;
       }
     }
+
+    .toolbar{
+      margin-bottom: 10px;
+    }
+    
+    .navbar-search{
+      margin-top: 0;
+    }
   }
 
   &.search{
