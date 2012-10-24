@@ -5,7 +5,7 @@
       %a{:href=>"#goal_#{goal.id}", "data-toggle" =>"tab", "data-dismiss"=>"div", :class => "icon-plus goal"}= " " + goal.subject.name + " " + goal.curriculum.name
     .width-subject.pull-left.accuracy= goal.accuracy.to_s + "% by " + goal.due_date.strftime("%m/%Y")
     .pull-left.progress.progress-success
-      .bar{:style => "width: #{goal.accuracy}%"}
+      .bar.custom-bar{:style => "width: #{goal.accuracy}%"}
 
     - if params[:action] == 'edit'
       .complete-checkbox
@@ -23,6 +23,7 @@
             %div= status.accuracy.to_s + "% by " + status.due_date.strftime("%m/%Y")
         .goal-chart-container{:id => "goal-chart-container-#{goal.id}", 
                               :style => "min-width: 500px; height: 400px; margin: 10px"}
+  
 
   - content_for(:js) do
     :javascript
@@ -96,3 +97,5 @@
           });
         });
       });
+      
+.pull-right= render_pagination goals

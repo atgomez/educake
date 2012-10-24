@@ -1,4 +1,5 @@
 class Goal < ActiveRecord::Base
+  include ::SharedMethods::Paging
   attr_accessible :accuracy, :curriculum_id, :due_date, :subject_id, :statuses_attributes
   has_many :statuses, :dependent => :destroy
   belongs_to :student 
@@ -40,6 +41,33 @@ class Goal < ActiveRecord::Base
 
   def build_statuses
     3.times { self.statuses.build }
+  end
+  class << self
+    def load_data(params = {}, complete = nil)
+      paging_info = parse_paging_options(params)
+      # Paginate with Will_paginate.
+      conds = { :page => paging_info.page_id,
+                :per_page => 2,#paging_info.page_size
+                :order => paging_info.sort_string
+              }
+      unless complete.nil?
+          conds = conds.merge(:conditions => ["is_completed = ?", complete])
+      end 
+      self.paginate(conds)
+    end
+    
+    protected
+
+      # Parse params to PagingInfo object.
+      def parse_paging_options(options, default_opts = {})
+        if default_opts.blank?
+          # This conditions will order records by directory and name first.
+          default_opts = {
+            :sort_criteria => "created_at DESC"
+          }
+        end
+        paging_options(options, default_opts)
+      end
   end
 end
 

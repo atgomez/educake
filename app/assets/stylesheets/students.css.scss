@@ -1,3 +1,5 @@
+$color-font: #E17C25;
+
 form#student-form {
   width: 650px;
   .form-inputs {
@@ -95,17 +97,6 @@ form#student-form {
 }
 
 
-.progress {
-    background-color: blue !important;
-    background-image: none !important;
-    background-repeat: repeat-x;
-    border-radius: 4px 4px 4px 4px;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) inset;
-    height: 20px;
-    margin-bottom: 20px;
-    overflow: hidden;
-    width: 150px;
-}
 
 form#new_student_sharing, form.edit_student_sharing, form#new_status {
   .form-inputs {
@@ -117,4 +108,76 @@ form#new_student_sharing, form.edit_student_sharing, form#new_status {
        }
      }
    }
+}
+
+.custom-bar {
+  background-color: $color-font !important;
+  background-image: none !important;
+  background-repeat: repeat-x;
+}
+
+.progress  {
+    background-color: #B3B1B0 !important;
+    background-image: none !important;
+    background-repeat: repeat-x;
+    border-radius: 4px 4px 4px 4px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) inset;
+    height: 20px;
+    margin-bottom: 20px;
+    overflow: hidden;
+    width: 350px;
+    .bar {
+      -moz-box-sizing: border-box;
+      -moz-transition: width 0.6s ease 0s;
+      background-color: $color-font !important;
+      background-image: -moz-linear-gradient(center top , $color-font, $color-font);
+      background-repeat: repeat-x;
+      box-shadow: 0 0px 0 rgba(0, 0, 0, 0.15) inset !important;
+      color: #FFFFFF;
+      float: left;
+      font-size: 12px;
+      height: 100%;
+      text-align: center;
+      text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+      width: 0;
+    }
+}
+
+
+.progress-success .bar {
+  background-color: $color-font !important;
+  background-image: -moz-linear-gradient(center top , $color-font, $color-font);
+  background-repeat: repeat-x;
+}
+
+
+
+a {
+  color: $color-font;
+  text-decoration: none;
+}
+
+.btn {
+  background-color: $color-font !important;
+  background: url("/assets/bg-button.png") repeat-x scroll center center transparent;
+  border-color: $color-font $color-font $color-font;
+  border-radius: 4px 4px 4px 4px;
+  border-style: solid;
+  border-width: 1px;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 1px 2px rgba(0, 0, 0, 0.05);
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 14px;
+  line-height: 20px;
+  margin-bottom: 0;
+  padding: 4px 14px;
+  text-align: center;
+  text-shadow: 0 0px 0px rgba(255, 255, 255, 0.75);
+  vertical-align: middle;
+  font-weight: bold;
+  &:hover {
+    background-color: #E47028;
+    color: #ffffff;
+  }
 }

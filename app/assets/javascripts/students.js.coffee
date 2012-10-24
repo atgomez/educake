@@ -5,8 +5,10 @@ window.studentObject =
     @clickOnStatus()
     @clickOnUsers()
     @activeTab()
-    
+    @clickOnStudents() 
+    @clickPage()
     return
+
   addDatePicker: ->
     $("#student_birthday").datepicker({"format": "mm-dd-yyyy"})
   
@@ -29,6 +31,12 @@ window.studentObject =
       $("#status").removeClass("active")
       loadUser()
     return
+
+    
+  clickPage: ->
+    $("#content-status").delegate('.pagination ul li a', 'click', loadPage)   
+    return 
+   
   clickOnStatus: ->
     $("#status").click ->
       $(this).addClass("active")
@@ -44,9 +52,9 @@ window.studentObject =
           return
         error: (errors, status)->
           $(".ajax-loading").addClass "hidden"
-          return
-      
+          return      
   
+    
   clickOnUsers: -> 
     $("#users").click ->
       $(this).addClass("active")
@@ -58,7 +66,14 @@ window.studentObject =
      $("#users").addClass("active")
      $("#status").removeClass("active")
      loadUser()
-     return 
+     return
+
+  clickOnStudents: ->
+    $(".student-container .link").click ->
+      url = $(this).attr('href')
+      if $.trim(url) != ''
+        window.location.href = url
+
 loadUser = ->
   $.ajax
     type: "GET"
@@ -72,3 +87,26 @@ loadUser = ->
     error: (errors, status)->
       $(".ajax-loading").addClass "hidden"
       return
+      
+loadPage= (evt) ->
+  # Prevent loading page
+  evt.preventDefault()
+  
+  # Mask loading
+  #$('#content-status').addClass 'loading'
+
+  sender = evt.target
+  
+  $.ajax({
+    url: sender.href
+    type: 'GET'
+    success: (data) ->
+      $('#content-status').html data
+      return
+    error: (data) ->
+      return
+    complete: () ->
+      $('#content-status').removeClass 'loading'
+  })
+  return
+

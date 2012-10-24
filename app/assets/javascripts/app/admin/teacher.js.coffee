@@ -1,12 +1,16 @@
 window.teacher =
   setup: -> 
     @setup_student_panel()
-    $('.teacher-student a.student-link').tooltip()
+    $('.teacher-student a.student-link, .teacher-student a.teacher-link').livequery((e) ->
+      $(this).tooltip()
+    )
     @setup_teacher_dialog()
     @setup_search()
+    @setup_block_link()
 
   setup_student_panel: ->
-    $('.students-container a.teacher-student-handler').livequery('click', (e) -> 
+    $('.students-container a.teacher-student-handler, 
+       .teachers-container a.student-teacher-handler').livequery('click', (e) -> 
       target = $(this).attr('href')
       if $(this).hasClass('icon-plus')
         $(this).removeClass('icon-plus').addClass('icon-minus')
@@ -20,6 +24,13 @@ window.teacher =
         )     
 
       return false
+    )
+
+  setup_block_link: ->
+    $(".student-container .link, .teacher-container .link").livequery('click', (e) ->
+      url = $(this).attr('href')
+      if $.trim(url) != ''
+        window.location.href = url
     )
 
   setup_teacher_dialog: ->

@@ -1,7 +1,6 @@
-%ul.nav.nav-tabs
-  %li
-    %a.placeholder
-  %li{:class => @current_tab == 'classroom' ? "active" : ""}
-    %a{:href => "/teachers"} Classroom
-  %li{:class => @current_tab == 'curriculum' ? "active" : ""}
-    %a{:href => "/curriculum"} Curriculum
+.btn-group.pull-right
+  %a.menu-item.btn{:href => "/teachers", :class => set_current_tab('classroom')}
+    Classroom
+  %a.menu-item.btn{:href => "/curriculum", :class => set_current_tab('curriculum')}
+    Curriculum
+.clearfix

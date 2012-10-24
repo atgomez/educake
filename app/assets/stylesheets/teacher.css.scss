@@ -1,16 +1,28 @@
-.teacher, .show-student, .show-other-students, .admin{
+$color-font: #E17C25;
+.teacher, .show-student, .admin{
   .top-align {
     margin-top: 15px;
   }
-  .student-container, .teacher-container{
+
+  .one-student {
+    border: 1px solid $color-font;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    
+    margin-top: 10px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-left: 15px;
+
     .well{ 
-      background-color: #FAFAFA;
+      border: none;
+      background-color: transparent;
+      box-shadow: none;
       padding: 10px
     }
 
-    &:hover .well{ background-color: #F5F5F5; }
-
-    margin-top: 10px;
+    &:hover { background-color: white; }
 
     .avatar-container, .teacher-avatar, .student-avatar, .default-avatar {
       display: inline-block;
@@ -18,7 +30,62 @@
       height: 88px;
       margin-bottom: 0;
       float: left;
+    }
+    .default-avatar-teacher {
+      display: inline-block;
+      width: 88px;
+      height: 98px;
+      margin-bottom: 0;
+      float: left;
       padding: 0;
+    }
+    .default-avatar, .default-avatar-teacher{
+      background: url("/assets/default-avatar.jpeg") no-repeat scroll center center transparent;
+    }
+
+    .info{
+      display: inline-block;
+      height: 68px;
+      margin-left: 2px;
+      margin-bottom: 0;
+      float: left;
+      color: #6D6E71;
+
+      .name{
+        font-size: 16px;
+      }
+    }
+    .edit {
+      margin-right: 20px;
+    }
+    .see-users-link {
+      padding-top: 5px; 
+      padding-right: 20px;
+    }
+    
+  }
+
+  .student-container, .teacher-container{
+    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-left: 15px;
+    border-bottom: 1px solid #dddddd;
+
+    .well{ 
+      border: none;
+      background-color: transparent;
+      box-shadow: none;
+      padding: 10px
+    }
+
+    &:hover { background-color: white; }
+
+    .avatar-container, .teacher-avatar, .student-avatar, .default-avatar {
+      display: inline-block;
+      width: 88px;
+      height: 88px;
+      margin-bottom: 0;
+      float: left;
     }
     .default-avatar-teacher {
       display: inline-block;
@@ -39,6 +106,11 @@
       margin-left: 2px;
       margin-bottom: 0;
       float: left;
+      color: #6D6E71;
+
+      .name{
+        font-size: 16px;
+      }
     }
     .info-teacher{
       display: inline-block;
@@ -66,19 +138,32 @@
 
   .tabbable {
     margin-top: 20px;
-    width: 633px;
+    width: 100%;
+    
+    .nav-tabs > li > a {
+      border-top: 1px solid $color-font;
+      border-right: 1px solid $color-font;
+      border-left: 1px solid $color-font;
+      border-radius: 4px 4px 0 0;
+      line-height: 20px;
+      padding-bottom: 8px;
+      padding-top: 8px;
+    }
     ul.nav {
       margin-bottom: 0px !important;
     }
+    ul.nav-tabs {
+    border-bottom: 1px solid $color-font;
+    }
     .status, .users { 
-      border-bottom: 1px solid #ddd;
-      border-right: 1px solid #ddd;
-      border-left: 1px solid #ddd;
-      min-height: 500px;
+      border-bottom: 1px solid $color-font;
+      border-right: 1px solid $color-font;
+      border-left: 1px solid $color-font;
+      min-height: 200px;
       padding: 20px 0px 10px;
       .line {
-        border-top: 2px solid #ddd; 
-        margin: 10px 0;
+        
+        margin: 20px 0;
       }
       a.add {
         margin: 100px 0 0 30px;
@@ -88,6 +173,33 @@
       }
       #content-status {
         margin: 0 30px 30px 30px;
+        .pagination {
+          .prev.previous_page {
+            display:none;
+          }
+          .next {
+            display: none;
+          }
+          ul {
+
+            li.active a{
+              padding: 1px 7px 2px;
+              -webkit-border-radius: 13px;
+              -moz-border-radius: 13px;
+              border-radius: 13px;
+              background-color: $color-font;
+              margin-right: 10px !important;
+            }
+            li a{
+              padding: 1px 7px 2px;
+              -webkit-border-radius: 13px;
+              -moz-border-radius: 13px;
+              border-radius: 13px;
+              background-color: #a8a9ac;
+              margin-right: 10px !important;
+            }
+          }
+        }
       }
       .width-users {
         width:550px;
@@ -114,17 +226,32 @@
 .show-other-students {
   margin-top: 20px;
   margin-left: 20px;
-  .info{
-    display: inline-block;
-    height: 48px;
-    width: 365px !important;
-    margin-left: 2px;
-    margin-bottom: 0;
-    float: left;
+  .title {
+    margin-bottom: 10px;
   }
-  .add-student {
-    margin-top: 20px;
-    text-align:right;
+  .each {
+    border: 1px solid $color-font;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    width: 234px;
+    border-radius: 3px;
+    height: 293px;
+    margin-right: 20px;
+    .avatar-container {
+      width: 200px; 
+      height: 170px;
+      margin: 10px;
+    }
+    .info{
+      display: inline-block;
+      height: 48px;
+      width: 365px !important;
+      margin: 10px 0 0 10px;
+    }
+    .add-student {
+      margin-top: 20px;
+      text-align:right;
+    }
   }
 }
 .border-teacher {
@@ -151,7 +278,7 @@
 .cont {
   margin-top:10px;
   .width-subject {
-    width: 200px
+    width: 337px
   }
   .introduce {
     width: 400px;
@@ -161,12 +288,12 @@
 
 .admin{
   &.teacher {
-    .teacher-container {
-      .teacher-student {
+    .teacher-container, .student-container {
+      .teacher-student, .student-teacher {
         max-height: 200px;
         overflow-y: auto;
 
-        .student-avatar{
+        .student-avatar, .teacher-avatar{
           display: inline-block;
           width: 28px;
           height: 28px;
@@ -176,7 +303,7 @@
           padding: 0;
         }
 
-        .student-link{
+        .student-link, .teacher-link{
           display: inline-block;
           float: left;
         }

@@ -6,22 +6,23 @@
       %a{:href => teacher_home_url, :title => teacher.full_name}
         = image_tag(teacher.photo_url, :alt => teacher.full_name, :class => "teacher-avatar")
 
-    .info.well
+    .info.well.link{:href => teacher_home_url}
       %strong.name
         = link_to(teacher.full_name, teacher_home_url)
 
       .classroom= teacher.classroom
       .students-container
         - student_count = teacher.students.length
-        %a{:href=>"#teacher-students-#{teacher.id}", :class => "icon-plus teacher-student-handler"}
-          = pluralize(student_count, 'Student')
-        .teacher-student.hide.clearfix{:id => "teacher-students-#{teacher.id}"}
-          - teacher.students.each do |student|
-            = link_to admin_student_path(student)+"?related=true", :title => student.full_name, :rel => "tooltip", :class => "student-link" do 
-              = image_tag(student.photo_url, 
-                  :alt => student.full_name,
-                  :class => "student-avatar", 
-                  :id => "teacher-student-#{teacher.id}-#{student.id}")
+        - if student_count > 0
+          %a{:href=>"#teacher-students-#{teacher.id}", :class => "icon-plus teacher-student-handler"}
+            = pluralize(student_count, 'Student')
+          .teacher-student.hide.clearfix{:id => "teacher-students-#{teacher.id}"}
+            - teacher.students.each do |student|
+              = link_to admin_student_path(student, :related => true), :title => student.full_name, :rel => "tooltip", :class => "student-link" do 
+                = image_tag(student.photo_url, 
+                    :alt => student.full_name,
+                    :class => "student-avatar", 
+                    :id => "teacher-student-#{teacher.id}-#{student.id}")
 
 .clearfix
 - pagination_params ||= {}

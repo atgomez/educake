@@ -1,0 +1,79 @@
+$color-font: #E17C25;
+
+/* Global styles */
+
+body{
+  background: url("/assets/bg-body.png") repeat scroll 0 0 transparent;
+  padding-top: 0;
+}
+
+.white{
+  color: white;
+}
+
+.brown{
+  color: $color-font;
+  &:hover{
+    color: #D77018;
+  }
+}
+
+.orange {
+  color: $color-font;
+}
+
+.blue{
+  color: #06B8FA;
+  a{
+    color: #06B8FA;
+  }
+}
+
+.gray {
+  color: #6D6E71;
+}
+
+.bg-brown{
+  background: url("/assets/bg-button.png") repeat-x scroll center center transparent;
+}
+
+.btn.bg-brown:hover{
+  background-color: #CD7036;
+  color: #ffffff;
+}
+
+.thumbnail{
+  padding: 8px;
+  background-color: white;
+  -webkit-box-shadow:rgba(0,0,0,.30) 0 2px 3px;
+     -moz-box-shadow:rgba(0,0,0,.30) 0 2px 3px;
+          box-shadow:rgba(0,0,0,.30) 0 2px 3px;
+}
+
+/* End global styles */
+
+/* Primary layout elements */
+
+#banner{
+  background: url("/assets/bg-header.jpeg") no-repeat scroll 0 0 transparent;
+  padding-top: 10px;
+  margin-bottom: 15px;
+}
+
+#menu{
+  margin-bottom: 5px;
+
+  .menu-item{
+    color: #6D6E71;
+    &.active{
+      color: #fff;
+    }
+  }
+}
+
+.separator{
+  background: url("/assets/bg-separator.jpg") repeat-y scroll 0 0 transparent;
+  height: 2px;
+}
+
+/* End primary layout elements */
