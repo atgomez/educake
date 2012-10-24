@@ -1,13 +1,14 @@
 TeacherMgnt::Application.routes.draw do
   root :to => "home#index"
   resources :teachers
-  resources :invitations
+  resources :invitations 
 
   resources :students do 
     member do 
       get :load_users
       get :load_status
-    end 
+      get :search_user
+    end
   end
 
   resources :goals do 
@@ -35,6 +36,7 @@ TeacherMgnt::Application.routes.draw do
       member do 
         get :load_users
         get :load_status
+        get :search_user
       end 
     end
   end

@@ -1,3 +1,5 @@
+
+  
 window.studentObject =
   setup: ->
     @addDatePicker()
@@ -7,11 +9,40 @@ window.studentObject =
     @activeTab()
     @clickOnStudents() 
     @clickPage()
+    @searchUser()
+    @autocompleteSearch()
     return
 
   addDatePicker: ->
     $("#student_birthday").datepicker({"format": "mm-dd-yyyy"})
-  
+    return 
+  autocompleteSearch: -> 
+    $('#student_sharing_email').live "keydown.autocomplete", -> 
+      $(this).autocomplete
+        source: $(this).data('autocomplete-source')
+    return
+  searchUser: -> 
+    $("#render_invite_user").delegate "#search-email", "click", () ->
+      email = $("#student_sharing_email").val()
+      student_id = $("#student_sharing_student_id").val()
+      console.log email
+      $.ajax
+        type: "GET"
+        url: "/students/"+student_id+"/search_user"
+        data: {email: email}
+        success: (data)->
+          if data["existed"]
+            console.log "new user"
+          else
+            $("#student_sharing_email").attr("value", data["email"])
+            $("#student_sharing_first_name").attr("value", data["first_name"])
+            $("#student_sharing_last_name").attr("value", data["last_name"])
+            $("#student_sharing_role_id").attr("value", data["role_id"])
+          return
+        error: (errors, status)->
+          $(".ajax-loading").addClass "hidden"
+          return      
+      
   clickOnGoal: -> 
     $(".status").delegate 'a.goal', 'click', () -> 
       id_content = $(this).attr("href")

@@ -1,5 +1,6 @@
 class StudentsController < ApplicationController
   layout "common"
+  autocomplete :student, :first_name
   before_filter :destroy_session, :except => [:show, :destroy]
     
   def show
@@ -65,6 +66,14 @@ class StudentsController < ApplicationController
     render :partial => "view_goal", :locals => {:goals => goals}
   end
   
+  def search_user 
+    user = StudentSharing.find_by_email(params[:email])
+    if user 
+      render :json => user.attributes.except("created_at, updated_at")
+    else 
+      render :json => {:existed => false}
+    end
+  end 
   protected
 
   def set_current_tab
