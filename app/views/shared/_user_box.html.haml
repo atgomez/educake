@@ -1,9 +1,9 @@
-%span
+%span.brown
   = "Welcome, #{current_user.try(:full_name)}"
 %span= "|"
 - if can?(:manage, User)
   %span
     = link_to("Admin", "/admin")
   %span= "|"
-%span
+%span.blue
   = link_to("Sign Out", destroy_user_session_path, :method => "delete", :id => "sign_out")  
