@@ -33,7 +33,8 @@
     .status
       #render_add_status
       .pull-right= link_to "Export Progress", "#", :class => "btn export"
-      .pull-right= link_to " Add a status", new_status_goals_path, :remote => true, :class => "btn export"
+      - if @goals.size > 0
+        .pull-right= link_to " Add a status", new_status_goals_path, :remote => true, :class => "btn export"
       .clearfix
       .line
       #content-status
