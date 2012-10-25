@@ -1,6 +1,5 @@
 class StudentsController < ApplicationController
   layout "common"
-  autocomplete :student, :first_name
   before_filter :destroy_session, :except => [:show, :destroy]
     
   def show
