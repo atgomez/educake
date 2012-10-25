@@ -4,6 +4,10 @@ $color-font: #E17C25;
     margin-top: 15px;
   }
 
+  .toolbar{
+    margin-bottom: 10px;
+  }
+
   .one-student {
     border: 1px solid $color-font;
     -webkit-border-radius: 3px;
@@ -223,9 +227,9 @@ $color-font: #E17C25;
     }
   }
 }
+
 .show-other-students {
   margin-top: 20px;
-  margin-left: 20px;
   .title {
     margin-bottom: 10px;
   }
