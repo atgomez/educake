@@ -76,7 +76,8 @@ window.studentObject =
     return 
    
   clickOnStatus: ->
-    $("#status").click ->
+    $("#status").click (e) ->
+      e.preventDefault()
       $(this).addClass("active")
       $("#users").removeClass("active")
       $.ajax
@@ -91,10 +92,11 @@ window.studentObject =
         error: (errors, status)->
           $(".ajax-loading").addClass "hidden"
           return      
-  
+    return false
     
   clickOnUsers: -> 
-    $("#users").click ->
+    $("#users").click (e) ->
+      e.preventDefault()
       $(this).addClass("active")
       $("#status").removeClass("active")
       loadUser()
@@ -105,6 +107,7 @@ window.studentObject =
      $("#status").removeClass("active")
      loadUser()
      return
+    return false
 
   clickOnStudents: ->
     $(".student-container .link").click ->

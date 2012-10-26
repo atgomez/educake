@@ -49,7 +49,7 @@
         .pull-right= link_to " Add a status", new_status_goals_path, :remote => true, :class => "btn export"
       .clearfix
       .line
-      #content-status
+      #content-status.clearfix
         = render "view_goal", :goals => @goals
         
 .show-other-students
@@ -60,23 +60,20 @@
       .each.pull-left
         .avatar-container.thumbnail
           %a{:href => student_home_url}
-            - unless student.photo_url.blank?
-              = image_tag(student.photo_url, :class => "student-avatar")
-            - else
-              .default-avatar
-        .info.link{:href => student_home_url}
-          %strong.name
-            = link_to student.full_name, student_path(student), :class => "brown"
-          .birthday
-            %span= "Born on:"
-            %span= student.birthday_string
-          .gender
-            %span= "Gender:"
-            %span= student.gender_string
-          .goal
-            %span= "Goals:"
-            - if student.goals.length <= 0
-              %span= "no goal"
-            - else
-              %span= student.goals.length
+            = image_tag(student.photo_url(:medium), :class => "student-avatar")
+          .info.link{:href => student_home_url}
+            %strong.name
+              = link_to student.full_name, student_path(student), :class => "brown"
+            .birthday
+              %span= "Born on:"
+              %span= student.birthday_string
+            .gender
+              %span= "Gender:"
+              %span= student.gender_string
+            .goal
+              %span= "Goals:"
+              - if student.goals.length <= 0
+                %span= "no goal"
+              - else
+                %span= student.goals.length
 

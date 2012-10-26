@@ -1,5 +1,5 @@
 $color-font: #E17C25;
-.teacher, .show-student, .admin{
+.teacher, .student, .show-student, .admin{
   .top-align {
     margin-top: 15px;
   }
@@ -34,6 +34,7 @@ $color-font: #E17C25;
       height: 88px;
       margin-bottom: 0;
       float: left;
+      overflow: hidden;
     }
     .default-avatar-teacher {
       display: inline-block;
@@ -42,6 +43,7 @@ $color-font: #E17C25;
       margin-bottom: 0;
       float: left;
       padding: 0;
+      overflow: hidden;
     }
     .default-avatar, .default-avatar-teacher{
       background: url("/assets/default-avatar.jpeg") no-repeat scroll center center transparent;
@@ -90,6 +92,7 @@ $color-font: #E17C25;
       height: 88px;
       margin-bottom: 0;
       float: left;
+      overflow: hidden;
     }
     .default-avatar-teacher {
       display: inline-block;
@@ -98,6 +101,7 @@ $color-font: #E17C25;
       margin-bottom: 0;
       float: left;
       padding: 0;
+      overflow: hidden;
     }
     .default-avatar, .default-avatar-teacher{
       background: url("/assets/default-avatar.jpeg") no-repeat scroll center center transparent;
@@ -140,7 +144,7 @@ $color-font: #E17C25;
     
   }
 
-  .tabbable {
+  .tabbable, .invited-user {
     margin-top: 20px;
     width: 100%;
     
@@ -163,7 +167,7 @@ $color-font: #E17C25;
       border-bottom: 1px solid $color-font;
       border-right: 1px solid $color-font;
       border-left: 1px solid $color-font;
-      min-height: 200px;
+      min-height: 140px;
       padding: 20px 0px 10px;
       .line {
         
@@ -176,8 +180,11 @@ $color-font: #E17C25;
         margin-right: 20px;
       }
       #content-status {
-        margin: 0 30px 30px 30px;
+        margin: 0 30px 0 30px;
+
         .pagination {
+          height: auto;
+          margin: 0;
           .prev.previous_page {
             display:none;
           }
@@ -186,13 +193,14 @@ $color-font: #E17C25;
           }
           ul {
 
-            li.active a{
+            li.active a{              
               padding: 1px 7px 2px;
               -webkit-border-radius: 13px;
               -moz-border-radius: 13px;
               border-radius: 13px;
-              background-color: $color-font;
               margin-right: 10px !important;
+              background-color: $color-font;
+              color: white;
             }
             li a{
               padding: 1px 7px 2px;
@@ -233,8 +241,8 @@ $color-font: #E17C25;
   .title {
     margin-bottom: 10px;
   }
+
   .each {
-    border: 1px solid $color-font;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     width: 234px;
@@ -242,8 +250,7 @@ $color-font: #E17C25;
     height: 293px;
     margin-right: 20px;
     .avatar-container {
-      width: 200px; 
-      height: 170px;
+      width: 200px;
       margin: 10px;
     }
     .info{
@@ -282,7 +289,7 @@ $color-font: #E17C25;
 .cont {
   margin-top:10px;
   .width-subject {
-    width: 337px
+    width: 260px;
   }
   .introduce {
     width: 400px;
@@ -354,5 +361,12 @@ $color-font: #E17C25;
         display: inline-block;
       }
     }
+  }
+}
+
+.student .tabbable{
+  margin-top: 0;
+  .status{
+    border-top: 1px solid #E17C25;
   }
 }
