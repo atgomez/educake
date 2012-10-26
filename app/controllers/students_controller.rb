@@ -79,7 +79,7 @@ class StudentsController < ApplicationController
     @chart_width = "100%"
     @series = []
     @student = Student.find params[:id]
-    @goals = @student.goals
+    @goals = @student.goals.load_data(filtered_params)
     @goals.each do |goal| 
       data = []
       goal.statuses.is_ideal(true).each{|status| 

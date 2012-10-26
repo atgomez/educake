@@ -70,7 +70,7 @@
         tooltip: {
           formatter: function() {
             return ''+
-              this.x +': '+ this.y;
+              Highcharts.dateFormat('%b %e, %y', this.x) +': '+ this.y;
           }
         },
         
@@ -80,7 +80,7 @@
               'click': function() {
                  current = this
                  $(chart.series).each(function(idx, item) {
-                    if (item.name != current.name) {
+                    if (item != current) {
                       item.hide();
                     } else {
                       item.show();
