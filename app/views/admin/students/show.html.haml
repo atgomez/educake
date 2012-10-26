@@ -50,9 +50,18 @@
         .gender
           %span= "Gender:"
           %span= @student.gender_string
+        .goal
+          %span= "Goals:"
+          - if @student.goals.length <= 0
+            %span= "no goal"
+          - else
+            %span= @student.goals.length
+
       .edit.pull-right
         %span= link_to "Edit", edit_admin_student_path(@student)
+  
   = hidden_field_tag "student_id", params[:id]
+  
   .tabbable
     %ul.nav.nav-tabs
       %li#status.active

@@ -22,6 +22,12 @@
           .gender
             %span= "Gender:"
             %span= student.gender_string
+          .goal
+            %span= "Goals:"
+            - if student.goals.length <= 0
+              %span= "no goal"
+            - else
+              %span= student.goals.length
 
     = render_pagination @students
 
@@ -47,3 +53,9 @@
               .gender
                 %span= "Gender:"
                 %span= student.gender_string
+              .goal
+                %span= "Goals:"
+                - if student.goals.length <= 0
+                  %span= "no goal"
+                - else
+                  %span= student.goals.length
