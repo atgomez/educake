@@ -72,7 +72,29 @@ class StudentsController < ApplicationController
     else 
       render :json => {:existed => false}
     end
-  end 
+  end
+  
+  def common_chart
+    @categories = []
+    @chart_width = "100%"
+    @series = []
+    @student = Student.find params[:id]
+    @goals = @student.goals.load_data(filtered_params)
+    @goals.each do |goal| 
+      data = []
+      goal.statuses.is_ideal(true).each{|status| 
+        data << [status.due_date, status.accuracy]
+      }
+      data << [goal.due_date, goal.accuracy]
+      @series << {
+                   :name => goal.name,
+                   :data => data
+                  }
+    end
+
+    @series = @series.to_json
+    render :template => 'students/common_chart', :layout => "chart"
+  end
   protected
 
   def set_current_tab

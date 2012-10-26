@@ -8,14 +8,7 @@
     = csrf_meta_tags
     %link{:href => path_to_image('favicon.ico'), :type => "image/x-icon", :rel => "shortcut icon"}
   %body
-    .container
-      #banner
-        .pull-right= render(:partial => "shared/user_box") if user_signed_in?
-        .clearfix
-        .header
-          %a.logo{:href => "/"}
-        .separator
-
-      = yield
-    .footer
-      = render(:partial => "shared/version")
+    .container  
+      %center  
+        = yield
+  = yield :js

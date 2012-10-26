@@ -127,12 +127,13 @@ loadPage= (evt) ->
   #$('#content-status').addClass 'loading'
 
   sender = evt.target
-  
   $.ajax({
     url: sender.href
     type: 'GET'
     success: (data) ->
+      href = sender.href.split("?")[1]
       $('#content-status').html data
+      $('#chart').attr("src", $('#iframe_src').val() + href);
       return
     error: (data) ->
       return

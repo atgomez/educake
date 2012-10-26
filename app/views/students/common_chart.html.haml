@@ -1,0 +1,95 @@
+#common_chart{:style=>"width: <%= @chart_width %>; height: 100%; margin: 0"}
+
+- content_for(:js) do
+  :javascript
+    $(function(){
+      var chart;
+      series = jQuery.parseJSON(#{@series.to_json})
+      $.each(series, function(indx, seri) {
+        $.each(seri["data"], function(i, dt){
+        series[indx]["data"][i][0] = Date.parse(dt[0]);
+        })
+      });
+      $(document).ready(function() {
+        chart = new Highcharts.Chart({
+        chart: {
+          renderTo: 'common_chart',
+          type: 'line'
+        },
+        title: {
+          text: ''
+        },
+        subtitle: {
+          text: ''
+        },
+        credits: {
+        	enabled: false
+        },
+        xAxis: {
+          type: 'datetime',
+          
+          labels: {
+            formatter: function() {
+                return Highcharts.dateFormat('%b %e, %y', this.value);
+            },
+            style: {
+              'text-decoration': 'underline',
+              color: '#315984'
+            }
+          },
+        },
+        yAxis: {
+          min: 0,
+          title: {
+            text: 'Accuracy'
+          },
+          labels: {
+              formatter: function() {
+                  return this.value +'%'
+              }
+          },
+          plotLines: [{
+              value: 0,
+              width: 1,
+              color: '#808080'
+          }]
+        },
+        legend: {
+          layout: 'vertical',
+          backgroundColor: '#FFFFFF',
+          align: 'left',
+          verticalAlign: 'top',
+          x: 100,
+          y: 0,
+          floating: true,
+          shadow: true
+        },
+        tooltip: {
+          formatter: function() {
+            return ''+
+              Highcharts.dateFormat('%b %e, %y', this.x) +': '+ this.y + "%";
+          }
+        },
+        
+        plotOptions: {
+          line: {
+            events: {
+              'click': function() {
+                 current = this
+                 $(chart.series).each(function(idx, item) {
+                    if (item != current) {
+                      item.hide();
+                    } else {
+                      item.show();
+                    }
+                 });
+              }
+            }
+          }
+        },
+        series: series
+
+        });
+      });
+    });
+  

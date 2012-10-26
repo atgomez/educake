@@ -1,14 +1,12 @@
-.header
-.text-head
-  Hello John Doe!
-.text-head
-  You're invited to Teacher Management
-  
-.text-head Please change your password
+.header.well
+  .text-head
+    Hello John Doe!
+  .text-head
+    You're invited to Teacher Management. Please change your password.
 
 - sharing = @sharing || StudentSharing.new
 
-= simple_form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => {:class=>"sign-up"}) do |f|
+= simple_form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => {:class=>"sign-up form-horizontal goal-form"}) do |f|
   = f.error_notification
   .form-inputs
     = hidden_field_tag :user_token, @sharing.confirm_token

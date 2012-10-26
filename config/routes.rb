@@ -8,6 +8,7 @@ TeacherMgnt::Application.routes.draw do
       get :load_users
       get :load_status
       get :search_user
+      get :common_chart
     end
   end
 

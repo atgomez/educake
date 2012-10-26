@@ -15,6 +15,8 @@
         .clearfix
         = f.input :accuracy, :label => "% Accuracy", :input_html => {:class => "pull-left"}
         #accuracy_error.pull-right
+        = f.hidden_field :is_ideal, :value => false
+        = f.hidden_field :user_id, :value => current_user.id
         .clearfix
       .modal-footer
         %a.btn{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} Cancel

@@ -12,6 +12,9 @@ class Goal < ActiveRecord::Base
     a['accuracy'].blank? || a['due_date'].blank?
   }
   
+  def name 
+    [self.subject.name, self.curriculum.name].join(" ")
+  end 
   # Class methods
   class << self
     def build_goal(attrs = {})
@@ -47,7 +50,7 @@ class Goal < ActiveRecord::Base
       paging_info = parse_paging_options(params)
       # Paginate with Will_paginate.
       conds = { :page => paging_info.page_id,
-                :per_page => 2,#paging_info.page_size
+                :per_page => 3,#paging_info.page_size
                 :order => paging_info.sort_string
               }
       unless complete.nil?
