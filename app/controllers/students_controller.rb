@@ -75,8 +75,6 @@ class StudentsController < ApplicationController
   end
   
   def common_chart
-    @categories = []
-    @chart_width = "100%"
     @series = []
     @student = Student.find params[:id]
     @goals = @student.goals.load_data(filtered_params)
@@ -95,6 +93,32 @@ class StudentsController < ApplicationController
     @series = @series.to_json
     render :template => 'students/common_chart', :layout => "chart"
   end
+  
+  def chart 
+    @goal = Goal.find params[:goal_id]
+    @series = []
+    data = []
+    # For ideal data
+    @goal.statuses.is_ideal(true).each{|status| 
+      data << [status.due_date, status.accuracy]
+    }
+    data << [@goal.due_date, @goal.accuracy]
+    @series << {
+                 :name => "Ideal chart",
+                 :data => data
+                }
+    # For add status 
+    data = []
+    @goal.statuses.is_ideal(false).each{|status| 
+      data << [status.due_date, status.accuracy]
+    }
+    @series << {
+                 :name => @goal.name,
+                 :data => data
+                }
+    @series = @series.to_json
+    render :template => 'students/common_chart', :layout => "chart"
+  end 
   protected
 
   def set_current_tab
