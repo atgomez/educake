@@ -1,5 +1,7 @@
 %center
-  %iframe{:frameborder => "0", :height => "500", :src => "/students/"+ params[:id] + "/common_chart", :width => "80%"}
+  %iframe{:frameborder => "0", :height => "500", :src => "/students/"+ params[:id] + "/common_chart", :width => "80%", :id => "chart"}
+= hidden_field_tag "iframe_src", "/students/"+ params[:id] + "/common_chart?"
+
 .show-student
   = link_to "All students", teachers_path,  :class => "brown"
   = hidden_field_tag "tab", session[:tab]
