@@ -4,6 +4,15 @@
   :javascript
     $(function(){
       var chart;
+      console.log(#{@series});
+      series = jQuery.parseJSON(#{@series.to_json})
+      console.log(series)
+      $.each(series, function(indx, seri) {
+        $.each(seri["data"], function(i, dt){
+        series[indx]["data"][i][0] = Date.parse(dt[0]);
+        })
+      });
+      console.log(series);
       $(document).ready(function() {
         chart = new Highcharts.Chart({
         chart: {
@@ -20,8 +29,12 @@
         	enabled: false
         },
         xAxis: {
-          categories: #{@categories},
+          type: 'datetime',
+          
           labels: {
+            formatter: function() {
+                return Highcharts.dateFormat('%b %e, %y', this.value);
+            },
             style: {
               'text-decoration': 'underline',
               color: '#315984'
@@ -77,7 +90,7 @@
             }
           }
         },
-        series: #{@series}
+        series: series
 
         });
       });

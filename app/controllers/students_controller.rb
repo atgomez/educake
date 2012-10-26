@@ -81,32 +81,17 @@ class StudentsController < ApplicationController
     @student = Student.find params[:id]
     @goals = @student.goals
     @goals.each do |goal| 
-      data = {}
+      data = []
       goal.statuses.is_ideal(true).each{|status| 
-        data[status.due_date] = status.accuracy
-        @categories << status.due_date
+        data << [status.due_date, status.accuracy]
       }
-      data[goal.due_date] = goal.accuracy
+      data << [goal.due_date, goal.accuracy]
       @series << {
                    :name => goal.name,
                    :data => data
                   }
-      @categories << goal.due_date
     end
 
-    @categories.compact!
-    @categories.uniq!
-    @categories.sort!
-    
-    @series.each do |goal_data|
-      new_data = []
-      @categories.each do |cat|
-        new_data << goal_data[:data][cat]
-      end
-      goal_data[:data] = new_data
-    end
-    
-    @categories = @categories.sort.collect{|d| d.strftime("%b %d, %Y")}.to_json
     @series = @series.to_json
     render :template => 'students/common_chart', :layout => "chart"
   end
