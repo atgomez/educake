@@ -23,7 +23,6 @@ window.studentObject =
     $("#render_invite_user").delegate "#search-email", "click", () ->
       email = $("#student_sharing_email").val()
       student_id = $("#student_sharing_student_id").val()
-      console.log email
       $.ajax
         type: "GET"
         url: "/students/"+student_id+"/search_user"
@@ -43,6 +42,7 @@ window.studentObject =
       
   clickOnGoal: -> 
     $(".status").delegate 'a.goal', 'click', () -> 
+      page_id = $(".pagination li.active a").attr("href").split("?")[1]
       id_content = $(this).attr("href")
       id = id_content.split("_")[1]
       current_iframe = $('#chart').attr("src")
@@ -60,7 +60,7 @@ window.studentObject =
       else if cl == "icon-minus"
         $(this).removeClass("icon-minus").addClass("icon-plus")
         $(id_content).attr("style","display:none;")
-        $('#chart').attr("src", "/students/"+ $("#student_id").val() + "/common_chart");
+        $('#chart').attr("src", "/students/"+ $("#student_id").val() + "/common_chart?"+page_id);
       return
   
   activeTab: ->
