@@ -59,8 +59,9 @@
       - student_home_url = student_path(student)
       .each.pull-left
         .avatar-container.thumbnail
-          %a{:href => student_home_url}
-            = image_tag(student.photo_url(:medium), :class => "student-avatar")
+          %center.avatar-wrapper
+            %a.avatar-link{:href => student_home_url}
+              = image_tag(student.photo_url(:medium), :class => "student-avatar")
           .info.link{:href => student_home_url}
             %strong.name
               = link_to student.full_name, student_path(student), :class => "brown"
