@@ -11,7 +11,17 @@ window.studentObject =
     @clickPage()
     @searchUser()
     @autocompleteSearch()
+    @uploadPhoto()
     return
+
+  uploadPhoto: ->
+    $('#student_photo').change((e) ->
+      file = e.target.files[0]
+      reader = new FileReader()
+      reader.onload = (e) ->
+        $('#upload-image').attr('src', e.target.result)
+      reader.readAsDataURL(file);
+    )
 
   addDatePicker: ->
     $("#student_birthday").datepicker({"format": "mm-dd-yyyy"})
