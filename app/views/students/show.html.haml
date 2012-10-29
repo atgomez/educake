@@ -1,6 +1,7 @@
-%center
-  %iframe{:frameborder => "0", :height => "500", :src => "/students/"+ params[:id] + "/common_chart", :width => "80%", :id => "chart"}
-= hidden_field_tag "iframe_src", "/students/"+ params[:id] + "/common_chart?"
+- unless @goals.empty?
+  %center
+    %iframe{:frameborder => "0", :height => "500", :src => "/students/"+ params[:id] + "/common_chart", :width => "80%", :id => "chart"}
+  = hidden_field_tag "iframe_src", "/students/"+ params[:id] + "/common_chart?"
 
 .show-student
   = link_to "All students", teachers_path,  :class => "brown"
@@ -21,6 +22,13 @@
         .gender
           %span= "Gender:"
           %span= @student.gender_string
+        .goal
+          %span= "Goals:"
+          - if @student.goals.length <= 0
+            %span= "no goal"
+          - else
+            %span= @student.goals.length
+
     .edit.pull-right
       %span= link_to "Edit", edit_student_path(@student), :class => "btn"
   = hidden_field_tag "student_id", params[:id]
@@ -41,7 +49,7 @@
         .pull-right= link_to " Add a status", new_status_goals_path, :remote => true, :class => "btn export"
       .clearfix
       .line
-      #content-status
+      #content-status.clearfix
         = render "view_goal", :goals => @goals
         
 .show-other-students
@@ -51,19 +59,22 @@
       - student_home_url = student_path(student)
       .each.pull-left
         .avatar-container.thumbnail
-          %a{:href => student_home_url}
-            - unless student.photo_url.blank?
-              = image_tag(student.photo_url, :class => "student-avatar")
-            - else
-              .default-avatar
-        .info.link{:href => student_home_url}
-          %strong.name
-            = link_to student.full_name, student_path(student), :class => "brown"
-          .birthday
-            %span= "Born on:"
-            %span= student.birthday_string
-          .gender
-            %span= "Gender:"
-            %span= student.gender_string
-
+          %center.avatar-wrapper
+            %a.avatar-link{:href => student_home_url}
+              = image_tag(student.photo_url(:medium), :class => "student-avatar")
+          .info.link{:href => student_home_url}
+            %strong.name
+              = link_to student.full_name, student_path(student), :class => "brown"
+            .birthday
+              %span= "Born on:"
+              %span= student.birthday_string
+            .gender
+              %span= "Gender:"
+              %span= student.gender_string
+            .goal
+              %span= "Goals:"
+              - if student.goals.length <= 0
+                %span= "no goal"
+              - else
+                %span= student.goals.length
 

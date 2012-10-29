@@ -15,6 +15,7 @@ group :assets do
   gem 'therubyracer', :platforms => :ruby
   gem 'uglifier', '>= 1.0.3'
 end
+
 gem "twitter-bootstrap-rails"
 gem 'jquery-rails'
 gem "haml"
@@ -29,6 +30,7 @@ gem 'bootstrap-will_paginate'
 gem "cancan"
 gem 'json'
 gem 'meta_search'
+gem 'newrelic_rpm'
 
 group :development do 
   gem "haml-rails"

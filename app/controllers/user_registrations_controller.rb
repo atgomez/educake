@@ -29,6 +29,9 @@ class UserRegistrationsController < Devise::RegistrationsController
         self.resource.first_name = @sharing.first_name
         self.resource.last_name  = @sharing.last_name
         self.resource.role_id    = @sharing.role_id
+        
+        # Skip confirmation.
+        self.resource.skip_confirmation! if self.resource.respond_to?(:skip_confirmation!)
 
         if resource.save
           if resource.active_for_authentication?

@@ -1,5 +1,3 @@
-
-  
 window.studentObject =
   setup: ->
     @addDatePicker()
@@ -35,7 +33,6 @@ window.studentObject =
     $("#render_invite_user").delegate "#search-email", "click", () ->
       email = $("#student_sharing_email").val()
       student_id = $("#student_sharing_student_id").val()
-      console.log email
       $.ajax
         type: "GET"
         url: "/students/"+student_id+"/search_user"
@@ -55,15 +52,25 @@ window.studentObject =
       
   clickOnGoal: -> 
     $(".status").delegate 'a.goal', 'click', () -> 
+      page_id = $(".pagination li.active a").attr("href").split("?")[1]
+      id_content = $(this).attr("href")
+      id = id_content.split("_")[1]
+      current_iframe = $('#chart').attr("src")
       id_content = $(this).attr("href")
       cl = $(this).attr("class").split("goal").join("").trim()
       if cl == "icon-plus"
         $(this).removeClass("icon-plus").addClass("icon-minus")
         $(id_content).attr("style","display:block;")
-        console.log $(id_content)
+        $('#chart').attr("src", "chart?goal_id="+id);
+        $(".status a.goal").each ->
+          if $(this).hasClass("icon-minus") && ($(this).attr("href") != id_content)
+            $(this).removeClass("icon-minus").addClass("icon-plus")
+            id = $(this).attr("href")
+            $(id).attr("style","display:none;")
       else if cl == "icon-minus"
         $(this).removeClass("icon-minus").addClass("icon-plus")
         $(id_content).attr("style","display:none;")
+        $('#chart').attr("src", "/students/"+ $("#student_id").val() + "/common_chart?"+page_id);
       return
   
   activeTab: ->
@@ -79,7 +86,8 @@ window.studentObject =
     return 
    
   clickOnStatus: ->
-    $("#status").click ->
+    $("#status").click (e) ->
+      e.preventDefault()
       $(this).addClass("active")
       $("#users").removeClass("active")
       $.ajax
@@ -94,10 +102,11 @@ window.studentObject =
         error: (errors, status)->
           $(".ajax-loading").addClass "hidden"
           return      
-  
+    return false
     
   clickOnUsers: -> 
-    $("#users").click ->
+    $("#users").click (e) ->
+      e.preventDefault()
       $(this).addClass("active")
       $("#status").removeClass("active")
       loadUser()
@@ -108,6 +117,7 @@ window.studentObject =
      $("#status").removeClass("active")
      loadUser()
      return
+    return false
 
   clickOnStudents: ->
     $(".student-container .link").click ->

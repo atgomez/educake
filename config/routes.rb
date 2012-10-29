@@ -10,6 +10,9 @@ TeacherMgnt::Application.routes.draw do
       get :search_user
       get :common_chart
     end
+    collection do 
+      get :chart
+    end 
   end
 
   resources :goals do 
