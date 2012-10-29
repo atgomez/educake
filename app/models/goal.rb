@@ -50,7 +50,7 @@ class Goal < ActiveRecord::Base
       paging_info = parse_paging_options(params)
       # Paginate with Will_paginate.
       conds = { :page => paging_info.page_id,
-                :per_page => 3,#paging_info.page_size
+                :per_page => paging_info.page_size,
                 :order => paging_info.sort_string
               }
       unless complete.nil?
