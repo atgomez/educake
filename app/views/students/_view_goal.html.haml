@@ -2,40 +2,42 @@
 - goals.each do |goal|
   .cont
     .width-subject.pull-left
-      %a{:href=>"#goal_#{goal.id}", "data-toggle" =>"tab", "data-dismiss"=>"div", :class => "icon-plus goal"}= " " + goal.subject.name + " " + goal.curriculum.name
-    .width-subject.pull-left.accuracy= goal.accuracy.to_s + "% by " + goal.due_date.strftime("%m/%Y")
-    .pull-left.progress.progress-success
-      .bar.custom-bar{:style => "width: #{goal.accuracy}%"}
+      %a{:href=>"#goal_#{goal.id}", "data-toggle" =>"tab", "data-dismiss"=>"div", :class => "icon-plus goal"}
+        = " " + goal.subject.name + " " + goal.curriculum.name
+    
+    .pull-right
+      .width-status.pull-left.accuracy.bold
+        = ::Util.round_f(goal.accuracy).to_s + "% by " + goal.due_date.strftime("%m/%Y")
+      .pull-left.progress.progress-success
+        .bar.custom-bar{:style => "width: #{goal.accuracy}%"}
 
-    - if params[:action] == 'edit'
-      .complete-checkbox
-        = check_box_tag("complete_checkbox", goal.is_completed, goal.is_completed, :url => update_status_goal_path(goal))
-        = label_tag('complete_label', 'Goal complete')
+      - if params[:action] == 'edit'
+        .complete-checkbox
+          = check_box_tag("complete_checkbox", goal.is_completed, goal.is_completed, :url => update_status_goal_path(goal))
+          = label_tag('complete_label', 'Goal complete')
     
     .clearfix
     .tab-content
       .details_goal.tab-pane{:id => "goal_#{goal.id}"}
         .clearfix
-        .introduce
+        .introduce.pull-left
           When verbally told a number (any numeral up to 100), will write the numeral or use cards with numbers on them to display the correct numeral with 80% accuracy on 9 out of 10 trial days as measured by data.
-        %center
-          - goal.statuses.is_ideal(true).each do |status|
-            %div= status.accuracy.to_s + "% by " + status.due_date.strftime("%m/%Y")
+        .goal-progress.pull-right
+          - goal.statuses.each do |status|
+            .width-status= ::Util.round_f(status.accuracy).to_s + "% by " + status.due_date.strftime("%m/%Y")
         - statuses =  goal.statuses.is_ideal(false)
         - if !statuses.empty?
           %table.table.table-striped
             %thead
               %tr
                 %th Date 
-                %th Score 
-                %th Time 
+                %th Score
                 %th Location
             %tbody
               - statuses.each do |status|
                 %tr 
                   %td= status.due_date.strftime("%m%d%y") rescue ""
-                  %td= status.accuracy.to_s+"%" rescue ""
-                  %td= status.created_at.strftime("%M:%S") rescue ""
+                  %td= ::Util.round_f(status.accuracy).to_s+"%" rescue ""
                   %td= [status.user.classroom, status.user.full_name].join(" ") rescue ""
           
 .pull-right= render_pagination goals

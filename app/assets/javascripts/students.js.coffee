@@ -11,6 +11,7 @@ window.studentObject =
     @autocompleteSearch()
     @uploadPhoto()
     @clickExport()
+    @onSaveInvitation()
     return
 
   uploadPhoto: ->
@@ -145,7 +146,11 @@ window.studentObject =
       $('#export-dialog').modal('show')
     )
 
-    
+  onSaveInvitation: ->
+    $('#invite_user form').live('submit', -> 
+      $(this).find('.submit-indicator').removeClass('hide')
+    )
+
 loadUser = ->
   $.ajax
     type: "GET"

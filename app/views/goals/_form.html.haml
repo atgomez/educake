@@ -30,6 +30,7 @@
             = f_status.input :accuracy, :label => "% Accuracy"
             
     .modal-footer
+      .submit-indicator.loading.hide
       %button.btn{"aria-hidden" => "true", "data-dismiss" => "modal", :class => "close-dialog"} Cancel
       %button.btn.btn-primary{:id => "btn-save-goal"} Save
 

@@ -3,8 +3,11 @@
     %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} ×
     %h4= label
   .modal-body
-    = simple_form_for(@user, :url => url,:method => method, :remote => true) do |f|
-      = f.error_notification
+    = simple_form_for(@user, :url => url, :method => method, :remote => true) do |f|
+      - if notification = f.error_notification
+        .alert.alert-error.fade.in
+          %a{:class => "close", 'data-dismiss' => "alert", :href => "#"} &times;
+          = notification
       .form-inputs
         = f.input :email, :disabled=> !f.object.new_record?, :input_html => {:class => "pull-left", :data => {autocomplete_source: StudentSharing.order(:email).map(&:email)}}
         #email_error.pull-right
@@ -21,6 +24,7 @@
         = f.hidden_field :student_id, :value => session[:student_id]
         .clearfix
       .modal-footer
+        .submit-indicator.loading.hide
         %a.btn{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} Cancel
-        = f.submit "Save", :class => "btn btn-primary", :id => "save-user"
+        = f.submit "Save", :class => "btn btn-primary", :id => "save-user", :disable_with => "Saving..."
         

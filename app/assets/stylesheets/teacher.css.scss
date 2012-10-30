@@ -314,9 +314,17 @@ $color-font: #E17C25;
   .width-subject {
     width: 260px;
   }
+  .width-status{
+    padding-right: 10px;
+  }
+
   .introduce {
     width: 400px;
-    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+  .goal-progress{
+    width: 430px;
   }
 }
 

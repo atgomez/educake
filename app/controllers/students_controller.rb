@@ -10,7 +10,8 @@ class StudentsController < ApplicationController
     if request.xhr?
       @goals = @student.goals.load_data(filtered_params)
       render :partial => "view_goal", :locals => {:goals => @goals}
-    end 
+    end
+    @invited_users = StudentSharing.where(:student_id => @student.id)
     session[:student_id] = params[:id]
   end
 

@@ -83,6 +83,10 @@ ul{
 .separator{
   background: url("/assets/bg-separator.jpg") repeat-y scroll 0 0 transparent;
   height: 2px;
+  &.brown{
+    background-image: none;
+    background-color: $color-font;
+  }
 }
 
 /* End primary layout elements */

@@ -148,14 +148,11 @@ form#new_student_sharing, form.edit_student_sharing, form#new_status {
     }
 }
 
-
 .progress-success .bar {
   background-color: $color-font !important;
   background-image: -moz-linear-gradient(center top , $color-font, $color-font);
   background-repeat: repeat-x;
 }
-
-
 
 a {
   color: $color-font;
@@ -189,4 +186,45 @@ a {
 
 #export-button{
   margin-bottom: 10px;
+}
+
+.show-student{
+  .separator{
+    margin: 15px 0;
+  }
+
+  #add-status{
+    margin-top: 15px;
+  }
+
+  .cont{
+    .width-subject{
+      width: 400px;
+    }
+
+    .width-status{
+      width: 180px;
+    }
+
+    .goal-progress{
+      width: 520px;
+    }
+
+    .table-striped{
+      width: 70%;
+    }
+  }
+
+  #content-users{
+    max-width: 600px;
+    overflow: hidden;
+
+    table td.width-name{
+      width: 30%;
+    }
+
+    table td.width-role{
+      width: 20%;
+    }
+  }
 }

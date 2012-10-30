@@ -1,11 +1,9 @@
-%center
-  .width-users
+%table.table
+  %tbody.width-users
     - invited_users.each do |user|
-      .pull-left.width-name= user.full_name
-      .pull-left.width-email= user.email 
-      .pull-left.width-role= user.role.name
-      .pull-left.width-action
-        = link_to "", edit_invitation_path(user), :class => "icon-pencil color-pen", :method => :get, :remote => true, :title => "Edit"
-        = link_to "", invitation_path(user), :data => { :confirm => 'Are you sure?' }, :class => "icon-trash color-pen", :method => :delete, :remote => true, :title => "Delete"
-      .clearfix
-          
+      %tr{:id => "invitation-#{user.id}"}
+        %td.width-name= user.full_name
+        %td.width-role= user.role.name
+        %td.width-action
+          = link_to "", edit_invitation_path(user), :class => "icon-pencil color-pen", :method => :get, :remote => true, :title => "Edit"
+          = link_to "", invitation_path(user), :data => { :confirm => 'Are you sure?' }, :class => "icon-trash color-pen", :method => :delete, :remote => true, :title => "Delete"

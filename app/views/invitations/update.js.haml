@@ -2,5 +2,6 @@
   - @user.errors.full_messages.each do |error| 
     - if error.include?("Role") 
       $("#role_error").html("#{ escape_javascript ( error )}");
+  $('#invite_user form .submit-indicator').addClass('hide')
 - else
   location.reload()
