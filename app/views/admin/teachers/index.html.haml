@@ -10,7 +10,7 @@
     - student_count = teacher.students.length
     - if student_count > 0
       .teacher-container.clearfix
-        - teacher_home_url = "/teachers"
+        - teacher_home_url = admin_teacher_path(teacher)
         .avatar-container.well
           %a{:href => teacher_home_url, :title => teacher.full_name}
             = image_tag(teacher.photo_url, :alt => teacher.full_name, :class => "teacher-avatar")

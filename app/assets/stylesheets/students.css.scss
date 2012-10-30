@@ -94,7 +94,11 @@ form#student-form {
   }
 }
 
-
+.student-users{
+  a{
+    padding-left: 10px;
+  }
+}
 
 form#new_student_sharing, form.edit_student_sharing, form#new_status {
   .form-inputs {
@@ -181,4 +185,8 @@ a {
     background-color: #E47028;
     color: #ffffff;
   }
+}
+
+#export-button{
+  margin-bottom: 10px;
 }

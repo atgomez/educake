@@ -1,5 +1,8 @@
 - unless @goals.empty?
-  %center
+  .pull-right
+    = link_to "Export", "#", :id => "export-button", :class => "btn export", "data-toggle" => "modal"
+  .clearfix
+  %center.clearfix
     %iframe{:frameborder => "0", :height => "500", :src => "/students/"+ params[:id] + "/common_chart", :width => "80%", :id => "chart"}
   = hidden_field_tag "iframe_src", "/students/"+ params[:id] + "/common_chart?"
 
@@ -29,8 +32,12 @@
           - else
             %span= @student.goals.length
 
-    .edit.pull-right
-      %span= link_to "Edit", edit_student_path(@student), :class => "btn"
+    .action-link-container.pull-right
+      .clearfix.action-link
+        = link_to "Edit", edit_student_path(@student)
+      .clearfix.action-link
+        /= link_to "Users", "#"
+
   = hidden_field_tag "student_id", params[:id]
   .tabbable
     %ul.nav.nav-tabs
@@ -38,13 +45,12 @@
         = link_to "Status", "#"
       %li#users
         = link_to "Users", "#"
-    .users.hide
+    .users.hide.student-users
       = link_to " Invite a user", new_invitation_path, :remote => true, :class => "icon-plus-sign add"
       #render_invite_user
       #content-users
     .status
-      #render_add_status
-      .pull-right= link_to "Export Progress", "#", :id => "export-button", :class => "btn export", "data-toggle" => "modal"
+      #render_add_status      
       - if @goals.size > 0
         .pull-right= link_to " Add a status", new_status_goals_path, :remote => true, :class => "btn export"
       .clearfix

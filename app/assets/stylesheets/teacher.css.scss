@@ -69,6 +69,14 @@ $color-font: #E17C25;
       padding-right: 20px;
     }
     
+    .action-link-container{
+      text-align: right;
+      height: 100px;
+      padding-right: 15px;
+      .action-link{
+        margin-bottom: 10px;
+      }
+    }
   }
 
   .student-container, .teacher-container{
