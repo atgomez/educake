@@ -25,11 +25,13 @@ window.studentObject =
   addDatePicker: ->
     $("#student_birthday").datepicker({"format": "mm-dd-yyyy"})
     return 
+
   autocompleteSearch: -> 
     $('#student_sharing_email').live "keydown.autocomplete", -> 
       $(this).autocomplete
         source: $(this).data('autocomplete-source')
     return
+
   searchUser: -> 
     $("#render_invite_user").delegate "#search-email", "click", () ->
       email = $("#student_sharing_email").val()
@@ -52,25 +54,36 @@ window.studentObject =
           return      
       
   clickOnGoal: -> 
-    $(".status").delegate 'a.goal', 'click', () -> 
-      page_id = $(".pagination li.active a").attr("href").split("?")[1]
+    $(".status a.goal").live 'click', () -> 
+      page_id = ""
+      href = $(".pagination li.active a").attr("href")
+      if href
+        page_id = href.split("?")[1]
+
       id_content = $(this).attr("href")
       id = id_content.split("_")[1]
       current_iframe = $('#chart').attr("src")
       id_content = $(this).attr("href")
-      cl = $(this).attr("class").split("goal").join("").trim()
-      if cl == "icon-plus"
+      if $(this).hasClass("icon-plus")
         $(this).removeClass("icon-plus").addClass("icon-minus")
-        $(id_content).attr("style","display:block;")
+        $(id_content).slideDown('fast', ->
+          $(id_content).attr("style","display:block;")
+        )
+        
         $('#chart').attr("src", "chart?goal_id="+id);
         $(".status a.goal").each ->
           if $(this).hasClass("icon-minus") && ($(this).attr("href") != id_content)
             $(this).removeClass("icon-minus").addClass("icon-plus")
             id = $(this).attr("href")
-            $(id).attr("style","display:none;")
-      else if cl == "icon-minus"
+            #$(id).attr("style","display:none;")
+            $(id).slideUp('fast', ->
+              $(id).attr("style","display:none;")
+            )
+      else if $(this).hasClass("icon-minus")
         $(this).removeClass("icon-minus").addClass("icon-plus")
-        $(id_content).attr("style","display:none;")
+        $(id_content).slideUp('fast', ->
+          $(id_content).attr("style","display:none;")
+        )
         $('#chart').attr("src", "/students/"+ $("#student_id").val() + "/common_chart?"+page_id);
       return
   

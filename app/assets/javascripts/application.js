@@ -18,6 +18,7 @@
 //= require students
 //= require init
 //= require goal
+//= require helper
 //= require highcharts/js/highcharts
 //= require app/admin/teacher
 //= require json_parse
