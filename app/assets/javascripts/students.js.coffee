@@ -10,6 +10,7 @@ window.studentObject =
     @searchUser()
     @autocompleteSearch()
     @uploadPhoto()
+    @clickExport()
     return
 
   uploadPhoto: ->
@@ -125,6 +126,13 @@ window.studentObject =
       if $.trim(url) != ''
         window.location.href = url
 
+  clickExport: ->
+    $('#export-button').click((e) ->
+      e.preventDefault()
+      $('#export-dialog').modal('show')
+    )
+
+    
 loadUser = ->
   $.ajax
     type: "GET"
@@ -161,4 +169,3 @@ loadPage= (evt) ->
       $('#content-status').removeClass 'loading'
   })
   return
-
