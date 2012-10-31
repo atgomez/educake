@@ -12,6 +12,7 @@ window.studentObject =
     @uploadPhoto()
     @clickExport()
     @onSaveInvitation()
+    @scrollToUser()
     return
 
   uploadPhoto: ->
@@ -118,7 +119,13 @@ window.studentObject =
           $(".ajax-loading").addClass "hidden"
           return      
     return false
-    
+  
+  scrollToUser: ->
+    $("#goto-users").click((e) ->
+      e.preventDefault()
+      helper.scroll_to(".users.student-users")
+    )
+
   clickOnUsers: -> 
     $("#users").click (e) ->
       e.preventDefault()

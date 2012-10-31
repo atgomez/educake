@@ -36,7 +36,7 @@
       .clearfix.action-link
         = link_to "Edit", edit_student_path(@student)
       .clearfix.action-link
-        = link_to "Users", "#"
+        = link_to "Users", "#", :id => "goto-users"
 
   = hidden_field_tag "student_id", params[:id]
   
