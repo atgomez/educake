@@ -122,6 +122,7 @@ class StudentsController < ApplicationController
     @goal.statuses.is_ideal(false).each{|status| 
       data << [status.due_date, (status.accuracy*100).round / 100.0]
     }
+    data = data.sort_by { |hsh| hsh[0] }
     @series << {
                  :name => @goal.name,
                  :data => data

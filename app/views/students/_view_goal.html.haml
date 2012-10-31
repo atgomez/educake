@@ -25,7 +25,7 @@
         .introduce.pull-left
           When verbally told a number (any numeral up to 100), will write the numeral or use cards with numbers on them to display the correct numeral with 80% accuracy on 9 out of 10 trial days as measured by data.
         .goal-progress.pull-right
-          - goal.statuses.is_ideal(false).each do |status|
+          - goal.statuses.is_ideal(false).order('due_date ASC').each do |status|
             .width-status= ::Util.round_f(status.accuracy).to_s + "% by " + status.due_date.strftime("%m/%Y")
         - statuses =  goal.statuses.is_ideal(false)
         - if !statuses.empty?
