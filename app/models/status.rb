@@ -33,7 +33,9 @@ class Status < ActiveRecord::Base
 
   protected 
     def update_status_state
-      self.goal.update_status_state(self)
+      if (!self.is_ideal)
+        self.goal.update_status_state(self)
+      end
     end
 
     def validate_due_date
