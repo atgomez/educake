@@ -10,7 +10,7 @@ class Status < ActiveRecord::Base
   scope :is_ideal, lambda {|ideal| where(:is_ideal => ideal)}
 
   before_update :update_status_state
-  before_save :validate_due_date
+  #before_update :validate_due_date
 
   def condition_goal 
     !goal_id.nil?
