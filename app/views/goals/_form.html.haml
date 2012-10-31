@@ -1,6 +1,6 @@
 - goal ||= Goal.build_goal :trial_days_total => 10, :trial_days_actual => 9, :baseline_date => Date.today
 - student ||= Student.new
-- goal.build_statuses
+- goal.build_statuses 
 - id ||= 'goal-dialog'
 .modal.hide.fade{:tabindex => "-1", :id => id}
   = simple_form_for(goal, :html => { :id => 'goal-form', :class => 'form-horizontal goal-form' }) do |f|

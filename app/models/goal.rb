@@ -13,7 +13,7 @@ class Goal < ActiveRecord::Base
   }
 
   scope :is_archived, lambda {|is_archived| where(:is_archived => is_archived)} 
-  attr_accessor :progresses
+  attr_accessor :progresses #For add/update purpose
   
   def name 
     [self.subject.name, self.curriculum.name].join(" ")
@@ -28,19 +28,20 @@ class Goal < ActiveRecord::Base
   end
 
   # Instance methods.
-  def create_new_status(params)
-    status = self.statuses.new params
+  def update_status_state(status)
     due_date = status.due_date
+    return status if (!due_date || due_date < self.baseline_date || due_date > self.due_date)
 
     #
-    # Find the progress includes this status
+    # Find the progress contains this status
     #
     current_progress = nil
     current_progress_index = 0
-    # Firstly, treat the baseline as the first progress value
+    # Firstly, treat the baseline info as the first progress value
     previous_progress = self.baseline
     previous_due_date = self.baseline_date
 
+    # Get all progress and sort them
     progresses = self.statuses.is_ideal(true).order('due_date ASC')
     progresses.each do |progress|
       if (progress.due_date >= due_date)
@@ -59,11 +60,12 @@ class Goal < ActiveRecord::Base
     distance_day_of_status = (status.due_date - previous_due_date).to_i
     distance_day_of_progress = (current_progress.due_date - previous_due_date).to_i
     needed_value_for_ideal_goal = current_progress.accuracy - previous_progress
+
     ideal_increment_value = needed_value_for_ideal_goal*distance_day_of_status/distance_day_of_progress
     status.ideal_value = previous_progress + ideal_increment_value
 
     #
-    # Find the accuracy
+    # Find the accuracy value
     #
     
     # Get the list of [trial_days_total] previous statuses
@@ -79,12 +81,9 @@ class Goal < ActiveRecord::Base
 
       # Add current status value to total
       sum_value = sum_value + status.value
-      puts "="*20
-      puts sum_value
-      puts previous_statuses
       status.accuracy = sum_value/self.trial_days_actual
 
-    else
+    else # If not enough status, set accuracy equal to value
       status.accuracy = status.value
     end
 
