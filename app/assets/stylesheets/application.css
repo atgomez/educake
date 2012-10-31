@@ -12,6 +12,10 @@
  *= require_tree .
  */
 
+select.time{
+  width: 50px;
+}
+
 .horizontal-bar{
   display: block;
   border-top: 1px solid #E1E1E8;

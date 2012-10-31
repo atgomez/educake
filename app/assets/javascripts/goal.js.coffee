@@ -21,17 +21,22 @@ window.goal =
       $('#goal-dialog').modal('show')
     )
 
-    $("#goal-form #btn-save-goal").livequery('click', (e) -> 
+    $('.edit-goal').click((e) -> 
       e.preventDefault()
-      $("#goal-form").submit()
+      $('#_modal' + $(this).attr('target')).modal('show')
     )
 
-    $("#goal-form").livequery('submit', (e) ->
+    $(".goal-form #btn-save-goal").livequery('click', (e) -> 
+      e.preventDefault()
+      $(this).parent().parent().submit()
+    )
+
+    $(".goal-form").livequery('submit', (e) ->
       e.preventDefault()
 
-      data = $("#goal-form").serialize()
-      url = $("#goal-form").attr('action')
-
+      data = $(this).serialize()
+      url = $(this).attr('action')
+      parent = $(this).parent()
       $.ajax({
         url: url,
         type: 'POST',
@@ -48,7 +53,7 @@ window.goal =
 
           if res and res.html
             goal_dialog = $(res.html)
-            $("#goal-dialog").html(goal_dialog.html())
+            $(parent).html(goal_dialog.html())
       })
 
       return false
@@ -73,45 +78,3 @@ window.goal =
           $("#error_edit_student").addClass('error_notification')
           $("#error_edit_student").text('Goal was updated failed.')
       })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

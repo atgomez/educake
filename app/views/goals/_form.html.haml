@@ -1,9 +1,9 @@
-- goal ||= Goal.build_goal
+- goal ||= Goal.build_goal :trial_days_total => 10, :trial_days_actual => 9, :baseline_date => Date.today
 - student ||= Student.new
-
-#goal-dialog.modal.hide.fade{:tabindex => "-1"}
-  = simple_form_for(goal, :url => goals_path(:student_id => student), 
-        :html => { :id => 'goal-form', :class => 'form-horizontal goal-form' }) do |f|
+- goal.build_statuses
+- id ||= 'goal-dialog'
+.modal.hide.fade{:tabindex => "-1", :id => id}
+  = simple_form_for(goal, :html => { :id => 'goal-form', :class => 'form-horizontal goal-form' }) do |f|
     .modal-header
       %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} &times;
       %h4 Add a Goal
@@ -16,21 +16,38 @@
       = f.association :curriculum, :label => "Curriculum Core"
       = f.association :subject, :label => "Subject & Standard"
       = f.input(:due_date, :as => :string, :input_html => {:class => "select-date", 
-                :value => goal.due_date_string}, :label => "Due Date")
-      = f.input :accuracy, :label => "% Accuracy"
+                :value => goal.due_date_string})
+      = f.input :accuracy, :label => "Goal % Accuracy"
+      = f.input(:baseline_date, :as => :string, :input_html => {:class => "select-date", 
+                :value => goal.baseline_date_string})
+      = f.input(:baseline, :label => "Baseline % Accuracy")
+
+      .control-group.date.required
+        %label.date.required.control-label{:for => "goal_baseline_date_1i"}
+          %abbr{:title => "required"} *
+          Trial days
+        .controls
+          = f.input_field(:trial_days_actual, :length => 5, :style => "width:50px")
+          \/
+          = f.input_field(:trial_days_total, :length => 5, :style => "width:50px")
+      = f.hidden_field(:id)
+      = f.hidden_field(:student_id, :value => student.id)
       
       .horizontal-bar
       
       .progress-report-container
-        - goal.statuses.each_with_index do |status, idx|
+        - idx = 1
+        - goal.progresses.each do |status|
           = f.simple_fields_for(:statuses, status) do |f_status|
-            %label.status-name= "Progress Report #{idx + 1}"
+            %label.status-name= "Progress Report #{idx}"
             = f_status.input(:due_date, :as => :string, :input_html => {:class => "select-date", 
                   :value => status.due_date_string}, :label => "Due Date")
             = f_status.input :accuracy, :label => "% Accuracy"
+            - idx = idx + 1
             
     .modal-footer
       .submit-indicator.loading.hide
+      = f.input(:is_archived, :label => "Archive Goal")
       %button.btn{"aria-hidden" => "true", "data-dismiss" => "modal", :class => "close-dialog"} Cancel
       %button.btn.btn-primary{:id => "btn-save-goal"} Save
 

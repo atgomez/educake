@@ -1,16 +1,19 @@
 class Goal < ActiveRecord::Base
   include ::SharedMethods::Paging
-  attr_accessible :accuracy, :curriculum_id, :due_date, :subject_id, :statuses_attributes
+  attr_accessible :accuracy, :curriculum_id, :due_date, :subject_id, :statuses_attributes, :baseline_date, :baseline, :trial_days_total, :trial_days_actual,:is_archived
   has_many :statuses, :dependent => :destroy
   belongs_to :student 
   belongs_to :subject 
   belongs_to :curriculum
   
   validates :accuracy, :numericality => true
-  validates_presence_of :accuracy, :due_date, :curriculum_id, :subject_id
+  validates_presence_of :accuracy, :due_date, :curriculum_id, :subject_id, :baseline_date, :baseline, :trial_days_total, :trial_days_actual
   accepts_nested_attributes_for :statuses, :reject_if => lambda { |a| 
     a['accuracy'].blank? || a['due_date'].blank?
   }
+
+  scope :is_archived, lambda {|is_archived| where(:is_archived => is_archived)} 
+  attr_accessor :progresses
   
   def name 
     [self.subject.name, self.curriculum.name].join(" ")
@@ -25,10 +28,77 @@ class Goal < ActiveRecord::Base
   end
 
   # Instance methods.
+  def create_new_status(params)
+    status = self.statuses.new params
+    due_date = status.due_date
 
-  # Get due_date in string.
+    #
+    # Find the progress includes this status
+    #
+    current_progress = nil
+    current_progress_index = 0
+    # Firstly, treat the baseline as the first progress value
+    previous_progress = self.baseline
+    previous_due_date = self.baseline_date
+
+    progresses = self.statuses.is_ideal(true).order('due_date ASC')
+    progresses.each do |progress|
+      if (progress.due_date >= due_date)
+        current_progress = progress
+        break
+      end
+
+      # Keep previous progress value for getting ideal value
+      previous_progress = progress.accuracy
+      previous_due_date = progress.due_date
+    end
+
+    #
+    # Find the ideal value
+    #
+    distance_day_of_status = (status.due_date - previous_due_date).to_i
+    distance_day_of_progress = (current_progress.due_date - previous_due_date).to_i
+    needed_value_for_ideal_goal = current_progress.accuracy - previous_progress
+    ideal_increment_value = needed_value_for_ideal_goal*distance_day_of_status/distance_day_of_progress
+    status.ideal_value = previous_progress + ideal_increment_value
+
+    #
+    # Find the accuracy
+    #
+    
+    # Get the list of [trial_days_total] previous statuses
+    previous_statuses = self.statuses.find(:all, :conditions => ['is_ideal = ? AND due_date < ?', false, status.due_date], :order => 'due_date DESC', :limit => (self.trial_days_total - 1))
+    
+    # Sort by value
+    previous_statuses = previous_statuses.sort_by { |hsh| hsh[:value] }
+
+    if previous_statuses.count == (self.trial_days_total - 1) #If enough statuses for calculating
+      lowest_value_count = self.trial_days_total - self.trial_days_actual
+      sum_value = 0
+      (lowest_value_count...9).each {|index| sum_value = sum_value + previous_statuses[index][:value]}
+
+      # Add current status value to total
+      sum_value = sum_value + status.value
+      puts "="*20
+      puts sum_value
+      puts previous_statuses
+      status.accuracy = sum_value/self.trial_days_actual
+
+    else
+      status.accuracy = status.value
+    end
+
+    return status
+  end
+
+
+  # Get date in string.
   def due_date_string
     ::Util.date_to_string(self.due_date)
+  end
+
+  def baseline_date_string
+    ::Util.date_to_string(self.baseline_date)
   end
 
   # Override property setter.
@@ -42,9 +112,25 @@ class Goal < ActiveRecord::Base
     self.send(:write_attribute, :due_date, date)
   end
 
-  def build_statuses
-    3.times { self.statuses.build }
+  def baseline_date=(date)
+    if date.is_a?(String)
+      date = ::Util.format_date(date)
+      if date
+        date = date.to_date
+      end
+    end
+    self.send(:write_attribute, :baseline_date, date)
   end
+
+  def build_statuses
+    count_progress = self.statuses.is_ideal(true).count
+    self.progresses = []
+    self.progresses.concat self.statuses.find(:all, :conditions => ['is_ideal = ?', true], :order => 'due_date')
+
+    # Create remaining progresses
+    (3-count_progress).times { self.progresses << self.statuses.build(:is_ideal => true) }
+  end
+
   class << self
     def load_data(params = {}, complete = nil)
       paging_info = parse_paging_options(params)

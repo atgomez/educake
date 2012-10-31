@@ -1,11 +1,12 @@
 class Status < ActiveRecord::Base
-  attr_accessible :accuracy, :due_date, :goal_id, :is_ideal, :user_id
+  attr_accessible :accuracy, :due_date, :goal_id, :is_ideal, :user_id, :value, :time_to_complete
   belongs_to :goal
   belongs_to :user
   # VALIDATION
-  validates_presence_of :accuracy, :due_date, :goal_id, :if => :condition_goal
+  validates_presence_of :value, :due_date, :goal_id, :if => :condition_goal
   validates :accuracy, :numericality => true
   # Instance methods.
+  # is_ideal == true <~ Progress Object
   scope :is_ideal, lambda {|ideal| where(:is_ideal => ideal)}
   def condition_goal 
     !goal_id.nil?

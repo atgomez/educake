@@ -6,7 +6,7 @@ class StudentsController < ApplicationController
     @student = Student.find(params[:id])
     @teacher = @student.teacher 
     @students = Student.where("teacher_id = ?  and id !=?", @teacher.id, params[:id]).limit 4
-    @goals = @student.goals.load_data(filtered_params)
+    @goals = @student.goals.is_archived(false).load_data(filtered_params)
     if request.xhr?
       @goals = @student.goals.load_data(filtered_params)
       render :partial => "view_goal", :locals => {:goals => @goals}
@@ -85,10 +85,12 @@ class StudentsController < ApplicationController
     @goals = @student.goals.load_data(filtered_params)
     @goals.each do |goal| 
       data = []
-      goal.statuses.is_ideal(true).each{|status| 
-        data << [status.due_date, status.accuracy]
+      goal.statuses.is_ideal(false).each{|status| 
+        data << [status.due_date, (status.accuracy*100).round / 100.0]
       }
-      data << [goal.due_date, goal.accuracy]
+      #data << [goal.due_date, goal.accuracy]
+      #Sort data by due date
+      data = data.sort_by { |hsh| hsh[0] }
       @series << {
                    :name => goal.name,
                    :data => data
@@ -104,10 +106,13 @@ class StudentsController < ApplicationController
     @series = []
     data = []
     # For ideal data
-    @goal.statuses.is_ideal(true).each{|status| 
-      data << [status.due_date, status.accuracy]
+    @goal.statuses.is_ideal(false).each{|status| 
+      data << [status.due_date, (status.ideal_value*100).round / 100.0]
     }
-    data << [@goal.due_date, @goal.accuracy]
+    #data << [@goal.due_date, @goal.accuracy]
+    #Sort data by due date
+    data = data.sort_by { |hsh| hsh[0] }
+    
     @series << {
                  :name => "Ideal chart",
                  :data => data
@@ -115,7 +120,7 @@ class StudentsController < ApplicationController
     # For add status 
     data = []
     @goal.statuses.is_ideal(false).each{|status| 
-      data << [status.due_date, status.accuracy]
+      data << [status.due_date, (status.accuracy*100).round / 100.0]
     }
     @series << {
                  :name => @goal.name,

@@ -10,11 +10,15 @@
         #goal_error.pull-right
         .clearfix
         = f.input(:due_date, :as => :string, :input_html => {:class => "select-date pull-left", :value => @status.due_date_string}, :label => "Due Date")
-        
         #duedate_error.pull-right
+
         .clearfix
-        = f.input :accuracy, :label => "% Accuracy", :input_html => {:class => "pull-left"}
+        = f.input :value, :label => "% Accuracy", :input_html => {:class => "pull-left"}
         #accuracy_error.pull-right
+
+        .clearfix
+        = f.input :time_to_complete, :include_blank => false, :minute_step => 5
+        #time_to_complete_error.pull-right
         = f.hidden_field :is_ideal, :value => false
         = f.hidden_field :user_id, :value => current_user.id
         .clearfix
