@@ -3,14 +3,14 @@ class Status < ActiveRecord::Base
   belongs_to :goal
   belongs_to :user
   # VALIDATION
-  validates_presence_of :value, :due_date, :goal_id, :time_to_complete
+  validates_presence_of :value, :due_date, :goal_id
   validates :accuracy, :numericality => true
   # Instance methods.
   # is_ideal == true <~ Progress Object
   scope :is_ideal, lambda {|ideal| where(:is_ideal => ideal)}
 
   before_update :update_status_state
-  #before_update :validate_due_date
+  before_update :validate_due_date
 
   def condition_goal 
     !goal_id.nil?
