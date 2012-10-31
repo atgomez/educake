@@ -25,7 +25,12 @@ window.studentObject =
     )
 
   addDatePicker: ->
-    $("#student_birthday").datepicker({"format": "mm-dd-yyyy"})
+    $("#student_birthday").datepicker({
+      dateFormat: "mm-dd-yy",
+      yearRange: "-40:+0",
+      changeMonth: true,
+      changeYear: true
+    })
     return 
 
   autocompleteSearch: -> 

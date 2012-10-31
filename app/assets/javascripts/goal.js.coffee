@@ -9,10 +9,20 @@ window.goal =
     
   add_date_picker: ->
     $("#goal-form .select-date").livequery( ->
-      $(this).datepicker({"format": "mm-dd-yyyy"})
+      $(this).datepicker({
+        dateFormat: "mm-dd-yy",
+        yearRange: "-10:+10",
+        changeMonth: true,
+        changeYear: true
+      })
     )
     $("#status_due_date").livequery( ->
-      $(this).datepicker({"format": "mm-dd-yyyy"})
+      $(this).datepicker({
+        dateFormat: "mm-dd-yy",
+        yearRange: "-10:+10",
+        changeMonth: true,
+        changeYear: true
+      })
     )
 
   setup_form: ->
