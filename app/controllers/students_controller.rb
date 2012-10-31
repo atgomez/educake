@@ -1,11 +1,14 @@
 class StudentsController < ApplicationController
   layout "common"
   before_filter :destroy_session, :except => [:show, :destroy]
-    
+  
+  def index
+    redirect_to('/teachers')
+  end
+
   def show
     @student = Student.find(params[:id])
     @teacher = @student.teacher 
-    @students = Student.where("teacher_id = ?  and id !=?", @teacher.id, params[:id]).limit 4
     @goals = @student.goals.is_archived(false).load_data(filtered_params)
     if request.xhr?
       @goals = @student.goals.load_data(filtered_params)
@@ -37,7 +40,8 @@ class StudentsController < ApplicationController
     @student = Student.new(params[:student])
 
     if @student.save
-      redirect_to @student, notice: 'Student was successfully created.'
+      flash[:notice] = 'Student was successfully created.'
+      redirect_to :action => 'edit', :id => @student
     else
       render action: "new"
     end

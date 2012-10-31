@@ -30,7 +30,7 @@ TeacherMgnt::Application.configure do
   config.active_record.auto_explain_threshold_in_seconds = 0.5
 
   # The line of code below will prevent loading files from /public/assets"
-  config.serve_static_assets = false
+  # config.serve_static_assets = false
   
   # Do not compress assets
   config.assets.compress = false
