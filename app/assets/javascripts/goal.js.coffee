@@ -41,6 +41,12 @@ window.goal =
       $(this).parent().parent().submit()
     )
 
+    $(".goal-form #btn-cancel").livequery('click', (e) ->
+      e.preventDefault()
+      btn_reset = $(this).siblings(".reset-form-button")
+      $(btn_reset).click();
+    )
+
     $(".goal-form").livequery('submit', (e) ->
       e.preventDefault()
 

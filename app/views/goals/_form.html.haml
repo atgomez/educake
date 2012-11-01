@@ -48,6 +48,7 @@
     .modal-footer
       .submit-indicator.loading.hide
       = f.input(:is_archived, :label => "Archive Goal")
-      %button.btn{"aria-hidden" => "true", "data-dismiss" => "modal", :class => "close-dialog"} Cancel
+      %input.reset-form-button.hide{:type => "reset"}
+      %button.btn{"aria-hidden" => "true", "data-dismiss" => "modal", :class => "close-dialog", :id => "btn-cancel"} Cancel
       %button.btn.btn-primary{:id => "btn-save-goal"} Save
 
