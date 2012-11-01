@@ -6,7 +6,11 @@
   = simple_form_for(goal, :html => { :id => "goal-form#{goal.id}", :class => 'goal-form form-horizontal goal-form' }) do |f|
     .modal-header
       %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} &times;
-      %h4 Add a Goal
+      - if goal.new_record?
+        %h4 Add a Goal
+      - else
+        %h4 Edit Goal
+
     .modal-body
       - if notification = f.error_notification
         .alert.alert-error.fade.in
@@ -47,7 +51,10 @@
             
     .modal-footer
       .submit-indicator.loading.hide
-      = f.input(:is_archived, :label => "Archive Goal")
+
+      - unless goal.new_record?
+        = f.input(:is_archived, :label => "Archive Goal")
+        
       %input.reset-form-button.hide{:type => "reset"}
       %button.btn{"aria-hidden" => "true", "data-dismiss" => "modal", :class => "close-dialog", :id => "btn-cancel"} Cancel
       %button.btn.btn-primary{:id => "btn-save-goal"} Save

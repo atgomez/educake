@@ -8,6 +8,12 @@
     .pull-right
       .width-status.pull-left.accuracy.bold
         = ::Util.round_f(goal.accuracy).to_s + "% by " + goal.due_date.strftime("%m/%Y")
+      - if params[:action] == 'show'
+        - if goal.on_track?
+          .track-indicator.pull-left{:class => "on-track", :title => "On-track"}
+        - else
+          .track-indicator.pull-left{:title => "Not on-track"}
+
       .pull-left.progress.progress-success
         .bar.custom-bar{:style => "width: #{goal.accuracy}%"}
 

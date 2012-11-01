@@ -3,7 +3,7 @@
   = simple_form_for(@status, :url => add_status_goals_path, :method => :post, :remote => true, :html => {:class => "status-form"}) do |f|
     .modal-header
       %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} ×
-      %h4 Add status 
+      %h4 Add grade 
     .modal-body
       - if notification = f.error_notification
         .alert.alert-error.fade.in

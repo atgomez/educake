@@ -34,13 +34,10 @@ class Goal < ActiveRecord::Base
   }
 
   scope :is_archived, lambda {|is_archived| where(:is_archived => is_archived)} 
-  attr_accessor :progresses #For add/update purpose
+  attr_accessor :last_status, :progresses #For add/update purpose
 
-  after_save :update_all_status
-  
-  def name 
-    [self.subject.name, self.curriculum.name].join(" ")
-  end 
+  after_save :update_all_status  
+
   # Class methods
   class << self
     def build_goal(attrs = {})
@@ -48,6 +45,10 @@ class Goal < ActiveRecord::Base
       goal.build_statuses
       return goal
     end
+  end # Class methods.
+
+  def name 
+    [self.subject.name, self.curriculum.name].join(" ")
   end
 
   # Instance methods.
@@ -113,7 +114,6 @@ class Goal < ActiveRecord::Base
     return status
   end
 
-
   # Get date in string.
   def due_date_string
     ::Util.date_to_string(self.due_date)
@@ -121,6 +121,20 @@ class Goal < ActiveRecord::Base
 
   def baseline_date_string
     ::Util.date_to_string(self.baseline_date)
+  end
+
+  def last_status
+    @last_status ||= self.statuses.is_ideal(false).order(:due_date).last
+  end
+
+  # Check if the goal is on-track or not.
+  def on_track?
+    result = false
+    if self.last_status
+      # If actual value >= ideal value => 'on-track', else 'not on-track'
+      result = (self.last_status.accuracy >= self.last_status.ideal_value)
+    end
+    return result
   end
 
   # Override property setter.

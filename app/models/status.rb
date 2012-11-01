@@ -48,7 +48,8 @@ class Status < ActiveRecord::Base
     self.send(:write_attribute, :due_date, date)
   end
 
-  protected 
+  protected
+  
     def update_status_state
       if (!self.is_ideal)
         self.goal.update_status_state(self)
