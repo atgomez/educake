@@ -14,6 +14,8 @@ class Goal < ActiveRecord::Base
 
   scope :is_archived, lambda {|is_archived| where(:is_archived => is_archived)} 
   attr_accessor :progresses #For add/update purpose
+
+  after_save :update_all_status
   
   def name 
     [self.subject.name, self.curriculum.name].join(" ")
@@ -130,6 +132,7 @@ class Goal < ActiveRecord::Base
     (3-count_progress).times { self.progresses << self.statuses.build(:is_ideal => true) }
   end
 
+
   class << self
     def load_data(params = {}, complete = nil)
       paging_info = parse_paging_options(params)
@@ -157,6 +160,16 @@ class Goal < ActiveRecord::Base
         paging_options(options, default_opts)
       end
   end
+
+  protected
+    def update_all_status
+      self.transaction do
+        self.statuses.each do |status|
+          self.update_status_state(status)
+          status.save
+        end
+      end
+    end
 end
 
 # == Schema Information
