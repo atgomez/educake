@@ -111,7 +111,8 @@ class Student < ActiveRecord::Base
         progress[status.due_date] << (vs_baseline/(goal.accuracy - goal.baseline)*100).round
       end 
     end
-    progress.keys.each do |key| 
+    
+    progress.keys.sort.each do |key| 
       data << [key, progress[key].sum/progress[key].count]
     end 
     return data
