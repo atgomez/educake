@@ -1,3 +1,23 @@
+# == Schema Information
+#
+# Table name: goals
+#
+#  id                :integer          not null, primary key
+#  student_id        :integer          not null
+#  subject_id        :integer          not null
+#  curriculum_id     :integer          not null
+#  due_date          :date
+#  accuracy          :float            default(0.0)
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#  is_completed      :boolean
+#  baseline          :float            default(0.0)
+#  baseline_date     :date             not null
+#  trial_days_total  :integer          default(0)
+#  trial_days_actual :integer          default(0)
+#  is_archived       :boolean          default(FALSE)
+#
+
 class Goal < ActiveRecord::Base
   include ::SharedMethods::Paging
   attr_accessible :accuracy, :curriculum_id, :due_date, :subject_id, :statuses_attributes, :baseline_date, :baseline, :trial_days_total, :trial_days_actual,:is_archived
@@ -171,19 +191,3 @@ class Goal < ActiveRecord::Base
       end
     end
 end
-
-# == Schema Information
-#
-# Table name: goals
-#
-#  id            :integer          not null, primary key
-#  student_id    :integer          not null
-#  subject_id    :integer          not null
-#  curriculum_id :integer          not null
-#  due_date      :date
-#  accuracy      :float
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
-#  is_completed  :boolean
-#
-

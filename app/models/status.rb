@@ -1,3 +1,20 @@
+# == Schema Information
+#
+# Table name: statuses
+#
+#  id               :integer          not null, primary key
+#  goal_id          :integer          not null
+#  due_date         :date
+#  accuracy         :float            default(0.0)
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  is_ideal         :boolean          default(TRUE)
+#  user_id          :integer
+#  value            :float            default(0.0)
+#  ideal_value      :float            default(0.0)
+#  time_to_complete :time
+#
+
 class Status < ActiveRecord::Base
   attr_accessible :accuracy, :due_date, :goal_id, :is_ideal, :user_id, :value, :time_to_complete
   belongs_to :goal
@@ -50,16 +67,3 @@ class Status < ActiveRecord::Base
       end
     end
 end
-
-# == Schema Information
-#
-# Table name: statuses
-#
-#  id         :integer          not null, primary key
-#  goal_id    :integer          not null
-#  due_date   :date
-#  accuracy   :float
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#
-
