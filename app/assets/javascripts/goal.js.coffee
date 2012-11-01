@@ -103,9 +103,14 @@ window.goal =
     )
 
   update_status: ->
-    $("#complete_checkbox").live 'click', ->
-      value = $("#complete_checkbox").attr('value')
-      url = $("#complete_checkbox").attr('url')
+    $(".complete-checkbox .goal-complete").live 'click', ->
+      if $(this).attr("checked")
+        $(this).val('true')
+      else
+        $(this).val('false')
+
+      value = $(this).attr('value')
+      url = $(this).attr('url')
       data = {status: value}
 
       $.ajax({
