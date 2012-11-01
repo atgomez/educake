@@ -98,7 +98,24 @@ class Student < ActiveRecord::Base
   end # End class methods.
 
   # Instance methods
-
+  
+  def goals_statuses
+    data = []
+    progress = {}
+    goals = self.goals
+    goals.each do |goal|
+      statuses = goal.statuses.order("due_date ASC").is_ideal(false)
+      statuses.map do |status|
+        vs_baseline = status.accuracy - goal.baseline
+        progress[status.due_date] = [] if progress[status.due_date].nil?
+        progress[status.due_date] << (vs_baseline/(goal.accuracy - goal.baseline)*100).round
+      end 
+    end
+    progress.keys.each do |key| 
+      data << [key, progress[key].sum/progress[key].count]
+    end 
+    return data
+  end 
   def photo_url(style = :small)
     self.photo.url(style)
   end
