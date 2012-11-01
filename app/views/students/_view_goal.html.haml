@@ -38,7 +38,7 @@
             %tbody
               - statuses.each do |status|
                 %tr 
-                  %td= status.due_date.strftime("%m%d%y") rescue ""
+                  %td= status.due_date.strftime("%m/%d/%y") rescue ""
                   %td= ::Util.round_f(status.accuracy).to_s+"%" rescue ""
                   %td= [status.user.classroom, status.user.full_name].join(" ") rescue ""
           
