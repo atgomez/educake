@@ -8,7 +8,7 @@ window.goal =
     return
     
   add_date_picker: ->
-    $("#goal-form .select-date").livequery( ->
+    $(".goal-form .select-date").livequery( ->
       $(this).datepicker({
         dateFormat: "mm-dd-yy",
         yearRange: "-10:+10",
