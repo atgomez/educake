@@ -26,7 +26,8 @@ class Goal < ActiveRecord::Base
   belongs_to :subject 
   belongs_to :curriculum
   
-  validates :accuracy, :numericality => true
+  validates :accuracy, :numericality => true, :inclusion => {:in => 0..100, :message => "must be from 0 to 100"}
+  validates :baseline, :numericality => true, :inclusion => {:in => 0..100, :message => "must be from 0 to 100"}
   validates_presence_of :accuracy, :due_date, :curriculum_id, :subject_id, :baseline_date, :baseline, :trial_days_total, :trial_days_actual
   accepts_nested_attributes_for :statuses, :reject_if => lambda { |a| 
     a['accuracy'].blank? || a['due_date'].blank?

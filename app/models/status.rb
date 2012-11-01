@@ -20,8 +20,8 @@ class Status < ActiveRecord::Base
   belongs_to :goal
   belongs_to :user
   # VALIDATION
+  validates :accuracy, :numericality => true, :inclusion => {:in => 0..100, :message => "must be from 0 to 100"}
   validates_presence_of :value, :due_date, :goal_id
-  validates :accuracy, :numericality => true
   # Instance methods.
   # is_ideal == true <~ Progress Object
   scope :is_ideal, lambda {|ideal| where(:is_ideal => ideal)}
