@@ -26,14 +26,16 @@
                 :value => goal.baseline_date_string, :id => "baseline_date#{goal.id}"})
       = f.input(:baseline, :label => "Baseline % Accuracy", :input_html => {:id => "baseline-#{goal.id}"})
 
-      .control-group.date.required
+      .control-group.date.required{:class => (goal.errors[:trial_days_actual].blank? ? "" : "error")}
         %label.date.required.control-label{:for => "goal_baseline_date_1i"}
           %abbr{:title => "required"} *
           Trial days
         .controls
-          = f.input_field(:trial_days_actual, :length => 5, :style => "width:50px")
-          \/
-          = f.input_field(:trial_days_total, :length => 5, :style => "width:50px")
+          .trial-day
+            = f.input_field(:trial_days_actual, :length => 5, :style => "width:50px")
+            \/
+            = f.input_field(:trial_days_total, :length => 5, :style => "width:50px")
+          = f.error :trial_days_actual
       = f.hidden_field(:student_id, :value => student.id)
       
       .horizontal-bar
@@ -56,5 +58,5 @@
         
       %input.reset-form-button.hide{:type => "reset"}
       %button.btn{"aria-hidden" => "true", "data-dismiss" => "modal", :class => "close-dialog", :id => "btn-cancel"} Cancel
-      %button.btn.btn-primary{:id => "btn-save-goal"} Save
+      = f.submit "Save", :class => "btn btn-primary", :disable_with => "Saving..."
 

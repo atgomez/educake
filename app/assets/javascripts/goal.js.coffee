@@ -59,11 +59,6 @@ window.goal =
     )
 
   setup_form: ->
-    $('#add-goal').click((e) -> 
-      e.preventDefault()
-      $('#goal-dialog').modal('show')
-    )
-
     $('.edit-goal').click((e) -> 
       e.preventDefault()
       $('#_modal' + $(this).attr('target')).modal('show')
@@ -72,12 +67,6 @@ window.goal =
     $(".goal-form #btn-save-goal").livequery('click', (e) -> 
       e.preventDefault()
       $(this).parent().parent().submit()
-    )
-
-    $(".goal-form #btn-cancel").livequery('click', (e) ->
-      e.preventDefault()
-      btn_reset = $(this).siblings(".reset-form-button")
-      $(btn_reset).click();
     )
 
     $(".goal-form").livequery('submit', (e) ->

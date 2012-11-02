@@ -7,10 +7,12 @@
   .invited-user.status    
     .tabbable      
       .status
-        = link_to(" Add a goal", "#", :class => "icon-plus-sign", :id => "add-goal")
+        = link_to(" Add a goal", new_goal_path(:student_id => @student.id), :remote => true,
+                    :class => "icon-plus-sign", :id => "add-goal")
         #content-status.clearfix
           = render(:partial => "view_goal", :locals => {:goals => @goals})
-    = render(:partial => "goals/form", :locals => {:student => @student})
+    #new-goal-container
+      = render(:partial => "goals/form", :locals => {:student => @student})
   .invited-user
     .tabbable      
       .status

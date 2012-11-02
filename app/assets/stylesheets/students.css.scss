@@ -92,6 +92,14 @@ form#student-form {
   .progress-report-container{
     margin-top: 10px;
   }
+
+  &.form-horizontal{
+    .control-label{
+      width: 160px;
+      margin-left: 5px;
+      margin-right: 10px;
+    }
+  }
 }
 
 .student-users{

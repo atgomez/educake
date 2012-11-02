@@ -29,6 +29,7 @@ en:
   goal:
     student_not_found: "Could not find the student"
     created_successfully: "Goal was created successfully"
+    updated_successfully : "Goal was saved successfully"
     save_failed: "Could not save the goal"
 
   admin:

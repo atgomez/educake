@@ -1,4 +1,8 @@
 class GoalsController < ApplicationController
+  def new
+    @student = Student.find_by_id(params[:student_id])
+  end
+
   def create
     result = {}
     status_code = 201

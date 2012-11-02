@@ -38,21 +38,45 @@ class Goal < ActiveRecord::Base
   scope :is_archived, lambda {|is_archived| where(:is_archived => is_archived)} 
   attr_accessor :last_status #For add/update purpose
 
+  # CALLBACK
   before_validation :update_progresses
+  before_save :custom_validations
   after_save :update_all_status  
   
-  def name 
-    [self.subject.name, self.curriculum.name].join(" ")
-  end 
-
-  # Class methods
+  # CLASS METHODS
   class << self
+    def load_data(params = {}, complete = nil)
+      paging_info = parse_paging_options(params)
+      # Paginate with Will_paginate.
+      conds = { :page => paging_info.page_id,
+                :per_page => paging_info.page_size,
+                :order => paging_info.sort_string
+              }
+      unless complete.nil?
+          conds = conds.merge(:conditions => ["is_completed = ?", complete])
+      end 
+      self.paginate(conds)
+    end
+    
     def build_goal(attrs = {})
       goal = self.new(attrs)
       goal.build_progresses
       return goal
     end
-  end # Class methods.
+
+    protected
+
+      # Parse params to PagingInfo object.
+      def parse_paging_options(options, default_opts = {})
+        if default_opts.blank?
+          # This conditions will order records by directory and name first.
+          default_opts = {
+            :sort_criteria => "created_at DESC"
+          }
+        end
+        paging_options(options, default_opts)
+      end
+  end # End class method.
 
   def name 
     [self.subject.name, self.curriculum.name].join(" ")
@@ -189,36 +213,8 @@ class Goal < ActiveRecord::Base
     end
   end
 
-
-  class << self
-    def load_data(params = {}, complete = nil)
-      paging_info = parse_paging_options(params)
-      # Paginate with Will_paginate.
-      conds = { :page => paging_info.page_id,
-                :per_page => paging_info.page_size,
-                :order => paging_info.sort_string
-              }
-      unless complete.nil?
-          conds = conds.merge(:conditions => ["is_completed = ?", complete])
-      end 
-      self.paginate(conds)
-    end
-    
-    protected
-
-      # Parse params to PagingInfo object.
-      def parse_paging_options(options, default_opts = {})
-        if default_opts.blank?
-          # This conditions will order records by directory and name first.
-          default_opts = {
-            :sort_criteria => "created_at DESC"
-          }
-        end
-        paging_options(options, default_opts)
-      end
-  end
-
   protected
+
     def update_progresses
       self.progresses.each do |progress| 
         progress.baseline_date = self.baseline_date
@@ -235,5 +231,23 @@ class Goal < ActiveRecord::Base
       end
     end
 
+    # Run all custom validations
+    def custom_validations
+      self.validate_baseline
+      self.validate_trial_days
+    end
 
+    def validate_baseline
+      if self.baseline.to_f >= self.accuracy.to_f
+        self.errors.add(:baseline, "cannot be greater than or equal to goal percent")
+      end
+      return self.errors.blank?
+    end
+
+    def validate_trial_days
+      if self.trial_days_actual.to_i >= self.trial_days_total.to_i
+        self.errors.add(:trial_days_actual, "cannot be greater than or equal to the ideal trial days")
+      end
+      return self.errors.blank?
+    end
 end
