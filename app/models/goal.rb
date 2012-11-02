@@ -181,8 +181,12 @@ class Goal < ActiveRecord::Base
 
   def goal_status
     status = last_status
-    vs_baseline = status.value - self.baseline
-    vs_baseline/(self.accuracy - self.baseline)*100
+    if (status)
+      vs_baseline = status.value - self.baseline
+      vs_baseline/(self.accuracy - self.baseline)*100
+    else
+      0
+    end
   end
 
 
