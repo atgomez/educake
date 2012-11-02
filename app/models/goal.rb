@@ -41,6 +41,11 @@ class Goal < ActiveRecord::Base
   before_validation :update_progresses
   after_save :update_all_status  
 
+  #after_save :update_all_status
+  
+  def name 
+    [self.subject.name, self.curriculum.name].join(" ")
+  end 
 
   # Class methods
   class << self

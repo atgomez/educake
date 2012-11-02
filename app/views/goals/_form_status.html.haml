@@ -16,7 +16,7 @@
         .clearfix
         = f.input :value, :label => "% Accuracy", :input_html => {:class => "pull-left"}
         .clearfix
-        = f.input :time_to_complete, :include_blank => false, :minute_step => 5
+        = f.input :time_to_complete, :as => :string, :ampm => true
         = f.hidden_field :is_ideal, :value => false
         = f.hidden_field :user_id, :value => current_user.id
         .clearfix

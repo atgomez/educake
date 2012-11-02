@@ -14,8 +14,15 @@ window.studentObject =
     @onSaveInvitation()
     @scrollToUser()
     @allowInputNumber()
+    @timeForField()
     return
     
+  timeForField: ->
+    $('#status_time_to_complete').live "focus", ->
+      $(this).timepicker 
+        hourGrid: 4,
+        minuteGrid: 10
+      return
   allowInputNumber: ->
     $('#user_phone').filter_input({regex:'[0-9]'})
     $('#status_value').filter_input({regex:'[0-9.]', live:true})
