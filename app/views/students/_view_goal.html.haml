@@ -1,6 +1,6 @@
 
 - goals.each do |goal|
-  .cont
+  .cont.goal-container{:id => "goal-container-#{goal.id}"}
     .width-subject.pull-left
       %a{:href=>"#goal_#{goal.id}", "data-toggle" =>"tab", "data-dismiss"=>"div", :class => "icon-plus goal"}
         = " " + goal.subject.name + " " + goal.curriculum.name
@@ -19,7 +19,7 @@
 
       - if params[:action] == 'edit'
         .complete-checkbox
-          = check_box_tag("complete_checkbox", goal.is_completed, goal.is_completed, :url => update_status_goal_path(goal), :id => "change-status-goal-#{goal.id}", :class => "goal-complete")
+          = check_box_tag("complete_checkbox", goal.is_completed, goal.is_completed, :url => update_status_goal_path(goal), :id => "#{goal.id}", :class => "goal-complete")
           = label_tag('complete_label', 'Goal complete')
           = link_to("Edit", "#", :class => "edit-goal", :target => goal.id)
           = render(:partial => "goals/form", :locals => {:goal => goal, :student => @student, :id => "_modal#{goal.id}"})

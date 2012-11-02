@@ -22,7 +22,7 @@ class Goal < ActiveRecord::Base
   include ::SharedMethods::Paging
   attr_accessible :accuracy, :curriculum_id, :due_date, :subject_id, :progresses_attributes, :baseline_date, :baseline, :trial_days_total, :trial_days_actual,:is_archived
   has_many :progresses, :dependent => :destroy
-  has_many :statuses, :through => :progresses
+  has_many :statuses
   belongs_to :student 
   belongs_to :subject 
   belongs_to :curriculum
@@ -36,6 +36,7 @@ class Goal < ActiveRecord::Base
   }
 
   scope :is_archived, lambda {|is_archived| where(:is_archived => is_archived)} 
+  scope :incomplete, where('is_completed = ?', false)
   attr_accessor :last_status #For add/update purpose
 
   # CALLBACK
@@ -199,7 +200,7 @@ class Goal < ActiveRecord::Base
     if progress
       progress.statuses.new params
     else
-      return false
+      self.statuses.new params
     end
   end
 

@@ -9,7 +9,7 @@ class StudentsController < ApplicationController
   def show
     @student = Student.find(params[:id])
     @teacher = @student.teacher 
-    @goals = @student.goals.is_archived(false).load_data(filtered_params)
+    @goals = @student.goals.incomplete.is_archived(false).load_data(filtered_params)
     if request.xhr?
       @goals = @student.goals.load_data(filtered_params)
       render :partial => "view_goal", :locals => {:goals => @goals}
@@ -26,7 +26,7 @@ class StudentsController < ApplicationController
   
   def edit
     @student = Student.find(params[:id])
-    @goals = @student.goals.load_data(filtered_params)
+    @goals = @student.goals.order('is_completed ASC').load_data(filtered_params)
     session[:student_id] = params[:id]
     @invited_users = StudentSharing.where(:student_id => params[:id])
 
@@ -86,7 +86,7 @@ class StudentsController < ApplicationController
   def common_chart
     @series = []
     @student = Student.find params[:id]
-    @goals = @student.goals.load_data(filtered_params)
+    @goals = @student.goals.incomplete.is_archived(false).load_data(filtered_params)
     @goals.each do |goal| 
       data = []
       goal.statuses.each{|status| 
@@ -110,12 +110,12 @@ class StudentsController < ApplicationController
     @series = []
     data = []
 
-    data << [@goal.baseline_date, @goal.baseline.round / 100.0]
+    data << [@goal.baseline_date, (@goal.baseline.round*100).round  / 100.0]
     # For ideal data
     #@goal.progresses.each{|progress| 
       #data << [progress.due_date, (progress.accuracy*100).round / 100.0]
     #}
-    data << [@goal.due_date, @goal.accuracy]
+    data << [@goal.due_date, (@goal.accuracy*100).round  / 100.0]
     #Sort data by due date
     data = data.sort_by { |hsh| hsh[0] }
     

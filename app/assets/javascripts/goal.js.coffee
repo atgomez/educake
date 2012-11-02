@@ -134,6 +134,7 @@ window.goal =
       value = $(this).attr('value')
       url = $(this).attr('url')
       data = {status: value}
+      goal_id = $(this).attr('id')
 
       $.ajax({
         url: url,
@@ -142,6 +143,8 @@ window.goal =
         success: (res) ->
           $("#error_edit_student").addClass('alert alert-success fade in')
           $("#error_edit_student").text('Goal was successfully updated.')
+          goal = $('#goal-container-' + goal_id)
+          location.reload()
         ,
 
         error: (xhr, textStatus, error) ->
