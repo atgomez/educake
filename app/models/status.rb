@@ -18,7 +18,9 @@
 class Status < ActiveRecord::Base
   attr_accessible :accuracy, :due_date, :goal_id, :is_ideal, :user_id, :value, :time_to_complete
   belongs_to :user
+  belongs_to :goal
   belongs_to :progress
+
   # VALIDATION
   validates :accuracy, :numericality => true, :inclusion => {:in => 0..100, :message => "must be from 0 to 100"}
   validates :goal_id, :uniqueness => { :scope => :due_date,
@@ -57,12 +59,12 @@ class Status < ActiveRecord::Base
     end
 
     def validate_due_date
-      if (self.progress.goal.baseline_date > self.due_date)
+      if (self.goal.baseline_date > self.due_date)
         self.errors.add(:due_date, "must be equal or greater than goal baseline date")
         return false
       end
 
-      if (self.progress.goal.due_date < self.due_date)
+      if (self.goal.due_date < self.due_date)
         self.errors.add(:due_date, "must be equal or less than goal due date")
         return false
       end

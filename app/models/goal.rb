@@ -88,32 +88,47 @@ class Goal < ActiveRecord::Base
     due_date = status.due_date
     return status if (!due_date || due_date < self.baseline_date || due_date > self.due_date)
 
+    # Initilization Data
+    arr_progress_date = []
+    arr_progress_accuracy = []
+
+    arr_progress_date << self.baseline_date
+    arr_progress_accuracy << self.baseline
+
+    progresses = self.progresses.order('due_date ASC')
+    progresses.each do |progress|
+      arr_progress_date << progress.due_date
+      arr_progress_accuracy << progress.accuracy
+    end
+
+    arr_progress_date << self.due_date
+    arr_progress_accuracy << self.accuracy
+
     #
     # Find the progress contains this status
     #
-    current_progress = status.progress
-    # Firstly, treat the baseline info as the first progress value
-    previous_progress = self.baseline
-    previous_due_date = self.baseline_date
-
-    # Get all progress and sort them
-    progresses = self.progresses.order('due_date ASC')
-    progresses.each do |progress|
-      if (progress.due_date >= due_date)
-        break
+    current_progress_index = arr_progress_date.length - 1 # Default is goal date
+    tmp_index = 0
+    arr_progress_date.each do |progress_date|
+      if (progress_date >= due_date)
+        current_progress_index = tmp_index
       end
 
-      # Keep previous progress value for getting ideal value
-      previous_progress = progress.accuracy
-      previous_due_date = progress.due_date
+      tmp_index = tmp_index + 1
     end
+
+    current_progress = arr_progress_accuracy[current_progress_index]
+    current_due_date = arr_progress_date[current_progress_index]
+
+    previous_progress = arr_progress_accuracy[current_progress_index - 1]
+    previous_due_date = arr_progress_date[current_progress_index - 1]
 
     #
     # Find the ideal value
     #
     distance_day_of_status = (status.due_date - previous_due_date).to_i
-    distance_day_of_progress = (current_progress.due_date - previous_due_date).to_i
-    needed_value_for_ideal_goal = current_progress.accuracy - previous_progress
+    distance_day_of_progress = (current_due_date - previous_due_date).to_i
+    needed_value_for_ideal_goal = current_progress - previous_progress
 
     ideal_increment_value = needed_value_for_ideal_goal*distance_day_of_status/distance_day_of_progress
     status.ideal_value = previous_progress + ideal_increment_value
@@ -198,7 +213,9 @@ class Goal < ActiveRecord::Base
     #Find progress
     progress = self.progresses.find(:first, :conditions => ['due_date >= ?', params[:due_date]], :order => 'due_date ASC')
     if progress
-      progress.statuses.new params
+      status = self.statuses.new params
+      status.progress = progress
+      return status
     else
       self.statuses.new params
     end
