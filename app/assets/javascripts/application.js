@@ -20,3 +20,4 @@
 //= require highcharts/js/highcharts
 //= require app/admin/teacher
 //= require json_parse
+//= require jquery.filter_input

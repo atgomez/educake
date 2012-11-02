@@ -4,13 +4,7 @@
   min-height:800px;
 }
 
-#user_email {
-  width: 400px;
-}
 
-#user_password {
-  width: 400px;
-}
 
 #login-form {
   margin:0 auto;
@@ -25,6 +19,13 @@
       color: #E17C25;
       font-size: 18px;
       font-weight: bold;
+    }
+    #user_email {
+      width: 400px;
+    }
+
+    #user_password {
+      width: 400px;
     }
   }
 

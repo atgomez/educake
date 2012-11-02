@@ -13,8 +13,14 @@ window.studentObject =
     @clickExport()
     @onSaveInvitation()
     @scrollToUser()
+    @allowInputNumber()
     return
-
+    
+  allowInputNumber: ->
+    $('#user_phone').filter_input({regex:'[0-9]'})
+    $('#status_value').filter_input({regex:'[0-9.]', live:true})
+    $(".numeric").filter_input({regex:'[0-9.]', live:true})
+    return
   uploadPhoto: ->
     $('#student_photo').change((e) ->
       file = e.target.files[0]
@@ -198,4 +204,10 @@ loadPage= (evt) ->
     complete: () ->
       $('#content-status').removeClass 'loading'
   })
+  return
+  
+keyPress= (event) ->
+  console.log "how are you"
+  if ((event.which != 46 || $(this).val().indexOf('.') != -1) && (event.which < 48 || event.which > 57)) 
+    event.preventDefault()
   return
