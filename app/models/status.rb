@@ -21,6 +21,8 @@ class Status < ActiveRecord::Base
   belongs_to :user
   # VALIDATION
   validates :accuracy, :numericality => true, :inclusion => {:in => 0..100, :message => "must be from 0 to 100"}
+  validates :goal_id, :uniqueness => { :scope => :due_date,
+    :message => "should happen once per day" }
   validates_presence_of :value, :due_date, :goal_id
   # Instance methods.
   # is_ideal == true <~ Progress Object
