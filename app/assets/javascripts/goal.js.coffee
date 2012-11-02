@@ -5,8 +5,41 @@ window.goal =
     @add_date_picker()
     @setup_form()
     @update_status()
+    @validate_character()
     return
-    
+  
+  validate_character: ->
+    $(".controls .numeric.float.required").keypress((e) ->
+      theEvent = e or window.event
+      if theEvent.keyCode isnt 46 and theEvent.keyCode isnt 8 and theEvent.keyCode isnt 37 and theEvent.keyCode isnt 39  
+        key = theEvent.keyCode or theEvent.which
+        key = String.fromCharCode(key)
+        regex = /[0-9]|\./
+        unless regex.test(key)
+          theEvent.returnValue = false
+          theEvent.preventDefault()  if theEvent.preventDefault
+    )
+    $(".controls .numeric.integer.required").keypress((e) ->
+      theEvent = e or window.event
+      if theEvent.keyCode isnt 46 and theEvent.keyCode isnt 8 and theEvent.keyCode isnt 37 and theEvent.keyCode isnt 39  
+        key = theEvent.keyCode or theEvent.which
+        key = String.fromCharCode(key)
+        regex = /[0-9]/
+        unless regex.test(key)
+          theEvent.returnValue = false
+          theEvent.preventDefault()  if theEvent.preventDefault
+    )
+    $(".controls .numeric.float.optional").keypress((e) ->
+      theEvent = e or window.event
+      if theEvent.keyCode isnt 46 and theEvent.keyCode isnt 8 and theEvent.keyCode isnt 37 and theEvent.keyCode isnt 39  
+        key = theEvent.keyCode or theEvent.which
+        key = String.fromCharCode(key)
+        regex = /[0-9]|\./
+        unless regex.test(key)
+          theEvent.returnValue = false
+          theEvent.preventDefault()  if theEvent.preventDefault
+    )
+
   add_date_picker: ->
     $(".goal-form .select-date").livequery( ->
       $(this).datepicker({
