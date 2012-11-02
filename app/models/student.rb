@@ -108,12 +108,12 @@ class Student < ActiveRecord::Base
       statuses.map do |status|
         vs_baseline = status.accuracy - goal.baseline
         progress[status.due_date] = [] if progress[status.due_date].nil?
-        progress[status.due_date] << (vs_baseline/(goal.accuracy - goal.baseline)*100).round
+        progress[status.due_date] << vs_baseline/(goal.accuracy - goal.baseline)*100
       end 
     end
     
     progress.keys.sort.each do |key| 
-      data << [key, progress[key].sum/progress[key].count]
+      data << [key, (progress[key].sum/progress[key].count).round]
     end 
     return data
   end 
