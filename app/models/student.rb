@@ -104,7 +104,7 @@ class Student < ActiveRecord::Base
     progress = {}
     goals = self.goals
     goals.each do |goal|
-      statuses = goal.statuses.order("due_date ASC").is_ideal(false)
+      statuses = goal.statuses.order("due_date ASC")
       statuses.map do |status|
         vs_baseline = status.accuracy - goal.baseline
         progress[status.due_date] = [] if progress[status.due_date].nil?

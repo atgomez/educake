@@ -89,7 +89,7 @@ class StudentsController < ApplicationController
     @goals = @student.goals.load_data(filtered_params)
     @goals.each do |goal| 
       data = []
-      goal.statuses.is_ideal(false).each{|status| 
+      goal.statuses.each{|status| 
         data << [status.due_date, (status.accuracy*100).round / 100.0]
       }
       #data << [goal.due_date, goal.accuracy]
@@ -109,11 +109,13 @@ class StudentsController < ApplicationController
     @goal = Goal.find params[:goal_id]
     @series = []
     data = []
+
+    data << [@goal.baseline_date, @goal.baseline.round / 100.0]
     # For ideal data
-    @goal.statuses.is_ideal(false).each{|status| 
-      data << [status.due_date, (status.ideal_value*100).round / 100.0]
-    }
-    #data << [@goal.due_date, @goal.accuracy]
+    #@goal.progresses.each{|progress| 
+      #data << [progress.due_date, (progress.accuracy*100).round / 100.0]
+    #}
+    data << [@goal.due_date, @goal.accuracy]
     #Sort data by due date
     data = data.sort_by { |hsh| hsh[0] }
     
@@ -123,7 +125,7 @@ class StudentsController < ApplicationController
                 }
     # For add status 
     data = []
-    @goal.statuses.is_ideal(false).each{|status| 
+    @goal.statuses.each{|status| 
       data << [status.due_date, (status.accuracy*100).round / 100.0]
     }
     data = data.sort_by { |hsh| hsh[0] }

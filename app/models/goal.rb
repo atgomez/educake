@@ -94,14 +94,14 @@ class Goal < ActiveRecord::Base
     status.ideal_value = previous_progress + ideal_increment_value
 
     #
-    # Find the accuracy value
+    # Find the value
     #
     
     # Get the list of [trial_days_total] previous statuses
     previous_statuses = self.statuses.find(:all, :conditions => ['is_ideal = ? AND statuses.due_date < ?', false, status.due_date], :order => 'due_date DESC', :limit => (self.trial_days_total - 1))
     
-    # Sort by value
-    previous_statuses = previous_statuses.sort_by { |hsh| hsh[:value] }
+    # Sort by accuracy
+    previous_statuses = previous_statuses.sort_by { |hsh| hsh[:accuracy] }
 
     if previous_statuses.count == (self.trial_days_total - 1) #If enough statuses for calculating
       lowest_value_count = self.trial_days_total - self.trial_days_actual
@@ -109,11 +109,11 @@ class Goal < ActiveRecord::Base
       (lowest_value_count...9).each {|index| sum_value = sum_value + previous_statuses[index][:value]}
 
       # Add current status value to total
-      sum_value = sum_value + status.value
-      status.accuracy = sum_value/self.trial_days_actual
+      sum_value = sum_value + status.accuracy
+      status.value = sum_value/self.trial_days_actual
 
     else # If not enough status, set accuracy equal to value
-      status.accuracy = status.value
+      status.value = status.accuracy
     end
 
     return status
@@ -129,7 +129,7 @@ class Goal < ActiveRecord::Base
   end
 
   def last_status
-    @last_status ||= self.statuses.is_ideal(false).order(:due_date).last
+    @last_status ||= self.statuses.order(:due_date).last
   end
 
   # Check if the goal is on-track or not.
@@ -137,7 +137,7 @@ class Goal < ActiveRecord::Base
     result = false
     if self.last_status
       # If actual value >= ideal value => 'on-track', else 'not on-track'
-      result = (self.last_status.accuracy >= self.last_status.ideal_value)
+      result = (self.last_status.value >= self.last_status.ideal_value)
     end
     return result
   end

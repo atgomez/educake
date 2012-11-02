@@ -23,7 +23,7 @@ class Status < ActiveRecord::Base
   validates :accuracy, :numericality => true, :inclusion => {:in => 0..100, :message => "must be from 0 to 100"}
   validates :goal_id, :uniqueness => { :scope => :due_date,
     :message => "should happen once per day" }
-  validates_presence_of :value, :due_date, :goal_id
+  validates_presence_of :accuracy, :due_date, :goal_id
   # Instance methods.
   # is_ideal == true <~ Progress Object
   scope :is_ideal, lambda {|ideal| where(:is_ideal => ideal)}
@@ -53,9 +53,7 @@ class Status < ActiveRecord::Base
   protected
   
     def update_status_state
-      if (!self.is_ideal)
-        self.goal.update_status_state(self)
-      end
+      self.goal.update_status_state(self)
     end
 
     def validate_due_date

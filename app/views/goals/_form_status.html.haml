@@ -14,7 +14,7 @@
         .clearfix
         = f.input(:due_date, :as => :string, :input_html => {:class => "select-date pull-left", :value => @status.due_date_string}, :label => "Due Date")
         .clearfix
-        = f.input :value, :label => "% Accuracy", :input_html => {:class => "pull-left"}
+        = f.input :accuracy, :label => "% Accuracy", :input_html => {:class => "pull-left"}
         .clearfix
         = f.input :time_to_complete, :as => :string, :ampm => true
         = f.hidden_field :is_ideal, :value => false
