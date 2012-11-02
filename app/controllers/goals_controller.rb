@@ -71,7 +71,7 @@ class GoalsController < ApplicationController
     @status.due_date = Date.today
     student = Student.find(session[:student_id])
     if student 
-      @goals = student.goals.map{|g| [[g.subject.name, g.curriculum.name].join(" "), g.id]}
+      @goals = student.goals.incomplete.is_archived(false).map{|g| [[g.subject.name, g.curriculum.name].join(" "), g.id]}
     end 
   end
   

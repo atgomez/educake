@@ -154,7 +154,7 @@ class Goal < ActiveRecord::Base
   end
 
   def last_status
-    @last_status ||= self.statuses.order(:due_date).last
+    self.statuses.order(:due_date).last
   end
 
   # Check if the goal is on-track or not.
@@ -205,7 +205,7 @@ class Goal < ActiveRecord::Base
   end
 
   def goal_status
-    status = last_status
+    status = self.last_status
     if (status)
       vs_baseline = status.value - self.baseline
       vs_baseline/(self.accuracy - self.baseline)*100

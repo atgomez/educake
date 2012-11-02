@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121102044626) do
+ActiveRecord::Schema.define(:version => 20121102093508) do
 
   create_table "curriculums", :force => true do |t|
     t.string   "name",       :null => false
@@ -29,7 +29,7 @@ ActiveRecord::Schema.define(:version => 20121102044626) do
     t.float    "accuracy",          :default => 0.0
     t.datetime "created_at",                           :null => false
     t.datetime "updated_at",                           :null => false
-    t.boolean  "is_completed"
+    t.boolean  "is_completed",      :default => false
     t.float    "baseline",          :default => 0.0
     t.date     "baseline_date",                        :null => false
     t.integer  "trial_days_total",  :default => 0
