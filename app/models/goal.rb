@@ -179,6 +179,12 @@ class Goal < ActiveRecord::Base
     end
   end
 
+  def goal_status
+    status = last_status
+    vs_baseline = status.value - self.baseline
+    vs_baseline/(self.accuracy - self.baseline)*100
+  end
+
 
   class << self
     def load_data(params = {}, complete = nil)

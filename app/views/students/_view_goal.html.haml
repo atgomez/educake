@@ -15,7 +15,7 @@
           .track-indicator.pull-left{:title => "Not on-track"}
 
       .pull-left.progress.progress-success
-        .bar.custom-bar{:style => "width: #{goal.accuracy}%"}
+        .bar.custom-bar{:style => "width: #{goal.goal_status}%"}
 
       - if params[:action] == 'edit'
         .complete-checkbox
