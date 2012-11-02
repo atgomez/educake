@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121018115713) do
+ActiveRecord::Schema.define(:version => 20121102044626) do
 
   create_table "curriculums", :force => true do |t|
     t.string   "name",       :null => false
@@ -22,18 +22,33 @@ ActiveRecord::Schema.define(:version => 20121018115713) do
   add_index "curriculums", ["name"], :name => "index_curriculums_on_name", :unique => true
 
   create_table "goals", :force => true do |t|
-    t.integer  "student_id",    :null => false
-    t.integer  "subject_id",    :null => false
-    t.integer  "curriculum_id", :null => false
+    t.integer  "student_id",                           :null => false
+    t.integer  "subject_id",                           :null => false
+    t.integer  "curriculum_id",                        :null => false
     t.date     "due_date"
-    t.float    "accuracy"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.float    "accuracy",          :default => 0.0
+    t.datetime "created_at",                           :null => false
+    t.datetime "updated_at",                           :null => false
     t.boolean  "is_completed"
+    t.float    "baseline",          :default => 0.0
+    t.date     "baseline_date",                        :null => false
+    t.integer  "trial_days_total",  :default => 0
+    t.integer  "trial_days_actual", :default => 0
+    t.boolean  "is_archived",       :default => false
   end
 
   add_index "goals", ["curriculum_id"], :name => "index_goals_on_curriculum_id"
   add_index "goals", ["subject_id"], :name => "index_goals_on_subject_id"
+
+  create_table "progresses", :force => true do |t|
+    t.integer  "goal_id",                     :null => false
+    t.date     "due_date",                    :null => false
+    t.float    "accuracy",   :default => 0.0
+    t.datetime "created_at",                  :null => false
+    t.datetime "updated_at",                  :null => false
+  end
+
+  add_index "progresses", ["goal_id"], :name => "index_progresses_on_goal_id"
 
   create_table "roles", :force => true do |t|
     t.string   "name"
@@ -42,11 +57,17 @@ ActiveRecord::Schema.define(:version => 20121018115713) do
   end
 
   create_table "statuses", :force => true do |t|
-    t.integer  "goal_id",    :null => false
+    t.integer  "goal_id",                            :null => false
     t.date     "due_date"
-    t.float    "accuracy"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.float    "accuracy",         :default => 0.0
+    t.datetime "created_at",                         :null => false
+    t.datetime "updated_at",                         :null => false
+    t.boolean  "is_ideal",         :default => true
+    t.integer  "user_id"
+    t.float    "value",            :default => 0.0
+    t.float    "ideal_value",      :default => 0.0
+    t.time     "time_to_complete"
+    t.integer  "progress_id"
   end
 
   add_index "statuses", ["goal_id"], :name => "index_statuses_on_goal_id"

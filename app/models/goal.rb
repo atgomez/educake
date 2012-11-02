@@ -63,17 +63,15 @@ class Goal < ActiveRecord::Base
     #
     # Find the progress contains this status
     #
-    current_progress = nil
-    current_progress_index = 0
+    current_progress = status.progress
     # Firstly, treat the baseline info as the first progress value
     previous_progress = self.baseline
     previous_due_date = self.baseline_date
 
     # Get all progress and sort them
-    progresses = self.statuses.is_ideal(true).order('due_date ASC')
+    progresses = self.progresses.order('due_date ASC')
     progresses.each do |progress|
       if (progress.due_date >= due_date)
-        current_progress = progress
         break
       end
 
@@ -97,7 +95,7 @@ class Goal < ActiveRecord::Base
     #
     
     # Get the list of [trial_days_total] previous statuses
-    previous_statuses = self.statuses.find(:all, :conditions => ['is_ideal = ? AND due_date < ?', false, status.due_date], :order => 'due_date DESC', :limit => (self.trial_days_total - 1))
+    previous_statuses = self.statuses.find(:all, :conditions => ['is_ideal = ? AND statuses.due_date < ?', false, status.due_date], :order => 'due_date DESC', :limit => (self.trial_days_total - 1))
     
     # Sort by value
     previous_statuses = previous_statuses.sort_by { |hsh| hsh[:value] }
@@ -166,6 +164,16 @@ class Goal < ActiveRecord::Base
     count_progress = self.progresses.length
     # Create remaining progresses
     (3-count_progress).times { self.progresses.build } if count_progress < 3
+  end
+
+  def build_status(params)
+    #Find progress
+    progress = self.progresses.find(:first, :conditions => ['due_date >= ?', params[:due_date]], :order => 'due_date ASC')
+    if progress
+      progress.statuses.new params
+    else
+      return false
+    end
   end
 
 

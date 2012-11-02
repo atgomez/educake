@@ -82,13 +82,21 @@ class GoalsController < ApplicationController
 
     @goal = Goal.find_by_id(params[:status][:goal_id])
     if (@goal)
-      @status = @goal.statuses.new params[:status]
-      @status = @goal.update_status_state(@status)
-      if @status.save 
-        status_code = 201
-        result[:message] = I18n.t('status.created_successfully')
-        flash[:notice] = result[:message]
+      @status = @goal.build_status params[:status]
+      if (@status)
+        @status = @goal.update_status_state(@status)
+        if @status.save
+          status_code = 201
+          result[:message] = I18n.t('status.created_successfully')
+          flash[:notice] = result[:message]
+        else
+          status_code = 400
+          result[:message] = I18n.t('status.save_failed')
+          result[:html] = render_to_string(:partial => 'goals/form_status')
+        end
       else
+        @status = Status.new params[:status]
+        @status.errors.add(:due_date, "must be in range")
         status_code = 400
         result[:message] = I18n.t('status.save_failed')
         result[:html] = render_to_string(:partial => 'goals/form_status')

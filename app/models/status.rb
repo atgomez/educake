@@ -17,7 +17,6 @@
 
 class Status < ActiveRecord::Base
   attr_accessible :accuracy, :due_date, :goal_id, :is_ideal, :user_id, :value, :time_to_complete
-  belongs_to :goal
   belongs_to :user
   belongs_to :progress
   # VALIDATION
@@ -30,7 +29,7 @@ class Status < ActiveRecord::Base
   scope :is_ideal, lambda {|ideal| where(:is_ideal => ideal)}
 
   before_update :update_status_state
-  before_update :validate_due_date
+  before_save :validate_due_date
 
   def condition_goal 
     !goal_id.nil?
@@ -60,12 +59,12 @@ class Status < ActiveRecord::Base
     end
 
     def validate_due_date
-      if (self.goal.baseline_date > self.due_date)
+      if (self.progress.goal.baseline_date > self.due_date)
         self.errors.add(:due_date, "must be equal or greater than goal baseline date")
         return false
       end
 
-      if (self.goal.due_date < self.due_date)
+      if (self.progress.goal.due_date < self.due_date)
         self.errors.add(:due_date, "must be equal or less than goal due date")
         return false
       end
