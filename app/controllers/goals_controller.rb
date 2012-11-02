@@ -18,8 +18,6 @@ class GoalsController < ApplicationController
         result[:message] = I18n.t('goal.created_successfully')
         flash[:notice] = result[:message]
       else
-        @goal.build_statuses if @goal.statuses.blank?
-
         status_code = 400
         result[:message] = I18n.t('goal.save_failed')
         result[:html] = render_to_string(:partial => 'goals/form', 
@@ -40,7 +38,7 @@ class GoalsController < ApplicationController
       result[:message] = I18n.t('goal.student_not_found')
       status_code = 400
     else
-      @goal = @student.goals.find_by_id params[:goal][:id]
+      @goal = @student.goals.find_by_id params[:id]
       if (@goal)
         #Remove id and student_id 
         params[:goal].delete :id

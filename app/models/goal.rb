@@ -20,8 +20,9 @@
 
 class Goal < ActiveRecord::Base
   include ::SharedMethods::Paging
-  attr_accessible :accuracy, :curriculum_id, :due_date, :subject_id, :statuses_attributes, :baseline_date, :baseline, :trial_days_total, :trial_days_actual,:is_archived
-  has_many :statuses, :dependent => :destroy
+  attr_accessible :accuracy, :curriculum_id, :due_date, :subject_id, :progresses_attributes, :baseline_date, :baseline, :trial_days_total, :trial_days_actual,:is_archived
+  has_many :progresses, :dependent => :destroy
+  has_many :statuses, :through => :progresses
   belongs_to :student 
   belongs_to :subject 
   belongs_to :curriculum
@@ -29,20 +30,23 @@ class Goal < ActiveRecord::Base
   validates :accuracy, :numericality => true, :inclusion => {:in => 0..100, :message => "must be from 0 to 100"}
   validates :baseline, :numericality => true, :inclusion => {:in => 0..100, :message => "must be from 0 to 100"}
   validates_presence_of :accuracy, :due_date, :curriculum_id, :subject_id, :baseline_date, :baseline, :trial_days_total, :trial_days_actual
-  accepts_nested_attributes_for :statuses, :reject_if => lambda { |a| 
-    a['accuracy'].blank? || a['due_date'].blank?
+
+  accepts_nested_attributes_for :progresses, :reject_if => lambda { |progress| 
+    progress['accuracy'].blank? || progress['due_date'].blank?
   }
 
   scope :is_archived, lambda {|is_archived| where(:is_archived => is_archived)} 
-  attr_accessor :last_status, :progresses #For add/update purpose
+  attr_accessor :last_status #For add/update purpose
 
+  before_validation :update_progresses
   after_save :update_all_status  
+
 
   # Class methods
   class << self
     def build_goal(attrs = {})
       goal = self.new(attrs)
-      goal.build_statuses
+      goal.build_progresses
       return goal
     end
   end # Class methods.
@@ -158,13 +162,10 @@ class Goal < ActiveRecord::Base
     self.send(:write_attribute, :baseline_date, date)
   end
 
-  def build_statuses
-    count_progress = self.statuses.is_ideal(true).count
-    self.progresses = []
-    self.progresses.concat self.statuses.find(:all, :conditions => ['is_ideal = ?', true], :order => 'due_date')
-
+  def build_progresses
+    count_progress = self.progresses.length
     # Create remaining progresses
-    (3-count_progress).times { self.progresses << self.statuses.build(:is_ideal => true) }
+    (3-count_progress).times { self.progresses.build } if count_progress < 3
   end
 
 
@@ -197,6 +198,13 @@ class Goal < ActiveRecord::Base
   end
 
   protected
+    def update_progresses
+      self.progresses.each do |progress| 
+        progress.baseline_date = self.baseline_date
+        progress.goal_date = self.due_date
+      end
+    end
+
     def update_all_status
       self.transaction do
         self.statuses.each do |status|
@@ -205,4 +213,6 @@ class Goal < ActiveRecord::Base
         end
       end
     end
+
+
 end

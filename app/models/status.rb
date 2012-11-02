@@ -19,6 +19,7 @@ class Status < ActiveRecord::Base
   attr_accessible :accuracy, :due_date, :goal_id, :is_ideal, :user_id, :value, :time_to_complete
   belongs_to :goal
   belongs_to :user
+  belongs_to :progress
   # VALIDATION
   validates :accuracy, :numericality => true, :inclusion => {:in => 0..100, :message => "must be from 0 to 100"}
   validates :goal_id, :uniqueness => { :scope => :due_date,

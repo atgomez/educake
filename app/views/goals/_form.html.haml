@@ -1,6 +1,6 @@
 - goal ||= Goal.build_goal :trial_days_total => 10, :trial_days_actual => 9, :baseline_date => Date.today
 - student ||= Student.new
-- goal.build_statuses 
+- goal.build_progresses
 - id ||= 'goal-dialog'
 .modal.hide.fade{:tabindex => "-1", :id => id}
   = simple_form_for(goal, :html => { :id => "goal-form#{goal.id}", :class => 'goal-form form-horizontal goal-form' }) do |f|
@@ -34,19 +34,18 @@
           = f.input_field(:trial_days_actual, :length => 5, :style => "width:50px")
           \/
           = f.input_field(:trial_days_total, :length => 5, :style => "width:50px")
-      = f.hidden_field(:id)
       = f.hidden_field(:student_id, :value => student.id)
       
       .horizontal-bar
       
       .progress-report-container
         - idx = 1
-        - goal.progresses.each do |status|
-          = f.simple_fields_for(:statuses, status) do |f_status|
+        - goal.progresses.each do |progress|
+          = f.simple_fields_for(:progresses, progress) do |f_progress|
             %label.status-name= "Progress Report #{idx}"
-            = f_status.input(:due_date, :as => :string, :input_html => {:class => "select-date", 
-                  :value => status.due_date_string, :id => "goal_#{goal.id}_#{status.object_id}"}, :label => "Due Date")
-            = f_status.input :accuracy, :label => "% Accuracy"
+            = f_progress.input(:due_date, :as => :string, :input_html => {:class => "select-date", 
+                  :value => progress.due_date_string, :id => "goal_#{goal.id}_#{progress.object_id}"}, :label => "Due Date")
+            = f_progress.input :accuracy, :label => "% Accuracy"
             - idx = idx + 1
             
     .modal-footer
