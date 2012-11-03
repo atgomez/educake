@@ -9,35 +9,29 @@ window.goal =
     return
   
   validate_character: ->
-    $(".controls .numeric.float.required").keypress((e) ->
+    $(".controls .numeric").live('keypress', (e) ->
       theEvent = e or window.event
       if theEvent.keyCode isnt 46 and theEvent.keyCode isnt 8 and theEvent.keyCode isnt 37 and theEvent.keyCode isnt 39  
         key = theEvent.keyCode or theEvent.which
         key = String.fromCharCode(key)
-        regex = /[0-9]|\./
+        if $(this).hasClass('float')
+          regex = /[0-9]|\./
+        else
+          regex = /[0-9]/
         unless regex.test(key)
           theEvent.returnValue = false
           theEvent.preventDefault()  if theEvent.preventDefault
     )
-    $(".controls .numeric.integer.required").keypress((e) ->
+
+    $(".controls .name").live('keypress', (e) ->
       theEvent = e or window.event
-      if theEvent.keyCode isnt 46 and theEvent.keyCode isnt 8 and theEvent.keyCode isnt 37 and theEvent.keyCode isnt 39  
+      if theEvent.keyCode isnt 46 and theEvent.keyCode isnt 8 and theEvent.keyCode isnt 37 and theEvent.keyCode isnt 39 
+        regex = /^[a-zA-Z0-9\s\b]+$/
         key = theEvent.keyCode or theEvent.which
         key = String.fromCharCode(key)
-        regex = /[0-9]/
-        unless regex.test(key)
-          theEvent.returnValue = false
-          theEvent.preventDefault()  if theEvent.preventDefault
-    )
-    $(".controls .numeric.float.optional").keypress((e) ->
-      theEvent = e or window.event
-      if theEvent.keyCode isnt 46 and theEvent.keyCode isnt 8 and theEvent.keyCode isnt 37 and theEvent.keyCode isnt 39  
-        key = theEvent.keyCode or theEvent.which
-        key = String.fromCharCode(key)
-        regex = /[0-9]|\./
-        unless regex.test(key)
-          theEvent.returnValue = false
-          theEvent.preventDefault()  if theEvent.preventDefault
+        if (!regex.test(key))
+           theEvent.preventDefault()  if theEvent.preventDefault
+           return false
     )
 
   add_date_picker: ->
