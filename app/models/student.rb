@@ -3,7 +3,7 @@ class Student < ActiveRecord::Base
 
   attr_accessible :birthday, :first_name, :gender, :last_name, :teacher_id, :photo
   belongs_to :teacher, :class_name => "User"
-  has_attached_file :photo, :styles => { :small => "88x88#",:medium => "300x300>" }, 
+  has_attached_file :photo, :styles => { :small => "88x88#",:medium => "200x200#" }, 
                    :storage => :s3,
                    :s3_credentials => "#{Rails.root}/config/amazon_s3.yml",
                    :default_url => 'default-avatar.jpeg',

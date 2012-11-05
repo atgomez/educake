@@ -21,6 +21,6 @@
       - if f.object.new_record?
         = image_tag "missing.png", :size => '200x200', :id => 'upload-image'
       - else 
-        = image_tag f.object.photo.url(:small), :size => '200x200', :id => 'upload-image'
+        = image_tag f.object.photo.url(:medium), :size => '200x200', :id => 'upload-image'
       = f.input :photo, :as => :file, :label => "Upload photo"
   
