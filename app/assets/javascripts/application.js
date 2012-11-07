@@ -13,12 +13,14 @@
 //= require jquery-ui
 //= require jquery_ujs
 //= require twitter/bootstrap
+//= require twitter/bootstrap_ujs
+//= require lib/json_parse
+//= require lib/jquery.filter_input
+//= require lib/jquery-ui-timepicker-addon
+//= require lib/highcharts/js/highcharts
 //= require students
 //= require init
 //= require goal
 //= require helper
-//= require highcharts/js/highcharts
 //= require app/admin/teacher
-//= require json_parse
-//= require jquery.filter_input
-//= require jquery-ui-timepicker-addon
+

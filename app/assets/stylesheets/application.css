@@ -9,7 +9,14 @@
  * compiled file, but it's generally better to create a new file per style scope.
  *
  *= require_self
- *= require_tree .
+ *= require bootstrap_and_overrides
+ *= require curriculum
+ *= require layout
+ *= require login
+ *= require new_style
+ *= require students
+ *= require teacher
+ *= require "jquery-ui-bootstrap/jquery-ui"
  */
 
 select.time{
