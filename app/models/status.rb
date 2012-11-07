@@ -55,7 +55,7 @@ class Status < ActiveRecord::Base
   protected
   
     def update_status_state
-      self.progress.goal.update_status_state(self)
+      self.goal.update_status_state(self)
     end
 
     def validate_due_date

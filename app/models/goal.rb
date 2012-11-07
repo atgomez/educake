@@ -212,12 +212,9 @@ class Goal < ActiveRecord::Base
   def build_status(params)
     #Find progress
     progress = self.progresses.find(:first, :conditions => ['due_date >= ?', params[:due_date]], :order => 'due_date ASC')
+    status = self.statuses.new params
     if progress
-      status = self.statuses.new params
       status.progress = progress
-      return status
-    else
-      self.statuses.new params
     end
   end
 
