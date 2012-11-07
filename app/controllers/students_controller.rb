@@ -94,13 +94,14 @@ class StudentsController < ApplicationController
       }
       #data << [goal.due_date, goal.accuracy]
       #Sort data by due date
-      data = data.sort_by { |hsh| hsh[0] }
-      @series << {
-                   :name => goal.name,
-                   :data => data
-                  }
+      unless data.empty?
+        data = data.sort_by { |hsh| hsh[0] } 
+        @series << {
+                     :name => goal.name,
+                     :data => data
+                    }
+      end
     end
-
     @series = @series.to_json
     render :template => 'students/common_chart', :layout => "chart"
   end

@@ -1,6 +1,6 @@
 %center.clearfix
   - page = params[:page_id] || 1
-  %iframe{:frameborder => "0", :height => "500", :src => "/teachers/show_charts?page_id="+page.to_s, :width => "80%", :id => "chart_student"}
+  %iframe{:frameborder => "0", :height => @height, :src => "/teachers/show_charts?page_id="+page.to_s, :width => @width, :id => "chart_student"}
 .teacher
   .clearfix.toolbar
     = link_to 'Add Student', new_student_path, :class => 'btn bg-brown white'

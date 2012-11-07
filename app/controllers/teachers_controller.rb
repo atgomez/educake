@@ -6,7 +6,17 @@ class TeachersController < ApplicationController
 
   def index
     @students = current_user.students.load_data(filtered_params)
-
+    series = []
+    @students.map do |student|
+      series += student.goals_statuses
+    end
+    if series.empty?
+      @width = "0%"
+      @height = "0"
+    else 
+      @width = "80%"
+      @height = "500"
+    end 
     student_ids = StudentSharing.where(:user_id => current_user.id).map(&:student_id)
     if student_ids.empty?
       @sharing_students = []
@@ -22,7 +32,7 @@ class TeachersController < ApplicationController
       @series << {
         :name => student.full_name,
         :data => student.goals_statuses
-      }
+      } unless student.goals_statuses.empty?
     end
     @series = @series.to_json
     render :template => 'students/common_chart', :layout => "chart"
