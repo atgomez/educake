@@ -37,6 +37,7 @@ class Goal < ActiveRecord::Base
 
   scope :is_archived, lambda {|is_archived| where(:is_archived => is_archived)} 
   scope :incomplete, where('is_completed = ?', false)
+  scope :available, where('is_completed = ? AND is_archived = ?', false, false)
   attr_accessor :last_status #For add/update purpose
 
   # CALLBACK
@@ -216,6 +217,7 @@ class Goal < ActiveRecord::Base
     if progress
       status.progress = progress
     end
+    return status
   end
 
   def goal_status
