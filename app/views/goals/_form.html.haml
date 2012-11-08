@@ -36,6 +36,7 @@
             \/
             = f.input_field(:trial_days_total, :length => 5, :style => "width:50px")
           = f.error :trial_days_actual
+      
       = f.hidden_field(:student_id, :value => student.id)
       
       .horizontal-bar
@@ -54,7 +55,7 @@
       .submit-indicator.loading.hide
 
       - unless goal.new_record?
-        = f.input(:is_archived, :label => "Archive Goal")
+        = f.input(:is_archived, :label => "Archive Goal", :wrapper_html => {:class => "archived-input"})
         
       %input.reset-form-button.hide{:type => "reset"}
       %button.btn{"aria-hidden" => "true", "data-dismiss" => "modal", :class => "close-dialog", :id => "btn-cancel"} Cancel

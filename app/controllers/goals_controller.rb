@@ -3,6 +3,11 @@ class GoalsController < ApplicationController
     @student = Student.find_by_id(params[:student_id])
   end
 
+  def edit
+    @student = Student.find_by_id(params[:student_id])
+    @goal = Goal.find_by_id(params[:id])
+  end
+
   def create
     result = {}
     status_code = 201

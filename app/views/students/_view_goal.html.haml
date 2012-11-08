@@ -21,8 +21,7 @@
         .complete-checkbox
           = check_box_tag("complete_checkbox", goal.is_completed, goal.is_completed, :url => update_status_goal_path(goal), :id => "#{goal.id}", :class => "goal-complete")
           = label_tag('complete_label', 'Goal complete')
-          = link_to("Edit", "#", :class => "edit-goal", :target => goal.id)
-          = render(:partial => "goals/form", :locals => {:goal => goal, :student => @student, :id => "_modal#{goal.id}"})
+          = link_to("Edit", edit_goal_path(goal, :student_id => @student.id), :class => "edit-goal", :remote => true)
     
     .clearfix
     .tab-content

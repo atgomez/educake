@@ -53,11 +53,6 @@ window.goal =
     )
 
   setup_form: ->
-    $('.edit-goal').click((e) -> 
-      e.preventDefault()
-      $('#_modal' + $(this).attr('target')).modal('show')
-    )
-
     $(".goal-form #btn-save-goal").livequery('click', (e) -> 
       e.preventDefault()
       $(this).parent().parent().submit()
