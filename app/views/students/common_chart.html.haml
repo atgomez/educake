@@ -15,7 +15,8 @@
         chart = new Highcharts.Chart({
         chart: {
           renderTo: 'common_chart',
-          type: 'spline'
+          type: 'spline',
+          zoomType: 'xy'
         },
         title: {
           text: ''
@@ -29,6 +30,7 @@
         xAxis: {
           type: 'datetime',
           minorTickInterval: 'auto',
+          tickPixelInterval: 100,
           labels: {
             formatter: function() {
                 return Highcharts.dateFormat('%b %e, %y', this.value);
@@ -39,7 +41,7 @@
             }
           },
         },
-        yAxis: {
+        yAxis: [{
           min: 0,
           title: {
             text: 'Accuracy'
@@ -54,15 +56,29 @@
               width: 1,
               color: '#808080'
           }]
-        },
+        },{
+          min: 0,
+          title: {
+            text: ''
+          },
+          labels: {
+              formatter: function() {
+                  return this.value +'%'
+              }
+          },
+          plotLines: [{
+              value: 0,
+              width: 1,
+              color: '#808080'
+          }],
+         
+        }],
         legend: {
           layout: 'vertical',
           backgroundColor: '#FFFFFF',
           align: 'left',
           verticalAlign: 'top',
-          x: 100,
-          y: 0,
-          floating: true,
+          floating: false,
           shadow: true
         },
         tooltip: {
@@ -107,5 +123,7 @@
 
         });
       });
+
+
     });
   

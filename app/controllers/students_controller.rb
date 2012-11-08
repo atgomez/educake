@@ -113,14 +113,15 @@ class StudentsController < ApplicationController
 
     data << [@goal.baseline_date, (@goal.baseline.round*100).round  / 100.0]
     # For ideal data
-    #@goal.progresses.each{|progress| 
-      #data << [progress.due_date, (progress.accuracy*100).round / 100.0]
-    #}
+    @goal.progresses.each{|progress| 
+      data << [progress.due_date, (progress.accuracy*100).round / 100.0]
+    }
     data << [@goal.due_date, (@goal.accuracy*100).round  / 100.0]
     #Sort data by due date
     data = data.sort_by { |hsh| hsh[0] }
     
     @series << {
+                 :type => 'line',
                  :name => "Ideal chart",
                  :data => data
                 }
