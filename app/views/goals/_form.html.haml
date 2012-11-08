@@ -61,3 +61,15 @@
       %button.btn{"aria-hidden" => "true", "data-dismiss" => "modal", :class => "close-dialog", :id => "btn-cancel"} Cancel
       = f.submit "Save", :class => "btn btn-primary", :disable_with => "Saving..."
 
+
+:javascript
+  $("##{id}").on('show', function(){
+    var form_max_height = $(window).height() - 250;
+    if(form_max_height <= 0)
+      form_max_height = 100
+
+    console.log($(this).find(".modal-body"));
+    $(this).find(".modal-body").css({
+      "max-height": form_max_height + "px"
+    });
+  })
