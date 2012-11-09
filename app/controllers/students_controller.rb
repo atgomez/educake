@@ -113,7 +113,8 @@ class StudentsController < ApplicationController
         data = data.sort_by { |hsh| hsh[0] } 
         @series << {
                      :name => goal.name,
-                     :data => data
+                     :data => data,
+                     :goal_id => goal.id
                     }
       end
     end

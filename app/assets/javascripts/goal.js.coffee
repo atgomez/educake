@@ -140,3 +140,5 @@ window.goal =
           $("#error_edit_student").addClass('error_notification')
           $("#error_edit_student").text('Goal was updated failed.')
       })
+
+
