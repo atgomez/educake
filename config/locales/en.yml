@@ -33,7 +33,7 @@ en:
     save_failed: "Could not save the goal"
   status:
     created_successfully: "Created status successfully"
-    import_successfully: "Imported statuses successfully"
+    import_successfully: "Imported .csv file for grades successfully"
     save_failed: "Some grades are invalid"
 
   admin:

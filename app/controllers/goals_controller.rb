@@ -83,7 +83,6 @@ class GoalsController < ApplicationController
   def add_status
     result = {}
     status_code = 201
-
     student = Student.find(session[:student_id])
     if student 
       @goals = student.goals.available.map{|g| [[g.subject.name, g.curriculum.name].join(" "), g.id]}
@@ -141,8 +140,7 @@ class GoalsController < ApplicationController
   end
   
   def import_grades
-    result = {}
-    status_code = 201
+    @format_csv = false
     @student = Student.find params[:student_id]
     @goals = @student.goals.incomplete.is_archived(false).map{|g| [g.name, g.id]}
     @goal = Goal.find_by_id params[:goal][:id]
@@ -150,20 +148,23 @@ class GoalsController < ApplicationController
     if @goal
       invalid_grade = false
       unless @file_import.nil?
-        @goal.update_attribute(:grades, @file_import)
-        statuses = @goal.parse_csv(@goal.grades.url.split("?")[0])
-        statuses.map do |status|
-          day = status[:due_date].split("/")
-          day = [day[1], day[0], day[2]].join("/")
-          status[:due_date] = Date.parse day
-          build_status = @goal.build_status(status, true)
-          
-          if (build_status)
-            build_status = @goal.update_status_state(build_status)
-            if build_status.save
-              flash[:notice] = I18n.t('status.import_successfully')
-            else
-              invalid_grade = true
+        @format_csv = @file_import.original_filename.include?".csv"
+        if @format_csv
+          @goal.update_attribute(:grades, @file_import)
+          statuses = @goal.parse_csv(@goal.grades.url.split("?")[0])
+          statuses.map do |status|
+            day = status[:due_date].split("/")
+            day = [day[1], day[0], day[2]].join("/")
+            status[:due_date] = Date.parse day
+            build_status = @goal.build_status(status, true)
+            
+            if (build_status)
+              build_status = @goal.update_status_state(build_status)
+              if build_status.save
+                flash[:notice] = I18n.t('status.import_successfully')
+              else
+                invalid_grade = true
+              end
             end
           end
         end
