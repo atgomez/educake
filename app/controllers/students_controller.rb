@@ -10,9 +10,10 @@ class StudentsController < ApplicationController
     @student = Student.find(params[:id])
     @teacher = @student.teacher 
     @goals = @student.goals.incomplete.is_archived(false).load_data(filtered_params)
+    @students = @teacher.students
     if request.xhr?
-      @goals = @student.goals.load_data(filtered_params)
-      render :partial => "view_goal", :locals => {:goals => @goals}
+      @goals = @student.goals.load_data(filtered_params)      
+      render :partial => "view_goal", :locals => {:goals => @goals, :students => @students}
     end
     @invited_users = StudentSharing.where(:student_id => @student.id)
     session[:student_id] = params[:id]

@@ -16,7 +16,7 @@
         %td
           = Student
         %td
-          = select_tag "student_selection", "<option>Tran Danh</option><option>Pham Thu</option>".html_safe
+          = select_tag("student_selection", options_from_collection_for_select(@students, "id", "full_name"))
   .modal-footer
     %button.btn{"aria-hidden" => "true", "data-dismiss" => "modal"} Cancel
     %button.btn.btn-primary.not-implemented Export

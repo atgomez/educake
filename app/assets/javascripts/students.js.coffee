@@ -15,8 +15,16 @@ window.studentObject =
     @scrollToUser()
     @allowInputNumber()
     @timeForField()
+    @checkClassroom()
     return
     
+  checkClassroom: ->
+    $("input[name=data]").change ->
+      if @value is "classroom"
+        $("#student_selection").attr("disabled", "disabled")
+      else
+        $("#student_selection").removeAttr("disabled")
+
   timeForField: ->
     $('#status_time_to_complete').live "focus", ->
       $(this).timepicker 
