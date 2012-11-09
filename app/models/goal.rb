@@ -17,10 +17,11 @@
 #  trial_days_actual :integer          default(0)
 #  is_archived       :boolean          default(FALSE)
 #
-
+require 'csv'
 class Goal < ActiveRecord::Base
   include ::SharedMethods::Paging
-  attr_accessible :accuracy, :curriculum_id, :due_date, :subject_id, :progresses_attributes, :baseline_date, :baseline, :trial_days_total, :trial_days_actual,:is_archived
+  attr_accessible :accuracy, :curriculum_id, :due_date, :subject_id, :progresses_attributes, 
+  :baseline_date, :baseline, :trial_days_total, :trial_days_actual,:is_archived, :grades
   has_many :progresses, :dependent => :destroy
   has_many :statuses
   belongs_to :student 
@@ -30,10 +31,17 @@ class Goal < ActiveRecord::Base
   validates :accuracy, :numericality => true, :inclusion => {:in => 0..100, :message => "must be from 0 to 100"}
   validates :baseline, :numericality => true, :inclusion => {:in => 0..100, :message => "must be from 0 to 100"}
   validates_presence_of :accuracy, :due_date, :curriculum_id, :subject_id, :baseline_date, :baseline, :trial_days_total, :trial_days_actual
+  validates :grades, :uniqueness => true
 
   accepts_nested_attributes_for :progresses, :reject_if => lambda { |progress| 
     progress['accuracy'].blank? || progress['due_date'].blank?
   }
+
+  has_attached_file :grades, 
+                    #:storage => :s3, 
+                    #:s3_credentials => "#{Rails.root}/config/amazon_s3.yml",
+                    :url  => ":rails_root/public/imports/:id/:style.:extension",
+                    :path => ":rails_root/public/imports/:id/:style.:extension"
 
   scope :is_archived, lambda {|is_archived| where(:is_archived => is_archived)} 
   scope :incomplete, where('is_completed = ?', false)
@@ -219,7 +227,23 @@ class Goal < ActiveRecord::Base
     end
     return status
   end
-
+  
+  def parse_csv(path)
+    #path = "#{Rails.root}/data/grades.csv"
+    statuses = []
+    CSV.foreach(path) do |row|
+      row = row[0].split(";")
+      statuses << {
+          :due_date => row[0],
+          :accuracy => row[1],
+          :time_to_complete => row[2]
+        }
+    end
+    # Delete header 
+    statuses.delete_at 0
+    return statuses
+  end 
+  
   def goal_status
     status = self.last_status
     if (status)

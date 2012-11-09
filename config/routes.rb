@@ -23,6 +23,8 @@ TeacherMgnt::Application.routes.draw do
     collection do 
       get :new_status 
       post :add_status
+      get :initial_import_grades
+      put :import_grades
     end
 
     member do
