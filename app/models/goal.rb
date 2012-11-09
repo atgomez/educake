@@ -54,10 +54,7 @@ class Goal < ActiveRecord::Base
   before_validation :update_progresses
   before_save :custom_validations
   after_save :update_all_status  
-  
-  def grades_validation_required?
-    self.grades.blank?
-  end
+
   # CLASS METHODS
   class << self
     def load_data(params = {}, complete = nil)

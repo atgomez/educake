@@ -17,6 +17,7 @@ class StudentsController < ApplicationController
       goal.statuses.each{|status| 
         @data += [status.due_date, (status.accuracy*100).round / 100.0]
       }
+      @data += goal.progresses.select {|p| [p.due_date, (p.accuracy*100).round / 100.0]}
     end
     if @data.empty?
       @height = "0"
