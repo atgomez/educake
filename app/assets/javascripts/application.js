@@ -23,9 +23,6 @@
 //= require goal
 //= require helper
 //= require app/admin/teacher
-//= require json_parse
-//= require jquery.filter_input
-//= require jquery-ui-timepicker-addon
 //= require jquery.iframe-transport
 //= require jquery.remotipart
 

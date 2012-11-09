@@ -31,6 +31,10 @@ en:
     created_successfully: "Goal was created successfully"
     updated_successfully : "Goal was saved successfully"
     save_failed: "Could not save the goal"
+  status:
+    created_successfully: "Created status successfully"
+    import_successfully: "Imported statuses successfully"
+    save_failed: "Some grades are invalid"
 
   admin:
     teacher:

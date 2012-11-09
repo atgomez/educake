@@ -145,36 +145,36 @@ class GoalsController < ApplicationController
     status_code = 201
     @student = Student.find params[:student_id]
     @goals = @student.goals.incomplete.is_archived(false).map{|g| [g.name, g.id]}
-    @goal = Goal.find params[:goal][:id]
+    @goal = Goal.find_by_id params[:goal][:id]
+    @file_import = params[:goal][:grades]
     if @goal
-
-      if @goal.update_attribute(:grades, params[:goal][:grades])
+      invalid_grade = false
+      unless @file_import.nil?
+        @goal.update_attribute(:grades, @file_import)
         statuses = @goal.parse_csv(@goal.grades.url.split("?")[0])
         statuses.map do |status|
           day = status[:due_date].split("/")
           day = [day[1], day[0], day[2]].join("/")
           status[:due_date] = Date.parse day
-          build_status = @goal.build_status status
+          build_status = @goal.build_status(status, true)
+          
           if (build_status)
             build_status = @goal.update_status_state(build_status)
             if build_status.save
-              status_code = 201
-              result[:message] = I18n.t('status.created_successfully')
-              flash[:notice] = result[:message]
-              #redirect_to student_path(@student)
+              flash[:notice] = I18n.t('status.import_successfully')
             else
-              status_code = 400
-              result[:message] = I18n.t('status.save_failed')
-              #result[:html] = render_to_string(:partial => 'goals/import_grades')
-              
+              invalid_grade = true
             end
           end
         end
+        if invalid_grade
+          flash[:notice] = nil
+          flash[:alert] = I18n.t('status.save_failed')
+        end
       end
-      respond_to do |format|
-        format.js
-      end 
     end
-    
+    respond_to do |format|
+      format.js
+    end 
   end
 end

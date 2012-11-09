@@ -1,1 +1,12 @@
-location.reload();
+- unless (@goal.nil? && @file_import.nil?) || @file_import.nil? || @goal.nil?
+  location.reload();
+- else
+  - if @goal.nil?
+    $("#goal_choose").html("Please select one.");
+  - else
+    $("#goal_choose").html("");
+  - if @file_import.nil?
+    $("#file_choose").html("Please select one.");
+  - else
+    $("#file_choose").html("");
+

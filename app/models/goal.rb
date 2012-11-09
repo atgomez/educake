@@ -218,10 +218,19 @@ class Goal < ActiveRecord::Base
     (3-count_progress).times { self.progresses.build } if count_progress < 3
   end
 
-  def build_status(params)
+  def build_status(params, is_updatable = false)
     #Find progress
     progress = self.progresses.find(:first, :conditions => ['due_date >= ?', params[:due_date]], :order => 'due_date ASC')
-    status = self.statuses.new params
+    status = nil
+    if is_updatable
+      status = Status.find_or_initialize_by_due_date(params[:due_date])
+      status.goal = self
+      status.accuracy = params[:accuracy]
+      status.time_to_complete = params[:time_to_complete]
+    else
+      status = self.statuses.new params
+    end
+    
     if progress
       status.progress = progress
     end
