@@ -43,4 +43,9 @@ class TeachersController < ApplicationController
   def set_current_tab
     @current_tab = 'classroom'
   end
+
+  # You can override this method in the sub class.
+  def default_page_size
+    6
+  end
 end
