@@ -128,6 +128,8 @@ window.studentObject =
         )
         
         $('#chart').attr("src", "chart?goal_id="+id);
+        $('#chart').attr("height", "500");
+        $('#chart').attr("width", "80%");
         $(".status a.goal").each ->
           if $(this).hasClass("icon-minus") && ($(this).attr("href") != id_content)
             $(this).removeClass("icon-minus").addClass("icon-plus")
@@ -138,6 +140,9 @@ window.studentObject =
             )
         window.chartMode = 'view_goal'
       else if $(this).hasClass("icon-minus")
+        if $("#check_is_add_grade").val() == "true"
+          $('#chart').attr("height", "0");
+          $('#chart').attr("width", "0%");
         $(this).removeClass("icon-minus").addClass("icon-plus")
         $(id_content).slideUp('fast', ->
           $(id_content).attr("style","display:none;")

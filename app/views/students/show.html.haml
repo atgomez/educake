@@ -37,6 +37,7 @@
     = link_to "Export", "#", :id => "export-button", :class => "btn export", "data-toggle" => "modal"
   .clearfix
   %center.clearfix
+    = hidden_field_tag "check_is_add_grade", @data.empty?
     %iframe{:frameborder => "0", :height => @height, :src => "/students/"+ params[:id] + "/common_chart", :width => @width, :id => "chart"}
   = hidden_field_tag "iframe_src", "/students/"+ params[:id] + "/common_chart?"
 
