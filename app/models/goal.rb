@@ -31,7 +31,6 @@ class Goal < ActiveRecord::Base
   validates :accuracy, :numericality => true, :inclusion => {:in => 0..100, :message => "must be from 0 to 100"}
   validates :baseline, :numericality => true, :inclusion => {:in => 0..100, :message => "must be from 0 to 100"}
   validates_presence_of :accuracy, :due_date, :curriculum_id, :subject_id, :baseline_date, :baseline, :trial_days_total, :trial_days_actual
-  validates :grades, :uniqueness => true
 
   accepts_nested_attributes_for :progresses, :reject_if => lambda { |progress| 
     progress['accuracy'].blank? || progress['due_date'].blank?
@@ -43,7 +42,7 @@ class Goal < ActiveRecord::Base
                     :url  => ":rails_root/public/imports/:id/:style.:extension",
                     :path => ":rails_root/public/imports/:id/:style.:extension"
   
-                                      validates_attachment_content_type :grades, :content_type => ['text/csv','text/comma-separated-values','text/csv','application/csv','application/excel','application/vnd.ms-excel','application/vnd.msexcel','text/anytext','text/plain'], :message => 'file must be of filetype .csv'
+  validates_attachment_content_type :grades, :content_type => ['text/csv','text/comma-separated-values','text/csv','application/csv','application/excel','application/vnd.ms-excel','application/vnd.msexcel','text/anytext','text/plain'], :message => 'file must be of filetype .csv', :if => Proc.new{|r| !r.grades.blank?}
 
 
   scope :is_archived, lambda {|is_archived| where(:is_archived => is_archived)} 
@@ -56,6 +55,9 @@ class Goal < ActiveRecord::Base
   before_save :custom_validations
   after_save :update_all_status  
   
+  def grades_validation_required?
+    self.grades.blank?
+  end
   # CLASS METHODS
   class << self
     def load_data(params = {}, complete = nil)

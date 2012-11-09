@@ -39,6 +39,7 @@ TeacherMgnt::Application.routes.draw do
     resources :teachers do
       collection do
         get :search
+        get :show_charts
       end
     end
 

@@ -1,3 +1,6 @@
+%center.clearfix
+  - page = params[:page_id] || 1
+  %iframe{:frameborder => "0", :height => @height, :src => "/teachers/show_charts?page_id="+page.to_s, :width => @width, :id => "chart_student"}
 .show-student
   = link_to "All Teachers", admin_teachers_path
   .student-container.border-teacher.align-border-single.clearfix

@@ -30,13 +30,40 @@ class Admin::TeachersController < Admin::BaseAdminController
   
   def show 
     @teacher = User.find params[:id]
+    session[:teacher_id] = params[:id]
     @students = @teacher.students.load_data(filtered_params)
+    series = []
+    @students.map do |student|
+      series += student.goals_statuses
+    end
+    if series.empty?
+      @width = "0%"
+      @height = "0"
+    else 
+      @width = "80%"
+      @height = "500"
+    end 
+    
     student_ids = StudentSharing.where(:user_id => @teacher.id).map(&:student_id)
     if student_ids.empty?
       @sharing_students = []
     else
       @sharing_students = Student.load_data(filtered_params, student_ids)
     end
+  end
+  
+  def show_charts 
+    @series = []
+    @teacher = User.find session[:teacher_id]
+    @students = @teacher.students.load_data(filtered_params)
+    @students.map do |student|
+      @series << {
+        :name => student.full_name,
+        :data => student.goals_statuses
+      } unless student.goals_statuses.empty?
+    end
+    @series = @series.to_json
+    render :template => 'students/common_chart', :layout => "chart"
   end
 
   # GET: /admin/teacher/search?query=<QUERY>

@@ -56,6 +56,14 @@ window.studentObject =
     $('#user_phone').filter_input({regex:'[0-9]'})
     $('#status_value').filter_input({regex:'[0-9.]', live:true})
     $(".numeric").filter_input({regex:'[0-9.]', live:true})
+    $('#user_first_name').filter_input({regex:'[a-zA-Z0-9_.]', live:true})
+    $('#user_last_name').filter_input({regex:'[a-zA-Z0-9_.]', live:true}) 
+    $('#user_email').filter_input({regex:'[a-zA-Z0-9_.@]', live:true}) 
+    $('#student_sharing_first_name').filter_input({regex:'[a-zA-Z0-9_.]', live:true})
+    $('#student_sharing_last_name').filter_input({regex:'[a-zA-Z0-9_.]', live:true}) 
+    $('#student_sharing_email').filter_input({regex:'[a-zA-Z0-9_.@]', live:true})
+    $('#student_first_name').filter_input({regex:'[a-zA-Z0-9_.]', live:true})
+    $('#student_last_name').filter_input({regex:'[a-zA-Z0-9_.]', live:true}) 
     return
   uploadPhoto: ->
     $('#student_photo').change((e) ->

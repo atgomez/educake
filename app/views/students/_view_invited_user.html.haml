@@ -3,6 +3,7 @@
     - invited_users.each do |user|
       %tr{:id => "invitation-#{user.id}"}
         %td.width-name= user.full_name
+        %td.width-email= user.email
         %td.width-role= user.role.name
         %td.width-action
           = link_to "", edit_invitation_path(user), :class => "icon-pencil color-pen", :method => :get, :remote => true, :title => "Edit"
