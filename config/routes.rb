@@ -32,8 +32,13 @@ TeacherMgnt::Application.routes.draw do
     end
   end 
 
-  devise_for :users, :controllers => { :registrations => 'user_registrations'}
-  
+  devise_for :users, :controllers => { :registrations => 'user_registrations', 
+    :confirmations => 'user_confirmations'}
+
+  as :user do
+    match '/user/confirmation' => 'user_confirmations#update', :via => :put, :as => :update_user_confirmation
+  end
+
   get '/admin', :to => "admin/base_admin#index"
   namespace :admin do
     resources :teachers do

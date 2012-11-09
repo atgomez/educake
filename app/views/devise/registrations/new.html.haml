@@ -6,7 +6,7 @@
 
 - sharing = @sharing || StudentSharing.new
 
-= simple_form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => {:class=>"sign-up form-horizontal goal-form"}) do |f|
+= simple_form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => {:class=>"sign-up form-horizontal"}) do |f|
   = f.error_notification
   .form-inputs
     = hidden_field_tag :user_token, @sharing.confirm_token

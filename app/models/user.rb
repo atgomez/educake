@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
   include ::SharedMethods::Paging  
-  DUMMY_PASSWORD = "123456"
+  attr_accessor :skip_password
 
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
@@ -29,20 +29,12 @@ class User < ActiveRecord::Base
   # VALIDATION
   has_one :student_sharing
   validates_presence_of :first_name, :last_name
-  
+
   # CALLBACK
   after_create :update_user_for_student_sharing
 
   # Class methods
   class << self
-
-    # Create new User object with default password in case of no password is specified.
-    def new_with_default_password(attrs)
-      attrs[:password] = DUMMY_PASSWORD if attrs[:password].blank?
-      attrs[:password_confirmation] = DUMMY_PASSWORD if attrs[:password_confirmation].blank?
-      self.new(attrs)
-    end
-
     # Load data
     #
     # === Parameters
@@ -78,6 +70,12 @@ class User < ActiveRecord::Base
       return self.search(meta_query).paginate(:page => paging_info.page_id,
                       :per_page => paging_info.page_size,
                       :order => paging_info.sort_string)
+    end
+
+    def new_with_role_name(role_name, attrs)
+      user = self.new(attrs)
+      user.role = Role.find_by_name(role_name.to_s.titleize)
+      return user
     end
 
     protected
@@ -134,6 +132,29 @@ class User < ActiveRecord::Base
   def is?(role_name)
     self.role.try(:name).to_s.downcase == role_name.to_s
   end
+
+  # Check if user has no password
+  def has_no_password?
+    self.encrypted_password.blank?
+  end
+
+  def change_password(params)
+    self.update_attributes({
+      :password => params[:password],
+      :password_confirmation => params[:password_confirmation]
+    })
+  end
+
+  def only_if_unconfirmed
+    pending_any_confirmation {yield}
+  end
+
+  protected
+
+    def password_required?
+      return false if self.skip_password
+      super
+    end
 end
 
 # == Schema Information
@@ -169,4 +190,3 @@ end
 #  photo_updated_at       :datetime
 #  is_admin               :boolean
 #
-

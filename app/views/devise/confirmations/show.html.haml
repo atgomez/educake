@@ -1,0 +1,12 @@
+%h2 Please change your password
+= simple_form_for(resource, :as => resource_name, 
+      :url => update_user_confirmation_path(params[:confirmation_token]), 
+      :html => { :method => :put }) do |f|
+  = f.error_notification
+  .form-inputs
+    = f.input :password, :label => "Password", :required => true
+    = f.input :password_confirmation, :label => "Confirm password", :required => true
+    = hidden_field_tag :confirmation_token, @confirmation_token
+  .form-actions
+    = f.button :submit, "Change my password"
+= render "devise/shared/links"

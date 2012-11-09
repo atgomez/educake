@@ -19,7 +19,7 @@ end
 gem "twitter-bootstrap-rails"
 gem 'jquery-rails'
 gem "haml"
-gem "devise"
+gem "devise", ">= 2.0.0"
 gem "simple_form"
 gem 'paperclip'
 gem "aws-sdk" 

@@ -248,7 +248,7 @@ DEPENDENCIES
   capybara
   coffee-rails (~> 3.2.1)
   database_cleaner (>= 0.8.0)
-  devise
+  devise (>= 2.0.0)
   faker
   fastercsv
   haml

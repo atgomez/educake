@@ -8,7 +8,8 @@ class Admin::TeachersController < Admin::BaseAdminController
     status_code = 201
 
     begin
-      @teacher = current_user.children.new_with_default_password(params[:user])
+      @teacher = current_user.children.new_with_role_name(:teacher, params[:user])
+      @teacher.skip_password = true
       if @teacher.save
         status_code = 201
         result[:message] = I18n.t('admin.teacher.created_successfully')
