@@ -164,6 +164,7 @@ class Goal < ActiveRecord::Base
 
     else # If not enough status, set accuracy equal to value
       status.value = status.accuracy
+      status.is_unused = true
     end
 
     return status

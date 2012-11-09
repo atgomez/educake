@@ -37,7 +37,7 @@
         xAxis: {
           type: 'datetime',
           minorTickInterval: 'auto',
-          tickPixelInterval: 100,
+          tickPixelInterval: 110,
           labels: {
             formatter: function() {
                 return Highcharts.dateFormat('%b %e, %y', this.value);
@@ -62,7 +62,8 @@
               value: 0,
               width: 1,
               color: '#808080'
-          }]
+          }],
+          showEmpty: false
         },{
           min: 0,
           title: {

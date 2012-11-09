@@ -17,7 +17,7 @@
 #
 
 class Status < ActiveRecord::Base
-  attr_accessible :accuracy, :due_date, :goal_id, :is_ideal, :user_id, :value, :time_to_complete
+  attr_accessible :accuracy, :due_date, :goal_id, :is_ideal, :user_id, :value, :time_to_complete, :is_unused
   belongs_to :user
   belongs_to :goal
   belongs_to :progress
@@ -30,6 +30,7 @@ class Status < ActiveRecord::Base
   # Instance methods.
   # is_ideal == true <~ Progress Object
   scope :is_ideal, lambda {|ideal| where(:is_ideal => ideal)}
+  scope :computable, where('is_unused = ?', false)
 
   before_update :update_status_state
   before_save :validate_due_date
