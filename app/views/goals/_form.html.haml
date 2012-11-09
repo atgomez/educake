@@ -65,13 +65,13 @@
 :javascript
   $("##{id}").on('show', function(){
     var win_height = $(window).height();
-    if(win_height <= $(this).height()){
-      var form_max_height = win_height - 250;
+    //if(win_height <= $(this).height()){
+      var form_max_height = win_height - 400;
       if(form_max_height <= 0)
         form_max_height = 100;
         
       $(this).find(".modal-body").css({
         "max-height": form_max_height + "px"
       });
-    }
+    //}
   })
