@@ -3,8 +3,9 @@
 // Create the chart
 - content_for(:js) do
   :javascript
+    var chart;
     $(function(){
-      var chart;
+      
       series = jQuery.parseJSON(#{@series.to_json})
       $.each(series, function(indx, seri) {
         $.each(seri["data"], function(i, dt){
@@ -16,7 +17,13 @@
         chart: {
           renderTo: 'common_chart',
           type: 'spline',
-          zoomType: 'xy'
+          zoomType: 'xy',
+          events: {
+              click: function(event) {
+                if(typeof parent.clickOnChart == 'function')
+                  parent.clickOnChart(); 
+              }
+          } 
         },
         title: {
           text: ''
@@ -94,10 +101,10 @@
               'click': function() {
                  current = this
                  $(chart.series).each(function(idx, item) {
-                    if (item != current) {
-                      item.hide();
-                    } else {
-                      item.show();
+                    if (item == current) {
+                      if (current.options.goal_id)
+                        if(typeof parent.selectGoal == 'function')
+                          parent.selectGoal(current.options.goal_id); 
                     }
                  });
               }

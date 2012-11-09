@@ -31,6 +31,8 @@ gem "cancan"
 gem 'json'
 gem 'meta_search'
 gem 'newrelic_rpm'
+gem 'fastercsv'
+gem "remotipart", "~> 1.0"
 
 group :development do 
   gem "haml-rails"

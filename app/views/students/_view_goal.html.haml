@@ -2,7 +2,7 @@
 - goals.each do |goal|
   .cont.goal-container{:id => "goal-container-#{goal.id}"}
     .width-subject.pull-left
-      %a{:href=>"#goal_#{goal.id}", "data-toggle" =>"tab", "data-dismiss"=>"div", :class => "icon-plus goal"}
+      %a{:href=>"#goal_#{goal.id}", "data-toggle" =>"tab", "data-dismiss"=>"div", :class => "icon-plus goal", :id => "goal#{goal.id}"}
         = " " + goal.subject.name + " " + goal.curriculum.name
     
     .pull-right

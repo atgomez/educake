@@ -17,10 +17,11 @@
 #  trial_days_actual :integer          default(0)
 #  is_archived       :boolean          default(FALSE)
 #
-
+require 'csv'
 class Goal < ActiveRecord::Base
   include ::SharedMethods::Paging
-  attr_accessible :accuracy, :curriculum_id, :due_date, :subject_id, :progresses_attributes, :baseline_date, :baseline, :trial_days_total, :trial_days_actual,:is_archived
+  attr_accessible :accuracy, :curriculum_id, :due_date, :subject_id, :progresses_attributes, 
+  :baseline_date, :baseline, :trial_days_total, :trial_days_actual,:is_archived, :grades
   has_many :progresses, :dependent => :destroy
   has_many :statuses
   belongs_to :student 
@@ -30,10 +31,20 @@ class Goal < ActiveRecord::Base
   validates :accuracy, :numericality => true, :inclusion => {:in => 0..100, :message => "must be from 0 to 100"}
   validates :baseline, :numericality => true, :inclusion => {:in => 0..100, :message => "must be from 0 to 100"}
   validates_presence_of :accuracy, :due_date, :curriculum_id, :subject_id, :baseline_date, :baseline, :trial_days_total, :trial_days_actual
+  validates :grades, :uniqueness => true
 
   accepts_nested_attributes_for :progresses, :reject_if => lambda { |progress| 
     progress['accuracy'].blank? || progress['due_date'].blank?
   }
+
+  has_attached_file :grades, 
+                    #:storage => :s3, 
+                    #:s3_credentials => "#{Rails.root}/config/amazon_s3.yml",
+                    :url  => ":rails_root/public/imports/:id/:style.:extension",
+                    :path => ":rails_root/public/imports/:id/:style.:extension"
+  
+                                      validates_attachment_content_type :grades, :content_type => ['text/csv','text/comma-separated-values','text/csv','application/csv','application/excel','application/vnd.ms-excel','application/vnd.msexcel','text/anytext','text/plain'], :message => 'file must be of filetype .csv'
+
 
   scope :is_archived, lambda {|is_archived| where(:is_archived => is_archived)} 
   scope :incomplete, where('is_completed = ?', false)
@@ -210,16 +221,41 @@ class Goal < ActiveRecord::Base
     (3-count_progress).times { self.progresses.build } if count_progress < 3
   end
 
-  def build_status(params)
+  def build_status(params, is_updatable = false)
     #Find progress
     progress = self.progresses.find(:first, :conditions => ['due_date >= ?', params[:due_date]], :order => 'due_date ASC')
-    status = self.statuses.new params
+    status = nil
+    if is_updatable
+      status = Status.find_or_initialize_by_due_date(params[:due_date])
+      status.goal = self
+      status.accuracy = params[:accuracy]
+      status.time_to_complete = params[:time_to_complete]
+    else
+      status = self.statuses.new params
+    end
+    
     if progress
       status.progress = progress
     end
     return status
   end
-
+  
+  def parse_csv(path)
+    #path = "#{Rails.root}/data/grades.csv"
+    statuses = []
+    CSV.foreach(path) do |row|
+      row = row[0].split(";")
+      statuses << {
+          :due_date => row[0],
+          :accuracy => row[1],
+          :time_to_complete => row[2]
+        }
+    end
+    # Delete header 
+    statuses.delete_at 0
+    return statuses
+  end 
+  
   def goal_status
     status = self.last_status
     if (status)

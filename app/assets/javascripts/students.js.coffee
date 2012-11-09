@@ -1,3 +1,24 @@
+
+window.chartMode = 'view_all'
+
+window.selectGoal= (goal_id) ->
+  $('#goal' + goal_id).click()
+
+window.clickOnChart= ->
+  if (window.chartMode == 'view_goal')
+    $('.goal').each ->
+      id_content = $(this).attr("href")
+      $(this).removeClass("icon-minus").addClass("icon-plus")
+      $(id_content).slideUp('fast', ->
+        $(id_content).attr("style","display:none;")
+      )
+      page_id = ""
+      href = $(".pagination li.active a").attr("href")
+      if href
+        page_id = href.split("?")[1]
+      $('#chart').attr("src", "/students/"+ $("#student_id").val() + "/common_chart?"+page_id);
+      window.chartMode = 'view_all'
+
 window.studentObject =
   setup: ->
     @addDatePicker()
@@ -107,12 +128,14 @@ window.studentObject =
             $(id).slideUp('fast', ->
               $(id).attr("style","display:none;")
             )
+        window.chartMode = 'view_goal'
       else if $(this).hasClass("icon-minus")
         $(this).removeClass("icon-minus").addClass("icon-plus")
         $(id_content).slideUp('fast', ->
           $(id_content).attr("style","display:none;")
         )
         $('#chart').attr("src", "/students/"+ $("#student_id").val() + "/common_chart?"+page_id);
+        window.chartMode = 'view_all'
       return
   
   activeTab: ->

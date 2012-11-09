@@ -11,6 +11,20 @@ class StudentsController < ApplicationController
     @teacher = @student.teacher 
     @goals = @student.goals.incomplete.is_archived(false).load_data(filtered_params)
     @students = @teacher.students
+    #Check to hide placeholder for chart
+    @data = []
+    @goals.each do |goal| 
+      goal.statuses.each{|status| 
+        @data += [status.due_date, (status.accuracy*100).round / 100.0]
+      }
+    end
+    if @data.empty?
+      @height = "0"
+      @width = "0%"
+    else
+      @height = "500"
+      @width = "80%"
+    end 
     if request.xhr?
       @goals = @student.goals.load_data(filtered_params)      
       render :partial => "view_goal", :locals => {:goals => @goals, :students => @students}
@@ -99,7 +113,8 @@ class StudentsController < ApplicationController
         data = data.sort_by { |hsh| hsh[0] } 
         @series << {
                      :name => goal.name,
-                     :data => data
+                     :data => data,
+                     :goal_id => goal.id
                     }
       end
     end

@@ -23,4 +23,6 @@
 //= require goal
 //= require helper
 //= require app/admin/teacher
+//= require jquery.iframe-transport
+//= require jquery.remotipart
 
