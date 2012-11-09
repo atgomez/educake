@@ -31,7 +31,8 @@ class TeachersController < ApplicationController
     @students.map do |student|
       @series << {
         :name => student.full_name,
-        :data => student.goals_statuses
+        :data => student.goals_statuses,
+        :yAxis => 2
       } unless student.goals_statuses.empty?
     end
     @series = @series.to_json

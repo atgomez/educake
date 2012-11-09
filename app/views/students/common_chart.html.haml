@@ -77,8 +77,22 @@
               value: 0,
               width: 1,
               color: '#808080'
+          }]
+        },{
+          title: {
+            text: 'Status'
+          },
+          labels: {
+              formatter: function() {
+                  return this.value +'%'
+              }
+          },
+          plotLines: [{
+              value: 0,
+              width: 1,
+              color: '#808080'
           }],
-         
+          showEmpty: false
         }],
         legend: {
           layout: 'vertical',
