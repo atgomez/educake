@@ -5,7 +5,7 @@
 #  id               :integer          not null, primary key
 #  goal_id          :integer          not null
 #  due_date         :date
-#  accuracy         :float            default(0.0)
+#  accuracy         :float
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  is_ideal         :boolean          default(TRUE)
@@ -13,6 +13,7 @@
 #  value            :float            default(0.0)
 #  ideal_value      :float            default(0.0)
 #  time_to_complete :time
+#  progress_id      :integer
 #
 
 class Status < ActiveRecord::Base

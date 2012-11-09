@@ -1,3 +1,15 @@
+# == Schema Information
+#
+# Table name: progresses
+#
+#  id         :integer          not null, primary key
+#  goal_id    :integer          not null
+#  due_date   :date             not null
+#  accuracy   :float            default(0.0)
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+
 class Progress < ActiveRecord::Base
   attr_accessible :accuracy, :due_date
   belongs_to :goal
