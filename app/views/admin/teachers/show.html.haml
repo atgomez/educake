@@ -64,7 +64,7 @@
         .clearfix
 
   = render_pagination @students
-
+  
   .show-other-students
     - unless @sharing_students.empty?
       %h4.brown Sharing students 
@@ -91,5 +91,5 @@
                 - else
                   %span= student.goals.length
 
-  
+
 
