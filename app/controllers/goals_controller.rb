@@ -165,6 +165,7 @@ class GoalsController < ApplicationController
             if (build_status)
               build_status = @goal.update_status_state(build_status)
               if build_status.save
+                build_status.update_attribute(:user_id, current_user.id)
                 flash[:notice] = I18n.t('status.import_successfully')
               else
                 invalid_grade = true

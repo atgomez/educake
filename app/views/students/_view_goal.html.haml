@@ -46,7 +46,7 @@
                   %td= status.due_date.strftime("%m/%d/%y") rescue ""
                   %td= ::Util.round_f(status.accuracy).to_s+"%" rescue ""
                   %td
-                    - unless status.user.classroom.nil?
+                    - unless status.user.classroom.blank?
                       %span= status.user.classroom
                       \- 
                     %span= status.user.full_name
