@@ -84,9 +84,9 @@ $color-font: #E17C25;
     padding-top: 15px;
     padding-bottom: 15px;
     padding-left: 15px;
-    border-bottom: 1px solid #dddddd;
-    display: inline-block;
-
+    border-bottom: 1px solid #ddd;
+   
+   
     .well{ 
       border: none;
       background-color: transparent;
@@ -291,7 +291,7 @@ $color-font: #E17C25;
 }
 
 .border-teacher {
-  border: 1px solid black; 
+  border: 1px solid $color-font !important; 
   background-color: #ededed; 
   -moz-border-radius: 5px;
   border-radius: 5px;

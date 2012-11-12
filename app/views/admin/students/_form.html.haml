@@ -1,7 +1,8 @@
 = simple_form_for([:admin, @student], :html => { :multipart => true, :id => "student-form" } ) do |f|
   = f.error_notification
   .form-actions
-    = link_to "Cancel", admin_student_path(@student), :class => "btn"
+    - back = @student.new_record? ? :back : admin_student_path(@student)
+    = link_to "Cancel", back, :class => "btn"
     = f.button :submit, :value => "Save"
   .form-inputs
     .pull-right

@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
 
   rescue_from CanCan::AccessDenied, :with => :render_unauthorized 
 
-  PAGE_SIZE = 10
+  PAGE_SIZE = 6
   MAX_PAGE_SIZE = 100
 
   protected
