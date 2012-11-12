@@ -22,6 +22,7 @@
       = f.association :subject, :label => "Subject & Standard"
       = f.input(:due_date, :as => :string, :input_html => {:class => "select-date", 
                 :value => goal.due_date_string, :id => "goal_due_date#{goal.id}"})
+      = f.input(:description, :input_html => {:rows => '5'})
       = f.input :accuracy, :label => "Goal % Accuracy", :input_html => {:id => "accuracy-#{goal.id}"}
       = f.input(:baseline_date, :as => :string, :input_html => {:class => "select-date", 
                 :value => goal.baseline_date_string, :id => "baseline_date#{goal.id}"})

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121109104548) do
+ActiveRecord::Schema.define(:version => 20121112041128) do
 
   create_table "curriculums", :force => true do |t|
     t.string   "name",       :null => false
@@ -39,6 +39,7 @@ ActiveRecord::Schema.define(:version => 20121109104548) do
     t.string   "grades_content_type"
     t.integer  "grades_file_size"
     t.datetime "grades_updated_at"
+    t.text     "description"
   end
 
   add_index "goals", ["curriculum_id"], :name => "index_goals_on_curriculum_id"

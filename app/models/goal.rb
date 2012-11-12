@@ -21,7 +21,8 @@ require 'csv'
 class Goal < ActiveRecord::Base
   include ::SharedMethods::Paging
   attr_accessible :accuracy, :curriculum_id, :due_date, :subject_id, :progresses_attributes, 
-  :baseline_date, :baseline, :trial_days_total, :trial_days_actual,:is_archived, :grades, :is_completed
+  :baseline_date, :baseline, :trial_days_total, :trial_days_actual,:is_archived, :grades, :is_completed, :description
+
   has_many :progresses, :dependent => :destroy
   has_many :statuses
   belongs_to :student 
