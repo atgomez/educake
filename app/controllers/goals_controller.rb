@@ -57,7 +57,7 @@ class GoalsController < ApplicationController
           result[:message] = I18n.t('goal.updated_successfully')
           flash[:notice] = result[:message]
           after_updated_at =  @goal.updated_at.to_s
-          if check_time_update != after_updated_at && !(params[:goal][:is_completed].to_i ==  1)
+          if check_time_update != after_updated_at || !(params[:goal][:is_completed].to_i ==  1 && !(@goal.is_completed == false))
             @goal.update_attribute(:is_completed, false)
           end 
         else
