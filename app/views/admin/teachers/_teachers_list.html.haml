@@ -1,7 +1,7 @@
 - teachers ||= []
-- teachers.each do |teacher|
+- teachers.each_with_index do |teacher, idx|
   - teacher_home_url = admin_teacher_path(teacher)
-  .teacher-container.clearfix
+  .teacher-container.pull-left.clearfix
     .avatar-container.well
       %a{:href => teacher_home_url, :title => teacher.full_name}
         = image_tag(teacher.photo_url, :alt => teacher.full_name, :class => "teacher-avatar")
@@ -23,6 +23,19 @@
                     :alt => student.full_name,
                     :class => "student-avatar", 
                     :id => "teacher-student-#{teacher.id}-#{student.id}")
+    .pull-right
+      - is_track = 1
+      - teacher.students do |st| 
+        - st.goals.each do |goal|
+          - if !goal.on_track?
+            - is_track = 0
+      - if is_track == 1
+        .track-indicator.pull-left{:class => "on-track", :title => "On-track", :style=>"margin-top: 45px; "}
+      - else
+        .track-indicator.pull-left{:title => "Not on-track", :style=>"margin-top: 45px;"}
+    .clearfix
+  - if (idx + 1) % 3 == 0
+    .clearfix
 
 .clearfix
 - pagination_params ||= {}
