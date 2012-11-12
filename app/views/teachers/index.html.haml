@@ -45,7 +45,8 @@
   
   %center.clearfix
   .pull-right
-    = link_to "Export", "#", :id => "export-button", :class => "btn export", "data-toggle" => "modal"
+    - unless @students.blank?
+      = link_to "Export", "#", :id => "export-button", :class => "btn export", "data-toggle" => "modal"
   .show-other-students
     - unless @sharing_students.empty?
       %h4.brown Sharing students 
