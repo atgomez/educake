@@ -1,7 +1,7 @@
 !!!
 %html
   %head
-    %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
+    %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}
   %body
     %h1
       Hi, #{@user.full_name}
@@ -13,8 +13,9 @@
     %p
       - if @existed
         To login to the site, just follow this link:
-        = "#{@url}"
+        = link_to(@url, @url)
       - else 
         To signup to the site, just follow this link:
-        = "#{@url}?user_token=#{@user.confirm_token}"
+        - confirm_url = "#{@url}?user_token=#{@user.confirm_token}"
+        = link_to(confirm_url, confirm_url)
     %p Thanks for joining and have a great day!
