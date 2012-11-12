@@ -52,12 +52,13 @@ class GoalsController < ApplicationController
         params[:goal].delete :id
         params[:goal].delete :student_id
         check_time_update = @goal.updated_at.to_s
+        before_checked = @goal.is_completed
         if @goal.update_attributes params[:goal]
           status_code = 201
           result[:message] = I18n.t('goal.updated_successfully')
           flash[:notice] = result[:message]
           after_updated_at =  @goal.updated_at.to_s
-          if check_time_update != after_updated_at || !(params[:goal][:is_completed].to_i ==  1 && !(@goal.is_completed == false))
+          if (check_time_update != after_updated_at && before_checked != false) || (params[:goal][:is_completed].to_i ==  1 && (before_checked == true))
             @goal.update_attribute(:is_completed, false)
           end 
         else
