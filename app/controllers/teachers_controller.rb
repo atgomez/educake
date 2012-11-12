@@ -14,7 +14,7 @@ class TeachersController < ApplicationController
       @width = "0%"
       @height = "0"
     else 
-      @width = "80%"
+      @width = "100%"
       @height = "500"
     end 
     student_ids = StudentSharing.where(:user_id => current_user.id).map(&:student_id)

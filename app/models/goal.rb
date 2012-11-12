@@ -149,12 +149,12 @@ class Goal < ActiveRecord::Base
     #
     
     # Get the list of [trial_days_total] previous statuses
-    previous_statuses = self.statuses.find(:all, :conditions => ['is_ideal = ? AND statuses.due_date < ?', false, status.due_date], :order => 'due_date DESC', :limit => (self.trial_days_total - 1))
+    previous_statuses = self.statuses.find(:all, :conditions => ['statuses.due_date < ?', status.due_date], :order => 'due_date DESC', :limit => (self.trial_days_total - 1))
     
     # Sort by accuracy
     previous_statuses = previous_statuses.sort_by { |hsh| hsh[:accuracy] }
 
-    if previous_statuses.count == (self.trial_days_total - 1) #If enough statuses for calculating
+    if previous_statuses.count >= (self.trial_days_total - 1) #If enough statuses for calculating
       lowest_value_count = self.trial_days_total - self.trial_days_actual
       sum_value = 0
       (lowest_value_count...9).each {|index| sum_value = sum_value + previous_statuses[index][:value]}
@@ -162,6 +162,7 @@ class Goal < ActiveRecord::Base
       # Add current status value to total
       sum_value = sum_value + status.accuracy
       status.value = sum_value/self.trial_days_actual
+      status.is_unused = false
 
     else # If not enough status, set accuracy equal to value
       status.value = status.accuracy

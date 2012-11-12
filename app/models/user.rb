@@ -128,6 +128,24 @@ class User < ActiveRecord::Base
     end
   end
 
+  def teacher_status
+    data = []
+    progress = {}
+    students = self.students
+    students.each do |student|
+      student_data = student.goals_statuses
+      student_data.each do |single_data| 
+        progress[single_data[0]] = [] if progress[single_data[0]].nil?
+        progress[single_data[0]] << single_data[1]
+      end
+    end
+
+    progress.keys.sort.each do |key| 
+      data << [key, ((progress[key].sum/progress[key].count*100).round / 100.0)]
+    end 
+    return data
+  end
+
   # Check user's role
   def is?(role_name)
     self.role.try(:name).to_s.downcase == role_name.to_s

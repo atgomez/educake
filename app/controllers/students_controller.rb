@@ -23,7 +23,7 @@ class StudentsController < ApplicationController
       @width = "0%"
     else
       @height = "500"
-      @width = "80%"
+      @width = "100%"
     end 
     if request.xhr?
       @goals = @student.goals.load_data(filtered_params)      

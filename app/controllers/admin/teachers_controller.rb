@@ -1,6 +1,22 @@
 class Admin::TeachersController < Admin::BaseAdminController
   def index
     @teachers = current_user.children.load_data(filtered_params).includes(:students)
+    teachers = User.all
+    series = []
+    teachers.map do |teacher|
+      series << {
+        :name => teacher.full_name,
+        :data => teacher.teacher_status
+      } unless teacher.teacher_status.empty?
+    end
+
+    if series.empty?
+      @width = "0%"
+      @height = "0"
+    else 
+      @width = "100%"
+      @height = "500"
+    end 
   end
 
   def create
@@ -41,7 +57,7 @@ class Admin::TeachersController < Admin::BaseAdminController
       @width = "0%"
       @height = "0"
     else 
-      @width = "80%"
+      @width = "100%"
       @height = "500"
     end 
     
@@ -62,6 +78,19 @@ class Admin::TeachersController < Admin::BaseAdminController
         :name => student.full_name,
         :data => student.goals_statuses
       } unless student.goals_statuses.empty?
+    end
+    @series = @series.to_json
+    render :template => 'students/common_chart', :layout => "chart"
+  end
+
+  def show_teachers_chart
+    teachers = User.all
+    @series = []
+    teachers.map do |teacher|
+      @series << {
+        :name => teacher.full_name,
+        :data => teacher.teacher_status
+      } unless teacher.teacher_status.empty?
     end
     @series = @series.to_json
     render :template => 'students/common_chart', :layout => "chart"
