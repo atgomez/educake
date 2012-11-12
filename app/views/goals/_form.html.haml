@@ -2,7 +2,7 @@
 - student ||= Student.new
 - goal.build_progresses
 - id ||= 'goal-dialog'
-.modal.hide.fade{:tabindex => "-1", :id => id}
+.modal.hide.fade{:tabindex => "-1", :id => id, "data-backdrop" => "static"}
   = simple_form_for(goal, :html => { :id => "goal-form#{goal.id}", :class => 'goal-form form-horizontal goal-form' }) do |f|
     .modal-header
       %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} &times;
