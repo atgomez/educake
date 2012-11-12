@@ -1,0 +1,22 @@
+#export-dialog.modal.hide.fade{:tabindex => "-1"}
+  .modal-header
+    %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} ×
+    %h3#myModalLabel Export Status
+  .modal-body
+    %table
+      %tr
+        %td
+          = label_tag "Export data for"
+        %td
+          = radio_button_tag "data", "individual", true
+          Individual Student
+          = radio_button_tag "data", "classroom"
+          Classroom
+      %tr
+        %td
+          = Student
+        %td
+          = select_tag("student_selection", options_from_collection_for_select(@students, "id", "full_name"))
+  .modal-footer
+    %button.btn{"aria-hidden" => "true", "data-dismiss" => "modal"} Cancel
+    %button.btn.btn-primary.not-implemented Export
