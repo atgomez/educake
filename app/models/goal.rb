@@ -243,15 +243,13 @@ class Goal < ActiveRecord::Base
     #path = "#{Rails.root}/data/grades.csv"
     statuses = []
     CSV.foreach(path) do |row|
-      row = row[0].split(";")
       statuses << {
           :due_date => row[0],
-          :accuracy => row[1],
+          :accuracy => row[1].split("%").first,
           :time_to_complete => row[2]
         }
     end
-    # Delete header 
-    statuses.delete_at 0
+
     return statuses
   end 
   
