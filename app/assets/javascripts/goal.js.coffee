@@ -8,31 +8,29 @@ window.goal =
     @validate_character()
     return
   
-  validate_character: ->
-    $(".controls .numeric").live('keypress', (e) ->
+  filter_input: (selector, regex) ->
+    $(selector).live('keypress', (e) ->
       theEvent = e or window.event
-      if theEvent.keyCode isnt 46 and theEvent.keyCode isnt 8 and theEvent.keyCode isnt 37 and theEvent.keyCode isnt 39  
+      if theEvent.keyCode isnt 46 and theEvent.keyCode isnt 8 and theEvent.keyCode isnt 37 and theEvent.keyCode isnt 39 and theEvent.keyCode isnt 9
         key = theEvent.keyCode or theEvent.which
         key = String.fromCharCode(key)
-        if $(this).hasClass('float')
-          regex = /[0-9]|\./
-        else
-          regex = /[0-9]/
         unless regex.test(key)
           theEvent.returnValue = false
           theEvent.preventDefault()  if theEvent.preventDefault
     )
 
-    $(".controls .name").live('keypress', (e) ->
-      theEvent = e or window.event
-      if theEvent.keyCode isnt 46 and theEvent.keyCode isnt 8 and theEvent.keyCode isnt 37 and theEvent.keyCode isnt 39 
-        regex = /^[a-zA-Z0-9\s\b]+$/
-        key = theEvent.keyCode or theEvent.which
-        key = String.fromCharCode(key)
-        if (!regex.test(key))
-           theEvent.preventDefault()  if theEvent.preventDefault
-           return false
+  validate_character: ->
+    $(".controls .numeric").livequery( ->
+      regex = /[0-9]/
+      if $(this).hasClass('float')
+        regex = /[0-9]|\./
+     
+      goal.filter_input($(this), regex)
     )
+
+    goal.filter_input(".controls .tel", /[0-9\s]/)
+    goal.filter_input(".controls .name", /^[a-zA-Z\s\b-]+$/)
+    goal.filter_input(".controls .email", /^[a-zA-Z0-9_.@\s\b-]+$/)
 
   add_date_picker: ->
     $(".goal-form .select-date").livequery( ->

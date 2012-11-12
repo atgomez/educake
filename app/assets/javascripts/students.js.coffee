@@ -34,7 +34,7 @@ window.studentObject =
     @clickExport()
     @onSaveInvitation()
     @scrollToUser()
-    @allowInputNumber()
+    # @allowInputNumber()
     @timeForField()
     @checkClassroom()
     return
