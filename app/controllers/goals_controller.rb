@@ -40,7 +40,6 @@ class GoalsController < ApplicationController
   def update
     result = {}
     status_code = 201
-
     @student = Student.find_by_id(params[:goal][:student_id])
 
     if @student.blank?
@@ -52,10 +51,15 @@ class GoalsController < ApplicationController
         #Remove id and student_id 
         params[:goal].delete :id
         params[:goal].delete :student_id
+        check_time_update = @goal.updated_at.to_s
         if @goal.update_attributes params[:goal]
           status_code = 201
           result[:message] = I18n.t('goal.updated_successfully')
           flash[:notice] = result[:message]
+          after_updated_at =  @goal.updated_at.to_s
+          if check_time_update != after_updated_at && !(params[:goal][:is_completed].to_i ==  1)
+            @goal.update_attribute(:is_completed, false)
+          end 
         else
           status_code = 400
           result[:message] = I18n.t('goal.save_failed')

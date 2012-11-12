@@ -21,7 +21,7 @@ require 'csv'
 class Goal < ActiveRecord::Base
   include ::SharedMethods::Paging
   attr_accessible :accuracy, :curriculum_id, :due_date, :subject_id, :progresses_attributes, 
-  :baseline_date, :baseline, :trial_days_total, :trial_days_actual,:is_archived, :grades
+  :baseline_date, :baseline, :trial_days_total, :trial_days_actual,:is_archived, :grades, :is_completed
   has_many :progresses, :dependent => :destroy
   has_many :statuses
   belongs_to :student 
@@ -43,7 +43,7 @@ class Goal < ActiveRecord::Base
                     :path => ":rails_root/public/imports/:id/:style.:extension"
   
   validates_attachment_content_type :grades, :content_type => ['text/csv','text/comma-separated-values','text/csv','application/csv','application/excel','application/vnd.ms-excel','application/vnd.msexcel','text/anytext','text/plain'], :message => 'file must be of filetype .csv', :if => Proc.new{|r| !r.grades.blank?}
-
+  
   scope :is_archived, lambda {|is_archived| where(:is_archived => is_archived)} 
   scope :incomplete, where('is_completed = ?', false)
   scope :available, where('is_completed = ? AND is_archived = ?', false, false)
@@ -281,6 +281,7 @@ class Goal < ActiveRecord::Base
           status.save
         end
       end
+      
     end
 
     # Run all custom validations

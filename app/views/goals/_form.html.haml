@@ -10,7 +10,8 @@
         %h4 Add a Goal
       - else
         %h4 Edit Goal
-
+      - unless goal.new_record?
+        %div{:style=>"font-style:italic;"} Editing this goal will mark it as incomplete. You may mark it as complete below.
     .modal-body
       - if notification = f.error_notification
         .alert.alert-error.fade.in
@@ -55,7 +56,7 @@
       .submit-indicator.loading.hide
 
       - unless goal.new_record?
-        = f.input(:is_archived, :label => "Archive Goal", :wrapper_html => {:class => "archived-input"})
+        = f.input(:is_completed, :label => "Mark as complete", :wrapper_html => {:class => "archived-input"})
         
       %input.reset-form-button.hide{:type => "reset"}
       %button.btn{"aria-hidden" => "true", "data-dismiss" => "modal", :class => "close-dialog", :id => "btn-cancel"} Cancel
