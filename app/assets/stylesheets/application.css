@@ -20,6 +20,10 @@
  *= require "lib/jquery-ui-bootstrap/jquery-ui"
  */
 
+#main{
+  width: 1085px;
+}
+
 select.time{
   width: 50px;
 }
