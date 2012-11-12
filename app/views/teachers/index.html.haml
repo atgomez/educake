@@ -77,3 +77,5 @@
 %center.clearfix
   - page = params[:page_id] || 1
   %iframe{:frameborder => "0", :height => @height, :src => "/teachers/show_charts?page_id="+page.to_s, :width => @width, :id => "chart_student"}
+  
+= render "export"

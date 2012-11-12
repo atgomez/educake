@@ -22,16 +22,16 @@ ActiveRecord::Schema.define(:version => 20121109104548) do
   add_index "curriculums", ["name"], :name => "index_curriculums_on_name", :unique => true
 
   create_table "goals", :force => true do |t|
-    t.integer  "student_id",                             :null => false
-    t.integer  "subject_id",                             :null => false
-    t.integer  "curriculum_id",                          :null => false
+    t.integer  "student_id",                                    :null => false
+    t.integer  "subject_id",                                    :null => false
+    t.integer  "curriculum_id",                                 :null => false
     t.date     "due_date"
     t.float    "accuracy",            :default => 0.0
-    t.datetime "created_at",                             :null => false
-    t.datetime "updated_at",                             :null => false
+    t.datetime "created_at",                                    :null => false
+    t.datetime "updated_at",                                    :null => false
     t.boolean  "is_completed",        :default => false
     t.float    "baseline",            :default => 0.0
-    t.date     "baseline_date",                          :null => false
+    t.date     "baseline_date",       :default => '2012-11-08', :null => false
     t.integer  "trial_days_total",    :default => 0
     t.integer  "trial_days_actual",   :default => 0
     t.boolean  "is_archived",         :default => false
@@ -63,7 +63,7 @@ ActiveRecord::Schema.define(:version => 20121109104548) do
   create_table "statuses", :force => true do |t|
     t.integer  "goal_id",                             :null => false
     t.date     "due_date"
-    t.float    "accuracy",         :default => 0.0
+    t.float    "accuracy"
     t.datetime "created_at",                          :null => false
     t.datetime "updated_at",                          :null => false
     t.boolean  "is_ideal",         :default => true
