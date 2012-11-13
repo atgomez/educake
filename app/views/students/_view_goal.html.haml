@@ -1,4 +1,4 @@
-
+- on_edit_mode = (params[:action] == 'edit')
 - goals.each do |goal|
   .cont.goal-container{:id => "goal-container-#{goal.id}"}
     .width-subject.pull-left
@@ -8,28 +8,32 @@
     .pull-right
       .width-status.pull-left.accuracy.bold
         = ::Util.round_f(goal.accuracy).to_s + "% by " + goal.due_date.strftime("%m/%Y")
-      - if params[:action] == 'show'
+      - if !on_edit_mode
         - if goal.on_track?
           .track-indicator.pull-left{:class => "on-track", :title => "On-track"}
         - else
           .track-indicator.pull-left{:title => "Not on-track"}
 
-      .pull-left.progress.progress-success
-        .bar.custom-bar{:style => "width: #{goal.goal_status}%"}
+      - if on_edit_mode
+        .pull-left.progress.progress-success.small
+          .bar.custom-bar{:style => "width: #{goal.goal_status}%"}
 
-      - if params[:action] == 'edit'
         .complete-checkbox
           = check_box_tag("complete_checkbox", goal.is_completed, goal.is_completed, :url => update_status_goal_path(goal), :id => "#{goal.id}", :class => "goal-complete")
           = label_tag('complete_label', 'Goal complete')
           = link_to("Edit", edit_goal_path(goal, :student_id => @student.id), :class => "edit-goal", :remote => true)
-    
+          = link_to("Delete", goal_path(goal, :student_id => @student.id), :class => "delete-goal", :method => :delete, :confirm => t('common.confirm_message'))
+      - else
+        .pull-left.progress.progress-success
+          .bar.custom-bar{:style => "width: #{goal.goal_status}%"}
+
     .clearfix
     .tab-content
       .details_goal.tab-pane{:id => "goal_#{goal.id}"}
         .clearfix
-        .introduce.pull-left
-          When verbally told a number (any numeral up to 100), will write the numeral or use cards with numbers on them to display the correct numeral with 80% accuracy on 9 out of 10 trial days as measured by data.
-        .goal-progress.pull-right
+        .introduce.pull-left{:class => (on_edit_mode ? 'small' : '')}
+          = goal.description
+        .goal-progress.pull-right{:class => (on_edit_mode ? 'large' : '')}
           - goal.progresses.order('due_date ASC').each do |status|
             .width-status= ::Util.round_f(status.accuracy).to_s + "% by " + status.due_date.strftime("%m/%Y")
         - statuses =  goal.statuses.order('due_date ASC')

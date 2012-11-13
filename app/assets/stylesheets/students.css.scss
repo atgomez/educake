@@ -146,6 +146,11 @@ form#new_student_sharing, form.edit_student_sharing, form#new_status {
     margin-bottom: 20px;
     overflow: hidden;
     width: 330px;
+
+    &.small{
+      width: 200px;
+    }
+
     .bar {
       -moz-box-sizing: border-box;
       -moz-transition: width 0.6s ease 0s;
@@ -226,7 +231,7 @@ a {
     }
 
     .goal-progress{
-      width: 520px;
+      width: 500px;
     }
 
     .table-striped{

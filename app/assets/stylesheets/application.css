@@ -55,6 +55,10 @@ select.time{
   min-height: 500px;
 }
 
+form textarea{
+  resize: vertical;
+}
+
 #app-version{
   font-size: 11px;
   padding: 10px;

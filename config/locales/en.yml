@@ -6,7 +6,8 @@ en:
     invalid_params: "Invalid parameters"
     error_resource_notfound: "Resource not found"
     error_unauthorized: "You are not authorized to access this resource"
-    
+    confirm_message: "Are you sure ?"
+
     gender:
       male: "Male"
       female: "Female"
@@ -27,10 +28,14 @@ en:
       api: "%Y-%m-%d"
 
   goal:
+    not_found: "Cannot find the goal"
     student_not_found: "Could not find the student"
     created_successfully: "Goal was created successfully"
     updated_successfully : "Goal was saved successfully"
     save_failed: "Could not save the goal"
+    delete_successfully: "Goal was remove successfully"
+    delete_failed: "Cannot remove goal"
+
   status:
     created_successfully: "Created status successfully"
     import_successfully: "Imported .csv file for grades successfully"

@@ -68,7 +68,7 @@ class GoalsController < ApplicationController
                             :locals => {:student => @student, :goal => @goal, :fail_to_update => true})
         end
       else
-        result[:message] = I18n.t('goal.goal_not_found')
+        result[:message] = I18n.t('goal.not_found')
         status_code = 400
       end
     end
@@ -183,5 +183,29 @@ class GoalsController < ApplicationController
     respond_to do |format|
       format.js
     end 
+  end
+
+  # DELETE /goals/:id
+  def destroy
+    goal = Goal.find_by_id(params[:id])
+
+    # Select the correct redirect URL
+    if params[:student_id].blank?
+      redirect_link = students_path
+    else
+      redirect_link = student_path(params[:student_id])
+    end
+
+    # Process the deleting
+    if goal.blank?
+      flash[:alert] = I18n.t('goal.not_found')     
+    elsif goal.destroy
+      flash[:notice] = I18n.t('goal.delete_successfully')      
+    else
+      flash[:alert] = I18n.t('goal.delete_failed')
+    end
+
+    # Render result
+    redirect_to(redirect_link)
   end
 end
