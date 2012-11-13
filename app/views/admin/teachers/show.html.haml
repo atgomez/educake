@@ -1,5 +1,8 @@
-.show-student
-  = link_to "All Teachers", admin_teachers_path, :class => "brown"
+.show-student  
+  .clearfix.toolbar
+    = link_to "All Teachers", admin_teachers_path, :class => "brown"
+    = render('search_box')
+
   .student-container.border-teacher.align-border-single.clearfix
     .avatar-container.well
       - unless @teacher.photo_url.blank?
