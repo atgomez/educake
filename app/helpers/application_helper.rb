@@ -19,4 +19,17 @@ module ApplicationHelper
       :params => paging_params
     }))
   end
+  
+  def roles(role)
+    user_roles = []
+    if role == "Super Admin"
+      user_roles = Role.order("name ASC").where(:name => "Admin")
+    elsif role == "Admin"
+      user_roles = Role.order("name ASC").where(:name => "Teacher")
+    elsif role == "Teacher"
+      user_roles = Role.order("name ASC").where(:name => "Teacher")
+      user_roles += Role.order("name ASC").where(:name => "Parent")
+    end
+    return user_roles
+  end 
 end
