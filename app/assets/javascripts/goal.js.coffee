@@ -5,19 +5,7 @@ window.goal =
     @add_date_picker()
     @setup_form()
     @update_status()
-    @validate_character()
     return
-  
-  filter_input: (selector, regex) ->
-    $(selector).live('keypress', (e) ->
-      theEvent = e or window.event
-      if theEvent.keyCode isnt 46 and theEvent.keyCode isnt 8 and theEvent.keyCode isnt 37 and theEvent.keyCode isnt 39 and theEvent.keyCode isnt 9
-        key = theEvent.keyCode or theEvent.which
-        key = String.fromCharCode(key)
-        unless regex.test(key)
-          theEvent.returnValue = false
-          theEvent.preventDefault()  if theEvent.preventDefault
-    )
 
   add_date_picker: ->
     $(".goal-form .select-date").livequery( ->
