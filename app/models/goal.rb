@@ -2,20 +2,25 @@
 #
 # Table name: goals
 #
-#  id                :integer          not null, primary key
-#  student_id        :integer          not null
-#  subject_id        :integer          not null
-#  curriculum_id     :integer          not null
-#  due_date          :date
-#  accuracy          :float            default(0.0)
-#  created_at        :datetime         not null
-#  updated_at        :datetime         not null
-#  is_completed      :boolean
-#  baseline          :float            default(0.0)
-#  baseline_date     :date             not null
-#  trial_days_total  :integer          default(0)
-#  trial_days_actual :integer          default(0)
-#  is_archived       :boolean          default(FALSE)
+#  id                  :integer          not null, primary key
+#  student_id          :integer          not null
+#  subject_id          :integer          not null
+#  curriculum_id       :integer          not null
+#  due_date            :date
+#  accuracy            :float            default(0.0)
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
+#  is_completed        :boolean          default(FALSE)
+#  baseline            :float            default(0.0)
+#  baseline_date       :date             default(Tue, 13 Nov 2012), not null
+#  trial_days_total    :integer          default(0)
+#  trial_days_actual   :integer          default(0)
+#  is_archived         :boolean          default(FALSE)
+#  grades_file_name    :string(255)
+#  grades_content_type :string(255)
+#  grades_file_size    :integer
+#  grades_updated_at   :datetime
+#  description         :text
 #
 
 require 'csv'

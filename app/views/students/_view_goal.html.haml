@@ -43,12 +43,14 @@
               %tr
                 %th Date 
                 %th Score
+                %th Notes
                 %th User
             %tbody
               - statuses.each do |status|
                 %tr 
                   %td= status.due_date.strftime("%m/%d/%y") rescue ""
                   %td= ::Util.round_f(status.accuracy).to_s+"%" rescue ""
+                  %td= status.note
                   %td= status.user.full_name
           
 .pull-right= render_pagination goals

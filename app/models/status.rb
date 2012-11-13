@@ -14,10 +14,12 @@
 #  ideal_value      :float            default(0.0)
 #  time_to_complete :time
 #  progress_id      :integer
+#  is_unused        :boolean          default(FALSE)
+#  note             :text
 #
 
 class Status < ActiveRecord::Base
-  attr_accessible :accuracy, :due_date, :goal_id, :is_ideal, :user_id, :value, :time_to_complete, :is_unused
+  attr_accessible :accuracy, :due_date, :goal_id, :is_ideal, :user_id, :value, :time_to_complete, :is_unused, :note
   belongs_to :user
   belongs_to :goal
   belongs_to :progress
