@@ -19,11 +19,9 @@
         .phone
           %span= "Phone:"
           %span= @teacher.phone
-%center.clearfix
-  - page = params[:page_id] || 1
-  %iframe{:frameborder => "0", :height => @height, :src => "/teachers/show_charts?page_id="+page.to_s, :width => @width, :id => "chart_student"}
+
 %div{:style=>"margin-top: 10px;"}= link_to 'Add Student', new_admin_student_path+"?teacher=#{@teacher.id}", :class => 'btn'
-.teacher.pull-left
+.teacher
   - unless @students.blank?
     - @students.each_with_index do |student, idx|
       - student_home_url = admin_student_path(student)
@@ -62,34 +60,39 @@
               %span= student.goals.length
       - if (idx + 1) % 3 == 0
         .clearfix
-
-  = render_pagination @students
+  .clearfix
+%div.pull-right
+  = link_to "Export", "#", :id => "export-button", :class => "btn export", "data-toggle" => "modal"
+%center.clearfix
+  - page = params[:page_id] || 1
+  %iframe{:frameborder => "0", :height => @height, :src => "/teachers/show_charts?page_id="+page.to_s, :width => @width, :id => "chart_student"}
+= render_pagination @students
   
-  .show-other-students
-    - unless @sharing_students.empty?
-      %h4.brown Sharing students 
-      - @sharing_students.each do |student|
-        - student_home_url = student_path(student)
-        .student-container.clearfix
-          .avatar-container.thumbnail
-            %a{:href => student_home_url}
-              = image_tag(student.photo_url(:medium), :class => "student-avatar")
-          .info.well.pull-left.link{:href => student_home_url}
-            .pull-left
-              %strong.name
-                = link_to(student.full_name, student_home_url)
-              .birthday
-                %span= "Born on:"
-                %span= student.birthday_string
-              .gender
-                %span= "Gender:"
-                %span= student.gender_string
-              .goal
-                %span= "Goals:"
-                - if student.goals.length <= 0
-                  %span= "no goal"
-                - else
-                  %span= student.goals.length
+.show-other-students
+  - unless @sharing_students.empty?
+    %h4.brown Sharing students 
+    - @sharing_students.each do |student|
+      - student_home_url = student_path(student)
+      .student-container.clearfix
+        .avatar-container.thumbnail
+          %a{:href => student_home_url}
+            = image_tag(student.photo_url(:medium), :class => "student-avatar")
+        .info.well.pull-left.link{:href => student_home_url}
+          .pull-left
+            %strong.name
+              = link_to(student.full_name, student_home_url)
+            .birthday
+              %span= "Born on:"
+              %span= student.birthday_string
+            .gender
+              %span= "Gender:"
+              %span= student.gender_string
+            .goal
+              %span= "Goals:"
+              - if student.goals.length <= 0
+                %span= "no goal"
+              - else
+                %span= student.goals.length
 
 
 

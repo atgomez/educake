@@ -47,6 +47,9 @@
   .pull-right
     - unless @students.blank?
       = link_to "Export", "#", :id => "export-button", :class => "btn export", "data-toggle" => "modal"
+  %center.clearfix
+    - page = params[:page_id] || 1
+    %iframe{:frameborder => "0", :height => @height, :src => "/teachers/show_charts?page_id="+page.to_s, :width => @width, :id => "chart_student"}
   .show-other-students
     - unless @sharing_students.empty?
       %h4.brown Sharing students 
@@ -73,8 +76,6 @@
                 - else
                   %span= student.goals.length
 
-%center.clearfix
-  - page = params[:page_id] || 1
-  %iframe{:frameborder => "0", :height => @height, :src => "/teachers/show_charts?page_id="+page.to_s, :width => @width, :id => "chart_student"}
+
   
 = render "export"
