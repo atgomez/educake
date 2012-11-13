@@ -17,18 +17,22 @@
 #  trial_days_actual :integer          default(0)
 #  is_archived       :boolean          default(FALSE)
 #
+
 require 'csv'
+
 class Goal < ActiveRecord::Base
   include ::SharedMethods::Paging
   attr_accessible :accuracy, :curriculum_id, :due_date, :subject_id, :progresses_attributes, 
   :baseline_date, :baseline, :trial_days_total, :trial_days_actual,:is_archived, :grades, :is_completed, :description
 
+  # ASSOCIATION
   has_many :progresses, :dependent => :destroy
-  has_many :statuses
+  has_many :statuses, :dependent => :destroy
   belongs_to :student 
   belongs_to :subject 
   belongs_to :curriculum
   
+  # VALIDATION
   validates :accuracy, :numericality => true, :inclusion => {:in => 0..100, :message => "must be from 0 to 100"}
   validates :baseline, :numericality => true, :inclusion => {:in => 0..100, :message => "must be from 0 to 100"}
   validates_presence_of :accuracy, :due_date, :curriculum_id, :subject_id, :baseline_date, :baseline, :trial_days_total, :trial_days_actual
@@ -45,6 +49,7 @@ class Goal < ActiveRecord::Base
   
   validates_attachment_content_type :grades, :content_type => ['text/csv','text/comma-separated-values','text/csv','application/csv','application/excel','application/vnd.ms-excel','application/vnd.msexcel','text/anytext','text/plain'], :message => 'file must be of filetype .csv', :if => Proc.new{|r| !r.grades.blank?}
   
+  # SCOPE
   scope :is_archived, lambda {|is_archived| where(:is_archived => is_archived)} 
   scope :incomplete, where('is_completed = ?', false)
   scope :available, where('is_completed = ? AND is_archived = ?', false, false)
