@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121112041128) do
+ActiveRecord::Schema.define(:version => 20121113062556) do
 
   create_table "curriculums", :force => true do |t|
     t.string   "name",       :null => false
@@ -74,6 +74,7 @@ ActiveRecord::Schema.define(:version => 20121112041128) do
     t.time     "time_to_complete"
     t.integer  "progress_id"
     t.boolean  "is_unused",        :default => false
+    t.text     "note"
   end
 
   add_index "statuses", ["goal_id"], :name => "index_statuses_on_goal_id"
