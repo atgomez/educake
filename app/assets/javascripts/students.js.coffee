@@ -129,7 +129,7 @@ window.studentObject =
         
         $('#chart').attr("src", "chart?goal_id="+id);
         $('#chart').attr("height", "500");
-        $('#chart').attr("width", "80%");
+        $('#chart').attr("width", "100%");
         $(".status a.goal").each ->
           if $(this).hasClass("icon-minus") && ($(this).attr("href") != id_content)
             $(this).removeClass("icon-minus").addClass("icon-plus")
