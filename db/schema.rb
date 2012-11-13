@@ -31,7 +31,7 @@ ActiveRecord::Schema.define(:version => 20121112041128) do
     t.datetime "updated_at",                                    :null => false
     t.boolean  "is_completed",        :default => false
     t.float    "baseline",            :default => 0.0
-    t.date     "baseline_date",       :default => '2012-11-01', :null => false
+    t.date     "baseline_date",       :default => '2012-11-08', :null => false
     t.integer  "trial_days_total",    :default => 0
     t.integer  "trial_days_actual",   :default => 0
     t.boolean  "is_archived",         :default => false
