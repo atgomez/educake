@@ -19,19 +19,6 @@ window.goal =
           theEvent.preventDefault()  if theEvent.preventDefault
     )
 
-  validate_character: ->
-    $(".controls .numeric").livequery( ->
-      regex = /[0-9]/
-      if $(this).hasClass('float')
-        regex = /[0-9]|\./
-     
-      goal.filter_input($(this), regex)
-    )
-
-    goal.filter_input(".controls .tel", /[0-9\s]/)
-    goal.filter_input(".controls .name", /^[a-zA-Z\s\b-]+$/)
-    goal.filter_input(".controls .email", /^[a-zA-Z0-9_.@\s\b-]+$/)
-
   add_date_picker: ->
     $(".goal-form .select-date").livequery( ->
       $(this).datepicker({
