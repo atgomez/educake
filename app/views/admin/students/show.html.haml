@@ -4,7 +4,7 @@
     - cl = @teachers.count > 3 ? 'multi' : 'single'
     .student-container.border-teacher.clearfix{:class => "align-border-#{cl}"}
       - @teachers.slice(0,3).each do |teacher|
-        .avatar-container.well
+        .avatar-container.thumbnail
           - unless teacher.photo_url.blank?
             = image_tag(teacher.photo_url, :class => "default-avatar-teacher")
           - else
@@ -34,8 +34,8 @@
   -else 
     = link_to "All students", teachers_path
   = hidden_field_tag "tab", session[:tab]
-  .student-container.clearfix
-    .avatar-container.well
+  .one-student.clearfix
+    .avatar-container.thumbnail
       - unless @student.photo_url.blank?
         = image_tag(@student.photo_url, :class => "student-avatar")
       - else
@@ -61,31 +61,46 @@
         %span= link_to "Edit", edit_admin_student_path(@student)
   
   = hidden_field_tag "student_id", params[:id]
+.clearfix
+- unless @goals.empty?
+  .pull-right
+    = link_to "Export", "#", :id => "export-button", :class => "btn export", "data-toggle" => "modal"
+  .clearfix
+  %center.clearfix
+    = hidden_field_tag "check_is_add_grade", @data.empty?
+    %iframe{:frameborder => "0", :height => @height, :src => "/students/"+ params[:id] + "/common_chart", :width => @width, :id => "chart"}
+  = hidden_field_tag "iframe_src", "/students/"+ params[:id] + "/common_chart?"
+
+.show-student
+  .status
+    #render_add_status
+    - if @goals.size > 0
+      .pull-right= link_to " Add Grade", new_status_goals_path, :remote => true, :class => "btn", :id => "add-status"
+      .pull-right= link_to " Import Grades", initial_import_grades_goals_path, :remote => true, :class => "btn", :id => "import-grade"
+    .clearfix
+    .line
+    #content-status.clearfix
+      = render "view_goal", :goals => @goals
   
-  .tabbable
-    %ul.nav.nav-tabs
-      %li#status.active
-        = link_to "Status", "#"
-      %li#users
-        = link_to "Users", "#"
-    .users.hide
-      = link_to " Add a user", new_invitation_path, :remote => true, :class => "icon-plus-sign add"
-      #render_invite_user
-      #content-users
-    .status
-      .pull-left= link_to " Add a status", new_status_goals_path, :remote => true, :class => "icon-plus-sign add"
-      #render_add_status
-      .pull-right= link_to "Export Progress", "#", :class => "btn export"
-      .clearfix
-      .line
-      #content-status
-        = render "view_goal", :goals => @student.goals
-.show-other-students.pull-right
+  .separator.brown
+
+  .users.student-users
+    .action-container
+      = link_to " Invite a user", new_invitation_path, :remote => true, :class => "icon-plus-sign add"
+
+    #render_invite_user
+    #content-users
+      = render :partial => "view_invited_user", :locals => {:invited_users => @invited_users}
+
+  = render "export"
+  
+ 
+.show-other-students
   - unless @students.empty?
-    %div View other students 
+    %div View Other Students 
     - @students.each do |student|
-      .student-container.clearfix
-        .avatar-container.well
+      .student-container.pull-left{:style=>"margin-right: 20px;"}
+        .avatar-container.thumbnail{:style=>"width:153px; height:100px;"}
           - unless student.photo_url.blank?
             = image_tag(student.photo_url, :class => "student-avatar")
           - else
@@ -100,7 +115,7 @@
             .gender
               %span= "Gender:"
               %span= student.gender_string
-
+    .clearfix
   .add-student= link_to 'Add Student', new_admin_student_path+"?teacher=#{@teacher.id}", :class => 'btn'
             
             

@@ -252,7 +252,6 @@ class Goal < ActiveRecord::Base
   end
   
   def parse_csv(path)
-    #path = "#{Rails.root}/data/grades.csv"
     statuses = []
     CSV.foreach(path) do |row|
       statuses << {
