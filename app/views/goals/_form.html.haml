@@ -11,7 +11,8 @@
       - else
         %h4 Edit Goal
       - unless goal.new_record?
-        %div{:style=>"font-style:italic;"} Editing this goal will mark it as incomplete. You may mark it as complete below.
+        - if goal.is_completed == true
+          %div{:style=>"font-style:italic;"} Editing this goal will mark it as incomplete. You may mark it as complete below.
     .modal-body
       - if notification = f.error_notification
         .alert.alert-error.fade.in
