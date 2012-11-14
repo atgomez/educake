@@ -1,4 +1,9 @@
-#common_chart{:style=>"width: 100%; height: 100%; margin: 0"}
+
+%div{:style => "position:absolute; width:100%; height:0px; z-index:2000"}
+  %button#highchart_reset_button{:style => "float:right; display:none; margin: 20px"}
+    Reset Zoom
+#common_chart{:style=>"width: 100%; height: 100%; margin: 0; position:absolute; left:0px"}
+
 
 // Create the chart
 - content_for(:js) do
@@ -18,12 +23,29 @@
           renderTo: 'common_chart',
           type: 'spline',
           zoomType: 'xy',
+          height : $('#common_chart').height() , 
+          width : $('#common_chart').width() ,
           events: {
               click: function(event) {
                 if(typeof parent.clickOnChart == 'function')
                   parent.clickOnChart(); 
-              }
-          } 
+              },
+               selection: function(event) {
+                if (event.xAxis) {
+                  hasZoom = true;
+                  $(highchart_reset_button).show()
+               }
+            }
+          },
+          resetZoomButton: {
+                position: {
+                    // align: 'right', // by default
+                    // verticalAlign: 'top', // by default
+                    x: -10000,
+                    y: -10000
+                },
+                relativeTo: 'chart'
+            }
         },
         title: {
           text: ''
@@ -36,8 +58,7 @@
         },
         xAxis: {
           type: 'datetime',
-          minorTickInterval: 'auto',
-          tickPixelInterval: 110,
+          minTickInterval: 60*60*24*7,
           labels: {
             formatter: function() {
                 return Highcharts.dateFormat('%b %e, %y', this.value);
@@ -131,7 +152,7 @@
                 }
             },
             marker: {
-                enabled: true,
+                enabled: false,
                 states: {
                     hover: {
                         enabled: true,
@@ -144,6 +165,18 @@
         series: series
 
         });
+      });
+
+      var button = $('#highchart_reset_button');
+
+      button.click(function() {
+        chart.xAxis[0].setExtremes();
+        for(var i = 0; i < chart.yAxis.length; i++)
+        {
+          chart.yAxis[i].setExtremes();
+        }
+        hasZoom = false;
+        $(highchart_reset_button).hide()
       });
 
 
