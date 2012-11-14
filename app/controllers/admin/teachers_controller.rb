@@ -117,6 +117,12 @@ class Admin::TeachersController < Admin::BaseAdminController
     end
   end
 
+  def get_students
+    teacher = User.find_by_id(params[:teacher_id])
+    @students = teacher.students
+    render :partial => 'admin/teachers/get_students'
+  end
+
   protected
 
     def set_current_tab

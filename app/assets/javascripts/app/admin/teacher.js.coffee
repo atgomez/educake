@@ -7,6 +7,32 @@ window.teacher =
     @setup_teacher_dialog()
     @setup_search()
     @setup_block_link()
+    @change_list_teacher()
+    @check_school_radio()
+
+  change_list_teacher: ->    
+    $("#teacher_selection").live('change', ->
+      data = @value
+      url = $(this).attr('data-url') + "?teacher_id=" + data
+
+      $.ajax({
+        url: url,
+        type: 'GET',
+        success: (res) ->
+          $("#student_selection").html(res)
+      })
+      
+      return false
+    )
+
+  check_school_radio: ->
+    $("input[name=data]").change ->
+      if @value is "classroom"
+        $("#student_selection").attr("disabled", "disabled")
+      else if @value is "school"
+        $("#student_selection").attr("disabled", "disabled")
+      else
+        $("#student_selection").removeAttr("disabled")
 
   setup_student_panel: ->
     $('.students-container a.teacher-student-handler, 

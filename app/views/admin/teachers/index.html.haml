@@ -35,8 +35,14 @@
 
   - unless @teachers.blank?
     = render('teachers_list', :teachers => @teachers)
+
+  .clearfix
+    .pull-right
+      = link_to "Export", "#", :id => "export-button", :class => "btn export", "data-toggle" => "modal"
+
   - page = params[:page_id] || 1
   %center.clearfix
     %iframe{:frameborder => "0", :height => @height, :src => "/admin/teachers/show_teachers_chart?page_id="+page.to_s, :width => @width, :id => "chart_student"}
     
   = render('form')
+  = render("export", :teachers => @teachers)
