@@ -3,6 +3,7 @@ TeacherMgnt::Application.routes.draw do
   resources :teachers do 
     collection do 
       get :show_charts
+      get :all_students
     end 
   end 
   resources :invitations 

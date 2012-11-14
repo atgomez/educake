@@ -24,6 +24,12 @@ class TeachersController < ApplicationController
       @sharing_students = Student.load_data(filtered_params, student_ids)
     end
   end
+
+  # GET /teachers/all_students
+  # TODO: should apply endless pagination.
+  def all_students
+    @students = current_user.students.all
+  end
   
   def show_charts 
     @series = []
