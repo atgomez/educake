@@ -237,7 +237,7 @@ class Goal < ActiveRecord::Base
     progress = self.progresses.find(:first, :conditions => ['due_date >= ?', params[:due_date]], :order => 'due_date ASC')
     status = nil
     if is_updatable
-      status = Status.find_or_initialize_by_due_date(params[:due_date])
+      status = self.statuses.find_or_initialize_by_due_date(params[:due_date])
       status.goal = self
       status.accuracy = params[:accuracy]
       status.time_to_complete = params[:time_to_complete]
