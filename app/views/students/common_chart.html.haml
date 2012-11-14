@@ -9,6 +9,8 @@
 - content_for(:js) do
   :javascript
     var chart;
+    var extrems_x = []
+    var extrems_y = []
     $(function(){
       
       series = jQuery.parseJSON(#{@series.to_json})
@@ -26,17 +28,28 @@
           height : $('#common_chart').height() , 
           width : $('#common_chart').width() ,
           events: {
+              load: function(event){
+                for(var i = 0; i < this.xAxis.length; i++)
+                {
+                  extrems_x.push(this.xAxis[i].getExtremes());
+                } 
+                for(var i = 0; i < this.yAxis.length; i++)
+                {
+                  extrems_y.push(this.yAxis[i].getExtremes());
+                } 
+              },
               click: function(event) {
                 if(typeof parent.clickOnChart == 'function')
                   parent.clickOnChart(); 
               },
-               selection: function(event) {
+              selection: function(event) {
                 if (event.xAxis) {
                   hasZoom = true;
                   $(highchart_reset_button).show()
-               }
+              }
             }
           },
+          marginRight: 50,
           resetZoomButton: {
                 position: {
                     // align: 'right', // by default
@@ -152,7 +165,7 @@
                 }
             },
             marker: {
-                enabled: false,
+                enabled: #{@enable_marker ? 'true' : 'false'},
                 states: {
                     hover: {
                         enabled: true,
@@ -167,14 +180,17 @@
         });
       });
 
-      var button = $('#highchart_reset_button');
-
-      button.click(function() {
-        chart.xAxis[0].setExtremes();
+      
+      $('#highchart_reset_button').click(function() {
+        for(var i = 0; i < chart.xAxis.length; i++)
+        {
+          chart.xAxis[i].setExtremes(extrems_x[i].min, extrems_x[i].max);
+        } 
         for(var i = 0; i < chart.yAxis.length; i++)
         {
-          chart.yAxis[i].setExtremes();
-        }
+          chart.yAxis[i].setExtremes(extrems_y[i].min, extrems_y[i].max);
+        } 
+
         hasZoom = false;
         $(highchart_reset_button).hide()
       });
