@@ -22,10 +22,8 @@
       = f.hidden_field :teacher_id, :value => teacher
       .clearfix
     .pull-left
-      - if f.object.new_record?
-        = image_tag "missing.png", :size => '200x200', :id => 'upload-image'
-      - else 
-        = image_tag f.object.photo.url(:medium), :size => '200x200', :id => 'upload-image'
+      .crop_image
+        = image_tag (f.object.new_record? ? "missing.png" : f.object.photo.url(:medium)), :size => "200x200", :id => 'upload-image'
       = f.input :photo, :as => :file, :label => "Upload photo"
       - if f.object.new_record?
         %div.font-error= @error_photo_type

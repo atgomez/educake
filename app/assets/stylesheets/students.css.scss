@@ -34,7 +34,9 @@ form#student-form {
   .gender {
     margin-right: 61px;
   }
-  
+
+  .crop_image { width: 200px; height: 200px; overflow: hidden; }
+  .crop_image img {max-width:none}
 }
 
 .invited-user {

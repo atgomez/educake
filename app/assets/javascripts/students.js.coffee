@@ -70,8 +70,24 @@ window.studentObject =
       file = e.target.files[0]
       reader = new FileReader()
       reader.onload = (e) ->
+        img = $('#upload-image')
+        img.attr('width', '')
+        img.attr('height', '')
         $('#upload-image').attr('src', e.target.result)
+        h = img.height()
+        w = img.width()
+        img.css('width', '')
+        img.css('height', '')
+        
+        if (h > w) 
+          img.css('width', 200)
+        else
+          img.css('height', 200)
+        w = img.width()
+        img.css('margin-left', (200 - w)/2)
+
       reader.readAsDataURL(file);
+    
     )
 
   addDatePicker: ->
