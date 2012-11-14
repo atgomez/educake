@@ -102,7 +102,7 @@ class StudentsController < ApplicationController
   def common_chart
     @series = []
     @student = Student.find params[:id]
-    @goals = @student.goals.incomplete.is_archived(false).load_data(filtered_params)
+    @goals = @student.goals.incomplete
     @goals.each do |goal| 
       data = []
       goal.statuses.each{|status| 

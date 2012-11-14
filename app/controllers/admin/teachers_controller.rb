@@ -72,7 +72,7 @@ class Admin::TeachersController < Admin::BaseAdminController
   def show_charts 
     @series = []
     @teacher = User.find session[:teacher_id]
-    @students = @teacher.students.load_data(filtered_params)
+    @students = @teacher.students
     @students.map do |student|
       @series << {
         :name => student.full_name,

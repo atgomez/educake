@@ -27,7 +27,7 @@ class TeachersController < ApplicationController
   
   def show_charts 
     @series = []
-    @students = current_user.students.load_data(filtered_params)
+    @students = current_user.students
     @students.map do |student|
       @series << {
         :name => student.full_name,
