@@ -58,7 +58,8 @@ class StudentsController < ApplicationController
       flash[:notice] = 'Student was successfully created.'
       redirect_to :action => 'edit', :id => @student
     else
-      render action: "new"
+      @error_photo_type = @student.errors[:photo_content_type].first 
+      render action: "new", :error => @error_photo_type
     end
   end
 
@@ -69,7 +70,7 @@ class StudentsController < ApplicationController
     if @student.update_attributes(params[:student])
       redirect_to @student, notice: 'Student was successfully updated.'
     else
-      render action: "edit" 
+      redirect_to edit_student_path(@student, :error => true)
     end
   end
 

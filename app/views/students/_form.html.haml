@@ -27,4 +27,8 @@
       - else 
         = image_tag f.object.photo.url(:medium), :size => '200x200', :id => 'upload-image'
       = f.input :photo, :as => :file, :label => "Upload photo"
+      - if f.object.new_record?
+        %div.font-error= @error_photo_type
+      - elsif params[:error] 
+        %div.font-error= "File must be of filetype .jpg or .png"
   
