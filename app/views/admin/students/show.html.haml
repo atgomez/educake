@@ -1,6 +1,8 @@
 - if params[:related]
   .show-student
-    = link_to "All Teachers", admin_teachers_path
+    .clearfix.toolbar
+      = link_to "All Teachers", admin_teachers_path
+      = render('admin/teachers/search_box')
     - cl = @teachers.count > 3 ? 'multi' : 'single'
     .student-container.border-teacher.clearfix{:class => "align-border-#{cl}"}
       - @teachers.slice(0,3).each do |teacher|
@@ -28,11 +30,14 @@
       - if @teachers.count > 3
         .see-users-link.pull-right= link_to "See all StudentName's teachers", "#", :id => "show_user"
 
-.show-student.pull-left
+.clearfix.toolbar      
   - if params[:related]
     .top-align= link_to "All Teacher #{@teacher.full_name}'s Students", admin_teacher_path(@teacher)
   -else 
     = link_to "All students", teachers_path
+  = render('admin/teachers/search_box')
+
+.show-student.pull-left
   = hidden_field_tag "tab", session[:tab]
   .one-student.clearfix
     .avatar-container.thumbnail
