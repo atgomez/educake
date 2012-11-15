@@ -19,7 +19,9 @@
 #
 
 class Status < ActiveRecord::Base
-  attr_accessible :accuracy, :due_date, :goal_id, :is_ideal, :user_id, :value, :time_to_complete, :is_unused, :note
+  include ::SharedMethods::Paging  
+  attr_accessible :accuracy, :due_date, :goal_id, :is_ideal, :user_id,
+  :value, :time_to_complete, :is_unused, :note
   belongs_to :user
   belongs_to :goal
   belongs_to :progress
@@ -55,6 +57,32 @@ class Status < ActiveRecord::Base
     end
     self.send(:write_attribute, :due_date, date)
   end
+  
+  # CLASS METHODS
+  class << self
+    def load_data(params = {})
+      paging_info = parse_paging_options(params)
+      # Paginate with Will_paginate.
+      conds = { :page => paging_info.page_id,
+                :per_page => 15,#paging_info.page_size,
+                :order => paging_info.sort_string
+              }
+      self.paginate(conds)
+    end
+    
+    protected
+
+      # Parse params to PagingInfo object.
+      def parse_paging_options(options, default_opts = {})
+        if default_opts.blank?
+          # This conditions will order records by directory and name first.
+          default_opts = {
+            :sort_criteria => "due_date ASC"
+          }
+        end
+        paging_options(options, default_opts)
+      end
+  end # End class method.
 
   protected
   
@@ -72,5 +100,9 @@ class Status < ActiveRecord::Base
         self.errors.add(:due_date, "must be equal or less than goal due date")
         return false
       end
+#      if (self.due_date >= Date.today)
+#        self.errors.add(:due_date, "must be less than today")
+#        return false
+#      end
     end
 end

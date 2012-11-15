@@ -7,7 +7,8 @@ class Admin::StudentsController < StudentsController
     @students = @teacher.students.limit 4
     #Check to hide placeholder for chart
     @data = []
-    @goals.each do |goal| 
+    goals = @student.goals.incomplete.is_archived(false)
+    goals.each do |goal| 
       goal.statuses.each{|status| 
         @data += [status.due_date, (status.accuracy*100).round / 100.0]
       }

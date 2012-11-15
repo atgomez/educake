@@ -181,3 +181,12 @@ ul.ui-autocomplete {
     }
   }
 }
+
+.center-form{
+  margin: 0 auto;
+  width: 500px;
+
+  .form-horizontal .form-actions{
+    padding-left: 20px;
+  }
+}

@@ -1,0 +1,9 @@
+.admin.teacher
+  %h3.school-name= current_user.school_name
+  .clearfix.toolbar
+    = link_to "View chart", admin_teachers_path,  :class => "brown font18"
+    - unless @teachers.blank?
+      = render('search_box')
+
+  - unless @teachers.blank?
+    = render('teachers_list', :teachers => @teachers, :with_pagination => false)

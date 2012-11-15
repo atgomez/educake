@@ -1,4 +1,6 @@
 - teachers ||= []
+- with_pagination = ((with_pagination.nil? ? true : with_pagination) rescue true)
+
 - teachers.each_with_index do |teacher, idx|
   - teacher_home_url = admin_teacher_path(teacher)
   .teacher-container.pull-left.clearfix
@@ -37,7 +39,8 @@
   - if (idx + 1) % 3 == 0
     .clearfix
 
-.clearfix
-- pagination_params ||= {}
-= render_pagination(teachers, {:type => 'teacher'}, pagination_params)
-.loading.hide
+- if with_pagination
+  .clearfix
+  - pagination_params ||= {}
+  = render_pagination(teachers, {:type => 'teacher'}, pagination_params)
+  .loading.hide

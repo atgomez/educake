@@ -17,6 +17,7 @@ TeacherMgnt::Application.routes.draw do
     end
     collection do 
       get :chart
+      get :load_grades
     end 
   end
 
@@ -47,6 +48,7 @@ TeacherMgnt::Application.routes.draw do
         get :search
         get :show_charts
         get :show_teachers_chart
+        get :all
         get :get_students
       end
     end
@@ -56,6 +58,7 @@ TeacherMgnt::Application.routes.draw do
         get :load_users
         get :load_status
         get :search_user
+        get :load_grades
       end 
     end
   end

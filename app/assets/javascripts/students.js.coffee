@@ -142,7 +142,7 @@ window.studentObject =
         $(id_content).slideDown('fast', ->
           $(id_content).attr("style","display:block;")
         )
-        
+        loadGrades(id)
         $('#chart').attr("src", "chart?goal_id="+id);
         $('#chart').attr("height", "500");
         $('#chart').attr("width", "100%");
@@ -163,7 +163,7 @@ window.studentObject =
         $(id_content).slideUp('fast', ->
           $(id_content).attr("style","display:none;")
         )
-        $('#chart').attr("src", "/students/"+ $("#student_id").val() + "/common_chart?"+page_id);
+        
         window.chartMode = 'view_all'
       return
   
@@ -176,7 +176,10 @@ window.studentObject =
 
     
   clickPage: ->
-    $("#content-status").delegate('.pagination ul li a', 'click', loadPage)   
+    $("#content-status").delegate '.pagination ul li a', 'click', (evt)-> 
+      loadPage(evt, "#content-users")
+    $("#content-status #load_grades").delegate '.pagination ul li a', 'click', (evt) ->  
+      loadPage(evt, "#load_grades")
     return 
    
   clickOnStatus: ->
@@ -250,21 +253,20 @@ loadUser = ->
       $(".ajax-loading").addClass "hidden"
       return
       
-loadPage= (evt) ->
+loadPage= (evt, element) ->
   # Prevent loading page
   evt.preventDefault()
   
   # Mask loading
   #$('#content-status').addClass 'loading'
-
+  console.log element
   sender = evt.target
   $.ajax({
     url: sender.href
     type: 'GET'
     success: (data) ->
       href = sender.href.split("?")[1]
-      $('#content-status').html data
-      $('#chart').attr("src", $('#iframe_src').val() + href);
+      $(element).html data
       return
     error: (data) ->
       return
@@ -272,9 +274,19 @@ loadPage= (evt) ->
       $('#content-status').removeClass 'loading'
   })
   return
-  
-keyPress= (event) ->
-  console.log "how are you"
-  if ((event.which != 46 || $(this).val().indexOf('.') != -1) && (event.which < 48 || event.which > 57)) 
-    event.preventDefault()
+
+loadGrades= (id) ->
+  $.ajax({
+    url: "load_grades"
+    type: 'GET',
+    data: goal_id: id,
+    success: (res) ->
+      return
+    error: (data) ->
+      return
+    complete: (res) ->
+      $('#load_grades').html res.responseText
+      return
+  })
   return
+

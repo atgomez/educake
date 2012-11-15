@@ -7,7 +7,8 @@ class TeachersController < ApplicationController
   def index
     @students = current_user.students.load_data(filtered_params)
     series = []
-    @students.map do |student|
+    students = current_user.students
+    students.map do |student|
       series += student.goals_statuses
     end
     if series.empty?
@@ -28,18 +29,19 @@ class TeachersController < ApplicationController
   # GET /teachers/all_students
   # TODO: should apply endless pagination.
   def all_students
-    @students = current_user.students.all
+    @students = current_user.students.order("first_name ASC, last_name ASC")
   end
   
   def show_charts 
     @series = []
-    @students = current_user.students
+    @students = current_user.students.includes(:goals)
     @students.map do |student|
+      goals_statuses = student.goals_statuses
       @series << {
         :name => student.full_name,
-        :data => student.goals_statuses,
+        :data => goals_statuses,
         :yAxis => 2
-      } unless student.goals_statuses.empty?
+      } unless goals_statuses.empty?
     end
     @series = @series.to_json
     render :template => 'students/common_chart', :layout => "chart"

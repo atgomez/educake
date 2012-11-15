@@ -1,13 +1,14 @@
 class Admin::TeachersController < Admin::BaseAdminController
   def index
-    @teachers = current_user.children.load_data(filtered_params).includes(:students)
-    teachers = User.all
+    @teachers = current_user.children.teachers.load_data(filtered_params).includes(:students => :goals)
+    teachers = current_user.children.teachers.includes(:students => :goals)
     series = []
     teachers.map do |teacher|
+      teacher_status = teacher.teacher_status
       series << {
         :name => teacher.full_name,
-        :data => teacher.teacher_status
-      } unless teacher.teacher_status.empty?
+        :data => teacher_status
+      } unless teacher_status.empty?
     end
 
     if series.empty?
@@ -17,6 +18,12 @@ class Admin::TeachersController < Admin::BaseAdminController
       @width = "100%"
       @height = "500"
     end 
+  end
+
+  # GET /admin/teachers/all
+  # TODO: should apply endless pagination.
+  def all
+    @teachers = current_user.children.teachers.includes(:students)
   end
 
   def create
@@ -72,25 +79,27 @@ class Admin::TeachersController < Admin::BaseAdminController
   def show_charts 
     @series = []
     @teacher = User.find session[:teacher_id]
-    @students = @teacher.students
+    @students = @teacher.students.includes(:goals)
     @students.map do |student|
+      goals_statuses = student.goals_statuses
       @series << {
         :name => student.full_name,
-        :data => student.goals_statuses
-      } unless student.goals_statuses.empty?
+        :data => goals_statuses
+      } unless goals_statuses.empty?
     end
     @series = @series.to_json
     render :template => 'students/common_chart', :layout => "chart"
   end
 
   def show_teachers_chart
-    teachers = User.all
+    teachers = current_user.children.teachers.includes(:students => :goals)
     @series = []
     teachers.map do |teacher|
+      teacher_status = teacher.teacher_status
       @series << {
         :name => teacher.full_name,
-        :data => teacher.teacher_status
-      } unless teacher.teacher_status.empty?
+        :data => teacher_status
+      } unless teacher_status.empty?
     end
     @series = @series.to_json
     render :template => 'students/common_chart', :layout => "chart"

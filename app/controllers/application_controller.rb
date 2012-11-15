@@ -4,6 +4,7 @@ class ApplicationController < ActionController::Base
   before_filter :authenticate_user!
   before_filter :do_filter_params
   before_filter :set_current_tab
+  before_filter :restrict_namespace
 
   rescue_from CanCan::AccessDenied, :with => :render_unauthorized 
 
@@ -71,5 +72,17 @@ class ApplicationController < ActionController::Base
         action = action.to_s.to_sym
       end
       authorize!(action, object)
+    end
+
+    # This filter is to constraint the controller current user can access to.
+    # It's because of the requirement: each role has a specific workspace, for ex:
+    #   Admin only work in admin space, cannot go to teacher space.
+    #
+    def restrict_namespace
+      user = current_user
+      return if user.blank?
+      if user.is?(:admin) && self.class.name.split("::").first != "Admin"
+        redirect_to "/admin/teachers"
+      end
     end
 end
