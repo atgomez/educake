@@ -1,6 +1,7 @@
 - unless (@goal.nil? && @file_import.nil? && !@format_csv) || @file_import.nil? || @goal.nil? || !@format_csv
   location.reload();
 - else
+  $("#import").attr("disabled", false);
   - if @goal.nil?
     $("#goal_choose").html("Please select one.");
   - else
@@ -13,5 +14,6 @@
     $("#file_choose").html("File must be of filetype .csv");
   - else 
     $("#file_choose").html("");
+  
     
 

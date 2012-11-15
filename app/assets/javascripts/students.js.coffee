@@ -37,6 +37,7 @@ window.studentObject =
     @allowInputNumber()
     @timeForField()
     @checkClassroom()
+    @disableSubmitForm()
     return
     
   checkClassroom: ->
@@ -238,6 +239,11 @@ window.studentObject =
     $('#invite_user form').live('submit', -> 
       $(this).find('.submit-indicator').removeClass('hide')
     )
+  disableSubmitForm: ->
+    $("#import").live "click", () -> 
+      $(this).submit()
+      $(this).attr("disabled", "disabled")
+    return
 
 loadUser = ->
   $.ajax
