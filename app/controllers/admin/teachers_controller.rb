@@ -1,6 +1,6 @@
 class Admin::TeachersController < Admin::BaseAdminController
   def index
-    @teachers = current_user.children.load_data(filtered_params).includes(:students => :goals)
+    @teachers = current_user.children.teachers.load_data(filtered_params).includes(:students => :goals)
     series = []
     @teachers.map do |teacher|
       teacher_status = teacher.teacher_status
@@ -17,6 +17,12 @@ class Admin::TeachersController < Admin::BaseAdminController
       @width = "100%"
       @height = "500"
     end 
+  end
+
+  # GET /admin/teachers/all
+  # TODO: should apply endless pagination.
+  def all
+    @teachers = current_user.children.teachers.includes(:students)
   end
 
   def create
@@ -85,7 +91,7 @@ class Admin::TeachersController < Admin::BaseAdminController
   end
 
   def show_teachers_chart
-    teachers = User.teachers.includes(:students => :goals)
+    teachers = current_user.children.teachers.includes(:students => :goals)
     @series = []
     teachers.map do |teacher|
       teacher_status = teacher.teacher_status

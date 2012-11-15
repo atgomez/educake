@@ -1,9 +1,11 @@
 .admin.teacher
   %h3.school-name= current_user.school_name
   .clearfix.toolbar
-    = link_to 'Add Teacher', new_admin_teacher_path, :class => 'btn', :id => "add-teacher"
+    = link_to "View all teachers", all_admin_teachers_path,  :class => "brown font18"
     - unless @teachers.blank?
       = render('search_box')
+  .clearfix.toolbar
+    = link_to 'Add Teacher', new_admin_teacher_path, :class => 'btn', :id => "add-teacher"
 
   - if params[:page_id].blank?
     - teacher = current_user
