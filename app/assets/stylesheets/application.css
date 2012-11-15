@@ -70,5 +70,9 @@ form textarea{
 */
 
 .wordwrap { 
-   word-wrap: break-word;  
+  word-wrap: break-word;  
+}
+
+.wordbreak{
+  word-break: break-all;
 }
