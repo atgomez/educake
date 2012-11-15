@@ -3,6 +3,18 @@
 
 admin = User.find_by_email 'admin@teacher.com'
 teacher_role = Role.find_by_name('Teacher')
+teacher = User.new({
+  :email => 'demo.teacher@teacher.com',
+  :first_name => "Demo",
+  :last_name => "Teacher",
+  :password => "123456",
+  :password_confirmation => "123456",
+})
+teacher.role = teacher_role
+teacher.parent = admin
+teacher.skip_confirmation!
+teacher.save!
+puts "[Sampler] Created teacher #{teacher.email} / 123456"
 
 25.times do 
   begin

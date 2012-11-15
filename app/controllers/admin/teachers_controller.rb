@@ -28,7 +28,7 @@ class Admin::TeachersController < Admin::BaseAdminController
   # GET /admin/teachers/all
   # TODO: should apply endless pagination.
   def all
-    @teachers = current_user.children.teachers.includes(:students)
+    @teachers = current_user.children.teachers.order("first_name ASC, last_name ASC").includes(:students)
   end
 
   def create

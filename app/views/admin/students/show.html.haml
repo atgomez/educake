@@ -32,7 +32,7 @@
 
 .clearfix.toolbar      
   - if params[:related]
-    .top-align= link_to "All Teacher #{@teacher.full_name}'s Students", admin_teacher_path(@teacher)
+    .top-align= link_to "All #{@teacher.full_name}'s Students", admin_teacher_path(@teacher)
   -else 
     = link_to "All students", teachers_path
   = render('admin/teachers/search_box')
