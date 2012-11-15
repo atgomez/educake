@@ -19,21 +19,11 @@
         %span= "Gender:"
         %span= student.gender_string
         .pull-right
-          - is_track = 1
-          - is_exist = 0
-          - is_over_trial_days = 1
-          - student.goals.each do |goal|
-            - if goal.statuses.count < goal.trial_days_total
-              - is_over_trial_days = 0
-            - is_exist = 1
-            - if !goal.on_track?
-              - is_track = 0
-          - if is_exist == 1
-            - if is_over_trial_days == 1
-              - if is_track == 1
-                .track-indicator.pull-left{:class => "on-track", :title => "On-track"}
-              - else
-                .track-indicator.pull-left{:title => "Not on-track"}
+          - status = student.check_on_track? 
+          - if status == 1
+            .track-indicator.pull-left{:class => "on-track", :title => "On-track"}
+          - elsif status == 2
+            .track-indicator.pull-left{:title => "Not on-track"}
       .goal
         %span= "Goals:"
         - if student.goals.length <= 0

@@ -164,6 +164,31 @@ class Student < ActiveRecord::Base
     self.shared_users_with_role(:teacher)
   end
 
+  # Check on track for admin/teacher page
+  def check_on_track?
+    # Result: 0_invisible, 1_on-track, 2_not-on-track
+    result = 0 
+
+    self.goals.each do |goal|
+      if goal.on_grade_now?
+        result = 1
+      end
+      if goal.on_over_trial_days?
+        result = 1
+      else
+        result = 0
+      end
+      if result == 1
+        if !goal.on_track?
+          result = 2 
+          break
+        end
+      end
+    end
+
+    return result  
+  end
+
 end
 
 # == Schema Information

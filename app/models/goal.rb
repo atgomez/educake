@@ -195,12 +195,35 @@ class Goal < ActiveRecord::Base
     self.statuses.order(:due_date).last
   end
 
+  # Check if a grade exist in now
+  def on_grade_now?
+    !self.statuses.where(:due_date => Time.now).blank?
+  end
+
+  # Check if number of grades over trial date total
+  def on_over_trial_days?
+    result = false
+    if self.last_status and self.statuses.length >= self.trial_days_total
+      result = true
+    end
+    return result
+  end
+
   # Check if the goal is on-track or not.
   def on_track?
     result = false
-    if self.last_status
-      # If actual value >= ideal value => 'on-track', else 'not on-track'
-      result = (self.last_status.value >= self.last_status.ideal_value)
+
+    today_status = self.statuses.where(:due_date => Time.now).first
+    status_value = 0
+    ideal_value = 0
+    if today_status
+      status_value = today_status.value
+      ideal_value = today_status.ideal_value
+    end
+
+    # If actual value >= ideal value => 'on-track', else 'not on-track'
+    if status_value != 0 && ideal_value != 0
+      result = (status_value >= ideal_value)
     end
     return result
   end
