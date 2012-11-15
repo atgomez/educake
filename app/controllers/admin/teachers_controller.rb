@@ -31,6 +31,14 @@ class Admin::TeachersController < Admin::BaseAdminController
     @teachers = current_user.children.teachers.order("first_name ASC, last_name ASC").includes(:students)
   end
 
+  # GET /admin/teachers/:id/all_students
+  # TODO: should apply endless pagination.
+  def all_students
+    if find_or_redirect
+      @students = @teacher.students.order("first_name ASC, last_name ASC")
+    end
+  end
+
   def create
     result = {}
     status_code = 201
@@ -58,37 +66,34 @@ class Admin::TeachersController < Admin::BaseAdminController
   end
   
   def show 
-    @teacher = User.find params[:id]
-    session[:teacher_id] = params[:id]
-    @students = @teacher.students.load_data(filtered_params)
-    series = []
-    @students.map do |student|
-      series += student.goals_statuses
-    end
-    if series.empty?
-      @width = "0%"
-      @height = "0"
-    else 
-      @width = "100%"
-      @height = "500"
-    end 
-    
-    student_ids = StudentSharing.where(:user_id => @teacher.id).map(&:student_id)
-    if student_ids.empty?
-      @sharing_students = []
-    else
-      @sharing_students = Student.load_data(filtered_params, student_ids)
-    end
+    if find_or_redirect
+      session[:teacher_id] = params[:id]
+      @students = @teacher.students.load_data(filtered_params)
+      series = []
 
-    respond_to do |format|
-      format.js
-      format.html
+      @students.map do |student|
+        series += student.goals_statuses
+      end
+      if series.empty?
+        @width = "0%"
+        @height = "0"
+      else 
+        @width = "100%"
+        @height = "500"
+      end
+
+      respond_to do |format|
+        format.js
+        format.html
+      end
     end
   end
   
   def show_charts 
     @series = []
-    @teacher = User.find session[:teacher_id]
+    @teacher = find_or_redirect(session[:teacher_id])
+    return if @teacher.blank?
+    
     @students = @teacher.students.includes(:goals)
     @students.map do |student|
       goals_statuses = student.goals_statuses
@@ -137,7 +142,7 @@ class Admin::TeachersController < Admin::BaseAdminController
   end
 
   def get_students
-    teacher = User.find_by_id(params[:teacher_id])
+    teacher = current_user.children.teachers.find_by_id(params[:teacher_id])
     @students = teacher.students
     render :partial => 'admin/teachers/get_students'
   end
@@ -146,5 +151,21 @@ class Admin::TeachersController < Admin::BaseAdminController
 
     def set_current_tab
       @current_tab = 'classroom'
+    end
+
+    # Find record and redirect to index page if the record does not exist
+    def find_or_redirect(teacher_id = params[:id])
+      @teacher = current_user.children.teachers.find_by_id(teacher_id)
+
+      if @teacher.blank?
+        respond_to do |format|
+          format.html {
+            flash[:alert] = I18n.t('admin.teacher.not_found') 
+            redirect_to :action => 'index'
+          }
+        end
+      end
+
+      @teacher
     end
 end

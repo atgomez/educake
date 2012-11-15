@@ -1,0 +1,12 @@
+.admin.teacher
+  .show-student  
+    .clearfix.toolbar
+      = link_to "All Teachers", admin_teachers_path, :class => "brown font18"
+      = render('search_box')
+
+    = render('teacher_box')
+            
+  .clearfix.toolbar
+    = link_to "View chart", admin_teacher_path(@teacher),  :class => "brown font18"
+  - unless @students.blank?
+    = render('teacher_students_list', :with_pagination => false)

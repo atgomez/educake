@@ -1,0 +1,17 @@
+.student-container.border-teacher.align-border-single.clearfix.toolbar
+  .avatar-container.well
+    = image_tag(@teacher.photo_url, :class => "default-avatar-teacher")
+    
+  .info-teacher.well.pull-left
+    .pull-left
+      %strong.name
+        = @teacher.full_name
+      .birthday
+        %span= "Classroom:"
+        %span= @teacher.classroom
+      .gender
+        %span= "Email:"
+        %span= @teacher.email
+      .phone
+        %span= "Phone:"
+        %span= @teacher.phone

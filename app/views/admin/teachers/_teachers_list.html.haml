@@ -1,6 +1,7 @@
-#pagination-listitem
-  - teachers ||= []
-  - with_pagination = ((with_pagination.nil? ? true : with_pagination) rescue true)
+- teachers ||= []
+- with_pagination = ((with_pagination.nil? ? true : with_pagination) rescue true)
+
+#pagination-listitem  
   - teachers.each_with_index do |teacher, idx|
     - teacher_home_url = admin_teacher_path(teacher)
     .teacher-container.pull-left.clearfix

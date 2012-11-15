@@ -51,6 +51,10 @@ TeacherMgnt::Application.routes.draw do
         get :all
         get :get_students
       end
+
+      member do
+        get :all_students
+      end
     end
 
     resources :students do 

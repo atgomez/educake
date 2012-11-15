@@ -1,66 +1,22 @@
-.show-student  
+.admin.teacher
+  .show-student  
+    .clearfix.toolbar
+      = link_to "All Teachers", admin_teachers_path, :class => "brown font18"
+      = render('search_box')
+
+    = render('teacher_box')
+
   .clearfix.toolbar
-    = link_to "All Teachers", admin_teachers_path, :class => "brown"
-    = render('search_box')
+    = link_to "All #{@teacher.full_name}'s Students", all_students_admin_teacher_path(@teacher), :class => "brown font18"
+    = link_to 'Add Student', new_admin_student_path(:teacher => @teacher.id), :class => "btn pull-right"
 
-  .student-container.border-teacher.align-border-single.clearfix
-    .avatar-container.well
-      - unless @teacher.photo_url.blank?
-        = image_tag(@teacher.photo_url, :class => "default-avatar-teacher")
-      - else
-        .default-avatar-teacher
-    .info-teacher.well.pull-left
-      .pull-left
-        %strong.name
-          = @teacher.full_name
-        .birthday
-          %span= "Classroom:"
-          %span= @teacher.classroom
-        .gender
-          %span= "Email:"
-          %span= @teacher.email
-        .phone
-          %span= "Phone:"
-          %span= @teacher.phone
+  .teacher.clearfix.toolbar
+    - unless @students.blank?
+      #pagination_area
+        = render(:partial => 'teacher_students_list')
 
-%div{:style=>"margin-top: 10px;"}= link_to 'Add Student', new_admin_student_path+"?teacher=#{@teacher.id}", :class => 'btn'
-.teacher
-  - unless @students.blank?
-    #pagination_area
-      = render(:partial => 'teacher_students_list')
-
-%div.pull-right
-  = link_to "Export", "#", :id => "export-button", :class => "btn export", "data-toggle" => "modal"
-%center.clearfix
-  - page = params[:page_id] || 1
-  %iframe{:frameborder => "0", :height => @height, :src => "/admin/teachers/show_charts?page_id="+page.to_s, :width => @width, :id => "chart_student"}
-
-  
-.show-other-students
-  - unless @sharing_students.empty?
-    %h4.brown Sharing students 
-    - @sharing_students.each do |student|
-      - student_home_url = student_path(student)
-      .student-container.clearfix
-        .avatar-container.thumbnail
-          %a{:href => student_home_url}
-            = image_tag(student.photo_url(:medium), :class => "student-avatar")
-        .info.well.pull-left.link{:href => student_home_url}
-          .pull-left
-            %strong.name
-              = link_to(student.full_name, student_home_url)
-            .birthday
-              %span= "Born on:"
-              %span= student.birthday_string
-            .gender
-              %span= "Gender:"
-              %span= student.gender_string
-            .goal
-              %span= "Goals:"
-              - if student.goals.length <= 0
-                %span= "no goal"
-              - else
-                %span= student.goals.length
-
-
-
+  %div.pull-right
+    = link_to "Export", "#", :id => "export-button", :class => "btn export", "data-toggle" => "modal"
+  %center.clearfix
+    - page = params[:page_id] || 1
+    %iframe{:frameborder => "0", :height => @height, :src => "/admin/teachers/show_charts?page_id="+page.to_s, :width => @width, :id => "chart_student"}

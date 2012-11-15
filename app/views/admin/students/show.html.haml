@@ -1,43 +1,12 @@
-- if params[:related]
-  .show-student
-    .clearfix.toolbar
-      = link_to "All Teachers", admin_teachers_path
-      = render('admin/teachers/search_box')
-    - cl = @teachers.count > 3 ? 'multi' : 'single'
-    .student-container.border-teacher.clearfix{:class => "align-border-#{cl}"}
-      - @teachers.slice(0,3).each do |teacher|
-        .avatar-container.thumbnail
-          - unless teacher.photo_url.blank?
-            = image_tag(teacher.photo_url, :class => "default-avatar-teacher")
-          - else
-            .default-avatar-teacher
-        .info-invited-teacher.well.pull-left
-          .pull-left
-            %strong.name
-              = link_to teacher.full_name, admin_teacher_path(teacher)
-            .birthday
-              %div.pull-left= "Classroom:"
-              .wordwrap.pull-left= teacher.classroom
-              .clearfix
-            .gender
-              %div.pull-left= "Email:"
-              .pull-left.wordwrap{:title => teacher.email}= truncate(teacher.email, :length => 30)
-              .clearfix
-            .phone
-              %div.pull-left= "Phone:"
-              .wordwrap.pull-left= teacher.phone
-              .clearfix
-      - if @teachers.count > 3
-        .see-users-link.pull-right= link_to "See all StudentName's teachers", "#", :id => "show_user"
+.show-student  
+  .clearfix.toolbar
+    = link_to "All Teachers", admin_teachers_path, :class => "brown font18"
+    = render('/admin/teachers/search_box')
 
-.clearfix.toolbar      
-  - if params[:related]
-    .top-align= link_to "All #{@teacher.full_name}'s Students", admin_teacher_path(@teacher)
-  -else 
-    = link_to "All students", teachers_path
-    = render('admin/teachers/search_box')
+  = render('/admin/teachers/teacher_box')
 
-.show-student.pull-left
+.show-student
+  = link_to "All #{@teacher.full_name}'s Students", all_students_admin_teacher_path(@teacher), :class => "brown font18"
   = hidden_field_tag "tab", session[:tab]
   .one-student.clearfix
     .avatar-container.thumbnail
@@ -48,7 +17,7 @@
     .info.well.pull-left
       .pull-left
         %strong.name
-          = link_to(@student.full_name, admin_student_path(@student))
+          = link_to @student.full_name, student_path(@student),  :class => "brown"
         .birthday
           %span= "Born on:"
           %span= @student.birthday_string
@@ -62,11 +31,14 @@
           - else
             %span= @student.goals.length
 
-      .edit.pull-right
-        %span= link_to "Edit", edit_admin_student_path(@student)
-  
+    .action-link-container.pull-right
+      .clearfix.action-link
+        = link_to "Edit", edit_student_path(@student)
+      .clearfix.action-link
+        = link_to "Users", "#", :id => "goto-users"
+
   = hidden_field_tag "student_id", params[:id]
-.clearfix
+
 - unless @goals.empty?
   .pull-right
     = link_to "Export", "#", :id => "export-button", :class => "btn export", "data-toggle" => "modal"
@@ -98,33 +70,3 @@
       = render :partial => "view_invited_user", :locals => {:invited_users => @invited_users}
 
   = render "export"
-  
- 
-.show-other-students
-  - unless @students.empty?
-    %div View Other Students 
-    - @students.each do |student|
-      .student-container.pull-left{:style=>"margin-right: 20px;"}
-        .avatar-container.thumbnail{:style=>"width:153px; height:100px;"}
-          - unless student.photo_url.blank?
-            = image_tag(student.photo_url, :class => "student-avatar")
-          - else
-            .default-avatar
-        .info.well.pull-left
-          .pull-left
-            %strong.name
-              = link_to(student.full_name, admin_student_path(student))
-            .birthday
-              %span= "Born on:"
-              %span= student.birthday_string
-            .gender
-              %span= "Gender:"
-              %span= student.gender_string
-    .clearfix
-  .add-student= link_to 'Add Student', new_admin_student_path+"?teacher=#{@teacher.id}", :class => 'btn'
-            
-            
-
-  
-  
-
