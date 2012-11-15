@@ -64,3 +64,11 @@ form textarea{
   padding: 10px;
   text-align: center;
 }
+
+/*
+  COMMON CSS
+*/
+
+.wordwrap { 
+   word-wrap: break-word;  
+}
