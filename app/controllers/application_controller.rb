@@ -86,9 +86,13 @@ class ApplicationController < ActionController::Base
     #
     def restrict_namespace
       user = current_user
-      return if user.blank?
+      return if (user.blank? || self.is_devise_controller?)
       if user.is?(:admin) && self.class.name.split("::").first != "Admin"
         redirect_to "/admin/teachers"
       end
+    end
+
+    def is_devise_controller?
+      self.is_a?(DeviseController)
     end
 end
