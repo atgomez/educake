@@ -43,6 +43,7 @@
               %tr
                 %th Date 
                 %th Score
+                %th Time
                 %th Notes
                 %th User
             %tbody
@@ -50,6 +51,7 @@
                 %tr 
                   %td= status.due_date.strftime("%m/%d/%y") rescue ""
                   %td= ::Util.round_f(status.accuracy).to_s+"%" rescue ""
+                  %td= status.time_to_complete.strftime("%H") rescue ""
                   %td= status.note
                   %td= status.user.full_name
           
