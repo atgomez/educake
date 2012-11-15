@@ -1,6 +1,6 @@
 #pagination-listitem
   - @students.each_with_index do |student, idx|
-    - student_home_url = student_path(student)      
+    - student_home_url = admin_student_path(student)
     .student-container.pull-left.clearfix
       .avatar-container.thumbnail
         %a{:href => student_home_url}
@@ -11,27 +11,31 @@
 
       .info.well.link{:href => student_home_url}
         %strong.name
-          = link_to(student.full_name, student_home_url, :class => "brown")
+          = link_to(student.full_name, student_home_url)
+
         .birthday
           %span= "Born on:"
           %span= student.birthday_string
         .gender
           %span= "Gender:"
           %span= student.gender_string
+          .pull-right
+            - is_track = 1
+            - student.goals.each do |goal|
+              - if !goal.on_track?
+                - is_track = 0
+            - if is_track == 1
+              .track-indicator.pull-left{:class => "on-track", :title => "On-track"}
+            - else
+              .track-indicator.pull-left{:title => "Not on-track"}
         .goal
           %span= "Goals:"
           - if student.goals.length <= 0
             %span= "no goal"
           - else
             %span= student.goals.length
-        .track-indicator-container
-          - status = student.check_on_track? 
-          - if status == 1
-            .track-indicator.pull-left{:class => "on-track", :title => "On-track"}
-          - elsif status == 2
-            .track-indicator.pull-left{:title => "Not on-track"}
     - if (idx + 1) % 4 == 0
       .clearfix
-.clearfix
-= render_pagination @students, :current_page => @current_page
-.loading.hide
+  .clearfix
+  = render_pagination(@students, {:current_page => @current_page})
+  .loading.hide

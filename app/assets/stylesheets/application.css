@@ -65,6 +65,10 @@ form textarea{
   text-align: center;
 }
 
+.pagination{
+  display: inline-block;
+}
+
 /*
   COMMON CSS
 */

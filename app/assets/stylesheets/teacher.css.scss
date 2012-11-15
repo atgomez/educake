@@ -62,6 +62,7 @@ $color-font: #E17C25;
         font-size: 16px;
       }
     }
+
     .edit {
       margin-right: 20px;
     }
@@ -81,8 +82,8 @@ $color-font: #E17C25;
   }
 
   .student-container, .teacher-container{
-    padding-top: 15px;
-    padding-bottom: 15px;
+    padding-top: 7px;
+    padding-bottom: 7px;
     padding-left: 10px;
     border-bottom: 1px solid #ddd;
    
@@ -98,16 +99,16 @@ $color-font: #E17C25;
 
     .avatar-container, .teacher-avatar, .student-avatar, .default-avatar {
       display: inline-block;
-      width: 88px;
-      height: 88px;
+      width: 50px;
+      height: 50px;
       margin-bottom: 0;
       float: left;
       overflow: hidden;
     }
     .default-avatar-teacher {
       display: inline-block;
-      width: 88px;
-      height: 98px;
+      width: 50px;
+      height: 50px;
       margin-bottom: 0;
       float: left;
       padding: 0;
@@ -120,15 +121,20 @@ $color-font: #E17C25;
     .info{
       display: inline-block;
       height: 68px;
-      width: 200px;
+      width: 170px;
       margin-left: 2px;
-      margin-bottom: 0;
       float: left;
       color: #6D6E71;
+      padding-top: 0;
 
       .name{
         font-size: 16px;
       }
+    }
+    .track-indicator-container{
+      position:relative;
+      left:230px;
+      top:30px;
     }
     .info-teacher{
       display: inline-block;
@@ -353,8 +359,7 @@ $color-font: #E17C25;
       }
 
       .info{
-        min-height: 68px;
-        height: auto;
+        width: 167px;
       }
     }
 

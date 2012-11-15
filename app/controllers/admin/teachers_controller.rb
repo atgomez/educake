@@ -18,6 +18,11 @@ class Admin::TeachersController < Admin::BaseAdminController
       @width = "100%"
       @height = "500"
     end 
+    
+    respond_to do |format|
+      format.js
+      format.html
+    end
   end
 
   # GET /admin/teachers/all
@@ -73,6 +78,11 @@ class Admin::TeachersController < Admin::BaseAdminController
       @sharing_students = []
     else
       @sharing_students = Student.load_data(filtered_params, student_ids)
+    end
+
+    respond_to do |format|
+      format.js
+      format.html
     end
   end
   

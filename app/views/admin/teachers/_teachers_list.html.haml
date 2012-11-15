@@ -1,46 +1,46 @@
-- teachers ||= []
-- with_pagination = ((with_pagination.nil? ? true : with_pagination) rescue true)
+#pagination-listitem
+  - teachers ||= []
+  - with_pagination = ((with_pagination.nil? ? true : with_pagination) rescue true)
+  - teachers.each_with_index do |teacher, idx|
+    - teacher_home_url = admin_teacher_path(teacher)
+    .teacher-container.pull-left.clearfix
+      .avatar-container.well
+        %a{:href => teacher_home_url, :title => teacher.full_name}
+          = image_tag(teacher.photo_url, :alt => teacher.full_name, :class => "teacher-avatar")
 
-- teachers.each_with_index do |teacher, idx|
-  - teacher_home_url = admin_teacher_path(teacher)
-  .teacher-container.pull-left.clearfix
-    .avatar-container.well
-      %a{:href => teacher_home_url, :title => teacher.full_name}
-        = image_tag(teacher.photo_url, :alt => teacher.full_name, :class => "teacher-avatar")
+      .info.well.link{:href => teacher_home_url}
+        %strong.name
+          = link_to(teacher.full_name, teacher_home_url)
 
-    .info.well.link{:href => teacher_home_url}
-      %strong.name
-        = link_to(teacher.full_name, teacher_home_url)
-
-      .classroom= teacher.classroom
-      .students-container
-        - student_count = teacher.students.length
-        - if student_count > 0
-          %a{:href=>"#teacher-students-#{teacher.id}", :class => "icon-plus teacher-student-handler"}
-            = pluralize(student_count, 'Student')
-          .teacher-student.hide.clearfix{:id => "teacher-students-#{teacher.id}"}
-            - teacher.students.each do |student|
-              = link_to admin_student_path(student, :related => true), :title => student.full_name, :rel => "tooltip", :class => "student-link" do 
-                = image_tag(student.photo_url, 
-                    :alt => student.full_name,
-                    :class => "student-avatar", 
-                    :id => "teacher-student-#{teacher.id}-#{student.id}")
-    .pull-right
-      - is_track = 1
-      - teacher.students do |st| 
-        - st.goals.each do |goal|
-          - if !goal.on_track?
-            - is_track = 0
-      - if is_track == 1
-        .track-indicator.pull-left{:class => "on-track", :title => "On-track", :style=>"margin-top: 45px; "}
-      - else
-        .track-indicator.pull-left{:title => "Not on-track", :style=>"margin-top: 45px;"}
-    .clearfix
-  - if (idx + 1) % 3 == 0
-    .clearfix
+        .classroom= teacher.classroom
+        .students-container
+          - student_count = teacher.students.length
+          - if student_count > 0
+            %a{:href=>"#teacher-students-#{teacher.id}", :class => "icon-plus teacher-student-handler"}
+              = pluralize(student_count, 'Student')
+            .teacher-student.hide.clearfix{:id => "teacher-students-#{teacher.id}"}
+              - teacher.students.each do |student|
+                = link_to admin_student_path(student, :related => true), :title => student.full_name, :rel => "tooltip", :class => "student-link" do 
+                  = image_tag(student.photo_url, 
+                      :alt => student.full_name,
+                      :class => "student-avatar", 
+                      :id => "teacher-student-#{teacher.id}-#{student.id}")
+      .track-indicator-container
+        - is_track = 1
+        - teacher.students do |st| 
+          - st.goals.each do |goal|
+            - if !goal.on_track?
+              - is_track = 0
+        - if is_track == 1
+          .track-indicator{:class => "on-track", :title => "On-track"}
+        - else
+          .track-indicator{:title => "Not on-track"}
+      .clearfix
+    - if (idx + 1) % 4 == 0
+      .clearfix
 
 - if with_pagination
   .clearfix
   - pagination_params ||= {}
-  = render_pagination(teachers, {:type => 'teacher'}, pagination_params)
+  = render_pagination(teachers, {:type => 'teacher', :current_page => @current_page}, pagination_params)
   .loading.hide

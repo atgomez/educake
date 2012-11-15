@@ -28,4 +28,7 @@
 
 $(document).ready(function() {
     $('.pagination a').attr('data-remote', 'true');
+    $('.pagination a').click(function(){
+    	$('.loading').removeClass('hide')
+    });
 });

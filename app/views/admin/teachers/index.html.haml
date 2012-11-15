@@ -36,7 +36,8 @@
                         :id => "teacher-student-#{teacher.id}-#{student.id}")
 
   - unless @teachers.blank?
-    = render('teachers_list', :teachers => @teachers)
+    #pagination_area
+      = render('teachers_list', :teachers => @teachers)
 
   .clearfix
     .pull-right
