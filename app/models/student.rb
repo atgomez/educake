@@ -10,7 +10,7 @@ class Student < ActiveRecord::Base
                    :path => "photos/:id/:style.:extension"
   #validates_attachment_size :photo, :less_than => 5.megabytes
   validates_attachment_content_type :photo, :content_type => [ 'image/jpeg','image/png' ],
-                                    :message => 'File must be of filetype .jpg or .png'
+                                    :message => 'File must be of file type .jpg or .png'
 
   # ASSOCIATION
   has_many :goals, :dependent => :destroy
