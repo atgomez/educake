@@ -1,0 +1,20 @@
+- if !statuses.empty?
+  %table.table.table-striped
+    %thead
+      %tr
+        %th{:width => '15%'} Date 
+        %th{:width => '10%'} Score
+        %th{:width => '15%'} Time
+        %th{:width => '25%'} Notes
+        %th{:width => '15%'} User
+    %tbody
+      - statuses.each do |status|
+        %tr 
+          %td= status.due_date.strftime("%m/%d/%y") rescue ""
+          %td= ::Util.round_f(status.accuracy).to_s+"%" rescue ""
+          %td= status.time_to_complete.strftime("%H:%M") rescue ""
+          %td
+            .wordbreak
+              = status.note
+          %td= status.user.full_name
+= render_pagination statuses

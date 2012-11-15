@@ -90,6 +90,12 @@ class StudentsController < ApplicationController
     render :partial => "view_goal", :locals => {:goals => goals}
   end
   
+  def load_grades
+    goal = Goal.find_by_id params[:goal_id]
+    statuses = goal.statuses.order('due_date ASC').load_data(filtered_params)
+    render :partial => "load_grades", :locals => {:statuses => statuses}
+  end 
+  
   def search_user 
     user = StudentSharing.find_by_email(params[:email])
     if user 

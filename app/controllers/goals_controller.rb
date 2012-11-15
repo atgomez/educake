@@ -156,19 +156,21 @@ class GoalsController < ApplicationController
         if @format_csv
           @goal.update_attribute(:grades, @file_import)
           statuses = @goal.parse_csv(@goal.grades.url.split("?")[0])
-          statuses.map do |status|
-            day = status[:due_date].split("/")
-            day = [day[1], day[0], day[2]].join("/")
-            status[:due_date] = Date.parse day
-            build_status = @goal.build_status(status, true)
-            
-            if (build_status)
-              build_status = @goal.update_status_state(build_status)
-              if build_status.save
-                build_status.update_attribute(:user_id, current_user.id)
-                flash[:notice] = I18n.t('status.import_successfully')
-              else
-                invalid_grade = true
+          Status.transaction do 
+            statuses.map do |status|
+              day = status[:due_date].split("/")
+              day = [day[1], day[0], day[2]].join("/")
+              status[:due_date] = Date.parse day
+              build_status = @goal.build_status(status, true)
+              
+              if (build_status)
+                build_status = @goal.update_status_state(build_status)
+                if build_status.save
+                  build_status.update_attribute(:user_id, current_user.id)
+                  flash[:notice] = I18n.t('status.import_successfully')
+                else
+                  invalid_grade = true
+                end
               end
             end
           end
