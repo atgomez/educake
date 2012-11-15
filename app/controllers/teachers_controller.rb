@@ -33,13 +33,14 @@ class TeachersController < ApplicationController
   
   def show_charts 
     @series = []
-    @students = current_user.students
+    @students = current_user.students.includes(:goals)
     @students.map do |student|
+      goals_statuses = student.goals_statuses
       @series << {
         :name => student.full_name,
-        :data => student.goals_statuses,
+        :data => goals_statuses,
         :yAxis => 2
-      } unless student.goals_statuses.empty?
+      } unless goals_statuses.empty?
     end
     @series = @series.to_json
     render :template => 'students/common_chart', :layout => "chart"

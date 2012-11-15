@@ -8,7 +8,6 @@ class Admin::BaseAdminController < ApplicationController
 
   protected
 
-    # TODO: implement this method
     def authenticate_admin!
       authorize_action!(User, :manage)
     end

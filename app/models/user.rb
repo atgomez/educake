@@ -69,6 +69,35 @@ class User < ActiveRecord::Base
   # CALLBACK
   after_create :update_user_for_student_sharing
 
+  # SCOPE
+  
+  # Get all users has the given role
+  #
+  # === Parameters
+  #
+  #   * role (String/Role): can a string or Role object
+  #
+  scope :with_role, lambda { |role|
+    if role.is_a?(String) or role.is_a?(Symbol)
+      role = Role.find_by_name(role.to_s.titleize)
+    end
+    
+    if role
+      where(:role_id => role.id)
+    else
+      self.limit(0) # Return an empty ActiveRecord::Relation
+    end
+  }
+
+  # Supper admins
+  scope :super_admins, where(:is_admin => true)
+  
+  # Admins
+  scope :admins, lambda { self.with_role(:admin) }
+  
+  # Teachers
+  scope :teachers, lambda { self.with_role(:teacher) }
+  
   # Class methods
   class << self
     # Load data
@@ -184,7 +213,7 @@ class User < ActiveRecord::Base
 
   # Check user's role
   def is?(role_name)
-    self.role.try(:name).to_s.downcase == role_name.to_s
+    self.role.try(:name).to_s.downcase == role_name.to_s.downcase
   end
 
   # Check if user has no password
@@ -201,6 +230,11 @@ class User < ActiveRecord::Base
 
   def only_if_unconfirmed
     pending_any_confirmation {yield}
+  end
+
+  # Just an alias for is_admin
+  def is_super_admin?
+    self.is_admin?
   end
 
   protected
