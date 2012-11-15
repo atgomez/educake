@@ -63,6 +63,8 @@ class User < ActiveRecord::Base
   # VALIDATION
   has_one :student_sharing
   validates_presence_of :first_name, :last_name
+  validates_length_of :first_name, :maximum => 15
+  validates_length_of :last_name, :maximum => 15
 
   # CALLBACK
   after_create :update_user_for_student_sharing
