@@ -5,6 +5,7 @@ class ApplicationController < ActionController::Base
   before_filter :do_filter_params
   before_filter :set_current_tab
   before_filter :restrict_namespace
+  before_filter :pagination_ajax_setting
 
   rescue_from CanCan::AccessDenied, :with => :render_unauthorized 
 
@@ -12,7 +13,6 @@ class ApplicationController < ActionController::Base
   MAX_PAGE_SIZE = 100
 
   protected
-
     # You can override this method in the sub class.
     def default_page_size
       PAGE_SIZE
@@ -39,6 +39,12 @@ class ApplicationController < ActionController::Base
     def set_current_tab
       "please override this method in your sub class"
       # @current_tab = "home"
+    end
+
+    # Use this for ajax pagination
+    def pagination_ajax_setting
+      @current_page = params[:page_id] ||= 1
+      @is_page_increment = params[:page_id].to_i > params[:current_page].to_i
     end
 
     # Override Cancan ability method

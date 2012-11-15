@@ -1,34 +1,36 @@
-- @students.each_with_index do |student, idx|
-  - student_home_url = student_path(student)      
-  .student-container.pull-left.clearfix
-    .avatar-container.thumbnail
-      %a{:href => student_home_url}
-        - unless student.photo_url.blank?
-          = image_tag(student.photo_url, :class => "student-avatar")
-        - else
-          .default-avatar
+#pagination-listitem
+  - @students.each_with_index do |student, idx|
+    - student_home_url = student_path(student)      
+    .student-container.pull-left.clearfix
+      .avatar-container.thumbnail
+        %a{:href => student_home_url}
+          - unless student.photo_url.blank?
+            = image_tag(student.photo_url, :class => "student-avatar")
+          - else
+            .default-avatar
 
-    .info.well.link{:href => student_home_url}
-      %strong.name
-        = link_to(student.full_name, student_home_url, :class => "brown")
-
-      .birthday
-        %span= "Born on:"
-        %span= student.birthday_string
-      .gender
-        %span= "Gender:"
-        %span= student.gender_string
-        .pull-right
-          - status = student.check_on_track? 
-          - if status == 1
-            .track-indicator.pull-left{:class => "on-track", :title => "On-track"}
-          - elsif status == 2
-            .track-indicator.pull-left{:title => "Not on-track"}
-      .goal
-        %span= "Goals:"
-        - if student.goals.length <= 0
-          %span= "no goal"
-        - else
-          %span= student.goals.length
-  - if (idx + 1) % 3 == 0
-    .clearfix
+      .info.well.link{:href => student_home_url}
+        %strong.name
+          = link_to(student.full_name, student_home_url, :class => "brown")
+        .birthday
+          %span= "Born on:"
+          %span= student.birthday_string
+        .gender
+          %span= "Gender:"
+          %span= student.gender_string
+          .pull-right
+            - status = student.check_on_track? 
+            - if status == 1
+              .track-indicator.pull-left{:class => "on-track", :title => "On-track"}
+            - elsif status == 2
+              .track-indicator.pull-left{:title => "Not on-track"}
+        .goal
+          %span= "Goals:"
+          - if student.goals.length <= 0
+            %span= "no goal"
+          - else
+            %span= student.goals.length
+    - if (idx + 1) % 3 == 0
+      .clearfix
+.clearfix
+  = render_pagination @students, :current_page => @current_page

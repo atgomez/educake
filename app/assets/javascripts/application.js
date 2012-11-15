@@ -26,3 +26,6 @@
 //= require jquery.iframe-transport
 //= require jquery.remotipart
 
+$(document).ready(function() {
+    $('.pagination a').attr('data-remote', 'true');
+});

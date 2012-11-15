@@ -24,6 +24,12 @@ class TeachersController < ApplicationController
     else
       @sharing_students = Student.load_data(filtered_params, student_ids)
     end
+
+    respond_to do |format|
+      format.js
+      format.html
+    end
+
   end
 
   # GET /teachers/all_students
@@ -55,6 +61,6 @@ class TeachersController < ApplicationController
 
   # You can override this method in the sub class.
   def default_page_size
-    6
+    8
   end
 end
