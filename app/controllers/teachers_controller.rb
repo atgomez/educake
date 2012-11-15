@@ -7,7 +7,8 @@ class TeachersController < ApplicationController
   def index
     @students = current_user.students.load_data(filtered_params)
     series = []
-    @students.map do |student|
+    students = current_user.students
+    students.map do |student|
       series += student.goals_statuses
     end
     if series.empty?

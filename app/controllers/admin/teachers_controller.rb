@@ -1,8 +1,9 @@
 class Admin::TeachersController < Admin::BaseAdminController
   def index
     @teachers = current_user.children.teachers.load_data(filtered_params).includes(:students => :goals)
+    teachers = current_user.children.teachers.includes(:students => :goals)
     series = []
-    @teachers.map do |teacher|
+    teachers.map do |teacher|
       teacher_status = teacher.teacher_status
       series << {
         :name => teacher.full_name,
