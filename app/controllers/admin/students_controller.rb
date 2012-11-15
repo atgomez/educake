@@ -1,4 +1,6 @@
 class Admin::StudentsController < StudentsController
+  include ::Shared::StudentActions
+  
   def show
     @teachers = []
     @student = Student.find(params[:id])

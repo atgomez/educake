@@ -1,4 +1,6 @@
 class StudentsController < ApplicationController
+  include ::Shared::StudentActions
+  
   layout "common"
   before_filter :destroy_session, :except => [:show, :destroy]
   
@@ -32,12 +34,10 @@ class StudentsController < ApplicationController
     @invited_users = StudentSharing.where(:student_id => @student.id)
     session[:student_id] = params[:id]
   end
-
  
   def new
     @student = Student.new
-  end
-  
+  end  
   
   def edit
     @student = Student.find(params[:id])
@@ -50,7 +50,6 @@ class StudentsController < ApplicationController
     end
   end
 
-
   def create
     @student = Student.new(params[:student])
 
@@ -62,7 +61,6 @@ class StudentsController < ApplicationController
       render action: "new", :error => @error_photo_type
     end
   end
-
  
   def update
     @student = Student.find(params[:id])
@@ -103,32 +101,7 @@ class StudentsController < ApplicationController
     else 
       render :json => {:existed => false}
     end
-  end
-  
-  def common_chart
-    @series = []
-    @student = Student.find params[:id]
-    @goals = @student.goals.incomplete
-    @goals.each do |goal| 
-      data = []
-      goal.statuses.each{|status| 
-        data << [status.due_date, (status.accuracy*100).round / 100.0]
-      }
-      #data << [goal.due_date, goal.accuracy]
-      #Sort data by due date
-      unless data.empty?
-        data = data.sort_by { |hsh| hsh[0] } 
-        @series << {
-                     :name => goal.name,
-                     :data => data,
-                     :goal_id => goal.id
-                    }
-      end
-    end
-    @series = @series.to_json
-    @enable_marker = true
-    render :template => 'students/common_chart', :layout => "chart"
-  end
+  end 
   
   def chart 
     @goal = Goal.find params[:goal_id]
