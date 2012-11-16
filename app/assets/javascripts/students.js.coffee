@@ -144,7 +144,7 @@ window.studentObject =
           $(id_content).attr("style","display:block;")
         )
         loadGrades(id)
-        $('#chart').attr("src", "chart?goal_id="+id);
+        $('#chart').attr("src", "/students/chart?goal_id="+id);
         $('#chart').attr("height", "500");
         $('#chart').attr("width", "100%");
         $(".status a.goal").each ->
@@ -283,7 +283,7 @@ loadPage= (evt, element) ->
 
 loadGrades= (id) ->
   $.ajax({
-    url: "load_grades"
+    url: "/students/load_grades"
     type: 'GET',
     data: goal_id: id,
     success: (res) ->
