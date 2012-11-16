@@ -13,30 +13,5 @@
   %center.clearfix
     - page = params[:page_id] || 1
     %iframe{:frameborder => "0", :height => @height, :src => "/teachers/show_charts", :width => @width, :id => "chart_student"}
-  .show-other-students
-    - unless @sharing_students.empty?
-      %h4.brown Sharing students 
-      - @sharing_students.each do |student|
-        - student_home_url = student_path(student)
-        .student-container.clearfix
-          .avatar-container.thumbnail
-            %a{:href => student_home_url}
-              = image_tag(student.photo_url(:medium), :class => "student-avatar")
-          .info.well.pull-left.link{:href => student_home_url}
-            .pull-left
-              %strong.name
-                = link_to(student.full_name, student_home_url)
-              .birthday
-                %span= "Born on:"
-                %span= student.birthday_string
-              .gender
-                %span= "Gender:"
-                %span= student.gender_string
-              .goal
-                %span= "Goals:"
-                - if student.goals.length <= 0
-                  %span= "no goal"
-                - else
-                  %span= student.goals.length
   
 = render "export"

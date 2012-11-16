@@ -18,12 +18,6 @@ class TeachersController < ApplicationController
       @width = "100%"
       @height = "500"
     end 
-    student_ids = StudentSharing.where(:user_id => current_user.id).map(&:student_id)
-    if student_ids.empty?
-      @sharing_students = []
-    else
-      @sharing_students = Student.load_data(filtered_params, student_ids)
-    end
 
     respond_to do |format|
       format.js
