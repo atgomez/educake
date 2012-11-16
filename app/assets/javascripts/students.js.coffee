@@ -164,7 +164,7 @@ window.studentObject =
         $(id_content).slideUp('fast', ->
           $(id_content).attr("style","display:none;")
         )
-        
+        $('#chart').attr("src", "/students/"+ $("#student_id").val() + "/common_chart");
         window.chartMode = 'view_all'
       return
   
