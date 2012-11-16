@@ -1,10 +1,14 @@
-= simple_form_for(@student, :html => { :multipart => true, :id => "student-form" } ) do |f|
-  = f.error_notification
+- controller_namespace = ((controller_namespace.nil? ? nil : controller_namespace) rescue nil)
+
+= simple_form_for([controller_namespace, @student], :html => { :multipart => true, :id => "student-form" } ) do |f|
+  - if notification = f.error_notification
+    .alert.alert-error.fade.in
+      %a{:class => "close", 'data-dismiss' => "alert", :href => "#"} &times;
+      = notification
+
   .form-actions
-    - if @student.new_record?
-      = link_to "Cancel", :back, :class => "btn"
-    - else
-      = link_to "Cancel", student_path(@student), :class => "btn"
+    - back = @student.new_record? ? :back : url_for(:controller => "#{controller_namespace}/students", :action => 'show', :id => @student.id)
+    = link_to "Cancel", back, :class => "btn"
 
     - if params[:action] == 'new'
       = f.button :submit, :value => "Add Student"
