@@ -109,6 +109,8 @@ class StudentsController < ApplicationController
   
   def chart 
     @goal = Goal.find params[:goal_id]
+    color = params[:color] ||= 'AA4643'
+    color = '#' + color
     @series = []
     data = []
 
@@ -126,7 +128,10 @@ class StudentsController < ApplicationController
                  :name => "Ideal chart",
                  :data => data
                 }
-    # For add status 
+    if color && color == '#4572A7'
+      @series[0][:color] = "#AA4643"
+    end
+    # For add status  
     data = []
     @goal.statuses.each{|status| 
       data << [status.due_date, (status.accuracy*100).round / 100.0]
@@ -134,7 +139,8 @@ class StudentsController < ApplicationController
     data = data.sort_by { |hsh| hsh[0] }
     @series << {
                  :name => @goal.name,
-                 :data => data
+                 :data => data,
+                 :color => color 
                 }
     @series = @series.to_json
     @enable_marker = true
