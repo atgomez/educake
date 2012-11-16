@@ -27,14 +27,16 @@
                       :class => "student-avatar", 
                       :id => "teacher-student-#{teacher.id}-#{student.id}")
       .track-indicator-container
-        - is_track = 1
-        - teacher.students do |st| 
-          - st.goals.each do |goal|
-            - if !goal.on_track?
-              - is_track = 0
+        - is_track = 0
+        - teacher.students do |student|
+          - if student.check_on_track == 1
+            - is_track = 1
+          - elsif student.check_on_track == 2
+            - is_track = 2
+
         - if is_track == 1
           .track-indicator{:class => "on-track", :title => "On-track"}
-        - else
+        - elsif is_track == 2
           .track-indicator{:title => "Not on-track"}
       .clearfix
     - if (idx + 1) % 4 == 0
