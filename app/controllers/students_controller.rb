@@ -53,6 +53,9 @@ class StudentsController < ApplicationController
     if @student.update_attributes(params[:student])
       redirect_to @student, :notice => 'Student was successfully updated.'
     else
+      @goals = @student.goals.order('is_completed ASC').load_data(filtered_params)
+      session[:student_id] = params[:id]
+      @invited_users = StudentSharing.where(:student_id => params[:id])
       redirect_to edit_student_path(@student, :error => true)
     end
   end 
