@@ -63,7 +63,6 @@ TeacherMgnt::Application.routes.draw do
         get :load_status
         get :search_user
         get :load_grades
-        get :common_chart
       end 
     end
   end

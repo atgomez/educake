@@ -1,9 +1,9 @@
 class StudentsController < ApplicationController
-  include ::Shared::StudentActions
-  
   layout "common"
+  include ::Shared::StudentActions
   before_filter :destroy_session, :except => [:show, :destroy]
-  
+  cross_role_action :common_chart, :chart, :load_grades
+
   def index
     redirect_to('/teachers')
   end
@@ -29,25 +29,10 @@ class StudentsController < ApplicationController
     end 
     if request.xhr?
       @goals = @student.goals.load_data(filtered_params)      
-      render :partial => "view_goal", :locals => {:goals => @goals, :students => @students}
+      render :partial => "shared/students/view_goal", :locals => {:goals => @goals, :students => @students}
     end
     @invited_users = StudentSharing.where(:student_id => @student.id)
     session[:student_id] = params[:id]
-  end
- 
-  def new
-    @student = Student.new
-  end  
-  
-  def edit
-    @student = Student.find(params[:id])
-    @goals = @student.goals.order('is_completed ASC').load_data(filtered_params)
-    session[:student_id] = params[:id]
-    @invited_users = StudentSharing.where(:student_id => params[:id])
-
-    if request.xhr?
-      render :partial => "view_goal", :locals => {:goals => @goals}
-    end
   end
 
   def create
@@ -58,7 +43,7 @@ class StudentsController < ApplicationController
       redirect_to :action => 'edit', :id => @student
     else
       @error_photo_type = @student.errors[:photo_content_type].first 
-      render action: "new", :error => @error_photo_type
+      render :action => "new", :error => @error_photo_type
     end
   end
  
@@ -66,26 +51,45 @@ class StudentsController < ApplicationController
     @student = Student.find(params[:id])
 
     if @student.update_attributes(params[:student])
-      redirect_to @student, notice: 'Student was successfully updated.'
+      redirect_to @student, :notice => 'Student was successfully updated.'
     else
       redirect_to edit_student_path(@student, :error => true)
     end
+  end 
+  
+  def common_chart
+    @series = []
+    @student = Student.find params[:id]
+    @goals = @student.goals.incomplete
+    @goals.each do |goal| 
+      data = []
+      goal.statuses.each{|status| 
+        data << [status.due_date, (status.accuracy*100).round / 100.0]
+      }
+      #data << [goal.due_date, goal.accuracy]
+      #Sort data by due date
+      unless data.empty?
+        data = data.sort_by { |hsh| hsh[0] } 
+        @series << {
+                     :name => goal.name,
+                     :data => data,
+                     :goal_id => goal.id
+                    }
+      end
+    end
+    @series = @series.to_json
+    @enable_marker = true
+    render :template => 'students/common_chart', :layout => "chart"
   end
 
-  def destroy
-    @student = Student.find(params[:id])
-    @student.destroy
-    redirect_to students_url
-  end
-  
   def load_users 
     users = StudentSharing.where(:student_id => params[:id])
-    render :partial => "view_invited_user", :locals => {:invited_users => users}
+    render :partial => "shared/students/view_invited_user", :locals => {:invited_users => users}
   end
   
   def load_status
     goals = Goal.load_data(filtered_params).where(:student_id => params[:id])
-    render :partial => "view_goal", :locals => {:goals => goals}
+    render :partial => "shared/students/view_goal", :locals => {:goals => goals}
   end
   
   def load_grades
@@ -136,14 +140,14 @@ class StudentsController < ApplicationController
     @enable_marker = true
     render :template => 'students/common_chart', :layout => "chart"
   end 
+
   protected
 
-  def set_current_tab
-    @current_tab = 'classroom'
-  end
-  
-  private
-  def destroy_session  
-    session.delete :tab
-  end 
+    def set_current_tab
+      @current_tab = 'classroom'
+    end
+
+    def destroy_session  
+      session.delete :tab
+    end 
 end

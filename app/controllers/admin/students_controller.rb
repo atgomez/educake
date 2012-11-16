@@ -1,4 +1,4 @@
-class Admin::StudentsController < StudentsController
+class Admin::StudentsController < Admin::BaseAdminController
   include ::Shared::StudentActions
   
   def show
@@ -24,24 +24,19 @@ class Admin::StudentsController < StudentsController
     end 
     if request.xhr?
       @goals = @student.goals.load_data(filtered_params)      
-      render :partial => "view_goal", :locals => {:goals => @goals, :students => @students}
-    end
-    if params[:related]
-      @teachers << @teacher 
-      user_ids = StudentSharing.where(:student_id => params[:id]).map(&:user_id)
-      @teachers += User.find(user_ids)
-      #@teachers.sort { |a,b| a.full_name.downcase <=> b.full_name.downcase }
+      render :partial => "shared/students/view_goal", :locals => {:goals => @goals, :students => @students}
     end
     @invited_users = StudentSharing.where(:student_id => @student.id)
+    session[:student_id] = params[:id]
   end
   
   def create
     @student = Student.new(params[:student])
 
     if @student.save
-      redirect_to admin_student_path(@student), notice: 'Student was successfully created.'
+      redirect_to admin_student_path(@student), :notice => 'Student was successfully created.'
     else
-      render action: "new"
+      render :action => "new"
     end
   end
  
@@ -49,9 +44,9 @@ class Admin::StudentsController < StudentsController
     @student = Student.find(params[:id])
 
     if @student.update_attributes(params[:student])
-      redirect_to admin_student_path(@student), notice: 'Student was successfully updated.'
+      redirect_to admin_student_path(@student), :notice => 'Student was successfully updated.'
     else
-      render action: "edit" 
+      render :action => "edit" 
     end
   end
   
@@ -60,8 +55,6 @@ class Admin::StudentsController < StudentsController
     def set_current_tab
       @current_tab = 'classroom'
     end
-  
-  private
   
     def destroy_session  
       session.delete :tab

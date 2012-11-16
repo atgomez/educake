@@ -12,6 +12,28 @@ class ApplicationController < ActionController::Base
   PAGE_SIZE = 8
   MAX_PAGE_SIZE = 100
 
+  #
+  # Class methods
+  #
+  class << self
+    # Contain list of crossed role actions that are internally used in the current class.
+    # TODO: this will not work for inherit classes. Consider using cattr_accessor ?
+    attr_accessor :_crossed_role_action
+
+    # Set value for crossed_role_action
+    # Please use list of Symbol instead of String, otherwise it won't work properly!
+    def cross_role_action(*actions)
+      @_crossed_role_action = actions
+    end
+
+    def crossed_role_action
+      @_crossed_role_action ||= []
+    end
+  end
+
+  #
+  # Protected instance methods.
+  #
   protected
     # You can override this method in the sub class.
     def default_page_size
@@ -34,6 +56,11 @@ class ApplicationController < ActionController::Base
     
     def filtered_params
       @filtered_params
+    end
+
+    # Return list of crossed role actions
+    def crossed_role_action
+      self.class.crossed_role_action
     end
 
     def set_current_tab
@@ -87,7 +114,9 @@ class ApplicationController < ActionController::Base
     def restrict_namespace
       user = current_user
       return if (user.blank? || self.is_devise_controller?)
-      if user.is?(:admin) && self.class.name.split("::").first != "Admin"
+      action = self.action_name.to_sym
+      if (user.is?(:admin) && self.class.name.split("::").first != "Admin" && 
+            !self.crossed_role_action.include?(action))
         redirect_to "/admin/teachers"
       end
     end

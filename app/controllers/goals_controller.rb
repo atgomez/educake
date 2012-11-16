@@ -1,4 +1,7 @@
 class GoalsController < ApplicationController
+  cross_role_action :new_status, :add_status, :initial_import_grades, :import_grades,
+                    :new, :edit, :create, :update, :destroy
+
   def new
     @student = Student.find_by_id(params[:student_id])
   end

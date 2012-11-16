@@ -1,4 +1,6 @@
 class InvitationsController < ApplicationController 
+  cross_role_action :new, :create, :update, :destroy
+
   def new 
     @user = StudentSharing.new 
   end 
