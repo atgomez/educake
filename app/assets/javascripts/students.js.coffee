@@ -1,7 +1,8 @@
 
 window.chartMode = 'view_all'
 
-window.selectGoal= (goal_id) ->
+window.selectGoal= (goal_id, color) ->
+  $('#goal' + goal_id).attr('color', color.replace('#', ''))
   $('#goal' + goal_id).click()
 
 window.clickOnChart= ->
@@ -144,7 +145,7 @@ window.studentObject =
           $(id_content).attr("style","display:block;")
         )
         loadGrades(id)
-        $('#chart').attr("src", "/students/chart?goal_id="+id);
+        $('#chart').attr("src", "/students/chart?goal_id="+id + "&color=" + $(this).attr('color'));
         $('#chart').attr("height", "500");
         $('#chart').attr("width", "100%");
         $(".status a.goal").each ->

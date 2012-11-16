@@ -9,8 +9,6 @@
 - content_for(:js) do
   :javascript
     var chart;
-    var extrems_x = []
-    var extrems_y = []
     $(function(){
       
       series = jQuery.parseJSON(#{@series.to_json})
@@ -29,13 +27,16 @@
           width : $('#common_chart').width() ,
           events: {
               load: function(event){
+                
                 for(var i = 0; i < this.xAxis.length; i++)
                 {
-                  extrems_x.push(this.xAxis[i].getExtremes());
+                  this.xAxis[i].setExtremes(0,0);
+                  this.xAxis[i].setExtremes(null, null, true, true);
                 } 
                 for(var i = 0; i < this.yAxis.length; i++)
                 {
-                  extrems_y.push(this.yAxis[i].getExtremes());
+                  this.yAxis[i].setExtremes(0,0);
+                  this.yAxis[i].setExtremes(null, null, true, true);
                 } 
               },
               click: function(event) {
@@ -153,7 +154,7 @@
                     if (item == current) {
                       if (current.options.goal_id)
                         if(typeof parent.selectGoal == 'function')
-                          parent.selectGoal(current.options.goal_id); 
+                          parent.selectGoal(current.options.goal_id, current.color); 
                     }
                  });
               }
@@ -184,11 +185,11 @@
       $('#highchart_reset_button').click(function() {
         for(var i = 0; i < chart.xAxis.length; i++)
         {
-          chart.xAxis[i].setExtremes(extrems_x[i].min, extrems_x[i].max);
+          chart.xAxis[i].setExtremes(null, null, true, true);
         } 
         for(var i = 0; i < chart.yAxis.length; i++)
         {
-          chart.yAxis[i].setExtremes(extrems_y[i].min, extrems_y[i].max);
+          chart.yAxis[i].setExtremes(null, null, true, true);
         } 
 
         hasZoom = false;
