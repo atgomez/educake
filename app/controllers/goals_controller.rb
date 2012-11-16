@@ -197,7 +197,7 @@ class GoalsController < ApplicationController
     if params[:student_id].blank?
       redirect_link = students_path
     else
-      redirect_link = student_path(params[:student_id])
+      redirect_link = edit_student_path(params[:student_id])
     end
 
     # Process the deleting
