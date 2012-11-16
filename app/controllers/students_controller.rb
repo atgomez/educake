@@ -12,7 +12,7 @@ class StudentsController < ApplicationController
     @student = Student.find(params[:id])
     @teacher = @student.teacher 
     @goals = @student.goals.incomplete.is_archived(false).load_data(filtered_params)
-    @students = @teacher.students
+    @students = @teacher.accessible_students
     #Check to hide placeholder for chart
     @data = []
     @goals.each do |goal| 

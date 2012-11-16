@@ -35,7 +35,7 @@ class Admin::TeachersController < Admin::BaseAdminController
   # TODO: should apply endless pagination.
   def all_students
     if find_or_redirect
-      @students = @teacher.students.order("first_name ASC, last_name ASC")
+      @students = @teacher.accessible_students.order("first_name ASC, last_name ASC")
     end
   end
 
@@ -94,7 +94,7 @@ class Admin::TeachersController < Admin::BaseAdminController
     @teacher = find_or_redirect(session[:teacher_id])
     return if @teacher.blank?
     
-    @students = @teacher.students.includes(:goals)
+    @students = @teacher.accessible_students.includes(:goals)
     @students.map do |student|
       goals_statuses = student.goals_statuses
       @series << {
@@ -143,7 +143,7 @@ class Admin::TeachersController < Admin::BaseAdminController
 
   def get_students
     teacher = current_user.children.teachers.find_by_id(params[:teacher_id])
-    @students = teacher.students
+    @students = teacher.accessible_students
     render :partial => 'admin/teachers/get_students'
   end
 

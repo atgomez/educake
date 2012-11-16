@@ -5,9 +5,9 @@ class TeachersController < ApplicationController
   authorize_resource :user
 
   def index
-    @students = current_user.students.load_data(filtered_params)
+    @students = current_user.accessible_students.load_data(filtered_params)
     series = []
-    students = current_user.students
+    students = current_user.accessible_students
     students.map do |student|
       series += student.goals_statuses
     end
@@ -29,12 +29,12 @@ class TeachersController < ApplicationController
   # GET /teachers/all_students
   # TODO: should apply endless pagination.
   def all_students
-    @students = current_user.students.order("first_name ASC, last_name ASC")
+    @students = current_user.accessible_students.order("first_name ASC, last_name ASC")
   end
   
   def show_charts 
     @series = []
-    @students = current_user.students.includes(:goals)
+    @students = current_user.accessible_students.includes(:goals)
     @students.map do |student|
       goals_statuses = student.goals_statuses
       @series << {
