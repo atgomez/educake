@@ -178,9 +178,11 @@ window.studentObject =
 
     
   clickPage: ->
-    $("#content-status").delegate '.pagination ul li a', 'click', (evt)-> 
-      loadPage(evt, "#content-users")
-    $("#content-status #load_grades").delegate '.pagination ul li a', 'click', (evt) ->  
+    $("#content-status").delegate '#goals_pages .pagination ul li a', 'click', (evt)-> 
+      loadPage(evt, "#content-status")
+
+    $("#content-status #load_grades .pagination ul li a").live "click", (evt) ->
+      evt.preventDefault()
       loadPage(evt, "#load_grades")
     return 
    
@@ -266,7 +268,6 @@ loadPage= (evt, element) ->
   
   # Mask loading
   #$('#content-status').addClass 'loading'
-  console.log element
   sender = evt.target
   $.ajax({
     url: sender.href

@@ -28,7 +28,6 @@ class StudentsController < ApplicationController
       @width = "100%"
     end 
     if request.xhr?
-      @goals = @student.goals.load_data(filtered_params)      
       render :partial => "shared/students/view_goal", :locals => {:goals => @goals, :students => @students}
     end
     @invited_users = StudentSharing.where(:student_id => @student.id)
