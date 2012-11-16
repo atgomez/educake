@@ -173,7 +173,7 @@ class User < ActiveRecord::Base
       UNION ALL 
       SELECT * FROM (#{self.shared_students.to_sql}) d2) #{Student.table_name}
     }
-    Student.from(union_sql).select('*')
+    Student.from(union_sql).order("first_name ASC, last_name ASC").select('*')
   end
   
   def full_name

@@ -68,7 +68,7 @@ class Admin::TeachersController < Admin::BaseAdminController
   def show 
     if find_or_redirect
       session[:teacher_id] = params[:id]
-      @students = @teacher.students.load_data(filtered_params)
+      @students = @teacher.accessible_students.load_data(filtered_params)
       series = []
 
       @students.map do |student|

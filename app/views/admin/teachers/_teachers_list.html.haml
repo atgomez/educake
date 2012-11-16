@@ -3,6 +3,7 @@
 
 #pagination-listitem  
   - teachers.each_with_index do |teacher, idx|
+    - students = teacher.accessible_students
     - teacher_home_url = admin_teacher_path(teacher)
     .teacher-container.pull-left.clearfix
       .avatar-container.well
@@ -14,24 +15,27 @@
           = link_to(teacher.full_name, teacher_home_url)
 
         .classroom= teacher.classroom
-        .students-container
-          - student_count = teacher.students.length
+        .students-container          
+          - student_count = students.length
+          - showed_student_num = 4
           - if student_count > 0
             %a{:href=>"#teacher-students-#{teacher.id}", :class => "icon-plus teacher-student-handler"}
               = pluralize(student_count, 'Student')
             .teacher-student.hide.clearfix{:id => "teacher-students-#{teacher.id}"}
-              - teacher.students.each do |student|
+              - students.take(showed_student_num).each do |student|
                 = link_to admin_student_path(student, :related => true), :title => student.full_name, :rel => "tooltip", :class => "student-link" do 
                   = image_tag(student.photo_url, 
                       :alt => student.full_name,
                       :class => "student-avatar", 
                       :id => "teacher-student-#{teacher.id}-#{student.id}")
+              - if student_count > showed_student_num
+                = link_to("More...", all_students_admin_teacher_path(teacher), :class => "pull-right")
       .track-indicator-container
         - is_track = 0
-        - teacher.students do |student|
-          - if student.check_on_track == 1
+        - students.each do |student|
+          - if student.check_on_track? == 1
             - is_track = 1
-          - elsif student.check_on_track == 2
+          - elsif student.check_on_track? == 2
             - is_track = 2
 
         - if is_track == 1
