@@ -1,0 +1,66 @@
+- controller_namespace ||= ""
+
+.show-student
+  = hidden_field_tag "tab", session[:tab]
+  .one-student.clearfix
+    .avatar-container.thumbnail
+      = image_tag(@student.photo_url, :class => "student-avatar")
+      
+    .info.well.pull-left
+      .pull-left
+        %strong.name
+          = link_to(@student.full_name, 
+              url_for(:controller => "#{controller_namespace}/students", :action => 'show', :id => @student.id),
+              :class => "brown")
+        .birthday
+          %span= "Born on:"
+          %span= @student.birthday_string
+        .gender
+          %span= "Gender:"
+          %span= @student.gender_string
+        .goal
+          %span= "Goals:"
+          - if @student.goals.length <= 0
+            %span= "no goal"
+          - else
+            %span= @student.goals.length
+
+    .action-link-container.pull-right
+      .clearfix.action-link
+        = link_to "Edit", url_for(:controller => "#{controller_namespace}/students", :action => 'edit', :id => @student.id)
+      .clearfix.action-link
+        = link_to "Users", "#", :id => "goto-users"
+
+  = hidden_field_tag "student_id", params[:id]
+
+- unless @goals.empty?
+  .pull-right
+    = link_to "Export", "#", :id => "export-button", :class => "btn export", "data-toggle" => "modal"
+  .clearfix
+  %center.clearfix
+    = hidden_field_tag "check_is_add_grade", @data.empty?
+    %iframe{:frameborder => "0", :height => @height, :src => common_chart_student_path(params[:id]), 
+            :width => @width, :id => "chart"}
+
+.show-student
+  .status
+    #render_add_status
+    - if @goals.size > 0
+      .pull-right= link_to " Add Grade", new_status_goals_path, :remote => true, :class => "btn", :id => "add-status"
+      .pull-right= link_to " Import Grades", initial_import_grades_goals_path, :remote => true, :class => "btn", :id => "import-grade"
+    .clearfix
+    .line
+    #content-status.clearfix
+      = render "shared/students/view_goal", :goals => @goals
+  
+  .separator.brown
+
+  .users.student-users
+    .action-container
+      = link_to " Invite a user", new_invitation_path, :remote => true, :class => "icon-plus-sign add"
+
+    #render_invite_user
+    #content-users
+      = render :partial => "shared/students/view_invited_user", :locals => {:invited_users => @invited_users}
+
+  = render "shared/students/export"
