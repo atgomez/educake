@@ -2,7 +2,7 @@ class StudentsController < ApplicationController
   layout "common"
   include ::Shared::StudentActions
   before_filter :destroy_session, :except => [:show, :destroy]
-  cross_role_action :common_chart, :chart, :load_grades
+  cross_role_action :common_chart, :chart, :load_grades, :search_user
 
   def index
     redirect_to('/teachers')
@@ -36,7 +36,8 @@ class StudentsController < ApplicationController
 
   def create
     @student = Student.new(params[:student])
-
+    @student.teacher = current_user
+    
     if @student.save
       flash[:notice] = 'Student was successfully created.'
       redirect_to :action => 'edit', :id => @student

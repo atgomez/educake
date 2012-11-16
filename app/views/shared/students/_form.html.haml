@@ -22,8 +22,6 @@
       = f.input :birthday, :as => :string, :input_html => {:class => "select-date", :value => f.object.birthday_string}, :label => "DOB"
       = f.label :gender, :class => 'pull-left gender'
       = f.collection_radio_buttons :gender, [[true, 'Male'] ,[false, 'Female']], :first, :last
-      - teacher = params[:teacher] ? params[:teacher].to_i : current_user.id
-      = f.hidden_field :teacher_id, :value => teacher
       .clearfix
     .pull-left
       .crop_image
