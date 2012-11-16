@@ -17,10 +17,11 @@
         = f.input :accuracy, :label => "% Accuracy", :input_html => {:class => "pull-left"}
         .clearfix
         = f.input :time_to_complete, :as => :string, :ampm => true
-        = f.input :note, :as => :text, :label => "Notes", :input_html => {:rows =>"10"}
+        = f.input :note, :as => :text, :label => "Notes", :input_html => {:rows =>"5"}
         = f.hidden_field :is_ideal, :value => false
         = f.hidden_field :user_id, :value => current_user.id
         .clearfix
     .modal-footer
       %a.btn{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} Cancel
       = f.submit "Save", :class => "btn btn-primary", :id => "save-user"
+
