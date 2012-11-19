@@ -7,7 +7,7 @@ class Admin::TeachersController < Admin::BaseAdminController
       teacher_status = teacher.teacher_status
       series << {
         :name => teacher.full_name,
-        :data => teacher_status
+        :data => teacher_status,
       } unless teacher_status.empty?
     end
 
@@ -113,7 +113,8 @@ class Admin::TeachersController < Admin::BaseAdminController
       teacher_status = teacher.teacher_status
       @series << {
         :name => teacher.full_name,
-        :data => teacher_status
+        :data => teacher_status,
+        :yAxis => 2
       } unless teacher_status.empty?
     end
     @series = @series.to_json

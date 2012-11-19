@@ -26,18 +26,8 @@
           height : $('#common_chart').height() , 
           width : $('#common_chart').width() ,
           events: {
-              load: function(event){
-                
-                for(var i = 0; i < this.xAxis.length; i++)
-                {
-                  this.xAxis[i].setExtremes(0,0);
-                  this.xAxis[i].setExtremes(null, null, true, true);
-                } 
-                for(var i = 0; i < this.yAxis.length; i++)
-                {
-                  this.yAxis[i].setExtremes(0,0);
-                  this.yAxis[i].setExtremes(null, null, true, true);
-                } 
+              load: function(event) {
+                this.zoomOut();
               },
               click: function(event) {
                 if(typeof parent.clickOnChart == 'function')
@@ -75,7 +65,7 @@
           minTickInterval: 60*60*24*7,
           labels: {
             formatter: function() {
-                return Highcharts.dateFormat('%b %e, %y', this.value);
+                return '<br/>' + Highcharts.dateFormat('%b %e, %y', this.value);
             },
             style: {
               'text-decoration': 'underline',
@@ -166,7 +156,7 @@
                 }
             },
             marker: {
-                enabled: #{@enable_marker ? 'true' : 'false'},
+                enabled: false,
                 states: {
                     hover: {
                         enabled: true,
@@ -183,14 +173,7 @@
 
       
       $('#highchart_reset_button').click(function() {
-        for(var i = 0; i < chart.xAxis.length; i++)
-        {
-          chart.xAxis[i].setExtremes(null, null, true, true);
-        } 
-        for(var i = 0; i < chart.yAxis.length; i++)
-        {
-          chart.yAxis[i].setExtremes(null, null, true, true);
-        } 
+        chart.zoomOut();
 
         hasZoom = false;
         $(highchart_reset_button).hide()

@@ -77,7 +77,6 @@ class StudentsController < ApplicationController
       end
     end
     @series = @series.to_json
-    @enable_marker = true
     render :template => 'students/common_chart', :layout => "chart"
   end
 
@@ -142,7 +141,6 @@ class StudentsController < ApplicationController
                  :color => color 
                 }
     @series = @series.to_json
-    @enable_marker = true
     render :template => 'students/common_chart', :layout => "chart"
   end 
 
