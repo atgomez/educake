@@ -1,4 +1,6 @@
 TeacherMgnt::Application.routes.draw do
+  resources :schools
+
   root :to => "home#index"
   resources :teachers do 
     collection do 
@@ -66,6 +68,10 @@ TeacherMgnt::Application.routes.draw do
       end 
     end
   end
+  
+  namespace :super_admin do 
+    resources :schools
+  end 
 
   resources :curriculum
 end
