@@ -24,6 +24,7 @@ class Student < ActiveRecord::Base
   validates :first_name, :uniqueness => { :scope => [:last_name, :teacher_id],
     :message => "student's name should not be duplicated" }
 
+  validate :validate_type_of_image
   # SCOPE
 
   # Get all students in scope of the input teacher
@@ -102,6 +103,14 @@ class Student < ActiveRecord::Base
 
   # Instance methods
   
+  def validate_type_of_image
+    type = self.photo.original_filename.split(".").last 
+    if type == "gif"
+      self.errors.add(:photo, "File must be of file type .jpg or .png")
+      return false
+    end 
+  end 
+    
   def goals_statuses
     data = []
     progress = {}
