@@ -105,7 +105,7 @@ class Student < ActiveRecord::Base
   
   def validate_type_of_image
     type = self.photo.original_filename.split(".").last 
-    if type == "gif"
+    unless %(jpg png).include?type
       self.errors.add(:photo, "File must be of file type .jpg or .png")
       return false
     end 
