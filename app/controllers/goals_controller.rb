@@ -194,10 +194,13 @@ class GoalsController < ApplicationController
     goal = Goal.find_by_id(params[:id])
 
     # Select the correct redirect URL
-    if params[:student_id].blank?
-      redirect_link = students_path
-    else
-      redirect_link = edit_student_path(params[:student_id])
+    redirect_link = params[:redirect_link]
+    if redirect_link.blank?
+      if params[:student_id].blank?
+        redirect_link = students_path
+      else
+        redirect_link = edit_student_path(params[:student_id])
+      end
     end
 
     # Process the deleting

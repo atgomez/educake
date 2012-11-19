@@ -150,7 +150,7 @@ class User < ActiveRecord::Base
         if default_opts.blank?
           # This conditions will order records by directory and name first.
           default_opts = {
-            :sort_criteria => "first_name ASC, last_name ASC"
+            :sort_criteria => "users.first_name ASC, users.last_name ASC"
           }
         end
         paging_options(options, default_opts)
