@@ -2,6 +2,11 @@
   .input-margin {
     margin-bottom: 10px;
   }
+  input[type="file"] {
+    height: 30px;
+    line-height: 30px;
+    width: 220px;
+  }
 }
 
 .font-error {

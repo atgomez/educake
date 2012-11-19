@@ -53,6 +53,7 @@ class User < ActiveRecord::Base
   has_many :student_sharings, :dependent => :destroy
   has_many :shared_students, :through => :student_sharings, :source => :student
   belongs_to :role
+  belongs_to :school
 
   has_attached_file :photo, :styles => { :small => "200x200>", :medium => "300x300>" }, 
                    :storage => :s3,

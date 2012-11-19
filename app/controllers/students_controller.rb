@@ -42,8 +42,7 @@ class StudentsController < ApplicationController
       flash[:notice] = 'Student was successfully created.'
       redirect_to :action => 'edit', :id => @student
     else
-      @error_photo_type = @student.errors[:photo_content_type].first 
-      render :action => "new", :error => @error_photo_type
+      render :action => "new"
     end
   end
  
@@ -53,10 +52,7 @@ class StudentsController < ApplicationController
     if @student.update_attributes(params[:student])
       redirect_to @student, :notice => 'Student was successfully updated.'
     else
-      @goals = @student.goals.order('is_completed ASC').load_data(filtered_params)
-      session[:student_id] = params[:id]
-      @invited_users = StudentSharing.where(:student_id => params[:id])
-      redirect_to edit_student_path(@student, :error => true)
+      render :action => :edit
     end
   end 
   
