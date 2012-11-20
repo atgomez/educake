@@ -25,6 +25,7 @@ class Student < ActiveRecord::Base
     :message => "student's name should not be duplicated" }
 
   validate :validate_type_of_image
+  
   # SCOPE
 
   # Get all students in scope of the input teacher
@@ -104,8 +105,10 @@ class Student < ActiveRecord::Base
   # Instance methods
   
   def validate_type_of_image
+    return true if self.photo.original_filename.blank?
+
     type = self.photo.original_filename.split(".").last 
-    unless %(jpg png).include?type
+    unless %(jpg png).include?(type)
       self.errors.add(:photo, "File must be of file type .jpg or .png")
       return false
     end 
@@ -173,9 +176,15 @@ class Student < ActiveRecord::Base
     self.shared_users_with_role(:teacher)
   end
 
-  # Check on track for admin/teacher page
+  # Check on-track for student
+  #
+  # === Return:
+  #
+  #   * 0 : N/A (Not available)
+  #   * 1 : on-track
+  #   * 2 : not on-track
+  #
   def check_on_track?
-    # Result: 0_invisible, 1_on-track, 2_not-on-track
     result = 0 
 
     self.goals.each do |goal|
