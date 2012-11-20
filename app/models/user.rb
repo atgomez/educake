@@ -50,6 +50,18 @@ class User < ActiveRecord::Base
   has_many :children, :class_name => "User", :foreign_key => 'parent_id' 
   belongs_to :parent, :class_name => "User", :foreign_key => 'parent_id'  
   has_many :students, :foreign_key => "teacher_id", :dependent => :destroy
+
+  # All students belong to the current users and students are shared to the current user.
+  has_many :accessible_students, :class_name => "Student", :foreign_key => "teacher_id",
+           :finder_sql =>  Proc.new {
+              union_sql = %Q{
+                (SELECT * FROM (#{self.students.to_sql}) d1
+                UNION ALL 
+                SELECT * FROM (#{self.shared_students.to_sql}) d2) #{Student.table_name}
+              }
+              Student.from(union_sql).order("first_name ASC, last_name ASC").select('DISTINCT *').to_sql
+            }
+
   has_many :student_sharings, :dependent => :destroy
   has_many :shared_students, :through => :student_sharings, :source => :student
   belongs_to :role
@@ -167,15 +179,6 @@ class User < ActiveRecord::Base
   end # End class methods.
 
   # Instance methods
-
-  def accessible_students
-    union_sql = %Q{
-      (SELECT * FROM (#{self.students.to_sql}) d1
-      UNION ALL 
-      SELECT * FROM (#{self.shared_students.to_sql}) d2) #{Student.table_name}
-    }
-    Student.from(union_sql).order("first_name ASC, last_name ASC").select('*')
-  end
   
   def full_name
     "#{self.first_name} #{self.last_name}"
@@ -208,8 +211,7 @@ class User < ActiveRecord::Base
   def teacher_status
     data = []
     progress = {}
-    students = self.students
-    students.each do |student|
+    self.accessible_students.each do |student|
       student_data = student.goals_statuses
       student_data.each do |single_data| 
         progress[single_data[0]] = [] if progress[single_data[0]].nil?
@@ -248,7 +250,33 @@ class User < ActiveRecord::Base
   def is_super_admin?
     self.is_admin?
   end
+  
+  # Check on-track for teacher
+  #
+  # === Return:
+  #
+  #   * 0 : N/A (Not available)
+  #   * 1 : on-track
+  #   * 2 : not on-track
+  #
+  def check_on_track?
+    is_track = 0
     
+    self.accessible_students.each do |student|
+      if student.check_on_track? == 1
+        is_track = 1
+      elsif student.check_on_track? == 2
+        is_track = 2
+      end
+      if is_track != 0
+        # break the loop
+        break
+      end
+    end
+
+    return is_track
+  end
+
   protected
  
     def password_required?
@@ -256,37 +284,3 @@ class User < ActiveRecord::Base
       super
     end
 end
-
-# == Schema Information
-#
-# Table name: users
-#
-#  id                     :integer          not null, primary key
-#  email                  :string(255)      default(""), not null
-#  encrypted_password     :string(255)      default(""), not null
-#  first_name             :string(255)      not null
-#  last_name              :string(255)      not null
-#  phone                  :string(255)
-#  classroom              :string(255)
-#  role_id                :integer
-#  parent_id              :integer
-#  reset_password_token   :string(255)
-#  reset_password_sent_at :datetime
-#  remember_created_at    :datetime
-#  sign_in_count          :integer          default(0)
-#  current_sign_in_at     :datetime
-#  last_sign_in_at        :datetime
-#  current_sign_in_ip     :string(255)
-#  last_sign_in_ip        :string(255)
-#  confirmation_token     :string(255)
-#  confirmed_at           :datetime
-#  confirmation_sent_at   :datetime
-#  created_at             :datetime         not null
-#  updated_at             :datetime         not null
-#  school_name            :string(255)
-#  photo_file_name        :string(255)
-#  photo_content_type     :string(255)
-#  photo_file_size        :integer
-#  photo_updated_at       :datetime
-#  is_admin               :boolean
-#

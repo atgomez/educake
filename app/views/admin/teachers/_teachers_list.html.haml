@@ -31,13 +31,7 @@
               - if student_count > showed_student_num
                 = link_to("More...", all_students_admin_teacher_path(teacher), :class => "pull-right")
       .track-indicator-container
-        - is_track = 0
-        - students.each do |student|
-          - if student.check_on_track? == 1
-            - is_track = 1
-          - elsif student.check_on_track? == 2
-            - is_track = 2
-
+        - is_track = teacher.check_on_track?
         - if is_track == 1
           .track-indicator{:class => "on-track", :title => "On-track"}
         - elsif is_track == 2
