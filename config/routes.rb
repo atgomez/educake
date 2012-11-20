@@ -44,6 +44,7 @@ TeacherMgnt::Application.routes.draw do
   end
 
   get '/admin', :to => "admin/base_admin#index"
+  get '/super_admin', :to => "super_admin/base_super_admin#index"
   namespace :admin do
     resources :teachers do
       collection do

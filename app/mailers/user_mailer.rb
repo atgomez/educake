@@ -10,4 +10,11 @@ class UserMailer < ActionMailer::Base
     end 
     mail(:to => user.email, :subject => "Confirmation for inviting")
   end
+  
+  def admin_confirmation(user) 
+    @user = user
+    #@url = url_for :controller=>'users/passwords', :action => 'edit'
+    mail(:to => user.email, :subject => "Confirmation for admin account")
+  end
+  
 end

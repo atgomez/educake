@@ -26,6 +26,7 @@ gem "aws-sdk"
 gem 'rmagick'
 gem 'faker'
 gem 'bootstrap-will_paginate'
+gem "better_states_select"
 #gem 'event-calendar', :require => 'event_calendar'
 gem "cancan"
 gem 'json'

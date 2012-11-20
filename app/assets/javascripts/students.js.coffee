@@ -66,6 +66,9 @@ window.studentObject =
     $('#student_sharing_email').filter_input({regex:'[a-zA-Z0-9_.@]', live:true})
     $('#student_first_name').filter_input({regex:'[a-zA-Z- ]', live:true})
     $('#student_last_name').filter_input({regex:'[a-zA-Z- ]', live:true}) 
+    $('.valid_name').filter_input({regex:'[a-zA-Z- ]', live:true})
+    $('.valid_email').filter_input({regex:'[a-zA-Z0-9_.@]', live:true}) 
+    $('.valid_number').filter_input({regex:'[0-9]', live:true}) 
     return
   uploadPhoto: ->
     $('#student_photo').change((e) ->

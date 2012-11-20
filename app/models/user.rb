@@ -44,7 +44,7 @@ class User < ActiveRecord::Base
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me, :first_name, 
-  :last_name, :phone, :classroom, :school_name, :confirmed_at, :parent_id
+  :last_name, :phone, :classroom, :school_name, :confirmed_at, :parent_id, :notes, :role_id
   
   # ASSOCIATIONS
   has_many :children, :class_name => "User", :foreign_key => 'parent_id' 
@@ -186,6 +186,8 @@ class User < ActiveRecord::Base
   end
   
   def update_user_for_student_sharing
+    # Update token for user
+    self.update_attribute(:confirm_token, Digest::SHA1.hexdigest(self.email))
     st_sharing = StudentSharing.find_by_email(self.email)
      
     if !st_sharing.blank? && st_sharing.user_id.blank?
@@ -246,9 +248,9 @@ class User < ActiveRecord::Base
   def is_super_admin?
     self.is_admin?
   end
-
+    
   protected
-
+ 
     def password_required?
       return false if self.skip_password
       super

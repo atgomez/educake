@@ -5,11 +5,11 @@
 %table.table.table-striped.schools
   %thead
     %tr
-      %th School
-      %th Admin
-      %th Teachers
-      %th Students
-      %th Joined
+      %th= sortable "name", "School"
+      %th= sortable "Admin"
+      %th= sortable "Teachers"
+      %th= sortable "Students"
+      %th= sortable "Joined"
   %tbody
     - @schools.each do |school|
       - admin = school.users.admins.first
@@ -19,8 +19,9 @@
         students =+ teacher.students
       %tr
         %td= school.name
-        %td= admin.name
+        %td= admin.full_name
         %td= teachers.count 
         %td= students.count
         %td= school.created_at.strftime("%m/%d/%y")
+= render_pagination @schools 
 

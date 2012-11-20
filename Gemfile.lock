@@ -36,6 +36,8 @@ GEM
       nokogiri (>= 1.4.4)
       uuidtools (~> 2.1)
     bcrypt-ruby (3.0.1)
+    better_states_select (1.0.0)
+      rails (>= 1.2)
     bootstrap-will_paginate (0.0.9)
       will_paginate
     builder (3.0.3)
@@ -243,6 +245,7 @@ PLATFORMS
 
 DEPENDENCIES
   aws-sdk
+  better_states_select
   bootstrap-will_paginate
   cancan
   capybara

@@ -1,14 +1,33 @@
-= simple_form_for(@school) do |f|
+= simple_form_for([:super_admin, @school], :html => {:class => "school-form form-horizontal"}) do |f|
   = f.error_notification
-
-  .form-inputs
-    = f.input :name
-    = f.input :address1
-    = f.input :address2
-    = f.input :city
-    = f.input :state
-    = f.input :zipcode
-    = f.input :phone
-
   .form-actions
-    = f.button :submit
+    %center
+      = link_to "Cancel", :back, :class => "btn"
+      - if params[:action] == 'new'
+        = f.button :submit, :value => "Create School"
+      - else
+        = f.button :submit, :value => "Save"
+  - rand_pass = rand(1234567)
+  .form-inputs
+    .title School Info
+    .school-info
+      = f.input :name, :label => "School Name", :input_html => {:class => "valid_name"}
+      = f.input :address1, :label => "Address"
+      .group-address= f.text_field :address2
+      .group-address
+        = f.text_field :city
+        = state_select 'school', 'state', :show => :full
+        = f.text_field :zipcode, :class => "valid_number"
+      = f.input :phone, :input_html => {:class => "valid_number"}
+    .line
+    .title Admin Info
+    .school-info
+      = f.fields_for :users do |admin|
+        = admin.input :first_name, :input_html => {:class => "valid_name"}
+        = admin.input :last_name, :input_html => {:class => "valid_name"}
+        = admin.input :email, :input_html => {:class => "valid_email"}
+        = admin.input :password, :as => :hidden, :input_html => {:value => rand_pass}
+        = admin.input :password_confirmation, :as => :hidden, :input_html => {:value => rand_pass}
+        = admin.input :phone, :input_html => {:class => "valid_number"}
+        = admin.input :notes, :input_html => {:rows => "5"}
+        = admin.input :role_id, :as => :hidden, :input_html => {:value => Role.find_by_name("Admin").id}
