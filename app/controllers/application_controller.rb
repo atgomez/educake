@@ -115,9 +115,12 @@ class ApplicationController < ActionController::Base
       user = current_user
       return if (user.blank? || self.is_devise_controller?)
       action = self.action_name.to_sym
-      if (user.is?(:admin) && self.class.name.split("::").first != "Admin" && 
+      if (user.is?(:admin) && !self.is_a?(Admin::BaseAdminController) && 
             !self.crossed_role_action.include?(action))
         redirect_to "/admin/teachers"
+      elsif (user.is_super_admin? && !self.is_a?(SuperAdmin::BaseSuperAdminController) && 
+            !self.crossed_role_action.include?(action))
+        redirect_to '/super_admin/schools'
       end
     end
 
