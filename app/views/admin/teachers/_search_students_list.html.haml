@@ -1,6 +1,6 @@
 - students ||= []
 - students.each do |student|
-  - student_home_url = student_path(student)
+  - student_home_url = url_for(:controller => "admin/students", :action => "show", :id => student.id)
   .student-container.clearfix
     .avatar-container.well
       %a{:href => student_home_url, :title => student.full_name}
@@ -8,6 +8,7 @@
 
     .info.well.link{:href => student_home_url}
       %strong.name
+        - student_url = url_for(:controller => "admin/students", :action => "show", :id => student.id)
         = link_to(student.full_name, student_home_url)
 
       .birthday
