@@ -4,7 +4,7 @@
 admin = User.find_by_email 'admin@teacher.com'
 teacher_role = Role.find_by_name('Teacher')
 teacher = User.new({
-  :email => 'demo.teacher@teacher.com',
+  :email => 'demo@teacher.com',
   :first_name => "Demo",
   :last_name => "Teacher",
   :password => "123456",
