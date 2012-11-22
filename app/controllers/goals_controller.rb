@@ -1,5 +1,5 @@
 class GoalsController < ApplicationController
-  cross_role_action :new_status, :add_status, :initial_import_grades, :import_grades,
+  cross_role_action :new_status, :add_status, :update_status, :initial_import_grades, :import_grades,
                     :new, :edit, :create, :update, :destroy
 
   def new
@@ -130,9 +130,9 @@ class GoalsController < ApplicationController
   def update_status
     @goal = Goal.find(params[:id])
     if @goal.update_attribute(:is_completed, params[:status])
-      render(:json => {:message => "Success"})
+      render(:json => {:message => I18n.t('goal.updated_successfully')}, :status => 200)
     else
-
+      render(:json => {:message => I18n.t('goal.save_failed')}, :status => 400)
     end
   end
 

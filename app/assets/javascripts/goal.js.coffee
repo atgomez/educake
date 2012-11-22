@@ -103,15 +103,17 @@ window.goal =
         type: 'PUT'
         data: data,
         success: (res) ->
-          $("#error_edit_student").addClass('alert alert-success fade in')
-          $("#error_edit_student").text('Goal was successfully updated.')
-          goal = $('#goal-container-' + goal_id)
-          location.reload()
+          if res && res.message
+            $("#error_edit_student").removeClass('alert-error').addClass('alert alert-success fade in')
+            $("#error_edit_student .message").text(res.message)
+            window.location.reload()
         ,
 
         error: (xhr, textStatus, error) ->
-          $("#error_edit_student").addClass('error_notification')
-          $("#error_edit_student").text('Goal was updated failed.')
+          res = JSON.parse(xhr.responseText)
+          if res && res.message
+            $("#error_edit_student").removeClass('alert-success').addClass('alert alert-error fade in')
+            $("#error_edit_student .message").text(res.message)
       })
 
 

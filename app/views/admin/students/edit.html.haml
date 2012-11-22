@@ -1,6 +1,8 @@
 .student
   %h3 Editing student
   #error_edit_student
+    %a{:class => "close", 'data-dismiss' => "alert", :href => "#"} &times;
+    .message
   #render_invite_user
   %center= render('shared/students/form', :controller_namespace => 'admin')
   .clearfix
