@@ -26,7 +26,7 @@ class SuperAdmin::SchoolsController < SuperAdmin::BaseSuperAdminController
     @school = School.new(params[:school])
 
     if @school.save
-      #UserMailer.admin_confirmation(@school.users.admins.first).deliver
+      UserMailer.admin_confirmation(@school.users.admins.first).deliver
       flash[:notice] = 'School was successfully created.' 
       redirect_to super_admin_schools_path
     else

@@ -13,7 +13,7 @@ class UserMailer < ActionMailer::Base
   
   def admin_confirmation(user) 
     @user = user
-    #@url = url_for :controller=>'users/passwords', :action => 'edit'
+    @url = url_for :controller=>'devise/sessions', :action => 'new'
     mail(:to => user.email, :subject => "Confirmation for admin account")
   end
   

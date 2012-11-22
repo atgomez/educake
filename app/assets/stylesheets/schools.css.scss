@@ -1,0 +1,62 @@
+$color-font: #E17C25;
+.schools {
+  margin-top: 20px;
+  th .current {
+    padding-right: 19px;
+    background-repeat: no-repeat;
+    background-position: right center;
+  }
+  th .asc { 
+    background-image: url(/assets/up_arrow.gif); 
+  }
+
+  th .desc { 
+    background-image: url(/assets/down_arrow.gif); 
+  }
+}
+
+form.school-form {
+  .title {
+    color: $color-font;
+    font-weight: bold;
+  }
+  .line {
+    border-bottom: 1px solid $color-font;
+    margin-bottom: 10px;
+  }
+  .hide {
+    display:none !important;
+    visibility: hidden;
+  }
+  .school-info {
+    .group-address {
+      margin-left: 160px;
+      margin-bottom: 10px;
+      input#school_address2 {
+        width: 301px !important;  
+      }
+      input#school_city {
+        width: 80px !important;
+      }
+      select#school_state {
+        width: 155px !important;
+      }
+      input#school_zipcode {
+        width: 50px !important;
+      }
+    }
+    margin-left: 0px;
+    .control-group {
+      margin-bottom: 10px !important;
+      .controls {
+        input {
+          width: 300px !important;
+        }
+        textarea#school_users_attributes_0_notes {
+          width: 306px !important;
+        }
+      }
+    }
+    
+  }
+}

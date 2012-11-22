@@ -17,6 +17,7 @@
  *= require students
  *= require teacher
  *= require goals
+ *= require schools
  *= require "lib/jquery-ui-bootstrap/jquery-ui"
  */
 

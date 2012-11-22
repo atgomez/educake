@@ -5,6 +5,7 @@ class School < ActiveRecord::Base
   accepts_nested_attributes_for :users
   
   validates_uniqueness_of :name, :scope => :city
+  validates_presence_of :address1
   # CLASS METHODS
   class << self
     def load_data(params = {})

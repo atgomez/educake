@@ -44,7 +44,7 @@ class User < ActiveRecord::Base
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me, :first_name, 
-  :last_name, :phone, :classroom, :school_name, :confirmed_at, :parent_id, :notes, :role_id
+  :last_name, :phone, :classroom, :school_name, :confirmed_at, :parent_id, :notes, :role_id, :temp_pass
   
   # ASSOCIATIONS
   has_many :children, :class_name => "User", :foreign_key => 'parent_id' 
