@@ -9,17 +9,17 @@
           %a{:class => "close", 'data-dismiss' => "alert", :href => "#"} &times;
           = notification
       .form-inputs
-        = f.input :email, :disabled=> !f.object.new_record?, :input_html => {:class => "pull-left", :data => {autocomplete_source: StudentSharing.order(:email).map(&:email)}}
+        = f.input :email, :disabled=> !f.object.new_record?, :input_html => {:class => "pull-left", :data => {autocomplete_source: StudentSharing.order(:email).map(&:email)}, :style => "width:215px;"}
         #email_error.pull-right
         %input{:type => "button", :id => "search-email", :class => "pull-left btn margin-btn", :value => "Search"}
         .clearfix
-        = f.input :first_name, :disabled=> !f.object.new_record?, :input_html => {:class => "pull-left name"}
+        = f.input :first_name, :disabled=> !f.object.new_record?, :input_html => {:class => "pull-left name", :style => "width:220px;"}
         #firstname_error.pull-right
         .clearfix
-        = f.input :last_name, :disabled=> !f.object.new_record?, :input_html => {:class => "pull-left name"}
+        = f.input :last_name, :disabled=> !f.object.new_record?, :input_html => {:class => "pull-left name", :style => "width:220px;"}
         #lastname_error.pull-right
         .clearfix
-        = f.input :role_id, :collection => roles(current_user.role.name), :prompt => "Select one", :input_html => {:class => "pull-left"}
+        = f.input :role_id, :collection => roles(current_user.role.name), :prompt => "Select one", :input_html => {:class => "pull-left", :style => "width:230px;"}
         #role_error.pull-right
         = f.hidden_field :student_id, :value => session[:student_id]
         .clearfix
