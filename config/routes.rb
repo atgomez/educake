@@ -81,6 +81,7 @@ TeacherMgnt::Application.routes.draw do
   
   namespace :super_admin do 
     resources :schools
+    resources :users
   end 
 
   resources :curriculum

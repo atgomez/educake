@@ -44,7 +44,7 @@ class User < ActiveRecord::Base
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me, :first_name, 
-  :last_name, :phone, :classroom, :school_name, :confirmed_at, :parent_id, :notes, :role_id, :temp_pass
+  :last_name, :phone, :classroom, :school_name, :confirmed_at, :parent_id, :notes, :role_id, :temp_pass, :school_id
   
   # ASSOCIATIONS
   has_many :children, :class_name => "User", :foreign_key => 'parent_id' 
@@ -75,10 +75,9 @@ class User < ActiveRecord::Base
 
   # VALIDATION
   has_one :student_sharing
-  validates_presence_of :first_name, :last_name
+  validates_presence_of :first_name, :last_name, :school_id
   validates_length_of :first_name, :maximum => 15
   validates_length_of :last_name, :maximum => 15
-
   # CALLBACK
   after_create :update_user_for_student_sharing
 
@@ -90,6 +89,7 @@ class User < ActiveRecord::Base
   #
   #   * role (String/Role): can a string or Role object
   #
+  
   scope :with_role, lambda { |role|
     if role.is_a?(String) or role.is_a?(Symbol)
       role = Role.find_by_name(role.to_s.titleize)
@@ -110,6 +110,7 @@ class User < ActiveRecord::Base
   
   # Teachers
   scope :teachers, lambda { self.with_role(:teacher) }
+
   
   # Class methods
   class << self
@@ -276,7 +277,8 @@ class User < ActiveRecord::Base
 
     return is_track
   end
-
+  
+  
   protected
  
     def password_required?

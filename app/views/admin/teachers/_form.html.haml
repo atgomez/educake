@@ -17,6 +17,7 @@
       = f.input :email, :required => true
       = f.input(:classroom, :label => "Classroom (opt)", :required => false)
       = f.input(:phone, :label => "Phone (opt)", :required => false)
+      = f.input :school_id, :as => :hidden, :input_html => {:value => current_user.school.nil? ? School.first.id : current_user.school.id }
             
     .modal-footer
       %button.btn{"aria-hidden" => "true", "data-dismiss" => "modal", :class => "close-dialog"} Cancel

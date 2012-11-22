@@ -15,7 +15,7 @@ $color-font: #E17C25;
   }
 }
 
-form.school-form {
+form.school-form, form.user-form {
   .title {
     color: $color-font;
     font-weight: bold;
@@ -52,7 +52,10 @@ form.school-form {
         input {
           width: 300px !important;
         }
-        textarea#school_users_attributes_0_notes {
+        select {
+          width: 310px !important;
+        }
+        textarea.width-area {
           width: 306px !important;
         }
       }
