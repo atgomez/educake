@@ -35,6 +35,9 @@ gem 'newrelic_rpm'
 gem 'fastercsv'
 gem "remotipart", "~> 1.0"
 
+#Excel Parser
+gem "axlsx"
+
 group :development do 
   gem "haml-rails"
   gem 'heroku_san'
