@@ -54,6 +54,7 @@ window.studentObject =
         hourGrid: 4,
         minuteGrid: 10
       return
+  
   allowInputNumber: ->
     $('#user_phone').filter_input({regex:'[0-9]'})
     $('#status_value').filter_input({regex:'[0-9.]', live:true})
@@ -70,6 +71,7 @@ window.studentObject =
     $('.valid_email').filter_input({regex:'[a-zA-Z0-9_.@]', live:true}) 
     $('.valid_number').filter_input({regex:'[0-9]', live:true}) 
     return
+
   uploadPhoto: ->
     $('#student_photo').change((e) ->
       file = e.target.files[0]
@@ -91,7 +93,7 @@ window.studentObject =
         w = img.width()
         img.css('margin-left', (200 - w)/2)
 
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(file)
     
     )
 
