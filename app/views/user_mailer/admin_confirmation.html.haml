@@ -6,11 +6,18 @@
     %h1
       Hi, #{@user.full_name}
     %p
-      You are admin at @user.school.name school.
+      You are admin at 
+      = @user.school.name 
+      school.
       %br
       To login to the site, just follow this link:
       = link_to(@url, @url)
+      %br 
       With your info:
-      Email: @user.email 
-      Password: @user.temp_pass
+      %br
+      Email: 
+      = @user.email 
+      %br
+      Password: 
+      = @user.temp_pass
     %p Thanks for joining and have a great day!
