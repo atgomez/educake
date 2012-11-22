@@ -250,8 +250,8 @@ PLATFORMS
 
 DEPENDENCIES
   aws-sdk
-  better_states_select
   axlsx
+  better_states_select
   bootstrap-will_paginate
   cancan
   capybara
