@@ -42,5 +42,5 @@
             - goal.progresses.order('due_date ASC').each do |status|
               .width-status= ::Util.round_f(status.accuracy).to_s + "% by " + status.due_date.strftime("%m/%Y")
           .clearfix
-          %div{:id => "load_grades_#{goal.id}"}
+          .grades-container
   .pull-right#goals_pages= render_pagination goals

@@ -186,9 +186,9 @@ window.studentObject =
     $("#content-status").delegate '#goals_pages .pagination ul li a', 'click', (evt)-> 
       loadPage(evt, "#content-status")
 
-    $("#content-status #statuses_pages .pagination ul li a").live "click", (evt) ->
+    $("#content-status .grades-container .pagination ul li a").live "click", (evt) ->
       evt.preventDefault()
-      loadPage(evt, "#load_grades")
+      loadPage(evt, $(this).parents(".grades-container"))
     return 
    
   clickOnStatus: ->
@@ -295,15 +295,17 @@ loadPage= (evt, element) ->
 
 loadGrades= (id) ->
   $.ajax({
-    url: "/students/load_grades"
+    url: "/students/load_grades",
     type: 'GET',
-    data: goal_id: id,
+    data: {goal_id: id},
     success: (res) ->
       return
+    ,
     error: (data) ->
       return
+    ,
     complete: (res) ->
-      $('#load_grades_'+id).html res.responseText
+      $('#goal_' + id).find('.grades-container').html(res.responseText)
       return
   })
   return
