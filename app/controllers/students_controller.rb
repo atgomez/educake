@@ -107,40 +107,7 @@ class StudentsController < ApplicationController
   
   def chart 
     @goal = Goal.find params[:goal_id]
-    color = params[:color] ||= 'AA4643'
-    color = '#' + color
-    @series = []
-    data = []
-
-    data << [@goal.baseline_date, (@goal.baseline.round*100).round  / 100.0]
-    # For ideal data
-    @goal.progresses.each{|progress| 
-      data << [progress.due_date, (progress.accuracy*100).round / 100.0]
-    }
-    data << [@goal.due_date, (@goal.accuracy*100).round  / 100.0]
-    #Sort data by due date
-    data = data.sort_by { |hsh| hsh[0] }
-    
-    @series << {
-                 :type => 'line',
-                 :name => "Ideal chart",
-                 :data => data
-                }
-    if color && color == '#4572A7'
-      @series[0][:color] = "#AA4643"
-    end
-    # For add status  
-    data = []
-    @goal.statuses.each{|status| 
-      data << [status.due_date, (status.accuracy*100).round / 100.0]
-    }
-    data = data.sort_by { |hsh| hsh[0] }
-    @series << {
-                 :name => @goal.name,
-                 :data => data,
-                 :color => color 
-                }
-    @series = @series.to_json
+    @series = @goal.series_json(params)
     render :template => 'students/common_chart', :layout => "chart"
   end 
 

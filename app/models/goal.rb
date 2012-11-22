@@ -27,6 +27,7 @@ require 'csv'
 
 class Goal < ActiveRecord::Base
   include ::SharedMethods::Paging
+
   attr_accessible :accuracy, :curriculum_id, :due_date, :subject_id, :progresses_attributes, 
   :baseline_date, :baseline, :trial_days_total, :trial_days_actual,:is_archived, :grades, :is_completed, :description
 
@@ -295,6 +296,61 @@ class Goal < ActiveRecord::Base
     else
       0
     end
+  end
+
+  # EXPORTING
+  def export_xml(package, context, tmp_dir, file_path)
+    # Create tempfile
+    html_file = File.new(tmp_dir + "/#{self.id}.html", 'wb',:encoding => 'ascii-8bit')
+    f = File.new(tmp_dir + "/#{self.id}.png", 'wb', :encoding => 'ascii-8bit')
+
+    # Render PNG for the webpage
+    html = context.render_to_string :template => 'students/common_chart', :layout => "raw_script", :locals => {:series => self.series_json({})}
+    html_file.write(html)
+    file_content = ChartProcess.render(html_file.path)
+    
+    # Include image to Sheets
+    f.write(file_content)
+    p = self.statuses.to_xlsx :name => (self.name + "  #{self.id.to_s}"), :package => package, :file_image => f.path
+    p.serialize(file_path)
+  end
+
+  def series_json(params)
+    # Create data for charts
+    color = params[:color] ||= 'AA4643'
+    color = '#' + color
+    series = []
+    data = []
+
+    data << [self.baseline_date, (self.baseline.round*100).round  / 100.0]
+    # For ideal data
+    self.progresses.each{|progress| 
+      data << [progress.due_date, (progress.accuracy*100).round / 100.0]
+    }
+    data << [self.due_date, (self.accuracy*100).round  / 100.0]
+    #Sort data by due date
+    data = data.sort_by { |hsh| hsh[0] }
+    
+    series << {
+                 :type => 'line',
+                 :name => "Ideal chart",
+                 :data => data
+                }
+    if color && color == '#4572A7'
+      series[0][:color] = "#AA4643"
+    end
+    # For add status  
+    data = []
+    self.statuses.each{|status| 
+      data << [status.due_date, (status.accuracy*100).round / 100.0]
+    }
+    data = data.sort_by { |hsh| hsh[0] }
+    series << {
+                 :name => self.name,
+                 :data => data,
+                 :color => color 
+                }
+    series.to_json
   end
 
   protected

@@ -1,6 +1,12 @@
 TeacherMgnt::Application.routes.draw do
   resources :schools
 
+  resources :export do
+    collection do
+      get :export_student
+    end
+  end
+
   root :to => "home#index"
   resources :teachers do 
     collection do 
