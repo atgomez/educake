@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121113062556) do
+ActiveRecord::Schema.define(:version => 20121122024712) do
 
   create_table "curriculums", :force => true do |t|
     t.string   "name",       :null => false
@@ -31,7 +31,7 @@ ActiveRecord::Schema.define(:version => 20121113062556) do
     t.datetime "updated_at",                                    :null => false
     t.boolean  "is_completed",        :default => false
     t.float    "baseline",            :default => 0.0
-    t.date     "baseline_date",       :default => '2012-11-19', :null => false
+    t.date     "baseline_date",       :default => '2012-11-01', :null => false
     t.integer  "trial_days_total",    :default => 0
     t.integer  "trial_days_actual",   :default => 0
     t.boolean  "is_archived",         :default => false
@@ -57,6 +57,18 @@ ActiveRecord::Schema.define(:version => 20121113062556) do
 
   create_table "roles", :force => true do |t|
     t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "schools", :force => true do |t|
+    t.string   "name"
+    t.string   "address1"
+    t.string   "address2"
+    t.string   "city"
+    t.string   "state"
+    t.string   "zipcode"
+    t.string   "phone"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
@@ -148,6 +160,10 @@ ActiveRecord::Schema.define(:version => 20121113062556) do
     t.integer  "photo_file_size"
     t.datetime "photo_updated_at"
     t.boolean  "is_admin"
+    t.integer  "school_id"
+    t.text     "notes"
+    t.string   "confirm_token"
+    t.string   "temp_pass"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
