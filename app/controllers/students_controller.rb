@@ -85,15 +85,10 @@ class StudentsController < ApplicationController
     render :partial => "shared/students/view_invited_user", :locals => {:invited_users => users}
   end
   
-  def load_status
-    goals = Goal.load_data(filtered_params).where(:student_id => params[:id])
-    render :partial => "shared/students/view_goal", :locals => {:goals => goals}
-  end
-  
   def load_grades
     goal = Goal.find_by_id params[:goal_id]
     statuses = goal.statuses.order('due_date ASC').load_data(filtered_params)
-    render :partial => "load_grades", :locals => {:statuses => statuses}
+    render :partial => "shared/load_grades", :locals => {:statuses => statuses}
   end 
   
   def search_user 

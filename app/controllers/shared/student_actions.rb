@@ -15,6 +15,15 @@ module Shared::StudentActions
     end
   end
 
+  def load_status
+    goals = Goal.load_data(filtered_params).where(:student_id => params[:id])
+    @goals_statuses = {}
+    goals.each do |goal|
+      @goals_statuses[goal.id] = goal.statuses.order('due_date ASC').load_data(filtered_params)
+    end 
+    render :partial => "shared/students/view_goal", :locals => {:goals => goals, :statuses => @goals_statuses}
+  end
+  
   def destroy
     @student = Student.find(params[:id])
     @student.destroy

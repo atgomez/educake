@@ -73,6 +73,9 @@ TeacherMgnt::Application.routes.draw do
         get :search_user
         get :load_grades
       end 
+      collection do 
+        get :load_grades
+      end 
     end
   end
   

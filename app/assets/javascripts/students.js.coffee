@@ -186,7 +186,7 @@ window.studentObject =
     $("#content-status").delegate '#goals_pages .pagination ul li a', 'click', (evt)-> 
       loadPage(evt, "#content-status")
 
-    $("#content-status #load_grades .pagination ul li a").live "click", (evt) ->
+    $("#content-status #statuses_pages .pagination ul li a").live "click", (evt) ->
       evt.preventDefault()
       loadPage(evt, "#load_grades")
     return 
@@ -278,8 +278,13 @@ loadPage= (evt, element) ->
     url: sender.href
     type: 'GET'
     success: (data) ->
-      href = sender.href.split("?")[1]
-      $(element).html data
+      href = sender.href.split("goal_id")
+      if href.length > 1
+        goal_id = sender.href.split("?")[1].split("&")[0].split("=")[1]
+        if goal_id
+          $(element+"_"+goal_id).html data
+      else
+        $(element).html data
       return
     error: (data) ->
       return
@@ -298,7 +303,7 @@ loadGrades= (id) ->
     error: (data) ->
       return
     complete: (res) ->
-      $('#load_grades').html res.responseText
+      $('#load_grades_'+id).html res.responseText
       return
   })
   return
