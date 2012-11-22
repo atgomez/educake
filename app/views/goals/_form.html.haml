@@ -24,10 +24,10 @@
       = f.input(:due_date, :as => :string, :input_html => {:class => "select-date", 
                 :value => goal.due_date_string, :id => "goal_due_date#{goal.id}"})
       = f.input(:description, :input_html => {:rows => '5'})
-      = f.input :accuracy, :label => "Goal % Accuracy", :input_html => {:id => "accuracy-#{goal.id}"}
+      = f.input :accuracy, :as => :string, :label => "Goal % Accuracy", :input_html => {:id => "accuracy-#{goal.id}"}
       = f.input(:baseline_date, :as => :string, :input_html => {:class => "select-date", 
                 :value => goal.baseline_date_string, :id => "baseline_date#{goal.id}"})
-      = f.input(:baseline, :label => "Baseline % Accuracy", :input_html => {:id => "baseline-#{goal.id}"})
+      = f.input(:baseline, :as => :string, :label => "Baseline % Accuracy", :input_html => {:id => "baseline-#{goal.id}"})
 
       .control-group.date.required{:class => (goal.errors[:trial_days_actual].blank? ? "" : "error")}
         %label.date.required.control-label{:for => "goal_baseline_date_1i"}
@@ -51,7 +51,7 @@
             %label.status-name= "Progress Report #{idx}"
             = f_progress.input(:due_date, :as => :string, :input_html => {:class => "select-date", 
                   :value => progress.due_date_string, :id => "goal_#{goal.id}_#{progress.object_id}"}, :label => "Due Date")
-            = f_progress.input :accuracy, :label => "% Accuracy"
+            = f_progress.input :accuracy, :as => :string, :label => "% Accuracy"
             - idx = idx + 1
             
     .modal-footer
