@@ -17,7 +17,7 @@
       - teachers = school.users.teachers
       - students = []
       - teachers.map do |teacher|
-        students =+ teacher.students
+        - students += teacher.students
       %tr
         %td= school.name
         %td= admin.full_name
