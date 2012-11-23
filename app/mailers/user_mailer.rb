@@ -14,7 +14,12 @@ class UserMailer < ActionMailer::Base
   def admin_confirmation(user) 
     @user = user
     @url = url_for :controller=>'devise/sessions', :action => 'new'
-    mail(:to => user.email, :subject => "Confirmation for admin account")
+    if user.is_admin_school?
+      subject = "Confirmation for admin account"
+    elsif user.is_not_admin?
+      subject = "Confirmation for user account"
+    end 
+    mail(:to => user.email, :subject => subject)
   end
   
 end

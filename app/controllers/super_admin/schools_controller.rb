@@ -39,7 +39,7 @@ class SuperAdmin::SchoolsController < SuperAdmin::BaseSuperAdminController
 
     if @school.update_attributes(params[:school])
       flash[:notice] = 'School was successfully updated.'
-      redirect_to @school
+      redirect_to super_admin_schools_path
     else
       render action: "edit" 
     end

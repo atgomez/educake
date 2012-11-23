@@ -6,9 +6,14 @@
     %h1
       Hi, #{@user.full_name}
     %p
-      You are admin at 
-      = @user.school.name 
-      school.
+      - if @user.is_admin_school?
+        You are admin at 
+        = @user.school.name 
+        school.
+      - else 
+        You joined at 
+        = @user.school.name 
+        school.
       %br
       To login to the site, just follow this link:
       = link_to(@url, @url)
