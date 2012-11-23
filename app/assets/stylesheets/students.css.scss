@@ -2,6 +2,11 @@ $color-font: #E17C25;
 
 form#student-form {
   width: 650px;
+  .form-actions {
+    input.btn {
+      height: 30px;
+    }
+  }
   .form-inputs {
     .pull-right {
       width: 350px;

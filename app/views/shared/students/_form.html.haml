@@ -9,7 +9,7 @@
 
   .form-actions
     - back_link = @student.new_record? ? back_link : url_for(:controller => "#{controller_namespace}/students", :action => 'show', :id => @student.id)
-    = link_to "Cancel", back_link, :class => "btn", :style => "height: 18px;"
+    = link_to "Cancel", back_link, :class => "btn"
 
     - if @student.new_record?
       = f.button :submit, :value => "Add Student"
