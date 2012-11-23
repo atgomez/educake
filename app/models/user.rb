@@ -75,7 +75,8 @@ class User < ActiveRecord::Base
 
   # VALIDATION
   has_one :student_sharing
-  validates_presence_of :first_name, :last_name, :school_id
+  validates_presence_of :first_name, :last_name
+  validates_presence_of :school_id, :if => :is_not_admin?
   validates_length_of :first_name, :maximum => 15
   validates_length_of :last_name, :maximum => 15
   # CALLBACK
@@ -252,6 +253,13 @@ class User < ActiveRecord::Base
     self.is_admin?
   end
   
+  def is_admin_school?
+    self.role.try(:name).to_s.downcase == "admin"
+  end
+  
+  def is_not_admin?
+    !(is_admin_school? || is_super_admin?)
+  end 
   # Check on-track for teacher
   #
   # === Return:
