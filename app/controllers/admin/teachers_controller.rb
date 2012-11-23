@@ -2,9 +2,9 @@ class Admin::TeachersController < Admin::BaseAdminController
   # TODO: improve this method, because it load teachers 2 times.
   def index
     @teachers = current_user.children.teachers.load_data(filtered_params).includes(:accessible_students => :goals)
-    teachers = current_user.children.teachers.includes(:accessible_students => :goals)
+    @all_teachers = current_user.children.teachers.includes(:accessible_students => :goals)
     series = []
-    teachers.map do |teacher|
+    @all_teachers.map do |teacher|
       teacher_status = teacher.teacher_status
       series << {
         :name => teacher.full_name,
