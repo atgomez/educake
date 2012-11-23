@@ -80,8 +80,13 @@ TeacherMgnt::Application.routes.draw do
   end
   
   namespace :super_admin do 
-    resources :schools
-    resources :users
+    resources :schools 
+    resources :users do 
+      member do 
+        put :blocked_account
+        put :reset_password
+      end  
+    end
   end 
 
   resources :curriculum

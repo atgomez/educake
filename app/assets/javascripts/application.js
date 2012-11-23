@@ -22,6 +22,7 @@
 //= require init
 //= require goal
 //= require helper
+//= require schools
 //= require app/admin/teacher
 //= require jquery.iframe-transport
 //= require jquery.remotipart

@@ -1,4 +1,8 @@
 $color-font: #E17C25;
+.title {
+  color: black;
+  font-weight: bold;
+}
 .schools {
   margin-top: 20px;
   th .current {
@@ -16,10 +20,6 @@ $color-font: #E17C25;
 }
 
 form.school-form, form.user-form {
-  .title {
-    color: $color-font;
-    font-weight: bold;
-  }
   .line {
     border-bottom: 1px solid $color-font;
     margin-bottom: 10px;
@@ -63,3 +63,28 @@ form.school-form, form.user-form {
     
   }
 }
+
+.show-school {
+  width: 300px;
+}
+// Stylesheet for users
+.account {
+  .reset_password {
+     margin-left: 50px;
+  }
+  .blocked {
+    margin-left: 50px;
+    input[type="checkbox"] {
+      cursor: pointer;
+      line-height: normal;
+      margin: 0 !important;
+    }
+    .text-block {
+      margin-left: 27px;
+    }
+    .ckb-label {
+      margin-left: 10px;
+    }
+  }
+}
+  

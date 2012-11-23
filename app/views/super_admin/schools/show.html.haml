@@ -1,27 +1,40 @@
 %p#notice= notice
+%div.pull-left.show-school
+  %p
+    %b= @school.name
+  %p
+    = @school.address1
+  %p
+    = @school.city+", "+ @school.state + " " + @school.zipcode
+  %p
+    = @school.phone
+  %p
+    Joined
+    = @school.created_at.strftime("%m/%d/%y")
+%div.pull-left
+  = link_to "Edit School", edit_super_admin_school_path(@school)
+.pull-right= render('/admin/teachers/search_box')
+.clearfix
+= link_to "Add User", new_super_admin_user_path, :class => "btn"
 
-%p
-  %b Name:
-  = @school.name
-%p
-  %b Address1:
-  = @school.address1
-%p
-  %b Address2:
-  = @school.address2
-%p
-  %b City:
-  = @school.city
-%p
-  %b State:
-  = @school.state
-%p
-  %b Zipcode:
-  = @school.zipcode
-%p
-  %b Phone:
-  = @school.phone
 
-= link_to 'Edit', edit_school_path(@school)
-\|
-= link_to 'Back', schools_path
+%table.table.table-striped.schools
+  %thead
+    %tr
+      %th Role
+      %th Name
+      %th Students
+      %th
+      %th
+      %th
+  %tbody
+    - @users.each do |user|
+      %tr
+        %td= user.role.name
+        %td= user.full_name
+        %td= user.students.count
+        %td= link_to "", edit_super_admin_user_path(user), :class => "icon-pencil color-pen", :title => "Edit" 
+        %td= link_to "", [:super_admin, user], :data => { :confirm => 'Are you sure?' }, :class => "icon-trash color-pen", :method => :delete, :title => "Delete" 
+        %td= link_to "view as"
+= render_pagination @users 
+
