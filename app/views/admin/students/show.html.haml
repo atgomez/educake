@@ -5,4 +5,4 @@
   = render('/admin/teachers/teacher_box')
 .show-student
   = link_to "All #{@teacher.full_name}'s Students", all_students_admin_teacher_path(@teacher), :class => "brown font18"
-= render('shared/students/details', :controller_namespace => 'admin')
+= render('shared/students/details', :controller_namespace => 'admin', :back_link => "/admin/students/#{@student.id}")

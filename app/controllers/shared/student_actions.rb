@@ -2,6 +2,7 @@
 module Shared::StudentActions
   def new
     @student = Student.new
+    @back_link = params[:back_link]
   end  
   
   def edit

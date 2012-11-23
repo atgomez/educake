@@ -1,16 +1,17 @@
+/ add student from: admin/students/new
 - controller_namespace = ((controller_namespace.nil? ? nil : controller_namespace) rescue nil)
 
-= simple_form_for([controller_namespace, @student], :html => { :multipart => true, :id => "student-form" } ) do |f|
+= simple_form_for([controller_namespace, @student], :html => { :multipart => true, :id => "student-form" }, :back_link => back_link ||= "" ) do |f|
   - if notification = f.error_notification
     .alert.alert-error.fade.in
       %a{:class => "close", 'data-dismiss' => "alert", :href => "#"} &times;
       = notification
 
   .form-actions
-    - back = @student.new_record? ? url_for(:controller => "#{controller_namespace}/teachers", :action => 'index') : url_for(:controller => "#{controller_namespace}/students", :action => 'show', :id => @student.id)
-    = link_to "Cancel", back, :class => "btn", :style => "height: 18px;"
+    - back_link = @student.new_record? ? back_link : url_for(:controller => "#{controller_namespace}/students", :action => 'show', :id => @student.id)
+    = link_to "Cancel", back_link, :class => "btn", :style => "height: 18px;"
 
-    - if params[:action] == 'new'
+    - if @student.new_record?
       = f.button :submit, :value => "Add Student"
     - else
       = f.button :submit, :value => "Save"
@@ -27,5 +28,6 @@
       .crop_image
         = image_tag (f.object.new_record? ? "missing.png" : f.object.photo.url(:medium)), :size => "200x200", :id => 'upload-image'
       = f.input :photo, :as => :file, :label => "Upload photo"
+      = hidden_field_tag "back_link", back_link
       
   

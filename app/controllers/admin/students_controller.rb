@@ -33,6 +33,7 @@ class Admin::StudentsController < Admin::BaseAdminController
   def create
     @student = Student.new(params[:student])
     @student.teacher_id = session[:teacher_id]
+    @back_link = params[:back_link]
     if @student.save
       redirect_to admin_student_path(@student), :notice => 'Student was successfully created.'
     else

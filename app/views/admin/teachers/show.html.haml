@@ -8,7 +8,7 @@
 
   .clearfix.toolbar
     = link_to "All #{@teacher.full_name}'s Students", all_students_admin_teacher_path(@teacher), :class => "brown font18"
-    = link_to 'Add Student', new_admin_student_path(:teacher => @teacher.id), :class => "btn pull-right"
+    = link_to 'Add Student', new_admin_student_path(:teacher => @teacher.id, :back_link => "/admin/teachers/#{@teacher.id}"), :class => "btn pull-right"
 
   .teacher.clearfix.toolbar
     - unless @students.blank?
@@ -20,3 +20,5 @@
   %center.clearfix
     - page = params[:page_id] || 1
     %iframe{:frameborder => "0", :height => @height, :src => "/admin/teachers/show_charts?page_id="+page.to_s, :width => @width, :id => "chart_student"}
+
+/ Add student: admin/students/new

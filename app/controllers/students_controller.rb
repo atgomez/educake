@@ -37,6 +37,7 @@ class StudentsController < ApplicationController
   def create
     @student = Student.new(params[:student])
     @student.teacher = current_user
+    @back_link = params[:back_link]
     
     if @student.save
       flash[:notice] = 'Student was successfully created.'
