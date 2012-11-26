@@ -2,23 +2,22 @@ class ExportController < ApplicationController
 	cross_role_action :export_student
 	def export_student
 		xlsx_package = Axlsx::Package.new
-		@student = Student.find params[:id]
-	    @goals = @student.goals.incomplete
+		@student = Student.find params[:student_id]
 	    
-	    in_tmpdir do |tmpdir|
+	  in_tmpdir do |tmpdir|
+	  	# Create First Page for student
+
+
+	  	# Create Goal pages
 		  begin 
-	      temp = Tempfile.new("posts.xlsx", tmpdir) 
-	      @goals.each do |goal| 
-	    	goal.export_xml(xlsx_package, self, tmpdir, temp.path)
-	      end
-	      
-	      send_file temp.path, :filename => "student_export.xlsx", :type => "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-	    ensure
+	      temp = Tempfile.new("student.xlsx", tmpdir) 
+	      @student.export_xml(xlsx_package, self, tmpdir, temp.path)
+	      send_file temp.path, :filename => "student_export[#{@student.full_name}].xlsx", :type => "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+		  ensure
 	      temp.close 
 	      temp.unlink
-	    end
+		  end
 		end
-	    
 	end
 
 	protected
@@ -29,6 +28,6 @@ class ExportController < ApplicationController
 		  yield( path )
 
 		ensure
-		  FileUtils.rm_rf( path ) if File.exists?( path )
+		  #FileUtils.rm_rf( path ) if File.exists?( path )
 		end
 end

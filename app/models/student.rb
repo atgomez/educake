@@ -207,6 +207,103 @@ class Student < ActiveRecord::Base
     return result  
   end
 
+    # EXPORTING
+  def export_xml(package, context, tmpdir, file_path)
+    goals = self.goals.incomplete
+
+    # Create First Page Info
+    package.workbook.add_worksheet(:name => "Overall Status") do |sheet|
+      # Styling
+      student_name_style = sheet.styles.add_style ChartProcess::STUDENT_NAME_STYLE
+      left_text_style = sheet.styles.add_style ChartProcess::LEFT_TEXT_STYLE
+      bold = sheet.styles.add_style ChartProcess::BOLD_STYLE
+
+      # Start adding row
+      sheet.add_row [self.full_name, "", "", "", "", "", "", "", 
+                     "", "", "", "", "", "", "", "", "", "", "", 
+                     "", "","", "","", "","", "","", "","", "",], :style => student_name_style
+      sheet.add_row [nil], :style => left_text_style
+      sheet.add_row ["Report Date:", Date.today], :style => [left_text_style, nil]
+      sheet.add_row [nil], :style => left_text_style
+      sheet.add_row [nil, "Status", "Due Date", "On Track"], :style => [left_text_style, bold, bold, bold]
+      goals.each do |goal| 
+        sheet.add_row [goal.name, "#{(goal.goal_status*100).round / 100.0}%", 
+                      goal.due_date, 
+                      goal.on_track? ? "ok" : "not ok"],
+                      :style => [left_text_style, nil]
+      end
+      (1..100).each do 
+        sheet.add_row [nil], :style => left_text_style
+      end
+
+      # Create tempfile
+      random_number = (rand * 10000).to_i
+      html_file = File.new(tmpdir + "/#{random_number.to_s}.html", 'wb',:encoding => 'ascii-8bit')
+      f = File.new(tmpdir + "/#{random_number.to_s}.png", 'wb', :encoding => 'ascii-8bit')
+
+      # Render PNG for the webpage
+      html = context.render_to_string :template => 'students/common_chart', :layout => "raw_script", :locals => {:series => self.series_json}
+      html_file.write(html)
+      file_content = ChartProcess.render(html_file.path)
+      
+      # Include image to Sheets
+      f.write(file_content)
+
+      # Add Chart to first page
+      sheet.add_image(:image_src => f.path, :noSelect => true, :noMove => true) do |image|
+        image.width=1000
+        image.height=500
+        image.start_at 6, 2
+      end
+
+    end
+
+    # Export Goals
+
+    idx = 1
+    goals.each do |goal| 
+      goal.export_xml(package, context, tmpdir, idx) do |sheet|
+        student_name_style = sheet.styles.add_style ChartProcess::STUDENT_NAME_STYLE
+        left_text_style = sheet.styles.add_style ChartProcess::LEFT_TEXT_STYLE
+
+        sheet.add_row [self.full_name, "", "", "", "", "", "", "", 
+                     "", "", "", "", "", "", "", "", "", "", "", 
+                     "", "","", "","", "","", "","", "","", "",], :style => student_name_style
+        sheet.add_row [nil], :style => left_text_style
+      end
+      idx = idx + 1
+    end
+
+    package.serialize(file_path)
+  end
+
+  # Collect data for charting
+
+  def series_json(params={})
+    goals = self.goals.incomplete
+    series = []
+    goals.each do |goal| 
+      data = []
+      goal.statuses.each{|status| 
+        data << [status.due_date, (status.accuracy*100).round / 100.0]
+      }
+      #data << [goal.due_date, goal.accuracy]
+      #Sort data by due date
+      unless data.empty?
+        data = data.sort_by { |hsh| hsh[0] } 
+        series << {
+                     :name => goal.name,
+                     :data => data,
+                     :goal_id => goal.id
+                    }
+      end
+    end
+    series.to_json
+  end
+
+  # EXPORTING
+
+
 end
 
 # == Schema Information

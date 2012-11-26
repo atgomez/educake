@@ -17,11 +17,8 @@
 #  is_unused        :boolean          default(FALSE)
 #  note             :text
 #
-require 'acts_as_xlsx.rb'
 class Status < ActiveRecord::Base
   include ::SharedMethods::Paging  
-
-  acts_as_xlsx :columns=>[:due_date, :accuracy]
 
   attr_accessible :accuracy, :due_date, :goal_id, :is_ideal, :user_id,
   :value, :time_to_complete, :is_unused, :note

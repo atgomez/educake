@@ -299,23 +299,55 @@ class Goal < ActiveRecord::Base
   end
 
   # EXPORTING
-  def export_xml(package, context, tmp_dir, file_path)
-    # Create tempfile
-    html_file = File.new(tmp_dir + "/#{self.id}.html", 'wb',:encoding => 'ascii-8bit')
-    f = File.new(tmp_dir + "/#{self.id}.png", 'wb', :encoding => 'ascii-8bit')
+  def export_xml(package, context, tmpdir, sheet_index)
 
-    # Render PNG for the webpage
-    html = context.render_to_string :template => 'students/common_chart', :layout => "raw_script", :locals => {:series => self.series_json({})}
-    html_file.write(html)
-    file_content = ChartProcess.render(html_file.path)
-    
-    # Include image to Sheets
-    f.write(file_content)
-    p = self.statuses.to_xlsx :name => (self.name + "  #{self.id.to_s}"), :package => package, :file_image => f.path
-    p.serialize(file_path)
+    # Create Header Info
+    package.workbook.add_worksheet(:name => "#{self.name} #{sheet_index}") do |sheet|
+      # Student Header
+      yield(sheet) if block_given?
+
+      # Styling
+      left_text_style = sheet.styles.add_style ChartProcess::LEFT_TEXT_STYLE
+      bold = sheet.styles.add_style ChartProcess::BOLD_STYLE
+
+      # Goal Header
+      sheet.add_row ["Report Date:", Date.today], :style => [left_text_style , nil]
+      sheet.add_row [""], :style => left_text_style
+      sheet.add_row ["", "Status", "Due Date", "On Track"], :style => [left_text_style, bold, bold, bold]
+      sheet.add_row [self.name, "#{(goal_status*100).round / 100.0}%", 
+                      due_date, 
+                      on_track? ? "ok" : "not ok"], 
+                    :style => [left_text_style, nil]
+      sheet.add_row [""], :style => left_text_style
+      idx = 0
+      self.progresses.each do |progress|
+        sheet.add_row [idx > 0 ? "" : "Progress Reports", "%", progress.due_date, ""], :style => [left_text_style, nil]
+      idx = idx + 1
+      end
+      sheet.add_row [""], :style => left_text_style
+      sheet.add_row ["Trial Days", "#{trial_days_actual}/#{trial_days_total}"], :style => [left_text_style, nil]
+      sheet.add_row ["Goal Description", description], :style => [left_text_style, nil]
+      (1..3).each {sheet.add_row [""], :style => left_text_style}
+
+      sheet.add_row ["", "Date","Score"], :style => [left_text_style, bold, bold]
+      self.statuses.order(:due_date).each do |status|
+        sheet.add_row ["", status.due_date, "#{status.accuracy}%"], :style => [left_text_style, nil]
+      end
+
+      image_path = ChartProcess.renderPNG(context, tmpdir, self.series_json)
+
+      sheet.add_image(:image_src => image_path, :noSelect => true, :noMove => true) do |image|
+        image.width=1000
+        image.height=500
+        image.start_at 6, 2
+      end
+    end
+
   end
 
-  def series_json(params)
+  # Collect data for charting
+
+  def series_json(params={})
     # Create data for charts
     color = params[:color] ||= 'AA4643'
     color = '#' + color
