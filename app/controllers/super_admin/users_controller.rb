@@ -56,4 +56,13 @@ class SuperAdmin::UsersController < SuperAdmin::BaseSuperAdminController
     
     redirect_to super_admin_school_path(school)
   end
+  
+  def view_as
+    user = User.find params[:id]
+    if user.is?(:admin)
+      redirect_to admin_teachers_path(:user_id => params[:id]) 
+    elsif user.is?(:teacher)
+      redirect_to admin_teacher_path(user)
+    end 
+  end 
 end

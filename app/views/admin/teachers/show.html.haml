@@ -1,14 +1,23 @@
 .admin.teacher
-  .show-student  
+  - if current_user.is_super_admin?
+    %div.box-view-as
+      Now viewing as 
+      %b= @teacher.full_name + ", "
+      %b= @teacher.role.name + " at "
+      %b= @teacher.school.name + "."
+      %br
+      Back to viewing as SuperAdmin.
+  - else 
+    .show-student  
+      .clearfix.toolbar
+        = link_to "All Teachers", admin_teachers_path, :class => "brown font18"
+        = render('search_box')
+
+      = render('teacher_box')
+
     .clearfix.toolbar
-      = link_to "All Teachers", admin_teachers_path, :class => "brown font18"
-      = render('search_box')
-
-    = render('teacher_box')
-
-  .clearfix.toolbar
-    = link_to "All #{@teacher.full_name}'s Students", all_students_admin_teacher_path(@teacher), :class => "brown font18"
-    = link_to 'Add Student', new_admin_student_path(:teacher => @teacher.id, :back_link => "/admin/teachers/#{@teacher.id}"), :class => "btn pull-right"
+      = link_to "All #{@teacher.full_name}'s Students", all_students_admin_teacher_path(@teacher), :class => "brown font18"
+      = link_to 'Add Student', new_admin_student_path(:teacher => @teacher.id, :back_link => "/admin/teachers/#{@teacher.id}"), :class => "btn pull-right"
 
   .teacher.clearfix.toolbar
     - unless @students.blank?

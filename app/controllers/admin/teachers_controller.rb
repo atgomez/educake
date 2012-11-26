@@ -1,8 +1,15 @@
 class Admin::TeachersController < Admin::BaseAdminController
+  cross_role_action :index, :show
   # TODO: improve this method, because it load teachers 2 times.
   def index
-    @teachers = current_user.children.teachers.load_data(filtered_params).includes(:accessible_students => :goals)
-    @all_teachers = current_user.children.teachers.includes(:accessible_students => :goals)
+    @is_view_as = current_user.is_super_admin? && params[:user_id]
+    if @is_view_as 
+      @user = User.find params[:user_id]
+    else
+      @user = current_user
+    end 
+    @teachers = @user.children.teachers.load_data(filtered_params).includes(:accessible_students => :goals)
+    @all_teachers = @user.children.teachers.includes(:accessible_students => :goals)
     series = []
     @all_teachers.map do |teacher|
       teacher_status = teacher.teacher_status
@@ -67,6 +74,7 @@ class Admin::TeachersController < Admin::BaseAdminController
   end
   
   def show 
+    
     if find_or_redirect
       session[:teacher_id] = params[:id]
       @students = @teacher.accessible_students.load_data(filtered_params)
@@ -157,8 +165,11 @@ class Admin::TeachersController < Admin::BaseAdminController
 
     # Find record and redirect to index page if the record does not exist
     def find_or_redirect(teacher_id = params[:id])
-      @teacher = current_user.children.teachers.find_by_id(teacher_id)
-
+      if current_user.is_super_admin?
+        @teacher = User.find teacher_id
+      else
+        @teacher = current_user.children.teachers.find_by_id(teacher_id)
+      end 
       if @teacher.blank?
         respond_to do |format|
           format.html {

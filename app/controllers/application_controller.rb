@@ -6,6 +6,7 @@ class ApplicationController < ActionController::Base
   before_filter :set_current_tab
   before_filter :restrict_namespace
   before_filter :pagination_ajax_setting
+  before_filter :check_blocked_account, :only => [:update, :create, :delete, :show, :index]
 
   rescue_from CanCan::AccessDenied, :with => :render_unauthorized 
 
@@ -30,11 +31,20 @@ class ApplicationController < ActionController::Base
       @_crossed_role_action ||= []
     end
   end
+  
+  def check_blocked_account
+    return if (current_user.blank? && self.is_devise_controller?)
+    if current_user && current_user.is_locked 
+      flash[:alert] = "Your Account  was blocked."
+      redirect_to (request.referer.present? ? blocked_account_path : user_session_path)
+    end
+  end 
 
   #
   # Protected instance methods.
   #
   protected
+  
     # You can override this method in the sub class.
     def default_page_size
       PAGE_SIZE

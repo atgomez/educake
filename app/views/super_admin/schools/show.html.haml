@@ -35,6 +35,6 @@
         %td= user.students.count
         %td= link_to "", edit_super_admin_user_path(user), :class => "icon-pencil color-pen", :title => "Edit" 
         %td= link_to "", [:super_admin, user], :data => { :confirm => 'Are you sure?' }, :class => "icon-trash color-pen", :method => :delete, :title => "Delete" 
-        %td= link_to "view as"
+        %td= link_to "view as", view_as_super_admin_user_path(user)
 = render_pagination @users 
 

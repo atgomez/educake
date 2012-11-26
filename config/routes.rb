@@ -8,6 +8,7 @@ TeacherMgnt::Application.routes.draw do
   end
 
   root :to => "home#index"
+  match "blocked_account" => "home#show_blocked_account"
   resources :teachers do 
     collection do 
       get :show_charts
@@ -80,11 +81,12 @@ TeacherMgnt::Application.routes.draw do
   end
   
   namespace :super_admin do 
-    resources :schools 
+    resources :schools  
     resources :users do 
       member do 
         put :blocked_account
         put :reset_password
+        get :view_as
       end  
     end
   end 

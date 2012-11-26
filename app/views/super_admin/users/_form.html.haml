@@ -12,15 +12,16 @@
     .title School Info
     .school-info
       = f.input :school_id, :collection => School.order(:name), :label => "School Name", :prompt => "Select One"
-    .title Admin Info
+    .title User Info
     .school-info
       = f.input :first_name, :input_html => {:class => "valid_name"}
       = f.input :last_name, :input_html => {:class => "valid_name"}
       = f.input :role_id, :collection => @roles, :prompt => "Select One", :input_html => {:value => f.object.new_record? ? "" : @user.role.name}
       = f.input :email, :input_html => {:class => "valid_email"}
-      = f.input :password, :as => :hidden, :input_html => {:value => rand_pass}
-      = f.input :password_confirmation, :as => :hidden, :input_html => {:value => rand_pass}
-      = f.input :temp_pass, :as => :hidden, :input_html => {:value => rand_pass}
+      - if f.object.new_record?
+        = f.input :password, :as => :hidden, :input_html => {:value => rand_pass}
+        = f.input :password_confirmation, :as => :hidden, :input_html => {:value => rand_pass}
+        = f.input :temp_pass, :as => :hidden, :input_html => {:value => rand_pass}
       = f.input :phone, :input_html => {:class => "valid_number"}
       = f.input :notes, :input_html => {:rows => "5", :class => "width-area"}
       
