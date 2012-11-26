@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121122024712) do
+ActiveRecord::Schema.define(:version => 20121123044546) do
 
   create_table "curriculums", :force => true do |t|
     t.string   "name",       :null => false
@@ -133,10 +133,10 @@ ActiveRecord::Schema.define(:version => 20121122024712) do
   add_index "subjects", ["name"], :name => "index_subjects_on_name", :unique => true
 
   create_table "users", :force => true do |t|
-    t.string   "email",                  :default => "", :null => false
-    t.string   "encrypted_password",     :default => "", :null => false
-    t.string   "first_name",                             :null => false
-    t.string   "last_name",                              :null => false
+    t.string   "email",                  :default => "",    :null => false
+    t.string   "encrypted_password",     :default => "",    :null => false
+    t.string   "first_name",                                :null => false
+    t.string   "last_name",                                 :null => false
     t.string   "phone"
     t.string   "classroom"
     t.integer  "role_id"
@@ -152,8 +152,8 @@ ActiveRecord::Schema.define(:version => 20121122024712) do
     t.string   "confirmation_token"
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
-    t.datetime "created_at",                             :null => false
-    t.datetime "updated_at",                             :null => false
+    t.datetime "created_at",                                :null => false
+    t.datetime "updated_at",                                :null => false
     t.string   "school_name"
     t.string   "photo_file_name"
     t.string   "photo_content_type"
@@ -164,6 +164,7 @@ ActiveRecord::Schema.define(:version => 20121122024712) do
     t.text     "notes"
     t.string   "confirm_token"
     t.string   "temp_pass"
+    t.boolean  "is_locked",              :default => false
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

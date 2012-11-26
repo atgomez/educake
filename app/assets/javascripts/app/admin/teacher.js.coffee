@@ -30,8 +30,10 @@ window.teacher =
       if @value is "classroom"
         $("#student_selection").attr("disabled", "disabled")
       else if @value is "school"
+        $("#teacher_selection").attr("disabled", "disabled")
         $("#student_selection").attr("disabled", "disabled")
       else
+        $("#teacher_selection").removeAttr("disabled")
         $("#student_selection").removeAttr("disabled")
 
   setup_student_panel: ->
