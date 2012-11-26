@@ -29,7 +29,7 @@
                       :class => "student-avatar", 
                       :id => "teacher-student-#{teacher.id}-#{student.id}")
               - if student_count > showed_student_num
-                = link_to("More...", all_students_admin_teacher_path(teacher), :class => "pull-right")
+                = link_to("More...", all_students_admin_teacher_path(teacher))
       .track-indicator-container
         - is_track = teacher.check_on_track?
         - if is_track == 1
