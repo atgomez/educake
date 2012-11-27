@@ -20,7 +20,7 @@
 class Status < ActiveRecord::Base
   include ::SharedMethods::Paging  
 
-  attr_accessible :accuracy, :due_date, :goal_id, :is_ideal, :user_id,
+  attr_accessible :accuracy, :due_date, :goal_id, :user_id,
   :value, :time_to_complete, :is_unused, :note
   belongs_to :user
   belongs_to :goal
@@ -31,9 +31,8 @@ class Status < ActiveRecord::Base
   validates :goal_id, :uniqueness => { :scope => :due_date,
     :message => "should happen once per day" }
   validates_presence_of :accuracy, :due_date, :goal_id
-  # Instance methods.
-  # is_ideal == true <~ Progress Object
-  scope :is_ideal, lambda {|ideal| where(:is_ideal => ideal)}
+
+  # SCOPE
   scope :computable, where('is_unused = ?', false)
 
   before_update :update_status_state

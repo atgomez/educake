@@ -18,7 +18,6 @@
         .clearfix
         = f.input :time_to_complete, :as => :string, :ampm => true
         = f.input :note, :as => :text, :label => "Notes", :input_html => {:rows =>"5"}
-        = f.hidden_field :is_ideal, :value => false
         = f.hidden_field :user_id, :value => current_user.id
         .clearfix
     .modal-footer
