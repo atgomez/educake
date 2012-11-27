@@ -28,6 +28,7 @@ window.teacher =
   check_school_radio: ->
     $("input[name=data]").change ->
       if @value is "classroom"
+        $("#teacher_selection").removeAttr("disabled")
         $("#student_selection").attr("disabled", "disabled")
       else if @value is "school"
         $("#teacher_selection").attr("disabled", "disabled")
