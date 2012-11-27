@@ -8,7 +8,7 @@
     - unless @teachers.blank?
       %h5= "Teachers"
       #teachers-list
-        = render('teachers_list', :teachers => @teachers, 
+        = render('search_teachers_list', :teachers => @teachers, 
                   :pagination_params => {:inner_window  => 2, :outer_window => 1})
 
   .students-result.result-container

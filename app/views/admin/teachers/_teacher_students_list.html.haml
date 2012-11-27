@@ -21,21 +21,20 @@
         .gender
           %span= "Gender:"
           %span= student.gender_string
-          .pull-right
-            - is_track = 1
-            - student.goals.each do |goal|
-              - if !goal.on_track?
-                - is_track = 0
-            - if is_track == 1
-              .track-indicator.pull-left{:class => "on-track", :title => "On-track"}
-            - else
-              .track-indicator.pull-left{:title => "Not on-track"}
         .goal
           %span= "Goals:"
           - if student.goals.length <= 0
             %span= "no goal"
           - else
             %span= student.goals.length
+            
+      .track-indicator-container{:style => "left: 220px; top: -55px"}
+        - if !student.goals.empty?
+          - status = student.check_on_track? 
+          - if status == 1
+            .track-indicator.pull-left{:class => "on-track", :title => "On-track"}
+          - else
+            .track-indicator.pull-left{:title => "Not on-track"}
     - if (idx + 1) % 4 == 0
       .clearfix
 

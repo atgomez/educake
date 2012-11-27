@@ -1,0 +1,41 @@
+- teachers ||= []
+- with_pagination = ((with_pagination.nil? ? true : with_pagination) rescue true)
+
+#pagination-listitem  
+  - teachers.each_with_index do |teacher, idx|
+    - students = teacher.accessible_students
+    - teacher_home_url = admin_teacher_path(teacher)
+    .teacher-container.pull-left.clearfix
+      .avatar-container.well
+        %a{:href => teacher_home_url, :title => teacher.full_name}
+          = image_tag(teacher.photo_url, :alt => teacher.full_name, :class => "teacher-avatar")
+
+      .info.well.link{:href => teacher_home_url}
+        %strong.name
+          = link_to(teacher.full_name, teacher_home_url)
+
+        .classroom= teacher.classroom
+        .students-container          
+          - student_count = students.length
+          - showed_student_num = 4
+          - if student_count > 0
+            %a{:href=>"#teacher-students-#{teacher.id}", :class => "icon-plus teacher-student-handler"}
+              = pluralize(student_count, 'Student')
+            .teacher-student.hide.clearfix{:id => "teacher-students-#{teacher.id}"}
+              - students.take(showed_student_num).each do |student|
+                = link_to admin_student_path(student, :related => true), :title => student.full_name, :rel => "tooltip", :class => "student-link" do 
+                  = image_tag(student.photo_url, 
+                      :alt => student.full_name,
+                      :class => "student-avatar", 
+                      :id => "teacher-student-#{teacher.id}-#{student.id}")
+              - if student_count > showed_student_num
+                = link_to("More...", all_students_admin_teacher_path(teacher))
+      .clearfix
+    - if (idx + 1) % 4 == 0
+      .clearfix
+
+- if with_pagination
+  .clearfix
+  - pagination_params ||= {}
+  = render_pagination(teachers, {:type => 'teacher', :current_page => @current_page}, pagination_params)
+  .loading.hide
