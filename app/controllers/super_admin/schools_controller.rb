@@ -11,11 +11,12 @@ class SuperAdmin::SchoolsController < SuperAdmin::BaseSuperAdminController
 
   def new
     @school = School.new
-    @school.users.build
+    @admin = @school.users.build
   end
 
   def edit
     @school = School.find(params[:id])
+    @admin = @school.users.admins.first
   end
 
   def create
