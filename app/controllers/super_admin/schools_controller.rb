@@ -1,16 +1,12 @@
 class SuperAdmin::SchoolsController < SuperAdmin::BaseSuperAdminController
   helper_method :sort_column, :sort_direction
   def index
-    @schools = School.order(sort_column + ' ' + sort_direction).load_data(filtered_params)
+      @schools = School.order(sort_column + ' ' + sort_direction).load_data(filtered_params)
   end
 
   def show
     @school = School.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json { render json: @school }
-    end
+    @users = @school.users.load_data(filtered_params)
   end
 
   def new
@@ -24,7 +20,7 @@ class SuperAdmin::SchoolsController < SuperAdmin::BaseSuperAdminController
 
   def create
     @school = School.new(params[:school])
-
+   
     if @school.save
       UserMailer.admin_confirmation(@school.users.admins.first).deliver
       flash[:notice] = 'School was successfully created.' 
@@ -56,8 +52,9 @@ class SuperAdmin::SchoolsController < SuperAdmin::BaseSuperAdminController
   end
   
   private
+  
   def sort_column
-    School.column_names.include?(params[:sort]) ? params[:sort] : "name"
+    School.column_names.include?(params[:sort]) || User.column_names.include?(params[:sort]) ? params[:sort] : "name"
   end
   
   def sort_direction
