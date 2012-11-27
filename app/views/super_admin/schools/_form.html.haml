@@ -3,10 +3,8 @@
   .form-actions
     %center
       - back = :back
-      - if params[:back] == "schools"
+      - if params[:back] == "schools" || f.object.new_record?
         - back = super_admin_schools_path
-      - elsif params[:back] == "users"
-        - back = super_admin_school_path(@school)
       = link_to "Cancel", back, :class => "btn"
       - if f.object.new_record?
         = f.button :submit, :value => "Create School"

@@ -2,6 +2,7 @@ class SuperAdmin::UsersController < SuperAdmin::BaseSuperAdminController
   def new 
     @user = User.new
     @user.build_school
+    session[:back] = params[:back]
     @roles = Role.where("name =? or name = ?", "Teacher", "Parent").order(:name).all
   end
   

@@ -6,6 +6,7 @@ class SuperAdmin::SchoolsController < SuperAdmin::BaseSuperAdminController
 
   def show
     @school = School.find(params[:id])
+    session[:school] = @school.id
     @users = @school.users.load_data(filtered_params)
   end
 

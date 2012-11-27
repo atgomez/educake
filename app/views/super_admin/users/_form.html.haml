@@ -2,7 +2,12 @@
   = f.error_notification
   .form-actions
     %center
-      = link_to "Cancel", :back, :class => "btn"
+      - back = :back
+      - if (f.object.new_record? && session[:back] == "users") || params[:back] == "users" 
+        - back = super_admin_school_path(session[:school])
+      - elsif (f.object.new_record? && session[:back] == "schools") || params[:back] == "schools" 
+        - back = back = super_admin_schools_path
+      = link_to "Cancel", back, :class => "btn"
       - if f.object.new_record?
         = f.button :submit, :value => "Create User"
       - else
