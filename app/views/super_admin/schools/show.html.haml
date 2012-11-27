@@ -30,9 +30,9 @@
   %tbody
     - @users.each do |user|
       %tr
-        %td= user.role.name
-        %td= user.full_name
-        %td= user.students.count
+        %td= user.role.name rescue ""
+        %td= user.full_name rescue ""
+        %td= user.students.count rescue ""
         %td= link_to "", edit_super_admin_user_path(user), :class => "icon-pencil color-pen", :title => "Edit" 
         %td= link_to "", [:super_admin, user], :data => { :confirm => 'Are you sure?' }, :class => "icon-trash color-pen", :method => :delete, :title => "Delete" 
         %td= link_to "view as", view_as_super_admin_user_path(user)

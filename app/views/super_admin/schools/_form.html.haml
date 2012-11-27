@@ -15,9 +15,9 @@
       = f.input :address1, :label => "Address"
       .group-address= f.text_field :address2
       .group-address
-        = f.text_field :city
+        = f.text_field :city, :placeholder => "city"
         = state_select 'school', 'state', :show => :full
-        = f.text_field :zipcode, :class => "valid_number"
+        = f.text_field :zipcode, :class => "valid_number", :placeholder => "zip code"
       = f.input :phone, :input_html => {:class => "valid_number"}
     .line
     .title Admin Info
