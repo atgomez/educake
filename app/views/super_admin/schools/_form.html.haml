@@ -18,11 +18,10 @@
       = f.input :address1, :label => "Address"
       = f.input :address2, :label => false
       = f.input :city, :label => false, :error => false, :input_html => {:class => "pull-left", :placeholder => "city"}
-      %div= f.error :city, :id => "city"
       .pull-left= state_select 'school', 'state', :show => :full
       = f.input :zipcode, :error => false, :label => false, :input_html => {:class => "valid_number pull-left", :placeholder => "zip code"}
-      %div= f.error :zipcode, :id => "zipcode"
       .clearfix
+      %div= f.error :city, :id => "city"
       = f.input :phone, :input_html => {:class => "valid_number"}
     .line
     .title Admin Info
