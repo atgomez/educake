@@ -37,6 +37,15 @@
           events: {
               load: function(event) {
                 this.zoomOut();
+                $.each(this.series , function(indx, seri) {
+                  if (seri.points.length == 1)
+                    seri.points[0].update({
+                        marker: {
+                          enabled: true,
+                          width: 1
+                        }
+                    });
+                });
                 if(typeof parent.chartLoaded == 'function')
                     parent.chartLoaded(this); 
               },
