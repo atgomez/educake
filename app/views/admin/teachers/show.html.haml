@@ -6,7 +6,7 @@
       %b= @teacher.role.name + " at "
       %b= @teacher.school.name + "."
       %br
-      Back to viewing as SuperAdmin.
+      = link_to "Back to viewing as SuperAdmin.", super_admin_path
   - else 
     .show-student  
       .clearfix.toolbar

@@ -7,10 +7,10 @@
   %thead
     %tr
       %th= sortable "name", "School"
-      %th= sortable "Admin"
-      %th= sortable "Teachers"
+      %th= sortable "last_name", "Admin"
+      %th= sortable "teacher", "Teachers"
       %th= sortable "Students"
-      %th= sortable "Joined"
+      %th= sortable "created_at", "Joined"
   %tbody
     - @schools.each do |school|
       - admin = school.users.admins.first
@@ -19,9 +19,9 @@
       - teachers.map do |teacher|
         - students += teacher.students
       %tr
-        %td= school.name
+        %td= link_to school.name, super_admin_school_path(school)
         %td= admin.full_name
-        %td= teachers.count 
+        %td= teachers.count
         %td= students.count
         %td= school.created_at.strftime("%m/%d/%y")
 = render_pagination @schools 
