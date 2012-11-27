@@ -30,9 +30,9 @@
         = admin.input :last_name, :input_html => {:class => "valid_name"}
         = admin.input :email, :input_html => {:class => "valid_email"}
         - if f.object.new_record?
-          = admin.input :password, :as => :hidden, :input_html => {:value => rand_pass}
-          = admin.input :password_confirmation, :as => :hidden, :input_html => {:value => rand_pass}
-          = admin.input :temp_pass, :as => :hidden, :input_html => {:value => rand_pass}
+          / = admin.input :password, :as => :hidden, :input_html => {:value => rand_pass}
+          / = admin.input :password_confirmation, :as => :hidden, :input_html => {:value => rand_pass}
+          / = admin.input :temp_pass, :as => :hidden, :input_html => {:value => rand_pass}
           = admin.input :parent_id, :as => :hidden, :input_html => {:value => current_user.id}
         = admin.input :phone, :input_html => {:class => "valid_number"}
         = admin.input :notes, :input_html => {:rows => "5", :class => "width-area"}

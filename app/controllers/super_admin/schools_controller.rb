@@ -21,10 +21,12 @@ class SuperAdmin::SchoolsController < SuperAdmin::BaseSuperAdminController
   end
 
   def create
+    rand_pass = rand(1234567)
+    params[:school][:users_attributes]['0'][:password] = rand_pass
     @school = School.new(params[:school])
-   
+    
     if @school.save
-      UserMailer.admin_confirmation(@school.users.admins.first).deliver
+      UserMailer.admin_confirmation(@school.users.admins.first, rand_pass).deliver
       flash[:notice] = 'School was successfully created.' 
       redirect_to super_admin_schools_path
     else
