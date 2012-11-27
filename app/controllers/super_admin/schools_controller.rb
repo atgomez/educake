@@ -1,7 +1,7 @@
 class SuperAdmin::SchoolsController < SuperAdmin::BaseSuperAdminController
   helper_method :sort_column, :sort_direction
   def index
-      @schools = School.order(sort_column + ' ' + sort_direction).load_data(filtered_params)
+      @schools = School.joins(:users).order(sort_column + ' ' + sort_direction).load_data(filtered_params)
   end
 
   def show

@@ -1,6 +1,6 @@
 = link_to "Add School", new_super_admin_school_path, :class => "btn"
 - unless @schools.empty?
-  = link_to "Add User", new_super_admin_user_path, :class => "btn"
+  = link_to "Add User", new_super_admin_user_path(:back => "schools"), :class => "btn"
 = render('/admin/teachers/search_box')
 
 %table.table.table-striped.schools
@@ -8,8 +8,8 @@
     %tr
       %th= sortable "name", "School"
       %th= sortable "last_name", "Admin"
-      %th= sortable "teacher", "Teachers"
-      %th= sortable "Students"
+      %th= "Teachers"
+      %th= "Students"
       %th= sortable "created_at", "Joined"
   %tbody
     - @schools.each do |school|

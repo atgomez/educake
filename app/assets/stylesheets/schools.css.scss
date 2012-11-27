@@ -29,28 +29,26 @@ form.school-form, form.user-form {
     visibility: hidden;
   }
   .school-info {
-    .group-address {
-      margin-left: 160px;
-      margin-bottom: 10px;
-      input#school_address2 {
-        width: 301px !important;  
-      }
-      input#school_city {
-        width: 80px !important;
-      }
-      select#school_state {
-        width: 155px !important;
-      }
-      input#school_zipcode {
-        width: 50px !important;
-      }
-    }
     margin-left: 0px;
+    select#school_state {
+      width: 150px !important;
+      margin-right: 10px;
+    }
+    input#school_city {
+      width: 70px !important;
+    }
+    input#school_zipcode {
+      width: 50px !important;
+      margin-right: 10px;
+    }
     .control-group {
       margin-bottom: 10px !important;
       .controls {
         input {
           width: 300px !important;
+        }
+        input#school_address2 {
+          width: 301px !important;  
         }
         select {
           width: 310px !important;

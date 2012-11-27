@@ -12,10 +12,12 @@
     Joined
     = @school.created_at.strftime("%m/%d/%y")
 %div.pull-left
-  = link_to "Edit School", edit_super_admin_school_path(@school)
+  = link_to "Edit School", edit_super_admin_school_path(@school) 
+  = " | "
+  = link_to "Back", super_admin_schools_path
 .pull-right= render('/admin/teachers/search_box')
 .clearfix
-= link_to "Add User", new_super_admin_user_path, :class => "btn"
+= link_to "Add User", new_super_admin_user_path(:back => "users"), :class => "btn"
 
 
 %table.table.table-striped.schools

@@ -11,7 +11,7 @@ class SuperAdmin::UsersController < SuperAdmin::BaseSuperAdminController
     if @user.save
       UserMailer.admin_confirmation(@user).deliver
       flash[:notice] = 'User was created successfully.' 
-      redirect_to super_admin_schools_path
+      redirect_to super_admin_school_path(@user.school)
     else
       render action: "new" 
     end

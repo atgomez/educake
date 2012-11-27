@@ -1,6 +1,7 @@
 window.schoolObject =
   setup: ->
     @checkForCheckbox()
+    @removeClassInForm()
   
   checkForCheckbox: ->
     checked = $("#check_locked").val()
@@ -9,3 +10,7 @@ window.schoolObject =
     else
       $("#is_locked").attr("checked", false)
     return
+ 
+  removeClassInForm: -> 
+    $("#school_zipcode").parent().parent().removeClass()
+    

@@ -2,7 +2,12 @@
   = f.error_notification
   .form-actions
     %center
-      = link_to "Cancel", :back, :class => "btn"
+      - back = :back
+      - if params[:back] == "schools"
+        - back = super_admin_schools_path
+      - elsif params[:back] == "users"
+        - back = super_admin_school_path(@school)
+      = link_to "Cancel", back, :class => "btn"
       - if f.object.new_record?
         = f.button :submit, :value => "Create School"
       - else
@@ -13,11 +18,11 @@
     .school-info
       = f.input :name, :label => "School Name", :input_html => {:class => "valid_name"}
       = f.input :address1, :label => "Address"
-      .group-address= f.text_field :address2
-      .group-address
-        = f.text_field :city, :placeholder => "city"
-        = state_select 'school', 'state', :show => :full
-        = f.text_field :zipcode, :class => "valid_number", :placeholder => "zip code"
+      = f.input :address2, :label => false
+      = f.input :zipcode, :label => false, :input_html => {:class => "valid_number pull-left", :placeholder => "zip code"}
+      .pull-left= state_select 'school', 'state', :show => :full
+      = f.input :city, :label => false, :input_html => {:class => "pull-left", :placeholder => "city"}
+      .clearfix
       = f.input :phone, :input_html => {:class => "valid_number"}
     .line
     .title Admin Info
