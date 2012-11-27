@@ -37,7 +37,8 @@
           events: {
               load: function(event) {
                 this.zoomOut();
-
+                if(typeof parent.chartLoaded == 'function')
+                    parent.chartLoaded(this); 
               },
               click: function(event) {
                 if(typeof parent.clickOnChart == 'function')
