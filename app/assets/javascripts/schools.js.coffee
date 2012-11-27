@@ -13,4 +13,5 @@ window.schoolObject =
  
   removeClassInForm: -> 
     $("#school_zipcode").parent().parent().removeClass()
-    
+    $("#school_city").parent().parent().removeClass()
+    return

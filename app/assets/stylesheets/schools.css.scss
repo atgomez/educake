@@ -20,6 +20,10 @@ $color-font: #E17C25;
 }
 
 form.school-form, form.user-form {
+  #city, #zipcode {
+    color: #B94A48;
+    display: block;
+  }
   .line {
     border-bottom: 1px solid $color-font;
     margin-bottom: 10px;
@@ -33,13 +37,16 @@ form.school-form, form.user-form {
     select#school_state {
       width: 150px !important;
       margin-right: 10px;
+      margin-bottom: 10px;
     }
     input#school_city {
       width: 70px !important;
+      margin-right: 10px;
+      margin-bottom: 10px;
     }
     input#school_zipcode {
       width: 50px !important;
-      margin-right: 10px;
+      margin-bottom: 10px;
     }
     .control-group {
       margin-bottom: 10px !important;
