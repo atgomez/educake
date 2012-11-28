@@ -54,7 +54,6 @@ class Goal < ActiveRecord::Base
                     :path => ":rails_root/public/imports/:id/:style.:extension"
   
   # SCOPE
-  scope :is_archived, lambda {|is_archived| where(:is_archived => is_archived)} 
   scope :incomplete, where('is_completed = ?', false)
   scope :available, where('is_completed = ? AND is_archived = ?', false, false)
   attr_accessor :last_status #For add/update purpose

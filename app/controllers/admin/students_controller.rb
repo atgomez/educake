@@ -5,11 +5,11 @@ class Admin::StudentsController < Admin::BaseAdminController
     @teachers = []
     @student = Student.find(params[:id])
     @teacher = @student.teacher 
-    @goals = @student.goals.incomplete.is_archived(false).load_data(filtered_params)
+    @goals = @student.goals.incomplete.load_data(filtered_params)
     @students = @teacher.accessible_students.limit 4
     #Check to hide placeholder for chart
     @data = []
-    goals = @student.goals.incomplete.is_archived(false)
+    goals = @student.goals.incomplete
     goals.each do |goal| 
       goal.statuses.each{|status| 
         @data += [status.due_date, (status.accuracy*100).round / 100.0]

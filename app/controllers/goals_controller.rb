@@ -142,14 +142,14 @@ class GoalsController < ApplicationController
     @goals = []
     session[:student_id] = @student.id 
     if @student 
-      @goals = @student.goals.incomplete.is_archived(false).map{|g| [g.name, g.id]}
+      @goals = @student.goals.incomplete.map{|g| [g.name, g.id]}
     end
   end
   
   def import_grades
     @format_csv = false
     @student = Student.find params[:student_id]
-    @goals = @student.goals.incomplete.is_archived(false).map{|g| [g.name, g.id]}
+    @goals = @student.goals.incomplete.map{|g| [g.name, g.id]}
     @goal = Goal.find_by_id params[:goal][:id]
     @file_import = params[:goal][:grades]
     if @goal

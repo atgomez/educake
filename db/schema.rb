@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121127080002) do
+ActiveRecord::Schema.define(:version => 20121128122540) do
 
   create_table "curriculums", :force => true do |t|
     t.string   "name",       :null => false
@@ -34,7 +34,6 @@ ActiveRecord::Schema.define(:version => 20121127080002) do
     t.date     "baseline_date",       :default => '2012-11-01', :null => false
     t.integer  "trial_days_total",    :default => 0
     t.integer  "trial_days_actual",   :default => 0
-    t.boolean  "is_archived",         :default => false
     t.string   "grades_file_name"
     t.string   "grades_content_type"
     t.integer  "grades_file_size"
@@ -161,8 +160,6 @@ ActiveRecord::Schema.define(:version => 20121127080002) do
     t.boolean  "is_admin"
     t.integer  "school_id"
     t.text     "notes"
-    t.string   "confirm_token"
-    t.string   "temp_pass"
     t.boolean  "is_locked",              :default => false
   end
 

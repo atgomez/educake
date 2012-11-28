@@ -11,7 +11,7 @@ class StudentsController < ApplicationController
   def show
     @student = Student.find(params[:id])
     @teacher = @student.teacher 
-    @goals = @student.goals.incomplete.is_archived(false).load_data(filtered_params)
+    @goals = @student.goals.incomplete.load_data(filtered_params)
     @students = @teacher.accessible_students
     #Check to hide placeholder for chart
     @data = []
