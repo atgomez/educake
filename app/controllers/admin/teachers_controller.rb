@@ -74,8 +74,7 @@ class Admin::TeachersController < Admin::BaseAdminController
     render(:json => result, :status => status_code)
   end
   
-  def show 
-    
+  def show    
     if find_or_redirect
       session[:teacher_id] = params[:id]
       @students = @teacher.accessible_students.load_data(filtered_params)

@@ -30,6 +30,6 @@
     - page = params[:page_id] || 1
     %iframe{:frameborder => "0", :height => @height, :src => "/admin/teachers/show_charts?page_id="+page.to_s, :width => @width, :id => "chart_student"}
 
-= render("export_students", :students => @students)
+= render("export_students", :students => @teacher.accessible_students)
 
 / Add student: admin/students/new
