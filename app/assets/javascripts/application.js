@@ -28,8 +28,10 @@
 //= require jquery.remotipart
 
 $(document).ready(function() {
-    $('.pagination a').attr('data-remote', 'true');
-    $('.pagination a').click(function(){
-    	$('.loading').removeClass('hide')
-    });
+		if ($('#pagination_remote').length == 0){
+	    $('.pagination a').attr('data-remote', 'true');
+	    $('.pagination a').click(function(){
+	    	$('.loading').removeClass('hide')
+	    });
+	  }
 });

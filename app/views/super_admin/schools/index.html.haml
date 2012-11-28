@@ -24,5 +24,5 @@
         %td= teachers.count
         %td= students.count
         %td= school.created_at.strftime("%m/%d/%y")
-= render_pagination @schools 
-
+= render_pagination @schools
+#pagination_remote{:target => "false"}
