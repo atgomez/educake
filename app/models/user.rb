@@ -75,7 +75,7 @@ class User < ActiveRecord::Base
 
   # VALIDATION
   has_one :student_sharing
-  validates_presence_of :first_name, :last_name, :role_id
+  validates_presence_of :first_name, :last_name, :role_id, :email
   validates_presence_of :school_id, :if => :is_not_admin?
   validates_length_of :first_name, :maximum => 15
   validates_length_of :last_name, :maximum => 15

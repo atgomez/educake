@@ -1,5 +1,5 @@
 class Admin::TeachersController < Admin::BaseAdminController
-  cross_role_action :index, :show
+  cross_role_action :index, :show, :show_charts, :show_teachers_chart
   # TODO: improve this method, because it load teachers 2 times.
   def index
     @is_view_as = current_user.is_super_admin? && params[:user_id]
