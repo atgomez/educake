@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121128122540) do
+ActiveRecord::Schema.define(:version => 20121128212616) do
 
   create_table "curriculums", :force => true do |t|
     t.string   "name",       :null => false
@@ -31,7 +31,7 @@ ActiveRecord::Schema.define(:version => 20121128122540) do
     t.datetime "updated_at",                                    :null => false
     t.boolean  "is_completed",        :default => false
     t.float    "baseline",            :default => 0.0
-    t.date     "baseline_date",       :default => '2012-11-01', :null => false
+    t.date     "baseline_date",       :default => '2012-11-29', :null => false
     t.integer  "trial_days_total",    :default => 0
     t.integer  "trial_days_actual",   :default => 0
     t.string   "grades_file_name"
@@ -152,7 +152,6 @@ ActiveRecord::Schema.define(:version => 20121128122540) do
     t.datetime "confirmation_sent_at"
     t.datetime "created_at",                                :null => false
     t.datetime "updated_at",                                :null => false
-    t.string   "school_name"
     t.string   "photo_file_name"
     t.string   "photo_content_type"
     t.integer  "photo_file_size"

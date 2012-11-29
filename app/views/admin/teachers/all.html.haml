@@ -1,5 +1,5 @@
 .admin.teacher
-  %h3.school-name= current_user.school_name
+  %h3.school-name= current_user.school.try(:name)
   .clearfix.toolbar
     = link_to "View chart", admin_teachers_path,  :class => "brown font18"
     - unless @teachers.blank?

@@ -1,5 +1,5 @@
 .admin.teacher.search
-  %h3.school-name= current_user.school_name
+  %h3.school-name= current_user.school.try(:name)
   .search-header.clearfix
     %h4.search-title= "Search result for: #{params[:query]}"
     = render('search_box')
