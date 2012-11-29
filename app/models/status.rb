@@ -100,11 +100,11 @@ class Status < ActiveRecord::Base
       end
 
       if (self.goal.due_date < self.due_date)
-        self.errors.add(:due_date, "must be equal or less than goal due date")
+        self.errors.add(:due_date, "must be less than or equal to goal due date")
         return false
       end
-      if (self.due_date > Date.today)
-        self.errors.add(:due_date, "less than or equal")
+      if (self.due_date > Time.zone.now.to_date)
+        self.errors.add(:due_date, "must be less than or equal to today")
         return false
       end
     end

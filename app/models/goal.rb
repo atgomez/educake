@@ -168,7 +168,7 @@ class Goal < ActiveRecord::Base
       (lowest_value_count...9).each {|index| sum_value = sum_value + previous_statuses[index][:value]}
 
       # Add current status value to total
-      sum_value = sum_value + status.accuracy
+      sum_value = sum_value + status.accuracy.to_f
       status.value = sum_value/self.trial_days_actual
       status.is_unused = false
 
