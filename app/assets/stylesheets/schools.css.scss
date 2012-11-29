@@ -94,3 +94,13 @@ form.school-form, form.user-form {
   }
 }
   
+.super-admin{
+  &.school{
+    .action{
+      a{
+        display: block;
+        width: 100%;
+      }
+    }
+  }
+}

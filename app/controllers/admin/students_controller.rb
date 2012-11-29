@@ -1,5 +1,6 @@
 class Admin::StudentsController < Admin::BaseAdminController
   include ::Shared::StudentActions
+  cross_role_action :show, :create, :edit, :update, :show_charts, :show_teachers_chart  
   
   def show
     @teachers = []

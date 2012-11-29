@@ -2,7 +2,8 @@ class StudentsController < ApplicationController
   layout "common"
   include ::Shared::StudentActions
   before_filter :destroy_session, :except => [:show, :destroy]
-  cross_role_action :common_chart, :chart, :load_grades, :search_user
+  cross_role_action :common_chart, :chart, :load_grades, :search_user, 
+                    :show, :create, :edit, :update
 
   def index
     redirect_to('/teachers')

@@ -1,45 +1,46 @@
-%p#notice= notice
-%div.pull-left.show-school
-  %p
-    %b= truncate(@school.name, :length => 17, :separator => " ")
-  %p
-    = @school.address1
-  %p
-    = @school.city+", "+ @school.state + " " + @school.zipcode
-  %p
-    = @school.phone
-  %p
-    Joined
-    = @school.created_at.strftime("%m/%d/%y")
-%div.pull-left
-  = link_to "Edit School", edit_super_admin_school_path(@school) 
-  = " | "
-  = link_to "Back", super_admin_schools_path
-.pull-right= render('/admin/teachers/search_box')
-.clearfix
-= link_to "Add User", new_super_admin_user_path(:back => "users"), :class => "btn"
+.super-admin.school
+  %p#notice= notice
+  %div.pull-left.show-school
+    %p
+      %b= truncate(@school.name, :length => 17, :separator => " ")
+    %p
+      = @school.address1
+    %p
+      = @school.city+", "+ @school.state + " " + @school.zipcode
+    %p
+      = @school.phone
+    %p
+      Joined
+      = @school.created_at.strftime("%m/%d/%y")
+  %div.pull-left
+    = link_to "Edit School", edit_super_admin_school_path(@school) 
+    = " | "
+    = link_to "Back", super_admin_schools_path
+  .pull-right= render('/admin/teachers/search_box')
+  .clearfix
+  = link_to "Add User", new_super_admin_user_path(:back => "users"), :class => "btn"
 
 
-%table.table.table-striped.schools
-  %thead
-    %tr
-      %th Role
-      %th Name
-      %th Students
-      %th
-      %th
-      %th
-  %tbody
-    - @users.each do |user|
+  %table.table.table-striped.schools
+    %thead
       %tr
-        %td= user.role.name rescue ""
-        %td= user.full_name rescue ""
-        %td= user.students.count rescue ""
-        %td= link_to "", edit_super_admin_user_path(user), :class => "icon-pencil color-pen", :title => "Edit" 
-        - confirm = "Are you sure?"
-        - if user.students.count > 0
-          - confirm = "This teacher have some students, do you to delete?"
-        %td= link_to "", [:super_admin, user], :data => { :confirm => confirm }, :class => "icon-trash color-pen", :method => :delete, :title => "Delete" 
-        %td= link_to "view as", view_as_super_admin_user_path(user)
-= render_pagination @users 
+        %th Role
+        %th Name
+        %th Students
+        %th
+        %th
+        %th
+    %tbody
+      - @users.each do |user|
+        %tr
+          %td= user.role.name rescue ""
+          %td= user.full_name rescue ""
+          %td= user.students.count rescue ""
+          %td.action= link_to "", edit_super_admin_user_path(user), :class => "icon-pencil color-pen", :title => "Edit" 
+          - confirm = "Are you sure?"
+          - if user.students.count > 0
+            - confirm = "This teacher have some students, do you to delete?"
+          %td.action= link_to "", [:super_admin, user], :data => { :confirm => confirm }, :class => "icon-trash color-pen", :method => :delete, :title => "Delete" 
+          %td= link_to "view as", view_as_super_admin_user_path(user)
+  = render_pagination @users 
 
