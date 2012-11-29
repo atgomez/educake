@@ -86,7 +86,8 @@
         },
         xAxis: {
           type: 'datetime',
-          minTickInterval: 60*60*24*7,
+          minTickInterval: 24 * 3600 * 1000,
+          numberOfTicks: 10,
           labels: {
             formatter: function() {
                 return '<br/>' + Highcharts.dateFormat('%b %e, %y', this.value);
@@ -166,9 +167,13 @@
                  current = this
                  $(chart.series).each(function(idx, item) {
                     if (item == current) {
-                      if (current.options.goal_id)
-                        if(typeof parent.selectGoal == 'function')
-                          parent.selectGoal(current.options.goal_id, current.color); 
+                      if (current.options.item_id)
+                        if(typeof parent.selectGoal == 'function'){
+                          var value = current.color;
+                          if (current.options.url)
+                            value = current.options.url
+                          parent.selectGoal(current.options.item_id, value); 
+                        }
                     }
                  });
               }

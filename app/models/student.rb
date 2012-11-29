@@ -313,7 +313,7 @@ class Student < ActiveRecord::Base
         series << {
                      :name => goal.name,
                      :data => data,
-                     :goal_id => goal.id
+                     :item_id => goal.id
                     }
       end
     end

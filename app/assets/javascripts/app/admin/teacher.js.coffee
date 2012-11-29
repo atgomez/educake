@@ -1,3 +1,10 @@
+
+window.selectGoal= (goal_id, url) ->
+  if (url.search('#') == -1)
+    window.location = url
+  else
+    $('#goal' + goal_id).click()
+
 window.teacher =
   setup: -> 
     @setup_student_panel()

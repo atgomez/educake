@@ -1,12 +1,9 @@
 
 window.chartMode = 'view_all'
 
-window.selectGoal= (goal_id, color) ->
-  $('#goal' + goal_id).click()
-
 window.chartLoaded= (chart) ->
   $(chart.series).each((idx, item) ->
-    $('#goal' + item.options.goal_id).attr('color', item.color.replace('#', ''))
+    $('#goal' + item.options.item_id).attr('color', item.color.replace('#', ''))
   )
 window.clickOnChart= ->
   if (window.chartMode == 'view_goal')

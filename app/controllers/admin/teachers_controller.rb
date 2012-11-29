@@ -109,7 +109,9 @@ class Admin::TeachersController < Admin::BaseAdminController
       @series << {
         :name => student.full_name,
         :data => goals_statuses,
-        :yAxis => 2
+        :yAxis => 2,
+        :item_id => student.id,
+        :url => admin_student_path(student)
       } unless goals_statuses.empty?
     end
     @series = @series.to_json
@@ -124,7 +126,9 @@ class Admin::TeachersController < Admin::BaseAdminController
       @series << {
         :name => teacher.full_name,
         :data => teacher_status,
-        :yAxis => 2
+        :yAxis => 2,
+        :item_id => teacher.id,
+        :url => admin_teacher_path(teacher)
       } unless teacher_status.empty?
     end
     @series = @series.to_json

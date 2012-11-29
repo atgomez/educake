@@ -39,7 +39,9 @@ class TeachersController < ApplicationController
       @series << {
         :name => student.full_name,
         :data => goals_statuses,
-        :yAxis => 2
+        :yAxis => 2,
+        :item_id => student.id,
+        :url => student_path(student)
       } unless goals_statuses.empty?
     end
     @series = @series.to_json
