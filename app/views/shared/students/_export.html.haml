@@ -17,7 +17,7 @@
           %td
             = Student
           %td
-            = select_tag("student_selection", options_from_collection_for_select(@students, "id", "full_name"), :name => :student_id)
+            = select_tag("student_selection", options_from_collection_for_select(@students, "id", "full_name", @student.id), :name => :student_id)
     .modal-footer
       %button.btn{"aria-hidden" => "true", "data-dismiss" => "modal"} Cancel
       %button.btn.btn-primary Export
