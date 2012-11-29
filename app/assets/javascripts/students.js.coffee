@@ -61,7 +61,7 @@ window.studentObject =
     $(".numeric").filter_input({regex:'[0-9.]', live:true})
     $('#user_first_name').filter_input({regex:'[a-zA-Z- ]', live:true})
     $('#user_last_name').filter_input({regex:'[a-zA-Z- ]', live:true}) 
-    $('#user_email').filter_input({regex:'[a-zA-Z0-9_.@]', live:true}) 
+    $('#user_email').filter_input({regex:'[a-zA-Z0-9_.@\r]', live:true}) 
     $('#student_sharing_first_name').filter_input({regex:'[a-zA-Z- ]', live:true})
     $('#student_sharing_last_name').filter_input({regex:'[a-zA-Z- ]', live:true}) 
     $('#student_sharing_email').filter_input({regex:'[a-zA-Z0-9_.@]', live:true})
@@ -238,7 +238,7 @@ window.studentObject =
     return false
 
   clickOnStudents: ->
-    $(".student-container .link").click ->
+    $(".student-container.link, .student-container .link").click ->
       url = $(this).attr('href')
       if $.trim(url) != ''
         window.location.href = url

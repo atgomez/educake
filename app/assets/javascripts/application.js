@@ -31,7 +31,7 @@ $(document).ready(function() {
 		if ($('#pagination_remote').length == 0){
 	    $('.pagination a').attr('data-remote', 'true');
 	    $('.pagination a').click(function(){
-	    	$('.loading').removeClass('hide')
+	    	$(this).parents('.pagination').siblings('.loading').removeClass('hide');
 	    });
 	  }
 });

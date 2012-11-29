@@ -1,5 +1,6 @@
 - teachers ||= []
 - with_pagination = ((with_pagination.nil? ? true : with_pagination) rescue true)
+- row_size ||= 1
 
 #pagination-listitem  
   - teachers.each_with_index do |teacher, idx|
@@ -31,7 +32,7 @@
               - if student_count > showed_student_num
                 = link_to("More...", all_students_admin_teacher_path(teacher))
       .clearfix
-    - if (idx + 1) % 4 == 0
+    - if (idx + 1) % row_size == 0
       .clearfix
 
 - if with_pagination

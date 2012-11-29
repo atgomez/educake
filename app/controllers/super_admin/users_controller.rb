@@ -3,7 +3,7 @@ class SuperAdmin::UsersController < SuperAdmin::BaseSuperAdminController
     @user = User.new
     @user.build_school
     session[:back] = params[:back]
-    @roles = Role.where("name =? or name = ?", "Teacher", "Parent").order(:name).all
+    load_roles
   end
   
   def create
@@ -16,6 +16,7 @@ class SuperAdmin::UsersController < SuperAdmin::BaseSuperAdminController
       flash[:notice] = 'User was created successfully.' 
       redirect_to super_admin_school_path(@user.school)
     else
+      load_roles
       render action: "new" 
     end
   end
@@ -32,6 +33,7 @@ class SuperAdmin::UsersController < SuperAdmin::BaseSuperAdminController
       flash[:notice] = 'User was updated successfully.' 
       redirect_to edit_super_admin_user_path(@user)
     else
+      load_roles
       render action: "edit" 
     end
   end
@@ -79,4 +81,10 @@ class SuperAdmin::UsersController < SuperAdmin::BaseSuperAdminController
       @users = User.like_search(params[:query], filtered_params)
     end
   end
+
+  protected
+
+    def load_roles
+      @roles = Role.with_name(:teacher, :parent).order(:name)
+    end
 end
