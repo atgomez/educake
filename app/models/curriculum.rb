@@ -1,11 +1,3 @@
-class Curriculum < ActiveRecord::Base
-  attr_accessible :name
-  has_many :goals, :dependent => :restrict
-
-  # VALIDATION
-  validates :name, :presence => true, :uniqueness => true
-end
-
 # == Schema Information
 #
 # Table name: curriculums
@@ -16,3 +8,10 @@ end
 #  updated_at :datetime         not null
 #
 
+class Curriculum < ActiveRecord::Base
+  attr_accessible :name
+  has_many :goals, :dependent => :restrict
+
+  # VALIDATION
+  validates :name, :presence => true, :uniqueness => true
+end

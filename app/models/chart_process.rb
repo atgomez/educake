@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 class ChartProcess
 
 	DEFAULT_BORDER_STYLE = { :style => :thin, :color => "DDDDDD" }

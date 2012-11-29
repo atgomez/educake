@@ -1,3 +1,21 @@
+# == Schema Information
+#
+# Table name: students
+#
+#  id                 :integer          not null, primary key
+#  first_name         :string(255)      not null
+#  last_name          :string(255)      not null
+#  birthday           :date
+#  teacher_id         :integer
+#  gender             :boolean
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
+#  photo_file_name    :string(255)
+#  photo_content_type :string(255)
+#  photo_file_size    :integer
+#  photo_updated_at   :datetime
+#
+
 class Student < ActiveRecord::Base
   include ::SharedMethods::Paging
 
@@ -37,7 +55,8 @@ class Student < ActiveRecord::Base
     where(:teacher_id => teacher_ids)
   }
 
-  # Class methods
+  # CLASS METHODS
+
   class << self
 
     # Load data
@@ -207,7 +226,7 @@ class Student < ActiveRecord::Base
     return result  
   end
 
-    # EXPORTING
+  # EXPORTING
   def export_xml(package, context, tmpdir, file_path)
     goals = self.goals.incomplete
 
@@ -300,27 +319,4 @@ class Student < ActiveRecord::Base
     end
     series.to_json
   end
-
-  # EXPORTING
-
-
 end
-
-# == Schema Information
-#
-# Table name: students
-#
-#  id                 :integer          not null, primary key
-#  first_name         :string(255)      not null
-#  last_name          :string(255)      not null
-#  birthday           :date
-#  teacher_id         :integer
-#  gender             :boolean
-#  created_at         :datetime         not null
-#  updated_at         :datetime         not null
-#  photo_file_name    :string(255)
-#  photo_content_type :string(255)
-#  photo_file_size    :integer
-#  photo_updated_at   :datetime
-#
-

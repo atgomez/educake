@@ -23,7 +23,6 @@ class TeachersController < ApplicationController
       format.js
       format.html
     end
-
   end
 
   # GET /teachers/all_students
@@ -49,12 +48,12 @@ class TeachersController < ApplicationController
   
   protected
 
-  def set_current_tab
-    @current_tab = 'classroom'
-  end
+    def set_current_tab
+      @current_tab = 'classroom'
+    end
 
-  # You can override this method in the sub class.
-  def default_page_size
-    8
-  end
+    # You can override this method in the sub class.
+    def default_page_size
+      8
+    end
 end

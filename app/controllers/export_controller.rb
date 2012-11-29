@@ -6,13 +6,12 @@ class ExportController < ApplicationController
 	    
 	  in_tmpdir do |tmpdir|
 	  	# Create First Page for student
-
-
 	  	# Create Goal pages
 		  begin 
 	      temp = Tempfile.new("student.xlsx", tmpdir) 
 	      @student.export_xml(xlsx_package, self, tmpdir, temp.path)
-	      send_file temp.path, :filename => "student_export[#{@student.full_name}].xlsx", :type => "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+	      send_file temp.path, :filename => "student_export[#{@student.full_name}].xlsx", 
+	      					:type => "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
 		  ensure
 	      temp.close 
 	      temp.unlink

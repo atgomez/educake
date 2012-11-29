@@ -1,3 +1,19 @@
+# == Schema Information
+#
+# Table name: student_sharings
+#
+#  id            :integer          not null, primary key
+#  email         :string(255)      not null
+#  role_id       :integer
+#  student_id    :integer          not null
+#  user_id       :integer
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#  confirm_token :string(255)
+#  first_name    :string(255)
+#  last_name     :string(255)
+#
+
 class StudentSharing < ActiveRecord::Base
   attr_accessible :email, :first_name, :last_name, :student_id, :user_id, :role_id, :confirm_token
 
@@ -35,20 +51,3 @@ class StudentSharing < ActiveRecord::Base
       end
     end  
 end
-
-# == Schema Information
-#
-# Table name: student_sharings
-#
-#  id            :integer          not null, primary key
-#  email         :string(255)      not null
-#  role_id       :integer
-#  student_id    :integer          not null
-#  user_id       :integer
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
-#  confirm_token :string(255)
-#  first_name    :string(255)
-#  last_name     :string(255)
-#
-

@@ -1,7 +1,11 @@
 class SuperAdmin::SchoolsController < SuperAdmin::BaseSuperAdminController
   helper_method :sort_column, :sort_direction
   def index
-      @schools = School.joins(:users).order(sort_column + ' ' + sort_direction).load_data(filtered_params)
+    load_params = filtered_params.merge({
+      :sort_field => sort_column, 
+      :sort_direction => sort_direction
+    })
+    @schools = School.load_data_with_users(load_params)
   end
 
   def show
@@ -30,7 +34,7 @@ class SuperAdmin::SchoolsController < SuperAdmin::BaseSuperAdminController
       flash[:notice] = 'School was successfully created.' 
       redirect_to super_admin_schools_path
     else
-      render action: "new" 
+      render(:action => "new")
     end
   end
 
@@ -41,7 +45,7 @@ class SuperAdmin::SchoolsController < SuperAdmin::BaseSuperAdminController
       flash[:notice] = 'School was successfully updated.'
       redirect_to super_admin_schools_path
     else
-      render action: "edit" 
+      render(:action => "edit")
     end
   end
 
@@ -57,11 +61,11 @@ class SuperAdmin::SchoolsController < SuperAdmin::BaseSuperAdminController
   
   private
   
-  def sort_column
-    School.column_names.include?(params[:sort]) || User.column_names.include?(params[:sort]) ? params[:sort] : "name"
-  end
-  
-  def sort_direction
-    %w[asc desc].include?(params[:direction]) ?  params[:direction] : "asc"
-  end
+    def sort_column
+      School.column_names.include?(params[:sort]) || User.column_names.include?(params[:sort]) ? params[:sort] : "name"
+    end
+    
+    def sort_direction
+      %w[asc desc].include?(params[:direction]) ?  params[:direction] : "asc"
+    end
 end

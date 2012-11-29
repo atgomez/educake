@@ -12,10 +12,9 @@
 #  updated_at          :datetime         not null
 #  is_completed        :boolean          default(FALSE)
 #  baseline            :float            default(0.0)
-#  baseline_date       :date             default(Tue, 13 Nov 2012), not null
+#  baseline_date       :date             default(Thu, 29 Nov 2012), not null
 #  trial_days_total    :integer          default(0)
 #  trial_days_actual   :integer          default(0)
-#  is_archived         :boolean          default(FALSE)
 #  grades_file_name    :string(255)
 #  grades_content_type :string(255)
 #  grades_file_size    :integer
@@ -29,7 +28,8 @@ class Goal < ActiveRecord::Base
   include ::SharedMethods::Paging
 
   attr_accessible :accuracy, :curriculum_id, :due_date, :subject_id, :progresses_attributes, 
-  :baseline_date, :baseline, :trial_days_total, :trial_days_actual,:is_archived, :grades, :is_completed, :description
+                  :baseline_date, :baseline, :trial_days_total, :trial_days_actual,
+                  :is_archived, :grades, :is_completed, :description
 
   # ASSOCIATION
   has_many :progresses, :dependent => :destroy
@@ -41,7 +41,8 @@ class Goal < ActiveRecord::Base
   # VALIDATION
   validates :accuracy, :numericality => true, :inclusion => {:in => 0..100, :message => "must be from 0 to 100"}
   validates :baseline, :numericality => true, :inclusion => {:in => 0..100, :message => "must be from 0 to 100"}
-  validates_presence_of :accuracy, :due_date, :curriculum_id, :subject_id, :baseline_date, :baseline, :trial_days_total, :trial_days_actual
+  validates_presence_of :accuracy, :due_date, :curriculum_id, :subject_id, 
+                        :baseline_date, :baseline, :trial_days_total, :trial_days_actual
 
   accepts_nested_attributes_for :progresses, :reject_if => lambda { |progress| 
     progress['accuracy'].blank? || progress['due_date'].blank?
@@ -397,8 +398,7 @@ class Goal < ActiveRecord::Base
           self.update_status_state(status)
           status.save
         end
-      end
-      
+      end      
     end
 
     # Run all custom validations

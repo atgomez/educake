@@ -155,7 +155,7 @@ class GoalsController < ApplicationController
     if @goal
       invalid_grade = false
       unless @file_import.nil?
-        @format_csv = @file_import.original_filename.include?".csv"
+        @format_csv = @file_import.original_filename.include?(".csv")
         if @format_csv
           @goal.update_attribute(:grades, @file_import)
           statuses = @goal.parse_csv(@goal.grades.url.split("?")[0])

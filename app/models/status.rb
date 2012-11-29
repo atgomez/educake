@@ -8,7 +8,6 @@
 #  accuracy         :float
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
-#  is_ideal         :boolean          default(TRUE)
 #  user_id          :integer
 #  value            :float            default(0.0)
 #  ideal_value      :float            default(0.0)
@@ -17,45 +16,31 @@
 #  is_unused        :boolean          default(FALSE)
 #  note             :text
 #
+
 class Status < ActiveRecord::Base
   include ::SharedMethods::Paging  
 
   attr_accessible :accuracy, :due_date, :goal_id, :user_id,
-  :value, :time_to_complete, :is_unused, :note
+                  :value, :time_to_complete, :is_unused, :note
+  
+  # ASSOCIATIONS
   belongs_to :user
   belongs_to :goal
   belongs_to :progress
 
   # VALIDATION
-  validates :accuracy, :numericality => true, :inclusion => {:in => 0..100, :message => "must be from 0 to 100"}
+  validates :accuracy, :numericality => true, 
+            :inclusion => {:in => 0..100, :message => "must be from 0 to 100"}
   validates :goal_id, :uniqueness => { :scope => :due_date,
-    :message => "should happen once per day" }
+            :message => "should happen once per day" }
   validates_presence_of :accuracy, :due_date, :goal_id
 
   # SCOPE
   scope :computable, where('is_unused = ?', false)
 
+  # CALLBACK
   before_update :update_status_state
   before_save :validate_due_date
-
-  def condition_goal 
-    !goal_id.nil?
-  end
-   
-  def due_date_string
-    ::Util.date_to_string(self.due_date)
-  end
-
-  # Override property setter.
-  def due_date=(date)
-    if date.is_a?(String)
-      date = ::Util.format_date(date)
-      if date
-        date = date.to_date
-      end
-    end
-    self.send(:write_attribute, :due_date, date)
-  end
   
   # CLASS METHODS
   class << self
@@ -83,6 +68,25 @@ class Status < ActiveRecord::Base
       end
   end # End class method.
 
+  def condition_goal 
+    !goal_id.nil?
+  end
+   
+  def due_date_string
+    ::Util.date_to_string(self.due_date)
+  end
+
+  # Override property setter.
+  def due_date=(date)
+    if date.is_a?(String)
+      date = ::Util.format_date(date)
+      if date
+        date = date.to_date
+      end
+    end
+    self.send(:write_attribute, :due_date, date)
+  end
+  
   protected
   
     def update_status_state

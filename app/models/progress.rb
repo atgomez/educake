@@ -38,6 +38,7 @@ class Progress < ActiveRecord::Base
   end
 
   protected
+  
   	def validate_due_date
       if (self.baseline_date > self.due_date)
         self.errors.add(:due_date, "must be equal or greater than baseline date")
