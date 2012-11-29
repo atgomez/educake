@@ -6,7 +6,9 @@
       - if (f.object.new_record? && session[:back] == "users") || params[:back] == "users" 
         - back = super_admin_school_path(session[:school])
       - elsif (f.object.new_record? && session[:back] == "schools") || params[:back] == "schools" 
-        - back = back = super_admin_schools_path
+        - back = super_admin_schools_path
+      - elsif !f.object.new_record?
+        - back = super_admin_school_path(@user.school)
       = link_to "Cancel", back, :class => "btn"
       - if f.object.new_record?
         = f.button :submit, :value => "Create User"
