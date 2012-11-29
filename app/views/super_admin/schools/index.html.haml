@@ -16,7 +16,7 @@
       - admin = school.admin
       - school_data = school.statistic
       %tr
-        %td= link_to school.name, super_admin_school_path(school)
+        %td= link_to truncate(school.name, :length => 17, :separator => " "), super_admin_school_path(school)
         %td= admin.full_name
         %td= school_data[:teachers_count]
         %td= school_data[:students_count]

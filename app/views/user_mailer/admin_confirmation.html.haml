@@ -8,11 +8,11 @@
     %p
       - if @user.is_admin_school?
         You are admin at 
-        = @user.school.name 
+        = truncate(@user.school.name, :length => 17, :separator => " ")
         school.
       - else 
         You joined at 
-        = @user.school.name 
+        = truncate(@user.school.name, :length => 17, :separator => " ")
         school.
       %br
       To login to the site, just follow this link:

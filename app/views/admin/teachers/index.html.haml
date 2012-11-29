@@ -4,7 +4,7 @@
       Now viewing as 
       %b= @user.full_name + ", "
       %b= @user.role.name + " at "
-      %b= @user.school.name + "."
+      %b= link_to truncate(@user.school.name, :length => 17, :separator => " ") + "."
       %br
       = link_to "Back to viewing as SuperAdmin.", super_admin_path
   - else

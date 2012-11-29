@@ -1,7 +1,7 @@
 %p#notice= notice
 %div.pull-left.show-school
   %p
-    %b= @school.name
+    %b= truncate(@school.name, :length => 17, :separator => " ")
   %p
     = @school.address1
   %p
