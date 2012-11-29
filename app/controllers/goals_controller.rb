@@ -83,7 +83,7 @@ class GoalsController < ApplicationController
     @status.due_date = Date.today
     student = Student.find(session[:student_id])
     if student 
-      @goals = student.goals.available.map{|g| [[g.subject.name, g.curriculum.name].join(" "), g.id]}
+      @goals = student.goals.incomplete.map{|g| [[g.subject.name, g.curriculum.name].join(" "), g.id]}
     end 
   end
   
@@ -92,10 +92,10 @@ class GoalsController < ApplicationController
     status_code = 201
     student = Student.find(session[:student_id])
     if student 
-      @goals = student.goals.available.map{|g| [[g.subject.name, g.curriculum.name].join(" "), g.id]}
+      @goals = student.goals.incomplete.map{|g| [[g.subject.name, g.curriculum.name].join(" "), g.id]}
     end 
 
-    @goal = Goal.available.find_by_id(params[:status][:goal_id])
+    @goal = Goal.incomplete.find_by_id(params[:status][:goal_id])
     if (@goal)
       @status = @goal.build_status params[:status]
       if (@status)

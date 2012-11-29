@@ -28,8 +28,8 @@ class Goal < ActiveRecord::Base
   include ::SharedMethods::Paging
 
   attr_accessible :accuracy, :curriculum_id, :due_date, :subject_id, :progresses_attributes, 
-                  :baseline_date, :baseline, :trial_days_total, :trial_days_actual,
-                  :is_archived, :grades, :is_completed, :description
+                  :baseline_date, :baseline, :trial_days_total, :trial_days_actual, 
+                  :grades, :is_completed, :description
 
   # ASSOCIATION
   has_many :progresses, :dependent => :destroy
@@ -56,7 +56,6 @@ class Goal < ActiveRecord::Base
   
   # SCOPE
   scope :incomplete, where('is_completed = ?', false)
-  scope :available, where('is_completed = ? AND is_archived = ?', false, false)
   attr_accessor :last_status #For add/update purpose
 
   # CALLBACK
