@@ -17,6 +17,7 @@ group :assets do
 end
 
 gem "twitter-bootstrap-rails"
+gem "less-rails"
 gem 'jquery-rails'
 gem "haml"
 gem "devise", ">= 2.0.0"
@@ -40,12 +41,14 @@ gem "axlsx"
 
 group :development do 
   gem "haml-rails"
-  gem 'heroku_san'
   gem 'rails-erd'
 
   # For HAML
   gem 'ruby_parser', '>= 2.3.1'
   gem "hpricot", ">= 0.8.5"
+
+  # For models annotation
+  gem 'annotate', ">=2.5.0"
 end
 
 group :development, :test do
