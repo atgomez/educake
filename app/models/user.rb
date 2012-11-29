@@ -55,15 +55,16 @@ class User < ActiveRecord::Base
   has_many :students, :foreign_key => "teacher_id", :dependent => :destroy
 
   # All students belong to the current users and students are shared to the current user.
-  has_many :accessible_students, :class_name => "Student", :foreign_key => "teacher_id",
-           :finder_sql =>  Proc.new {
-              union_sql = %Q{
-                (SELECT * FROM (#{self.students.to_sql}) d1
-                UNION ALL 
-                SELECT * FROM (#{self.shared_students.to_sql}) d2) #{Student.table_name}
-              }
-              Student.from(union_sql).order("first_name ASC, last_name ASC").select('DISTINCT *').to_sql
-            }
+  # TODO: this association does not work probably when calling like this: user.accessible_students.order("first_name")
+  # has_many :accessible_students, :class_name => "Student", :foreign_key => "teacher_id",
+  #          :finder_sql =>  Proc.new {
+  #             union_sql = %Q{
+  #               (SELECT * FROM (#{self.students.to_sql}) d1
+  #               UNION ALL 
+  #               SELECT * FROM (#{self.shared_students.to_sql}) d2) #{Student.table_name}
+  #             }
+  #             Student.from(union_sql).order("first_name ASC, last_name ASC").select('DISTINCT *').to_sql
+  #           }
 
   has_many :student_sharings, :dependent => :destroy
   has_many :shared_students, :through => :student_sharings, :source => :student
@@ -116,6 +117,15 @@ class User < ActiveRecord::Base
   # Teachers
   scope :teachers, lambda { self.with_role(:teacher) }
   
+  def accessible_students
+    union_sql = %Q{
+                (SELECT * FROM (#{self.students.to_sql}) d1
+                UNION ALL 
+                SELECT * FROM (#{self.shared_students.to_sql}) d2) #{Student.table_name}
+              }
+    Student.from(union_sql).order("students.first_name ASC, students.last_name ASC")
+  end
+
   # Class methods
   class << self
 
@@ -288,8 +298,8 @@ class User < ActiveRecord::Base
     end
 
     return is_track
-  end  
-  
+  end
+
   protected
  
     def password_required?

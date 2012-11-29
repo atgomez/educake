@@ -8,8 +8,8 @@ class Admin::TeachersController < Admin::BaseAdminController
     else
       @user = current_user
     end 
-    @teachers = @user.children.teachers.load_data(filtered_params).includes(:accessible_students => :goals)
-    @all_teachers = @user.children.teachers.includes(:accessible_students => :goals)
+    @teachers = @user.children.teachers.load_data(filtered_params)
+    @all_teachers = @user.children.teachers
     series = []
     @all_teachers.map do |teacher|
       teacher_status = teacher.teacher_status
@@ -37,7 +37,7 @@ class Admin::TeachersController < Admin::BaseAdminController
   # GET /admin/teachers/all
   # TODO: should apply endless pagination.
   def all
-    @teachers = current_user.children.teachers.order("first_name ASC, last_name ASC").includes(:accessible_students)
+    @teachers = current_user.children.teachers.order("first_name ASC, last_name ASC")
   end
 
   # GET /admin/teachers/:id/all_students
@@ -119,7 +119,7 @@ class Admin::TeachersController < Admin::BaseAdminController
   end
 
   def show_teachers_chart
-    teachers = current_user.children.teachers.includes(:accessible_students => :goals)
+    teachers = current_user.children.teachers
     @series = []
     teachers.map do |teacher|
       teacher_status = teacher.teacher_status
@@ -148,10 +148,10 @@ class Admin::TeachersController < Admin::BaseAdminController
         when 'student' then
           @students = Student.students_of_teacher(current_user).search_data(query, filtered_params)
         when 'teacher' then
-          @teachers = current_user.children.search_data(query, filtered_params).includes(:accessible_students)
+          @teachers = current_user.children.search_data(query, filtered_params)
         else
           @students = Student.students_of_teacher(current_user).search_data(query, filtered_params)
-          @teachers = current_user.children.search_data(query, filtered_params).includes(:accessible_students)
+          @teachers = current_user.children.search_data(query, filtered_params)
       end
     end
   end
