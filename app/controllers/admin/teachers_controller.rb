@@ -120,7 +120,7 @@ class Admin::TeachersController < Admin::BaseAdminController
 
   def show_teachers_chart
     @teacher = User.find_by_id params[:id]
-    teachers = @teacher.children.teachers.includes(:accessible_students => :goals)
+    teachers = @teacher.children.teachers
     @series = []
     teachers.map do |teacher|
       teacher_status = teacher.teacher_status
