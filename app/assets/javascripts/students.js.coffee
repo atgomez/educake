@@ -278,19 +278,13 @@ loadPage= (evt, element) ->
   evt.preventDefault()
   
   # Mask loading
-  #$('#content-status').addClass 'loading'
+  #$('#content-status').addClass('loading')
   sender = evt.target
   $.ajax({
     url: sender.href
     type: 'GET'
     success: (data) ->
-      href = sender.href.split("goal_id")
-      if href.length > 1
-        goal_id = sender.href.split("?")[1].split("&")[0].split("=")[1]
-        if goal_id
-          $(element+"_"+goal_id).html data
-      else
-        $(element).html data
+      $(element).html(data)
       return
     error: (data) ->
       return
