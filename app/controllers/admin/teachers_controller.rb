@@ -44,7 +44,7 @@ class Admin::TeachersController < Admin::BaseAdminController
   # TODO: should apply endless pagination.
   def all_students
     if find_or_redirect
-      @students = @teacher.accessible_students.order("first_name ASC, last_name ASC")
+      @students = @teacher.accessible_students
     end
   end
 

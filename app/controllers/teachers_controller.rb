@@ -28,7 +28,7 @@ class TeachersController < ApplicationController
   # GET /teachers/all_students
   # TODO: should apply endless pagination.
   def all_students
-    @students = current_user.accessible_students.order("first_name ASC, last_name ASC")
+    @students = current_user.accessible_students
   end
   
   def show_charts 
