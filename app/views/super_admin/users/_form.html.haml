@@ -1,4 +1,4 @@
-= simple_form_for([:super_admin, @user], :html => {:class => "user-form form-horizontal"}) do |f|
+= simple_form_for([:super_admin, @user], :html => {:class => "user-form form-horizontal", :id => "user_form"}) do |f|
   = f.error_notification
   .form-actions
     %center
@@ -12,7 +12,6 @@
         = f.button :submit, :value => "Create User"
       - else
         = f.button :submit, :value => "Save"
-  - rand_pass = rand(1234567)
   .form-inputs
     .title School Info
     .school-info
@@ -21,12 +20,14 @@
     .school-info
       = f.input :first_name, :input_html => {:class => "valid_name"}
       = f.input :last_name, :input_html => {:class => "valid_name"}
-      = f.input :role_id, :collection => @roles, :prompt => "Select One", :input_html => {:value => f.object.new_record? ? "" : @user.role.name}
+      - disable = false
+      - if !f.object.new_record? && f.object.is?(:admin)
+        - disable = true
+      - if disable
+        = f.input :role_id, :collection => Role.where(:name => "Admin"), :prompt => "Select One", :disabled => disable
+      - else
+        = f.input :role_id, :collection => @roles, :prompt => "Select One"
       = f.input :email, :input_html => {:class => "valid_email"}
-      - if f.object.new_record?
-        / = f.input :password, :as => :hidden, :input_html => {:value => rand_pass}
-        / = f.input :password_confirmation, :as => :hidden, :input_html => {:value => rand_pass}
-        / = f.input :temp_pass, :as => :hidden, :input_html => {:value => rand_pass}
       = f.input :phone, :input_html => {:class => "valid_number"}
       = f.input :notes, :input_html => {:rows => "5", :class => "width-area"}
       
