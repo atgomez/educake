@@ -211,17 +211,27 @@ class Goal < ActiveRecord::Base
   def on_track?
     result = false
 
-    today_status = self.statuses.where(:due_date => Time.now).first
-    status_value = 0
+    # TODO: should limit the minimum date?
+    # min_date = Time.zone.now.to_date - self.trial_days_total.days
+    
+    recent_grades = self.statuses.order(
+      "due_date DESC"
+    ).limit(self.trial_days_actual)
+
+    actual_value = 0
     ideal_value = 0
-    if today_status
-      status_value = today_status.value
-      ideal_value = today_status.ideal_value
+    total_grade = 0
+
+    recent_grades.each do |grade|
+      total_grade += 1
+      actual_value += grade.value
+      ideal_value += grade.ideal_value
     end
 
-    # If actual value >= ideal value => 'on-track', else 'not on-track'
-    if status_value != 0 && ideal_value != 0
-      result = (status_value >= ideal_value)
+    if total_grade > 0
+      # Don't need to devide
+      # result = (actual_value/total_grade > ideal_value/total_grade)
+      result = (actual_value > ideal_value)
     end
     return result
   end

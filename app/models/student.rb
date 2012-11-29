@@ -207,19 +207,13 @@ class Student < ActiveRecord::Base
     result = 0 
 
     self.goals.each do |goal|
-      if goal.on_grade_now?
-        result = 1
-      end
-      if goal.on_over_trial_days?
-        result = 1
+      if !goal.on_track?
+        # Student status will not be on-track if there is any goal not on-track.
+        result = 2
+        break
       else
-        result = 0
-      end
-      if result == 1
-        if !goal.on_track?
-          result = 2 
-          break
-        end
+        # On-track if all goals are on-track.
+        result = 1
       end
     end
 

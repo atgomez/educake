@@ -307,21 +307,17 @@ class User < ActiveRecord::Base
   #   * 2 : not on-track
   #
   def check_on_track?
-    is_track = 0
+    result = 0
     
     self.accessible_students.each do |student|
-      if student.check_on_track? == 1
-        is_track = 1
-      elsif student.check_on_track? == 2
-        is_track = 2
-      end
-      if is_track != 0
-        # break the loop
+      result = student.check_on_track?
+      if result == 2
+        # Not on-track
         break
       end
     end
 
-    return is_track
+    return result
   end
 
   protected
