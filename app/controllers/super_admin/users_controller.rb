@@ -45,10 +45,9 @@ class SuperAdmin::UsersController < SuperAdmin::BaseSuperAdminController
     @user = User.find params[:id]
     rand_pass = rand(897564)
     @success = false
-    if @user.update_attributes(:password => rand_pass, 
-                               :password_confirmation => rand_pass, 
-                               :temp_pass => rand_pass)
-      UserMailer.send_reset_password(@user).deliver
+    @user.password = rand_pass
+    if @user.save
+      UserMailer.send_reset_password(@user, rand_pass).deliver
       @success = true
     end
   end
@@ -65,7 +64,7 @@ class SuperAdmin::UsersController < SuperAdmin::BaseSuperAdminController
     user = User.find params[:id]
     if user.is?(:admin)
       redirect_to admin_teachers_path(:user_id => params[:id]) 
-    elsif user.is?(:teacher)
+    elsif user.is?(:teacher) || user.is?(:parent)
       redirect_to admin_teacher_path(user)
     end 
   end

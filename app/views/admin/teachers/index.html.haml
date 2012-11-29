@@ -8,7 +8,7 @@
       %br
       = link_to "Back to viewing as SuperAdmin.", super_admin_path
   - else
-    %h3.school-name= current_user.school.try(:name)
+    %h3.school-name= @user.school.try(:name)
     .clearfix.toolbar
       = link_to "View all teachers", all_admin_teachers_path,  :class => "brown font18"
       - unless @teachers.blank?
@@ -17,7 +17,7 @@
       = link_to 'Add Teacher', new_admin_teacher_path, :class => 'btn', :id => "add-teacher"
 
   - if params[:page_id].blank?
-    - teacher = current_user
+    - teacher = @user
     - students = teacher.accessible_students
     - student_count = students.length
     - showed_student_num = 4
@@ -55,9 +55,8 @@
       - unless @teachers.blank?
         = link_to "Export", "#", :id => "export-button", :class => "btn export", "data-toggle" => "modal"
 
-  - page = params[:page_id] || 1
   %center.clearfix
-    %iframe{:frameborder => "0", :height => @height, :src => "/admin/teachers/show_teachers_chart?page_id="+page.to_s, :width => @width, :id => "chart_student"}
+    %iframe{:frameborder => "0", :height => @height, :src => "/admin/teachers/show_teachers_chart?id=#{@user.id}", :width => @width, :id => "chart_student"}
     
   = render('form')
 

@@ -23,8 +23,9 @@ class UserMailer < ActionMailer::Base
     mail(:to => user.email, :subject => subject)
   end
   
-  def send_reset_password(user)
+  def send_reset_password(user, password)
     @user = user
+    @password = password
     @url = url_for :controller=>'devise/sessions', :action => 'new'
 
     mail(:to => user.email, :subject => "Reset Password")

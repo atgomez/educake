@@ -1,3 +1,4 @@
+- read_only ||= false
 %table.table
   %tbody.width-users
     - invited_users.each do |user|
@@ -6,5 +7,6 @@
         %td.width-email= user.email
         %td.width-role= user.role.name
         %td.width-action
-          = link_to "", edit_invitation_path(user), :class => "icon-pencil color-pen", :method => :get, :remote => true, :title => "Edit"
-          = link_to "", invitation_path(user), :data => { :confirm => 'Are you sure?' }, :class => "icon-trash color-pen", :method => :delete, :remote => true, :title => "Delete"
+          - if !read_only
+            = link_to "", edit_invitation_path(user), :class => "icon-pencil color-pen", :method => :get, :remote => true, :title => "Edit"
+            = link_to "", invitation_path(user), :data => { :confirm => 'Are you sure?' }, :class => "icon-trash color-pen", :method => :delete, :remote => true, :title => "Delete"

@@ -1,7 +1,8 @@
 .teacher
   .clearfix.toolbar
     = link_to "View all students", all_students_teachers_path,  :class => "brown font18"
-    = link_to 'Add Student', new_student_path(:back_link => "/teachers"), :class => 'btn bg-brown white pull-right'
+    - if (!@current_user.is?(:parent))
+      = link_to 'Add Student', new_student_path(:back_link => "/teachers"), :class => 'btn bg-brown white pull-right'
   - unless @students.blank?
     #pagination_area
       = render(:partial => 'students_list')    

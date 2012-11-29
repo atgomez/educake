@@ -9,6 +9,7 @@ class StudentsController < ApplicationController
   end
 
   def show
+    @current_user = current_user
     @student = Student.find(params[:id])
     @teacher = @student.teacher 
     @goals = @student.goals.incomplete.load_data(filtered_params)

@@ -24,7 +24,8 @@ class Ability
         can :read, User
         can :mangage, [Curriculum, Goal, Status, Student, StudentSharing]
       elsif user.is?(:parent)
-        can :read, [Curriculum, Goal, Status, Student, StudentSharing]
+        can :read, [User, Curriculum, Goal, Student, StudentSharing]
+        can :mangage, [Status]
       end  
     end
   end

@@ -5,9 +5,10 @@ class TeachersController < ApplicationController
   authorize_resource :user
 
   def index
-    @students = current_user.accessible_students.load_data(filtered_params)
+    @user = current_user
+    @students = @user.accessible_students.load_data(filtered_params)
     series = []
-    students = current_user.accessible_students
+    students = @user.accessible_students
     students.map do |student|
       series += student.goals_statuses
     end
