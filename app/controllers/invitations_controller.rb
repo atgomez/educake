@@ -3,9 +3,14 @@ class InvitationsController < ApplicationController
 
   def new 
     @user = StudentSharing.new 
+    
   end 
   
-  def create 
+  def create
+    existed_user = User.find_by_email params[:student_sharing][:email]
+    if existed_user 
+      params[:student_sharing][:role_id] = existed_user.role.id
+    end 
     @user = StudentSharing.new params[:student_sharing]
     if @user.save 
       UserMailer.invited_confirmation(@user).deliver

@@ -116,6 +116,8 @@ window.studentObject =
     return
 
   searchUser: -> 
+    email = $("#student_sharing_email").attr("value")
+    search_email = ""
     $("#render_invite_user").delegate "#search-email", "click", () ->
       email = $("#student_sharing_email").val()
       student_id = $("#student_sharing_student_id").val()
@@ -127,14 +129,18 @@ window.studentObject =
           if data["existed"]
             console.log "new user"
           else
+            search_email = data["email"]
             $("#student_sharing_email").attr("value", data["email"])
             $("#student_sharing_first_name").attr("value", data["first_name"])
             $("#student_sharing_last_name").attr("value", data["last_name"])
             $("#student_sharing_role_id").attr("value", data["role_id"])
+            $("#student_sharing_role_id").attr("disabled", data["disable"])
           return
         error: (errors, status)->
           $(".ajax-loading").addClass "hidden"
-          return      
+          return
+       if search_email != email 
+         $("#student_sharing_role_id").attr("disabled", false)
       
   clickOnGoal: -> 
     $(".status a.goal").live 'click', () -> 

@@ -76,10 +76,16 @@ class StudentsController < ApplicationController
     render :partial => "shared/load_grades", :locals => {:statuses => statuses}
   end 
   
-  def search_user 
-    user = StudentSharing.find_by_email(params[:email])
+  def search_user
+    user = User.find_by_email(params[:email])
+    existed_user = true
+    unless user
+      existed_user = false
+      user = StudentSharing.find_by_email(params[:email]) 
+    end
+    
     if user 
-      render :json => user.attributes.except("created_at, updated_at")
+      render :json => user.attributes.except("created_at, updated_at").merge(:disable => existed_user)
     else 
       render :json => {:existed => false}
     end

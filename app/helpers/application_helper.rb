@@ -28,16 +28,28 @@ module ApplicationHelper
     }))
   end
   
-  def roles(role)
+  def roles(user)
     user_roles = []
-    if role == "Super Admin"
+    if user.is_super_admin?
       user_roles = Role.order("name ASC").where(:name => "Admin")
-    elsif role == "Admin"
+    elsif user.is?(:admin)
       user_roles = Role.order("name ASC").where(:name => "Teacher")
-    elsif role == "Teacher"
+    elsif user.is?(:teacher)
       user_roles = Role.order("name ASC").where(:name => "Teacher")
       user_roles += Role.order("name ASC").where(:name => "Parent")
     end
     return user_roles
+  end
+  
+  def emails(user)
+    user_emails = []
+    if user.is_super_admin?
+      user_emails = (StudentSharing.joins(:role).where("roles.name = ?", "Admin").map(&:email) + User.joins(:role).where("roles.name = ?", "Admin").map(&:email)).uniq.sort
+    elsif user.is?(:admin)
+      user_emails = (StudentSharing.joins(:role).where("roles.name = ?", "Teacher").map(&:email) + User.joins(:role).where("roles.name = ?", "Teacher").map(&:email)).uniq.sort
+    elsif user.is?(:teacher) 
+      user_emails = (StudentSharing.joins(:role).where("roles.name = ? or roles.name = ?", "Teacher", "Parent").map(&:email) + User.joins(:role).where("roles.name = ? or roles.name = ?", "Teacher", "Parent").map(&:email)).uniq.sort
+    end
+    return user_emails
   end 
 end
