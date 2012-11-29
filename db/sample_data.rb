@@ -1,20 +1,59 @@
 # This file should contain dummy records creation needed to demonstrate the app or to test.
 # The data can then be loaded with the rake db:sample_data.
 
-admin = User.find_by_email 'admin@teacher.com'
+# Create sample school
+school = School.create!({
+  :name => "Demo School",
+  :city => Faker::Address.city,
+  :state => Faker::Address.state,
+  :address1 => Faker::Address.street_address,
+  :phone => Faker::PhoneNumber.phone_number,
+  :zipcode => Faker::Address.zip.slice(0, 5)
+})
+
+# Create the admin
+password = "123456"
+
+admin = User.new
+admin.assign_attributes({
+  :email => "admin@teacher.com",
+  :first_name => "Super",
+  :last_name => "Mario",
+  :password => password,
+  :password_confirmation => password,
+  :school_id => school.id
+})
+
+admin.role = Role.find_by_name('Admin')
+admin.skip_confirmation!
+admin.save!
+puts "Created seed Admin (Principal): #{admin.email} / #{password}"
+
+# Create seed Curriculums
+["SEACO FPI 5.1", "SEACO FPI 5.2"].each do |curriculum|
+  Curriculum.create!(:name => curriculum)  
+end
+
+# Create seed Subjects
+["Math", "French"].each do |subject|
+  Subject.create!(:name => subject)  
+end
+
+# Create sample teacher
 teacher_role = Role.find_by_name('Teacher')
 teacher = User.new({
   :email => 'demo@teacher.com',
   :first_name => "Demo",
   :last_name => "Teacher",
-  :password => "123456",
-  :password_confirmation => "123456",
+  :password => password,
+  :password_confirmation => password,
+  :school_id => school.id
 })
 teacher.role = teacher_role
 teacher.parent = admin
 teacher.skip_confirmation!
 teacher.save!
-puts "[Sampler] Created teacher #{teacher.email} / 123456"
+puts "[Sampler] Created demo teacher #{teacher.email} / #{password}"
 
 25.times do 
   begin
@@ -24,12 +63,13 @@ puts "[Sampler] Created teacher #{teacher.email} / 123456"
       :last_name => Faker::Name.last_name,
       :password => "123456",
       :password_confirmation => "123456",
+      :school_id => school.id
     })
     teacher.role = teacher_role
     teacher.parent = admin
     teacher.skip_confirmation!
     teacher.save!
-    puts "[Sampler] Created teacher #{teacher.email} / 123456"
+    puts "[Sampler] Created teacher #{teacher.email} / #{password}"
 
     50.times do
       teacher.students.create!({
