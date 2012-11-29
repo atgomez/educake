@@ -1,0 +1,26 @@
+%p#notice= notice
+= link_to "Add User", new_super_admin_user_path(:back => "users"), :class => "btn"
+= render '/shared/search_box', :action => "search_result", :placeholder => "Enter the term search"
+%div{:style=>"margin-top: 10px;"}
+  %b 
+    Search results for:
+    = params[:query]
+  %p
+    = select_tag "users_search", options_for_select(User::TYPES_SEARCH.invert)
+    
+%table.table.table-striped.schools
+  %thead
+    %tr
+      %th Name
+      %th School
+      %th Role
+
+  %tbody
+    - @users.each do |user|
+      %tr
+        %td= user.full_name
+        %td= user.school.name rescue ""
+        %td= user.role.name rescue ""
+        
+= render_pagination @users 
+

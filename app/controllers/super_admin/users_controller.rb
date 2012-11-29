@@ -68,5 +68,16 @@ class SuperAdmin::UsersController < SuperAdmin::BaseSuperAdminController
     elsif user.is?(:teacher)
       redirect_to admin_teacher_path(user)
     end 
-  end 
+  end
+  
+  def search_result
+    case params[:search_type].to_i
+    when User::SCHOOL
+      @users = User.joins(:role).joins(:school).where("lower(schools.name) like ?", "%#{params[:query].downcase}%").load_data(filtered_params)
+    when User::ROLE
+      @users = User.joins(:role).joins(:school).where("lower(roles.name) like?", "%#{params[:query].downcase}%").load_data(filtered_params)
+    else  
+      @users = User.like_search(params[:query], filtered_params)
+    end
+  end
 end

@@ -87,7 +87,10 @@ TeacherMgnt::Application.routes.draw do
         put :blocked_account
         put :reset_password
         get :view_as
-      end  
+      end
+      collection do 
+        get :search_result
+      end 
     end
   end 
 

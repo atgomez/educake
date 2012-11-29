@@ -38,6 +38,11 @@
 class User < ActiveRecord::Base
   include ::SharedMethods::Paging  
   attr_accessor :skip_password
+  
+  NAME = 1
+  SCHOOL = 2
+  ROLE = 3
+  TYPES_SEARCH = {NAME => "Name", SCHOOL => "School", ROLE => "Role"}
 
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
@@ -128,7 +133,26 @@ class User < ActiveRecord::Base
 
   # Class methods
   class << self
-
+    def like_search(query, params = {})
+      #results = []
+      paging_info = parse_paging_options(params)
+      # Paginate with Will_paginate.
+      paginates = {:page => paging_info.page_id,
+        :per_page => paging_info.page_size,
+        :order => paging_info.sort_string}
+      return self.paginate(paginates) if query.blank?
+      search = query.split(' ', 2)
+      
+      if search.length > 1
+        with_scope( :find => { :conditions => ['lower(first_name) LIKE ?', "%#{search[0].downcase}%"] }) do
+          paginates = paginates.merge(:conditions => ['lower(last_name) LIKE ?', "%#{search[1].downcase}%"])
+          return self.paginate(paginates)
+        end
+      elsif search.length == 1
+        paginates = paginates.merge(:conditions => ['lower(first_name) LIKE ? or lower(last_name) LIKE ?', "%#{search[0].downcase}%", "%#{search[0].downcase}%"])
+        return self.paginate(paginates)
+      end
+    end
     # Load data
     #
     # === Parameters

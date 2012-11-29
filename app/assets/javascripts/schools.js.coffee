@@ -3,6 +3,7 @@ window.schoolObject =
     @checkForCheckbox()
     @removeClassInForm()
     @limitInput()
+    @searchForSuperAdmin()
   
   checkForCheckbox: ->
     checked = $("#check_locked").val()
@@ -25,4 +26,18 @@ window.schoolObject =
         if !(key == 8 || key == 9 || key == 13 || key == 35 || key == 36|| key == 37 || key == 39 || key == 46) 
           event.preventDefault()
     return
+
+  searchForSuperAdmin: ->
+    $("#users_search").change ->
+      search_type = $(this).val()
+      $.ajax
+        type: "GET"
+        url: "/super_admin/users/search_result"
+        data: {search_type: $(this).val(), query: $(".search-query").val()}
+        success: (data)->
+          window.location.href = "/super_admin/users/search_result?search_type="+search_type+"&query="+$(".search-query").val()
+          return
+        error: (errors, status)->
+          
+          return    
     
