@@ -1,12 +1,12 @@
 - students ||= []
 - students.each do |student|
   - student_home_url = url_for(:controller => "admin/students", :action => "show", :id => student.id)
-  .student-container.clearfix
+  .student-container.clearfix.link{:href => student_home_url}
     .avatar-container.well
       %a{:href => student_home_url, :title => student.full_name}
         = image_tag(student.photo_url, :alt => student.full_name, :class => "student-avatar")
 
-    .info.well.link{:href => student_home_url}
+    .info.well
       %strong.name
         - student_url = url_for(:controller => "admin/students", :action => "show", :id => student.id)
         = link_to(student.full_name, student_home_url)

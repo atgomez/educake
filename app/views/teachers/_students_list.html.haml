@@ -3,7 +3,7 @@
 #pagination-listitem
   - @students.each_with_index do |student, idx|
     - student_home_url = student_path(student)      
-    .student-container.pull-left.clearfix
+    .student-container.pull-left.clearfix.link{:href => student_home_url}
       .avatar-container.thumbnail
         %a{:href => student_home_url}
           - unless student.photo_url.blank?
@@ -11,7 +11,7 @@
           - else
             .default-avatar
 
-      .info.well.link{:href => student_home_url}
+      .info.well
         %strong.name
           = link_to(student.full_name, student_home_url, :class => "brown")
         .birthday
