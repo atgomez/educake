@@ -1,11 +1,11 @@
 class SuperAdmin::SchoolsController < SuperAdmin::BaseSuperAdminController
-  helper_method :sort_column, :sort_direction
+  helper_method :sort_column, :sort_direction, :sort_criteria
   def index
     load_params = filtered_params.merge({
-      :sort_field => sort_column, 
-      :sort_direction => sort_direction
+      :sort_criteria => sort_criteria
     })
-    @schools = School.load_data_with_users(load_params)
+
+    @schools = School.load_data_with_admin(load_params)
   end
 
   def show
@@ -67,5 +67,15 @@ class SuperAdmin::SchoolsController < SuperAdmin::BaseSuperAdminController
     
     def sort_direction
       %w[asc desc].include?(params[:direction]) ?  params[:direction] : "asc"
+    end
+
+    def sort_criteria
+      columns = sort_column
+      direction = sort_direction
+      if columns == 'last_name'
+        return "first_name #{direction}, last_name #{direction}"
+      else
+        return "#{columns} #{direction}"
+      end
     end
 end

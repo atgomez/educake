@@ -23,8 +23,10 @@ module SharedMethods
             :page_id => 1
           }
         end
+
+        options = default_opts.merge(options)
         
-        page_id = default_opts[:page_id]
+        page_id = options[:page_id]
 
         if options[:page_id] && options[:page_id].to_i > 0
           info.page_id = options[:page_id]
@@ -40,12 +42,12 @@ module SharedMethods
           info.sort_string = "#{sort_field} #{sort_direction}"
           info.sort_criteria = {sort_field => sort_direction}
         else
-          if default_opts[:sort_criteria].is_a?(String)
-            info.sort_string = default_opts[:sort_criteria]
+          if options[:sort_criteria].is_a?(String)
+            info.sort_string = options[:sort_criteria]
             info.sort_criteria = parse_sort_param(info.sort_string)
-          elsif default_opts[:sort_criteria].is_a?(Hash)
-            info.sort_string = sort_param_to_string(default_opts[:sort_criteria])
-            info.sort_criteria = default_opts[:sort_criteria]
+          elsif options[:sort_criteria].is_a?(Hash)
+            info.sort_string = sort_param_to_string(options[:sort_criteria])
+            info.sort_criteria = options[:sort_criteria]
           else
             raise ArgumentError.new("Invalid options[:sort_criteria]. It should be a string or a hash.")
           end

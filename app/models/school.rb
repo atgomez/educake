@@ -47,8 +47,18 @@ class School < ActiveRecord::Base
       self.paginate(conds)
     end
     
-    def load_data_with_users(params = {})
-      self.joins(:users).select("DISTINCT schools.*").load_data(params)
+    def load_data_with_admin(params = {})
+      # TODO: this is a work-around to fix the issue of will_paginate
+      # See: https://github.com/mislav/will_paginate/issues/45
+      paging_info = parse_paging_options(params)
+      sql = self.joins(:admin).select("DISTINCT schools.*, users.last_name, users.first_name").order(
+                                      paging_info.sort_string).to_sql
+      conds = { :page => paging_info.page_id,
+                :per_page => paging_info.page_size,
+                :order => paging_info.sort_string
+              }
+
+      School.paginate_by_sql(sql, conds)
     end
 
     protected
