@@ -33,9 +33,9 @@
       - if !f.object.new_record? && f.object.is?(:admin)
         - disable = true
       - if disable
-        = f.input :role_id, :collection => Role.where(:name => "Admin"), :prompt => "Select One", :disabled => disable
+        = f.association :role, :collection => Role.where(:name => "Admin"), :prompt => "Select One", :disabled => disable
       - else
-        = f.input :role_id, :collection => @roles, :prompt => "Select One"
+        = f.association :role, :required => true, :collection => @roles, :prompt => "Select One"
       = f.input :email, :input_html => {:class => "valid_email"}
       = f.input :phone, :input_html => {:class => "valid_number"}
       = f.input :notes, :input_html => {:rows => "5", :class => "width-area"}
