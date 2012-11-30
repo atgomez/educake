@@ -29,8 +29,8 @@ class SuperAdmin::UsersController < SuperAdmin::BaseSuperAdminController
   end
   
   def edit
+    load_roles
     @user = User.find params[:id]
-    @roles = Role.where("name =? or name = ?", "Teacher", "Parent").order(:name).all
   end
   
   def update 
