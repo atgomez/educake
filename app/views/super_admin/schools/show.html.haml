@@ -20,7 +20,7 @@
   .pull-right= render '/shared/search_box', :action => "", :placeholder => "Enter the term search"
   .clearfix
   .add_user
-    = link_to "Add User", new_super_admin_user_path(:back => "users"), :class => "btn"
+    = link_to "Add User", new_super_admin_user_path(:back => "users", :school_id => @school.id), :class => "btn"
 
   %table.table.table-striped.schools
     %thead

@@ -9,6 +9,18 @@
 // Create the chart
 - content_for(:js) do
   :javascript
+    function printDate() {
+      var temp = new Date();
+      var dateStr = padStr(temp.getFullYear()) + " " +
+                    padStr(1 + temp.getMonth()) + " " +
+                    padStr(temp.getDate());
+      return(dateStr );
+    }
+
+    function padStr(i) {
+      return (i < 10) ? "0" + i : "" + i;
+    }
+
     var chart;
     $(function(){
       var series = jQuery.parseJSON(#{@series.to_json})
@@ -16,7 +28,10 @@
         var data = seri["data"];
         $.each(seri["data"], function(i, dt){
           var parts = dt[0].match(/(\d+)/g);
+          //data[i][0] = helper.parse_date(dt[0], "yy-mm-dd").getTime();
           data[i][0] = Date.UTC(parts[0], parts[1]-1, parts[2]);
+
+
           data["animation"] = false;
           series[indx]["animation"] = false;
         
@@ -90,7 +105,8 @@
           numberOfTicks: 10,
           labels: {
             formatter: function() {
-                return '<br/>' + Highcharts.dateFormat('%b %e, %y', this.value);
+              var a = new Date(this.value);
+              return Highcharts.dateFormat('%b %e, %y', a);
             },
             style: {
               'text-decoration': 'underline',

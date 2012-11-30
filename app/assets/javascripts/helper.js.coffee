@@ -18,3 +18,4 @@ window.helper =
     catch exc
       result = null
     return result
+

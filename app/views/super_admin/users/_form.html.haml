@@ -4,12 +4,14 @@
   .form-actions
     %center
       - back = :back
-      - if (f.object.new_record? && session[:back] == "users") || params[:back] == "users" 
-        - back = super_admin_school_path(session[:school])
-      - elsif (f.object.new_record? && session[:back] == "schools") || params[:back] == "schools" 
+      - if (f.object.new_record? && @back == "users")
+        - back = super_admin_school_path(@school_id)
+      - elsif (f.object.new_record? && @back == "schools")
         - back = super_admin_schools_path
       - elsif !f.object.new_record?
         - back = super_admin_school_path(@user.school)
+      = hidden_field_tag :back, @back
+      = hidden_field_tag :school_id, @school_id
       = link_to "Cancel", back, :class => "btn"
       - if f.object.new_record?
         = f.button :submit, :value => "Create User"
@@ -24,7 +26,7 @@
     .title School Info
     .school-info
       = f.input :school_id, :collection => School.order(:name), :label => "School Name", :prompt => "Select One",
-                :selected => session[:school]
+                :selected => @school_id
     .title= title_user
     .school-info
       = f.input :first_name, :input_html => {:class => "valid_name"}

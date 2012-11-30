@@ -2,7 +2,8 @@ class SuperAdmin::UsersController < SuperAdmin::BaseSuperAdminController
   def new 
     @user = User.new
     @user.build_school
-    session[:back] = params[:back]
+    @school_id = params[:school_id]
+    @back = params[:back]
     load_roles
   end
   
@@ -10,6 +11,8 @@ class SuperAdmin::UsersController < SuperAdmin::BaseSuperAdminController
     rand_pass = rand(1234567)
     params[:user][:password] = rand_pass
     @user = User.new(params[:user])
+    @school_id = params[:school_id]
+    @back = params[:back]
     @school = School.find_by_id(@user.school_id)
     if (@school)
       @user.parent = @school.admin
@@ -31,11 +34,15 @@ class SuperAdmin::UsersController < SuperAdmin::BaseSuperAdminController
   def edit
     load_roles
     @user = User.find params[:id]
+    @school_id = params[:school_id]
+    @back = params[:back]
   end
   
   def update 
     @user = User.find params[:id]
-    
+    @school_id = params[:school_id]
+    @back = params[:back]
+
     if @user.update_attributes params[:user]
       flash[:notice] = 'User was updated successfully.' 
       redirect_to super_admin_school_path(@user.school)
