@@ -144,12 +144,12 @@ class User < ActiveRecord::Base
       search = query.split(' ', 2)
       
       if search.length > 1
-        with_scope( :find => { :conditions => ['lower(first_name) LIKE ?', "%#{search[0].downcase}%"] }) do
-          paginates = paginates.merge(:conditions => ['lower(last_name) LIKE ?', "%#{search[1].downcase}%"])
+        with_scope( :find => { :conditions => ['lower(first_name) LIKE ? and role_id IS NOT NULL', "%#{search[0].downcase}%"] }) do
+          paginates = paginates.merge(:conditions => ['lower(last_name) LIKE ? and role_id IS NOT NULL', "%#{search[1].downcase}%"])
           return self.paginate(paginates)
         end
       elsif search.length == 1
-        paginates = paginates.merge(:conditions => ['lower(first_name) LIKE ? or lower(last_name) LIKE ?', "%#{search[0].downcase}%", "%#{search[0].downcase}%"])
+        paginates = paginates.merge(:conditions => ['lower(first_name) LIKE ? or lower(last_name) LIKE ? and role_id IS NOT NULL', "%#{search[0].downcase}%", "%#{search[0].downcase}%"])
         return self.paginate(paginates)
       end
     end

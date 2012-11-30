@@ -6,8 +6,8 @@
     Search results for:
     = params[:query]
   %p
-    = select_tag "users_search", options_for_select(User::TYPES_SEARCH.invert)
-    
+    = select_tag "users_search", options_for_select(User::TYPES_SEARCH.invert, :selected=>params[:search_type].to_i)
+
 %table.table.table-striped.schools
   %thead
     %tr
@@ -17,10 +17,10 @@
 
   %tbody
     - @users.each do |user|
-      %tr
-        %td= user.full_name
-        %td= truncate(user.school.name, :length => 17, :separator => " ") rescue ""
-        %td= user.role.name rescue ""
+      %tr 
+        %td= highlight(user.full_name, params[:query]) rescue ""
+        %td= highlight(truncate(user.school.name, :length => 17, :separator => " "), params[:query]) rescue ""
+        %td= highlight(user.role.name, params[:query]) rescue ""
         
 = render_pagination @users 
 

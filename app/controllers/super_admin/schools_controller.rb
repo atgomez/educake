@@ -12,6 +12,9 @@ class SuperAdmin::SchoolsController < SuperAdmin::BaseSuperAdminController
     @school = School.find(params[:id])
     session[:school] = @school.id
     @users = @school.users.load_data(filtered_params)
+    if params[:query]
+      redirect_to search_result_super_admin_users_path+"?school="+ @school.id.to_s
+    end
   end
 
   def new

@@ -30,12 +30,18 @@ window.schoolObject =
   searchForSuperAdmin: ->
     $("#users_search").change ->
       search_type = $(this).val()
+      school_id = $("#school").val()
+      search_query = $(".search-query").val()
       $.ajax
         type: "GET"
         url: "/super_admin/users/search_result"
-        data: {search_type: $(this).val(), query: $(".search-query").val()}
+        data: {search_type: search_type, query: search_query}
         success: (data)->
-          window.location.href = "/super_admin/users/search_result?search_type="+search_type+"&query="+$(".search-query").val()
+          
+          if school_id is ""
+            window.location.href = "/super_admin/users/search_result?search_type="+search_type+"&query="+search_query
+          else
+            window.location.href = "/super_admin/users/search_result?search_type="+search_type+"&query="+search_query+"&school="+school_id
           return
         error: (errors, status)->
           

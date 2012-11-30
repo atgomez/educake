@@ -72,13 +72,24 @@ class SuperAdmin::UsersController < SuperAdmin::BaseSuperAdminController
   end
   
   def search_result
-    case params[:search_type].to_i
-    when User::SCHOOL
-      @users = User.joins(:role).joins(:school).where("lower(schools.name) like ?", "%#{params[:query].downcase}%").load_data(filtered_params)
-    when User::ROLE
-      @users = User.joins(:role).joins(:school).where("lower(roles.name) like?", "%#{params[:query].downcase}%").load_data(filtered_params)
-    else  
-      @users = User.like_search(params[:query], filtered_params)
+    unless params[:school].blank?
+      case params[:search_type].to_i
+        when User::SCHOOL
+          @users = User.joins(:role).joins(:school).where("lower(schools.name) like ? and schools.id = ?", "%#{params[:query].downcase}%", params[:school]).load_data(filtered_params)
+        when User::ROLE
+          @users = User.joins(:role).joins(:school).where("lower(roles.name) like? and schools.id = ?", "%#{params[:query].downcase}%", params[:school]).load_data(filtered_params)
+        else  
+          @users = User.joins(:school).where("schools.id = ?", params[:school]).like_search(params[:query], filtered_params)
+      end
+    else
+      case params[:search_type].to_i
+        when User::SCHOOL
+          @users = User.joins(:role).joins(:school).where("lower(schools.name) like ? and role_id IS NOT NULL", "%#{params[:query].downcase}%").load_data(filtered_params)
+        when User::ROLE
+          @users = User.joins(:role).joins(:school).where("lower(roles.name) like? and role_id IS NOT NULL", "%#{params[:query].downcase}%").load_data(filtered_params)
+        else  
+          @users = User.like_search(params[:query], filtered_params)
+      end
     end
   end
 
