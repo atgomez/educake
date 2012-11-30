@@ -298,7 +298,7 @@ class Student < ActiveRecord::Base
     goals.each do |goal| 
       data = []
       goal.statuses.each{|status| 
-        data << [status.due_date, (goal.grade_status(status)*100).round / 100.0]
+        data << [status.due_date, (status.accuracy*100).round / 100.0]
       }
       #data << [goal.due_date, goal.accuracy]
       #Sort data by due date
