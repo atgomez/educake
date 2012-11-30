@@ -10,12 +10,19 @@ class SuperAdmin::UsersController < SuperAdmin::BaseSuperAdminController
     rand_pass = rand(1234567)
     params[:user][:password] = rand_pass
     @user = User.new(params[:user])
-    
-    if @user.save
-      UserMailer.admin_confirmation(@user, rand_pass).deliver
-      flash[:notice] = 'User was created successfully.' 
-      redirect_to super_admin_school_path(@user.school)
+    @school = School.find_by_id(@user.school_id)
+    if (@school)
+      @user.parent = @school.admin
+      if @user.save
+        UserMailer.admin_confirmation(@user, rand_pass).deliver
+        flash[:notice] = 'User was created successfully.' 
+        redirect_to super_admin_school_path(@user.school)
+      else
+        load_roles
+        render action: "new" 
+      end
     else
+      flash[:alert] = "School is not available"
       load_roles
       render action: "new" 
     end
@@ -96,6 +103,6 @@ class SuperAdmin::UsersController < SuperAdmin::BaseSuperAdminController
   protected
 
     def load_roles
-      @roles = Role.with_name(:teacher, :parent).order(:name)
+      @roles = Role.with_name(:teacher).order(:name)
     end
 end
