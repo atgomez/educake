@@ -4,6 +4,7 @@ window.schoolObject =
     @removeClassInForm()
     @limitInput()
     @searchForSuperAdmin()
+    @clickOnSubmitAdmin()
   
   checkForCheckbox: ->
     checked = $("#check_locked").val()
@@ -45,5 +46,15 @@ window.schoolObject =
           return
         error: (errors, status)->
           
-          return    
+          return
+  clickOnSubmitAdmin: ->
+    $("#btn_admin").click ->
+      email_admin = $("#email_admin").val()
+      new_email = $("#user_email").attr("value")
+      if email_admin != new_email
+        conf = confirm("Do you want to change your email?") 
+        if conf is true
+          $("#user_form").submit()
+    return
+    
     

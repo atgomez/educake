@@ -1,4 +1,5 @@
 = simple_form_for([:super_admin, @user], :html => {:class => "user-form form-horizontal", :id => "user_form"}) do |f|
+  - title_user = "User Info"
   = f.error_notification
   .form-actions
     %center
@@ -13,13 +14,18 @@
       - if f.object.new_record?
         = f.button :submit, :value => "Create User"
       - else
-        = f.button :submit, :value => "Save"
+        - if @user.is?(:admin) 
+          = hidden_field_tag "email_admin", @user.email
+          - title_user = "Admin Info"
+          = f.button :submit, :value => "Save", :id  => "btn_admin"
+        - else
+          = f.button :submit, :value => "Save"
   .form-inputs
     .title School Info
     .school-info
       = f.input :school_id, :collection => School.order(:name), :label => "School Name", :prompt => "Select One",
                 :selected => session[:school]
-    .title User Info
+    .title= title_user
     .school-info
       = f.input :first_name, :input_html => {:class => "valid_name"}
       = f.input :last_name, :input_html => {:class => "valid_name"}

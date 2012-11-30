@@ -39,7 +39,10 @@
           - confirm = "Are you sure?"
           - if user.students.count > 0
             - confirm = "This teacher have some students, do you to delete?"
-          %td.action= link_to "", [:super_admin, user], :data => { :confirm => confirm }, :class => "icon-trash color-pen", :method => :delete, :title => "Delete" 
+          - unless user.is?(:admin)
+            %td.action= link_to "", [:super_admin, user], :data => { :confirm => confirm }, :class => "icon-trash color-pen", :method => :delete, :title => "Delete" 
+          - else 
+            %td.action
           %td= link_to "view as", view_as_super_admin_user_path(user)
   = render_pagination @users 
 
