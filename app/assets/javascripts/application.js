@@ -18,6 +18,7 @@
 //= require lib/jquery.filter_input
 //= require lib/jquery-ui-timepicker-addon
 //= require lib/highcharts/js/highcharts
+//= require lib/Placeholders.min
 //= require students
 //= require init
 //= require goal
@@ -27,9 +28,16 @@
 //= require jquery.iframe-transport
 //= require jquery.remotipart
 
+
 $(document).ready(function() {
     $('.pagination-container.ajax .pagination a').attr('data-remote', 'true');
     $('.pagination-container.ajax .pagination a').click(function(){
     	$(this).parents('.pagination').siblings('.loading').removeClass('hide');
     });
+
+
+	  Placeholders.init({
+	  	live: true, //Apply to future and modified elements too
+    	hideOnFocus: true //Hide the placeholder when the element receives focus
+	  });
 });
