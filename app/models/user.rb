@@ -120,16 +120,7 @@ class User < ActiveRecord::Base
   scope :admins, lambda { self.with_role(:admin) }
   
   # Teachers
-  scope :teachers, lambda { self.with_role(:teacher) }
-  
-  def accessible_students
-    union_sql = %Q{
-                (SELECT * FROM (#{self.students.to_sql}) d1
-                UNION ALL 
-                SELECT * FROM (#{self.shared_students.to_sql}) d2) #{Student.table_name}
-              }
-    Student.from(union_sql).order("students.first_name ASC, students.last_name ASC")
-  end
+  scope :teachers, lambda { self.with_role(:teacher) }  
 
   # Class methods
   class << self
@@ -153,6 +144,7 @@ class User < ActiveRecord::Base
         return self.paginate(paginates)
       end
     end
+
     # Load data
     #
     # === Parameters
@@ -220,6 +212,15 @@ class User < ActiveRecord::Base
 
   # Instance methods
   
+  def accessible_students
+    union_sql = %Q{
+                (SELECT * FROM (#{self.students.to_sql}) d1
+                UNION ALL 
+                SELECT * FROM (#{self.shared_students.to_sql}) d2) #{Student.table_name}
+              }
+    Student.from(union_sql).select("DISTINCT students.*").order("students.first_name ASC, students.last_name ASC")
+  end
+
   def full_name
     "#{self.first_name} #{self.last_name}"
   end
