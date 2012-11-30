@@ -26,7 +26,7 @@
             %span= "no goal"
           - else
             %span= student.goals.length
-      .track-indicator-container{:style => "left: 220px; top: -55px"}
+      .track-indicator-container
         - status = student.check_on_track? 
         - if status == 1
           .track-indicator.pull-left{:class => "on-track", :title => "On-track"}

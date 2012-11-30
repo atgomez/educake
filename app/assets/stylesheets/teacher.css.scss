@@ -86,8 +86,9 @@ $color-font: #E17C25;
     padding-bottom: 40px;
     padding-left: 10px;
     border-bottom: 1px solid #ddd;
-   
-   
+    position: relative;
+    max-width: 260px;
+
     .well{ 
       border: none;
       background-color: transparent;
@@ -132,9 +133,9 @@ $color-font: #E17C25;
       }
     }
     .track-indicator-container{
-      position:relative;
-      left:220px;
-      top:30px;
+      position: absolute;
+      right: 10px;
+      top: 60px;
     }
     .info-teacher{
       display: inline-block;
