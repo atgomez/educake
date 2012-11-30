@@ -30,7 +30,9 @@ class School < ActiveRecord::Base
   accepts_nested_attributes_for :users
   
   # VALIDATIONS
-  validates_uniqueness_of :name, :scope => :city
+  validates_uniqueness_of :name, :scope => [:city, :state]
+  validates_uniqueness_of :name, :scope => [:city]
+  validates_uniqueness_of :name, :scope => [:state]
   validates_presence_of :address1, :name, :state, :phone
   validates_presence_of :city, :message => "City can't be blank."
   validates :zipcode, :length => { :maximum => 5, :too_long => "%{count} characters is the maximum allowed" }
