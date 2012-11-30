@@ -31,7 +31,7 @@ class SuperAdmin::UsersController < SuperAdmin::BaseSuperAdminController
     
     if @user.update_attributes params[:user]
       flash[:notice] = 'User was updated successfully.' 
-      redirect_to edit_super_admin_user_path(@user)
+      redirect_to super_admin_school_path(@user.school)
     else
       load_roles
       render action: "edit" 
