@@ -1,24 +1,26 @@
 .super-admin.school
   %p#notice= notice
   %div.pull-left.show-school
-    %p
+    %div
       %b= truncate(@school.name, :length => 17, :separator => " ")
-    %p
+    %div
       = @school.address1
-    %p
+    %div
       = @school.city+", "+ @school.state + " " + @school.zipcode
-    %p
+    %div
       = @school.phone
-    %p
+    %br
       Joined
       = @school.created_at.strftime("%m/%d/%y")
+  
   %div.pull-left
-    = link_to "Edit School", edit_super_admin_school_path(@school) 
+    = link_to "Edit School", edit_super_admin_school_path(@school)
     = " | "
     = link_to "Back", super_admin_schools_path
   .pull-right= render '/shared/search_box', :action => "", :placeholder => "Enter the term search"
   .clearfix
-  = link_to "Add User", new_super_admin_user_path(:back => "users"), :class => "btn"
+  .add_user
+    = link_to "Add User", new_super_admin_user_path(:back => "users"), :class => "btn"
 
   %table.table.table-striped.schools
     %thead

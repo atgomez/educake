@@ -36,6 +36,7 @@ class School < ActiveRecord::Base
   validates_presence_of :address1, :name, :state, :phone
   validates_presence_of :city, :message => "City can't be blank."
   validates :zipcode, :length => { :maximum => 5, :too_long => "%{count} characters is the maximum allowed" }
+  validates :name, :length => { :maximum => 255, :too_long => "%{count} characters is the maximum allowed" }
  
   # CLASS METHODS
   class << self
