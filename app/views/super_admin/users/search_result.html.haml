@@ -19,7 +19,7 @@
     - @users.each do |user|
       %tr
         %td= user.full_name
-        %td= user.school.name rescue ""
+        %td= truncate(user.school.name, :length => 17, :separator => " ") rescue ""
         %td= user.role.name rescue ""
         
 = render_pagination @users 
