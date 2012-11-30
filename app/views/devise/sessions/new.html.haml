@@ -23,7 +23,9 @@
           %li
             = f.input :password, :required => false
           %li.font18.brown.bold.left
-            = f.input :remember_me, :inline_label => "Remember me", :label => false, :as => :boolean if devise_mapping.rememberable?
+            - if devise_mapping.rememberable?
+              = f.input(:remember_me, :inline_label => "Remember me", :label => false, :as => :boolean, 
+                        :wrapper_html => {:class => "login-remember"})
 
         #login-button
           %input{:type => "image", :src => "/assets/login-button.png", :width => "143", :height => "38", :border => "0", :alt => "SUBMIT!"}
