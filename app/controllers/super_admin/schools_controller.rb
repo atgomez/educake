@@ -35,7 +35,7 @@ class SuperAdmin::SchoolsController < SuperAdmin::BaseSuperAdminController
     if @school.save
       UserMailer.admin_confirmation(@school.users.admins.first, rand_pass).deliver
       flash[:notice] = 'School was successfully created.' 
-      redirect_to super_admin_schools_path
+      redirect_to super_admin_school_path @school
     else
       render(:action => "new")
     end
@@ -46,8 +46,10 @@ class SuperAdmin::SchoolsController < SuperAdmin::BaseSuperAdminController
 
     if @school.update_attributes(params[:school])
       flash[:notice] = 'School was successfully updated.'
-      redirect_to super_admin_schools_path
+      redirect_to super_admin_school_path @school
     else
+      puts "*"*20
+      puts @school.errors.inspect
       render(:action => "edit")
     end
   end
