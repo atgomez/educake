@@ -190,7 +190,7 @@ class Goal < ActiveRecord::Base
   end
 
   def last_status
-    self.statuses.order(:due_date).last
+    self.statuses.computable.order(:due_date).last
   end
 
   # Check if a grade exist in now
@@ -299,6 +299,15 @@ class Goal < ActiveRecord::Base
     status = self.last_status
     if (status)
       vs_baseline = status.value - self.baseline
+      vs_baseline/(self.accuracy - self.baseline)*100
+    else
+      0
+    end
+  end
+
+  def grade_status(grade)
+    if (grade)
+      vs_baseline = grade.value - self.baseline
       vs_baseline/(self.accuracy - self.baseline)*100
     else
       0
