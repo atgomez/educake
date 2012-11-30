@@ -3,7 +3,7 @@ $("#pagination-listitem").hide('slide', {direction: '<%= @is_page_increment ? "l
 	$("#pagination_area").html("<%= escape_javascript(render(:partial => 'teacher_students_list')) %>");
 	$("#pagination-listitem").show('slide', {direction: '<%= @is_page_increment ? "right" : "left" %>'}, 200);
 	$('.pagination li:not(.disabled) a').attr('data-remote', 'true');
-	$('.pagination a').click(function(){
-    	$('.loading').removeClass('hide')
-    });
+	$('.pagination li:not(.disabled) a').click(function(){
+  	$(this).parents('.pagination').siblings('.loading').removeClass('hide');
+  });
 });

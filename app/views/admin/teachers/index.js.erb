@@ -4,6 +4,6 @@ $("#pagination-listitem").hide('slide', {direction: '<%= @is_page_increment ? "l
 	$("#pagination-listitem").show('slide', {direction: '<%= @is_page_increment ? "right" : "left" %>'}, 200);
 	$('.pagination li:not(.disabled) a').attr('data-remote', 'true');
 	$('.pagination li:not(.disabled) a').click(function(){
-    	$('.loading').removeClass('hide')
-    });
+  	$(this).parents('.pagination').siblings('.loading').removeClass('hide');
+  });
 });

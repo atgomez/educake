@@ -39,5 +39,6 @@
 
   - if with_pagination
     .clearfix
-    = render_pagination(@students, {:current_page => @current_page})
-    .loading.hide
+    .pagination-container.ajax
+      = render_pagination(@students, {:current_page => @current_page})
+      .loading.hide
