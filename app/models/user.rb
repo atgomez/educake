@@ -120,7 +120,10 @@ class User < ActiveRecord::Base
   scope :admins, lambda { self.with_role(:admin) }
   
   # Teachers
-  scope :teachers, lambda { self.with_role(:teacher) }  
+  scope :teachers, lambda { self.with_role(:teacher) } 
+
+  # Available
+  scope :unlocked, where(:is_locked => false) 
 
   # Class methods
   class << self
