@@ -1,3 +1,4 @@
+
 = simple_form_for([:super_admin, @school], :html => {:class => "school-form form-horizontal"}) do |f|
   = f.error_notification
   .form-actions
@@ -24,6 +25,7 @@
       = f.input :zipcode, :error => false, :label => false, :input_html => {:class => "valid_number pull-left", :placeholder => "zip code"}
       .clearfix
       %div= f.error :city, :id => "city"
+      %div= f.error :zipcode, :id => "city"
       = f.input :phone, :input_html => {:class => "valid_number"}
     .line
     .title Admin Info
