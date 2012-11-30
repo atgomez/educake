@@ -206,7 +206,7 @@ class Student < ActiveRecord::Base
   def check_on_track?
     result = 0 
 
-    self.goals.each do |goal|
+    self.goals.incomplete.each do |goal|
       if !goal.on_track?
         # Student status will not be on-track if there is any goal not on-track.
         result = 2

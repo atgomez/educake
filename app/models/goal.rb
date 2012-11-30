@@ -131,6 +131,7 @@ class Goal < ActiveRecord::Base
     arr_progress_date.each do |progress_date|
       if (progress_date >= due_date)
         current_progress_index = tmp_index
+        break
       end
 
       tmp_index = tmp_index + 1
@@ -224,16 +225,110 @@ class Goal < ActiveRecord::Base
 
     recent_grades.each do |grade|
       total_grade += 1
-      actual_value += grade.value
-      ideal_value += grade.ideal_value
+      actual_value += grade.accuracy
+      ideal_value += self.graph_ideal_value_for_date(grade.due_date)
     end
 
     if total_grade > 0
-      # Don't need to devide
-      # result = (actual_value/total_grade > ideal_value/total_grade)
-      result = (actual_value > ideal_value)
+      result = (actual_value/total_grade > ideal_value/total_grade)
     end
     return result
+  end
+
+  # Calculate ideal % for a date.
+  # This value can be show on the ideal line on the goal chart.
+  # The formula is simple: use the square triangle tang(eagle) formula:
+  #
+  #                 C.      
+  #         E.       |
+  # A.______D._______|B
+  #  |               | 
+  #  |               |
+  # O|______F._______|G
+  #
+  # The goal is calculating the value of EF
+  # Given: ABC is a square triagle.
+  #   tang(A) = ED/AD = BC/AB
+  #   => ED = AD*BC/AB (gotcha!)
+  #   => EF = OA + ED
+  #
+  # Where:
+  #   - OA is the less nearest progress accuracy (or goal's baseline)
+  #   - GC is the great nearest progress accuracy (or goal's accuracy)
+  #
+  def graph_ideal_value_for_date(date)
+    # Firstly, try to use goal's baseline and target
+    if self.baseline_date >= date
+      return self.baseline
+    elsif self.due_date <= date
+      return self.accuracy
+    end
+
+    # Secondly, try to check if there is any progress exact on the given day
+    exact_progress = nil
+    if self.association(:progresses).loaded?
+      # Search in memory
+      exact_progress = self.progresses.detect{|p| p.due_date == date}
+    else
+      # Search in DB
+      exact_progress = self.progresses.where(:due_date => date).first
+    end
+
+    unless exact_progress.blank?
+      return exact_progress.accuracy      
+    end
+
+    # Thirdly, we're unlucky, let calculate it!
+
+    # Get the nearest progress that less than the given date
+    begin_progress = nil
+    end_progress = nil
+
+    if self.association(:progresses).loaded?
+      # Search in memory
+      begin_progress = self.progresses.sort(&:due_date).reverse.detect{|p| p.due_date <= date}
+      end_progress = self.progresses.sort(&:due_date).detect{|p| p.due_date >= date}
+    else
+      # Search in DB
+      begin_progress = self.progresses.where("due_date <= ?", date).order("due_date DESC").first
+      end_progress = self.progresses.where("due_date >= ?", date).order("due_date ASC").first
+    end
+
+    # Get the necessary data.
+    begin_date = nil
+    begin_value = nil
+    end_date = 0
+    end_value = 0
+
+    if begin_progress
+      begin_date = begin_progress.due_date
+      begin_value = begin_progress.accuracy
+    else
+      # Use baseline
+      begin_date = self.baseline_date
+      begin_value = self.baseline
+    end
+
+    if end_progress
+      end_date = end_progress.due_date
+      end_value = end_progress.accuracy
+    else
+      # Use baseline
+      end_date = self.due_date
+      end_value = self.accuracy
+    end
+
+    # Caculate the value
+    # Please see the triangle above to understand the meaning of variables.
+    ad = (date - begin_date).to_i
+    ab = (end_date - begin_date).to_i
+    bc = (end_value - begin_value).abs
+
+    if ab == 0
+      return 0
+    else
+      return (begin_value + (ad*bc/ab))
+    end
   end
 
   # Override property setter.
