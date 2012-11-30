@@ -36,7 +36,7 @@
         %tr
           %td= user.role.name rescue ""
           %td= user.full_name rescue ""
-          %td= user.students.count rescue ""
+          %td= user.accessible_students.count rescue ""
           %td.action= link_to "", edit_super_admin_user_path(user), :class => "icon-pencil color-pen", :title => "Edit" 
           - confirm = "Are you sure?"
           - if user.students.count > 0
