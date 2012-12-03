@@ -238,7 +238,7 @@ window.studentObject =
     return false
 
   clickOnStudents: ->
-    $(".student-container.link, .student-container .link").click ->
+    $(".student-container.link, .student-container .link, .teacher-container.link, .teacher-container .link").click ->
       url = $(this).attr('href')
       if $.trim(url) != ''
         window.location.href = url
