@@ -31,12 +31,12 @@ module ApplicationHelper
   def roles(user)
     user_roles = []
     if user.is_super_admin?
-      user_roles = Role.order("name ASC").where(:name => "Admin")
+      user_roles = [Role[:admin]]
     elsif user.is?(:admin)
-      user_roles = Role.order("name ASC").where(:name => "Teacher")
+      user_roles = [Role[:teacher]]
     elsif user.is?(:teacher)
-      user_roles = Role.order("name ASC").where(:name => "Teacher")
-      user_roles += Role.order("name ASC").where(:name => "Parent")
+      # NOTE: use Role.with_name(*name) if there are more than 2 roles
+      user_roles = [Role[:teacher], Role[:parent]]
     end
     return user_roles
   end
