@@ -57,8 +57,6 @@ group :development, :test do
   gem "database_cleaner", '>= 0.8.0'
   gem "faker"
   # For code coverage
-  # gem "simplecov", :require => false
-  # gem "simplecov-rcov", :require => false
-
-  gem 'rcov', '0.9.11'
+  gem "simplecov", :require => false
+  gem "simplecov-rcov", :require => false
 end
