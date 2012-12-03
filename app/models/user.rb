@@ -103,7 +103,7 @@ class User < ActiveRecord::Base
   #  
   scope :with_role, lambda { |role|
     if role.is_a?(String) or role.is_a?(Symbol)
-      role = Role.find_by_name(role.to_s.titleize)
+      role = Role[role]
     end
     
     if role
@@ -187,7 +187,7 @@ class User < ActiveRecord::Base
 
     def new_with_role_name(role_name, attrs)
       user = self.new(attrs)
-      user.role = Role.find_by_name(role_name.to_s.titleize)
+      user.role = Role[role_name]
       return user
     end
 

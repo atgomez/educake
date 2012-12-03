@@ -16,18 +16,18 @@
 
 class School < ActiveRecord::Base
   include ::SharedMethods::Paging
-  attr_accessible :address1, :address2, :city, :name, :phone, :state, :zipcode, :users_attributes
+  attr_accessible :address1, :address2, :city, :name, :phone, :state, :zipcode, :admin_attributes
  
   # ASSOCIATIONS
   has_many :users, :dependent => :destroy
 
   # TODO: improve this association
   has_one :admin, :class_name => "User", :conditions => proc { 
-            admin_id = Role.with_name(:admin).first.try(:id)
+            admin_id = Role[:admin].try(:id)
             "users.role_id = #{admin_id}"
           }
 
-  accepts_nested_attributes_for :users
+  accepts_nested_attributes_for :admin
   
   # VALIDATIONS
   validates_uniqueness_of :name, :scope => [:city, :state]

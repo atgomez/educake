@@ -27,12 +27,20 @@ class SuperAdmin::SchoolsController < SuperAdmin::BaseSuperAdminController
   end
 
   def create
+    # Create the admin for the school.
     rand_pass = rand(1234567)
-    params[:school][:users_attributes]['0'][:password] = rand_pass
+    admin = User.new(params[:school].delete(:admin_attributes))
+    admin.password = rand_pass
+    admin.password_confirmation = rand_pass
+    # Skip Devise confirmation email, because we will manually send that email.
+    admin.skip_confirmation!
+
     @school = School.new(params[:school])
-    
+    @school.admin = admin
+
+    # Save the school and admin
     if @school.save
-      UserMailer.admin_confirmation(@school.users.admins.first, rand_pass).deliver
+      UserMailer.admin_confirmation(@school.admin, rand_pass).deliver
       flash[:notice] = 'School was successfully created.' 
       redirect_to super_admin_school_path @school
     else
@@ -47,8 +55,6 @@ class SuperAdmin::SchoolsController < SuperAdmin::BaseSuperAdminController
       flash[:notice] = 'School was successfully updated.'
       redirect_to super_admin_school_path @school
     else
-      puts "*"*20
-      puts @school.errors.inspect
       render(:action => "edit")
     end
   end

@@ -34,7 +34,7 @@ class Student < ActiveRecord::Base
   has_many :goals, :dependent => :destroy
   has_many :sharings, :class_name => "StudentSharing", :dependent => :destroy
   has_many :shared_users, :through => :sharings, :source => :user
-  
+
   # VALIDATION
   validates_presence_of :first_name, :last_name, :birthday
   validates_length_of :first_name, :maximum => 15
@@ -122,7 +122,7 @@ class Student < ActiveRecord::Base
   end # End class methods.
 
   # Instance methods
-  
+
   def validate_type_of_image
     return true if self.photo.original_filename.blank?
 
@@ -184,20 +184,60 @@ class Student < ActiveRecord::Base
     end    
   end
 
+  # Get all sponsors of this student including teachers, parents (except the Admin)
+  #
+  # === Parameters
+  #
+  #   * with_role_name (String/Symbol)(optional): name of role needs filtering
+  #
+  # === Returns
+  #
+  #   An ActiveRecord::Relation object
+  #
+  def sponsors(with_role_name = nil)
+    if with_role_name.blank?
+      shared_users_sql = self.shared_users.to_sql
+    else
+      shared_users_sql = self.shared_users_with_role(with_role_name).to_sql
+    end
+
+    union_sql = %Q{
+                (SELECT DISTINCT * FROM (SELECT * FROM users WHERE id=#{self.teacher_id}
+                  UNION ALL 
+                SELECT * FROM (#{shared_users_sql}) d2) data) users
+              }
+    User.from(union_sql).order("users.first_name ASC, users.last_name ASC")
+  end
+
+  # Get all users that are shared for this student including teachers, parents.
+  #
+  # === Parameters
+  #
+  #   * role_name (String/Symbol)(optional): name of role needs filtering
+  #
+  # === Returns
+  #
+  #   An ActiveRecord::Relation object
+  #
   def shared_users_with_role(role_name)
-    role = Role.where(:name => role_name.to_s.titleize).first
+    role = Role[role_name]
     # Detect shared users base on sharing role.
     self.shared_users.where("#{StudentSharing.table_name}.role_id = ?", role.try(:id))
   end
 
-  # Return list of all teachers, including shared teachers.
-  def shared_teachers
-    self.shared_users_with_role(:teacher)
+  # Get all teachers that are sponsoring this student.
+  #
+  # === Returns
+  #
+  #   An ActiveRecord::Relation object
+  #
+  def sponsoring_teachers
+    self.sponsors(:teacher)
   end
 
   # Check on-track for student
   #
-  # === Return:
+  # === Returns
   #
   #   * 0 : N/A (Not available)
   #   * 1 : on-track

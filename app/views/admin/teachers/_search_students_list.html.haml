@@ -28,7 +28,7 @@
         %a{:href => "#student-teachers-#{student.id}", :class => "icon-plus student-teacher-handler"}
           = "Teachers"
         .teacher-student.hide.clearfix{:id => "student-teachers-#{student.id}"}
-          - teachers = student.shared_teachers + [student.teacher]
+          - teachers = student.sponsoring_teachers
           - teachers.each do |teacher|
             = link_to admin_teacher_path(teacher), :title => teacher.full_name, :rel => "tooltip", :class => "teacher-link" do 
               = image_tag(teacher.photo_url, 

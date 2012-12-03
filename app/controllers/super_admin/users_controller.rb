@@ -115,6 +115,6 @@ class SuperAdmin::UsersController < SuperAdmin::BaseSuperAdminController
   protected
 
     def load_roles
-      @roles = Role.with_name(:teacher).order(:name)
+      @roles = [Role[:teacher]]
     end
 end

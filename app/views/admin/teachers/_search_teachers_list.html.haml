@@ -6,12 +6,12 @@
   - teachers.each_with_index do |teacher, idx|
     - students = teacher.accessible_students
     - teacher_home_url = admin_teacher_path(teacher)
-    .teacher-container.pull-left.clearfix
+    .teacher-container.pull-left.clearfix.link{:href => teacher_home_url}
       .avatar-container.well
         %a{:href => teacher_home_url, :title => teacher.full_name}
           = image_tag(teacher.photo_url, :alt => teacher.full_name, :class => "teacher-avatar")
 
-      .info.well.link{:href => teacher_home_url}
+      .info.well
         %strong.name
           = link_to(teacher.full_name, teacher_home_url)
 

@@ -246,7 +246,7 @@ class Goal < ActiveRecord::Base
   #  |               |
   # O|______F._______|G
   #
-  # The goal is calculating the value of EF
+  # Our goal is calculating the value of EF.
   # Given: ABC is a square triagle.
   #   tang(A) = ED/AD = BC/AB
   #   => ED = AD*BC/AB (gotcha!)
@@ -280,8 +280,9 @@ class Goal < ActiveRecord::Base
 
     # Thirdly, we're unlucky, let calculate it!
 
-    # Get the nearest progress that less than the given date
+    # The nearest progress that less than the given date
     begin_progress = nil
+    # The nearest progress that bigger than the given date
     end_progress = nil
 
     if self.association(:progresses).loaded?
