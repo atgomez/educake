@@ -1,7 +1,6 @@
 - controller_namespace ||= ""
 
 .show-student
-  = hidden_field_tag "tab", session[:tab]
   .one-student.clearfix
     .avatar-container.thumbnail
       = image_tag(@student.photo_url, :class => "student-avatar")

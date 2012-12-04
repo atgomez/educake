@@ -21,8 +21,6 @@ window.studentObject =
     @addDatePicker()
     @clickOnGoal()
     @clickOnGrade()
-    @clickOnUsers()
-    @activeTab()
     @clickOnStudents() 
     @clickPage()
     @searchUser()
@@ -171,14 +169,6 @@ window.studentObject =
         $('#chart').attr("src", "/charts/student_chart?student_id="+ $("#student_id").val());
         window.chartMode = 'view_all'
       return
-  
-  activeTab: ->
-    if $("#tab").val() == "user"
-      $("#users").addClass("active")
-      $("#grade").removeClass("active")
-      loadUser()
-    return
-
     
   clickPage: ->
     $("#content-grade").delegate '#goals_pages .pagination ul li a', 'click', (evt)-> 
@@ -214,27 +204,13 @@ window.studentObject =
       helper.scroll_to(".users.student-users")
     )
 
-  clickOnUsers: -> 
-    $("#users").click (e) ->
-      e.preventDefault()
-      $(this).addClass("active")
-      $("#grade").removeClass("active")
-      loadUser()
-      return
-      
-    $("#show_user").click ->
-     $("#users").addClass("active")
-     $("#grade").removeClass("active")
-     loadUser()
-     return
-    return false
-
   clickOnStudents: ->
-    $(".student-container.link, .student-container .link, .teacher-container.link, .teacher-container .link").click ->
+    $(".student-container.link, .student-container .link, .teacher-container.link, .teacher-container .link").live('click',  ->
       url = $(this).attr('href')
       if $.trim(url) != ''
         window.location.href = url
-
+    )
+    
   clickExport: ->
     $('#export-button').click((e) ->
       e.preventDefault()
@@ -251,20 +227,6 @@ window.studentObject =
       $(this).attr("disabled", "disabled")
     return
 
-loadUser = ->
-  $.ajax
-    type: "GET"
-    url: $("#student_id").val()+"/load_users"
-    data: {}
-    success: (data)->
-      $(".users").attr("style","display:block")
-      $(".grade").attr("style","display:none")
-      $("#content-users").html(data)
-      return
-    error: (errors, status)->
-      $(".ajax-loading").addClass "hidden"
-      return
-      
 loadPage= (evt, element) ->
   # Prevent loading page
   evt.preventDefault()

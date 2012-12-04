@@ -8,10 +8,6 @@
       $("#email_error").html("#{ escape_javascript ( error )}");
     - elsif error.include?("Role") 
       $("#role_error").html("#{ escape_javascript ( error )}");
-  $('#invite_user form .submit-indicator').addClass('hide')
+  $('#invite_user form .submit-indicator').addClass('hide');
 - else
-  location.reload()
-
-
-
-
+  location.reload();
