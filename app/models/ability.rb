@@ -4,7 +4,7 @@ class Ability
   def initialize(user)
     user ||= User.new # guest user (not logged in)
 
-    if user.is_admin?
+    if user.is_super_admin?
       # Super admin
       can :manage, :all 
     elsif !user.new_record?
@@ -27,6 +27,23 @@ class Ability
         can :read, [User, Curriculum, Goal, Student, StudentSharing]
         can :mangage, [Grade]
       end  
+    end
+
+    # Chart Auth
+    can :view_chart, User do |user_inview|
+      if user.is_super_admin?
+        !user_inview.is_super_admin?
+      elsif user.is?(:admin)
+        if user.id == user_inview.id 
+          true
+        elsif (user_inview.is?(:teacher) || user_inview.is?(:parent))
+          user.id == user_inview.parent_id 
+        else
+          false
+        end
+      elsif 
+        user.id == user_inview.id
+      end
     end
   end
 end

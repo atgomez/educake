@@ -58,6 +58,7 @@ class User < ActiveRecord::Base
   has_many :children, :class_name => "User", :foreign_key => 'parent_id' 
   belongs_to :parent, :class_name => "User", :foreign_key => 'parent_id'  
   has_many :students, :foreign_key => "teacher_id", :dependent => :destroy
+  has_many :goals, :through => :students
 
   # All students belong to the current users and students are shared to the current user.
   # TODO: this association does not work probably when calling like this: user.accessible_students.order("first_name")
@@ -214,6 +215,11 @@ class User < ActiveRecord::Base
   end # End class methods.
 
   # Instance methods
+
+  def ability
+    @ability ||= Ability.new(self)
+  end
+  delegate :can?, :cannot?, :to => :ability
   
   def accessible_students
     union_sql = %Q{
@@ -322,6 +328,41 @@ class User < ActiveRecord::Base
     end
 
     return result
+  end
+
+  # EXPORTING
+
+
+  # Collect data for charting
+
+  def series_json(params={}, context)
+    series = []
+    if self.is?(:admin)
+      teachers = self.children.teachers.unlocked
+      teachers.map do |teacher|
+        teacher_status = teacher.teacher_status
+        series << {
+          :name => teacher.full_name,
+          :data => teacher_status,
+          :yAxis => 2,
+          :item_id => teacher.id,
+          :url => context.admin_teacher_path(teacher)
+        } unless teacher_status.empty?
+      end
+    else
+      students = self.accessible_students.includes(:goals)
+      students.map do |student|
+        goals_grades = student.goals_grades
+        series << {
+          :name => student.full_name,
+          :data => goals_grades,
+          :yAxis => 2,
+          :item_id => student.id,
+          :url => context.student_path(student)
+        } unless goals_grades.empty?
+      end
+    end
+    series.to_json
   end
 
   protected

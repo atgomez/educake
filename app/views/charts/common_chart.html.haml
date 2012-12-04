@@ -1,0 +1,229 @@
+%div{:style => "position:absolute; width:100%; height:0px; z-index:2000"}
+  %button#highchart_reset_button{:style => "float:right; display:none; margin: 20px"}
+    Reset Zoom
+#common_chart{:style=>"width: 100%; height: 100%; margin: 0; position:absolute; left:0px"}
+
+- if !@series
+  - @series = series
+
+// Create the chart
+- content_for(:js) do
+  :javascript
+    function printDate() {
+      var temp = new Date();
+      var dateStr = padStr(temp.getFullYear()) + " " +
+                    padStr(1 + temp.getMonth()) + " " +
+                    padStr(temp.getDate());
+      return(dateStr );
+    }
+
+    function padStr(i) {
+      return (i < 10) ? "0" + i : "" + i;
+    }
+
+    var chart;
+    $(function(){
+      var series = jQuery.parseJSON(#{@series.to_json})
+      $.each(series, function(indx, seri) {
+        var data = seri["data"];
+        $.each(seri["data"], function(i, dt){
+          var parts = dt[0].match(/(\d+)/g);
+          //data[i][0] = helper.parse_date(dt[0], "yy-mm-dd").getTime();
+          data[i][0] = Date.UTC(parts[0], parts[1]-1, parts[2]);
+
+
+          data["animation"] = false;
+          series[indx]["animation"] = false;
+        
+        })
+        seri["data"] = data;
+      });
+
+      $(document).ready(function() {
+        chart = new Highcharts.Chart({
+        chart: {
+          renderTo: 'common_chart',
+          type: 'spline',
+          forExport: true,
+          zoomType: 'xy',
+          height : $('#common_chart').height() , 
+          width : $('#common_chart').width() ,
+          animation: false,
+          events: {
+              load: function(event) {
+                this.zoomOut();
+                $.each(this.series , function(indx, seri) {
+                  if (seri.points.length == 1)
+                    seri.points[0].update({
+                        marker: {
+                          enabled: true,
+                          width: 1
+                        }
+                    });
+                });
+                if(typeof parent.chartLoaded == 'function')
+                    parent.chartLoaded(this); 
+              },
+              click: function(event) {
+                if(typeof parent.clickOnChart == 'function')
+                  parent.clickOnChart(); 
+              },
+              selection: function(event) {
+                if (event.xAxis) {
+                  hasZoom = true;
+                  $(highchart_reset_button).show()
+              }
+            }
+          },
+          marginRight: 50,
+          marginBottom: 50,
+          resetZoomButton: {
+                position: {
+                    // align: 'right', // by default
+                    // verticalAlign: 'top', // by default
+                    x: -10000,
+                    y: -10000
+                },
+                relativeTo: 'chart'
+            }
+        },
+        title: {
+          text: ''
+        },
+        subtitle: {
+          text: ''
+        },
+        credits: {
+        	enabled: false
+        },
+        exporting: {
+          enabled: false
+        },
+        xAxis: {
+          type: 'datetime',
+          minTickInterval: 24 * 3600 * 1000,
+          numberOfTicks: 10,
+          labels: {
+            formatter: function() {
+              var a = new Date(this.value);
+              return Highcharts.dateFormat('%b %e, %y', a);
+            },
+            style: {
+              'text-decoration': 'underline',
+              color: '#315984'
+            }
+          },
+        },
+        yAxis: [{
+          min: 0,
+          title: {
+            text: 'Accuracy'
+          },
+          labels: {
+              formatter: function() {
+                  return this.value +'%'
+              }
+          },
+          plotLines: [{
+              value: 0,
+              width: 1,
+              color: '#808080'
+          }],
+          showEmpty: false
+        },{
+          min: 0,
+          title: {
+            text: ''
+          },
+          labels: {
+              formatter: function() {
+                  return this.value +'%'
+              }
+          },
+          plotLines: [{
+              value: 0,
+              width: 1,
+              color: '#808080'
+          }]
+        },{
+          title: {
+            text: 'Status'
+          },
+          labels: {
+              formatter: function() {
+                  return this.value +'%'
+              }
+          },
+          plotLines: [{
+              value: 0,
+              width: 1,
+              color: '#808080'
+          }],
+          showEmpty: false
+        }],
+        legend: {
+          layout: 'vertical',
+          backgroundColor: '#FFFFFF',
+          align: 'left',
+          verticalAlign: 'top',
+          floating: false,
+          shadow: true
+        },
+        tooltip: {
+          formatter: function() {
+            return ''+
+              Highcharts.dateFormat('%b %e, %y', this.x) +': '+ this.y + "%";
+          }
+        },
+        
+        plotOptions: {
+          spline: {
+            events: {
+              'click': function() {
+                 current = this
+                 $(chart.series).each(function(idx, item) {
+                    if (item == current) {
+                      if (current.options.item_id)
+                        if(typeof parent.selectGoal == 'function'){
+                          var value = current.color;
+                          if (current.options.url)
+                            value = current.options.url
+                          parent.selectGoal(current.options.item_id, value); 
+                        }
+                    }
+                 });
+              }
+            },
+            lineWidth: 2,
+            states: {
+                hover: {
+                    lineWidth: 3
+                }
+            },
+            marker: {
+                enabled: false,
+                states: {
+                    hover: {
+                        enabled: true,
+                        lineWidth: 1
+                    }
+                }
+            },
+          },
+        },
+        series: series
+
+        });
+      });
+
+      
+      $('#highchart_reset_button').click(function() {
+        chart.zoomOut();
+
+        hasZoom = false;
+        $(highchart_reset_button).hide()
+      });
+
+
+    });
+  
