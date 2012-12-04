@@ -30,23 +30,6 @@ class TeachersController < ApplicationController
     @students = current_user.accessible_students
   end
   
-  def show_charts 
-    @series = []
-    @students = current_user.accessible_students.includes(:goals)
-    @students.map do |student|
-      goals_grades = student.goals_grades
-      @series << {
-        :name => student.full_name,
-        :data => goals_grades,
-        :yAxis => 2,
-        :item_id => student.id,
-        :url => student_path(student)
-      } unless goals_grades.empty?
-    end
-    @series = @series.to_json
-    render :template => 'students/common_chart', :layout => "chart"
-  end
-  
   protected
 
     def set_current_tab

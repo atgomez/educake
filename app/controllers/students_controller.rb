@@ -57,14 +57,6 @@ class StudentsController < ApplicationController
       render :action => :edit
     end
   end 
-  
-  def common_chart
-    @series = []
-    @student = Student.find params[:id]
-    
-    @series = @student.series_json params
-    render :template => 'students/common_chart', :layout => "chart"
-  end
 
   def load_users 
     users = StudentSharing.where(:student_id => params[:id])
@@ -84,12 +76,6 @@ class StudentsController < ApplicationController
     else 
       render :json => {:existed => false}
     end
-  end 
-  
-  def chart 
-    @goal = Goal.find params[:goal_id]
-    @series = @goal.series_json(params)
-    render :template => 'students/common_chart', :layout => "chart"
   end 
 
   protected

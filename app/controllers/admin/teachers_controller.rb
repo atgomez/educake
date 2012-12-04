@@ -97,44 +97,6 @@ class Admin::TeachersController < Admin::BaseAdminController
       end
     end
   end
-  
-  def show_charts 
-    @series = []
-    @teacher = find_or_redirect(session[:teacher_id])
-    return if @teacher.blank?
-    
-    @students = @teacher.accessible_students.includes(:goals)
-    @students.map do |student|
-      goals_grades = student.goals_grades
-      @series << {
-        :name => student.full_name,
-        :data => goals_grades,
-        :yAxis => 2,
-        :item_id => student.id,
-        :url => admin_student_path(student)
-      } unless goals_grades.empty?
-    end
-    @series = @series.to_json
-    render :template => 'students/common_chart', :layout => "chart"
-  end
-
-  def show_teachers_chart
-    @teacher = User.find_by_id params[:id]
-    teachers = @teacher.children.teachers.unblocked
-    @series = []
-    teachers.map do |teacher|
-      teacher_status = teacher.teacher_status
-      @series << {
-        :name => teacher.full_name,
-        :data => teacher_status,
-        :yAxis => 2,
-        :item_id => teacher.id,
-        :url => admin_teacher_path(teacher)
-      } unless teacher_status.empty?
-    end
-    @series = @series.to_json
-    render :template => 'students/common_chart', :layout => "chart"
-  end
 
   # GET: /admin/teacher/search?query=<QUERY>
   # TODO: optimize this method
