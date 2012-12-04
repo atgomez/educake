@@ -295,7 +295,7 @@ loadPage= (evt, element) ->
 
 loadGrades= (id) ->
   $.ajax({
-    url: "/students/load_grades",
+    url: "/goals/load_grades",
     type: 'GET',
     data: {goal_id: id},
     success: (res) ->

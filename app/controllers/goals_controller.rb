@@ -1,6 +1,6 @@
 class GoalsController < ApplicationController
   cross_role_action :new_grade, :add_grade, :update_grade, :initial_import_grades, :import_grades,
-                    :new, :edit, :create, :update, :destroy
+                    :new, :edit, :create, :update, :destroy, :load_grades
 
   def new
     @student = Student.find_by_id(params[:student_id])
@@ -215,4 +215,11 @@ class GoalsController < ApplicationController
     # Render result
     redirect_to(redirect_link)
   end
+  
+  def load_grades
+    goal = Goal.find_by_id params[:goal_id]
+    grades = goal.grades.order('due_date ASC').load_data(filtered_params)
+    render :partial => "shared/load_grades", :locals => {:grades => grades}
+  end 
+  
 end

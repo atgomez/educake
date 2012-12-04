@@ -44,6 +44,7 @@ TeacherMgnt::Application.routes.draw do
       post :add_grade
       get :initial_import_grades
       put :import_grades
+      get :load_grades
     end
 
     member do
@@ -57,7 +58,6 @@ TeacherMgnt::Application.routes.draw do
   as :user do
     match '/user/confirmation' => 'user_confirmations#update', :via => :put, :as => :update_user_confirmation
   end
-
   get '/admin', :to => "admin/base_admin#index"
   get '/super_admin', :to => "super_admin/base_super_admin#index"
   namespace :admin do
@@ -80,10 +80,6 @@ TeacherMgnt::Application.routes.draw do
         get :load_users
         get :load_grade
         get :search_user
-        get :load_grades
-      end 
-      collection do 
-        get :load_grades
       end 
     end
   end

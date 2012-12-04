@@ -1,7 +1,7 @@
 class StudentsController < ApplicationController
   include ::Shared::StudentActions
   before_filter :destroy_session, :except => [:show, :destroy]
-  cross_role_action :common_chart, :chart, :load_grades, :search_user, 
+  cross_role_action :common_chart, :chart, :search_user, 
                     :show, :create, :edit, :update
 
   def index
@@ -70,12 +70,6 @@ class StudentsController < ApplicationController
     users = StudentSharing.where(:student_id => params[:id])
     render :partial => "shared/students/view_invited_user", :locals => {:invited_users => users}
   end
-  
-  def load_grades
-    goal = Goal.find_by_id params[:goal_id]
-    grades = goal.grades.order('due_date ASC').load_data(filtered_params)
-    render :partial => "shared/load_grades", :locals => {:grades => grades}
-  end 
   
   def search_user
     user = User.find_by_email(params[:email])
