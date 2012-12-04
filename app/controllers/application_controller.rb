@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   before_filter :set_current_tab
   before_filter :restrict_namespace
   before_filter :pagination_ajax_setting
-  before_filter :check_blocked_account, :only => [:update, :create, :delete, :show, :index]
+  before_filter :check_blocked_account
 
   rescue_from CanCan::AccessDenied, :with => :render_unauthorized 
 
@@ -33,10 +33,10 @@ class ApplicationController < ActionController::Base
   end
   
   def check_blocked_account
-    return if (current_user.blank? && self.is_devise_controller?)
-    if current_user && current_user.is_locked 
-      flash[:alert] = "Your Account  was blocked."
-      redirect_to (request.referer.present? ? blocked_account_path : user_session_path)
+    user = current_user
+    return if (user.blank? || self.is_devise_controller?)
+    if user && user.is_blocked?
+      render_error(I18n.t("common.error_blocked_account"), :status => 403)
     end
   end 
 
@@ -91,13 +91,29 @@ class ApplicationController < ActionController::Base
     end
     
     def render_unauthorized
+      render_error(I18n.t("common.error_unauthorized"), :status => 403)
+    end
+
+    # Render error message. This method can handle HTML and JSON format.
+    #
+    # === Parameters
+    #
+    #   * message (String): the error message
+    #   * options (Hash) (optional): extra options for Rails render method, Ex :layout, :status, etc.
+    #
+    def render_error(message, options = {})
+      # Set default status code (if necessary)
+      options = {:status => 400}.merge!(options)
+
       respond_to do |format|
         format.html {
-          render :file => "public/403.html", :status => 403, :layout => false
+          flash[:alert] = message
+          render("shared/error", options)
         }
         
         format.json {
-          render :json => I18n.t("common.error_unauthorized"), :status => 403
+          options.merge!({:json => message})
+          render(options)
         }
       end
     end

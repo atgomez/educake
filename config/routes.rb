@@ -1,12 +1,16 @@
 TeacherMgnt::Application.routes.draw do
+  # Config for dynamic root url
+  # DO NOT change the order of the root config, otherwise it will not work properly
+  root :to => "super_admin/schools#index", :constraints => RoleRouteConstraint.new(:super_admin)
+  root :to => "admin/teachers#index", :constraints => RoleRouteConstraint.new(:admin)
+  root :to => "teachers#index", :constraints => RoleRouteConstraint.new(:parent, :teacher)
+  root :to => "home#index"
+
   resources :export do
     collection do
       get :export_student
     end
   end
-
-  root :to => "home#index"
-  match "blocked_account" => "home#show_blocked_account"
   resources :teachers do 
     collection do 
       get :show_charts

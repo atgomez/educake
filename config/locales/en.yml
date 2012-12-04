@@ -6,6 +6,7 @@ en:
     invalid_params: "Invalid parameters"
     error_resource_notfound: "Resource not found"
     error_unauthorized: "You are not authorized to access this resource"
+    error_blocked_account: "Your account was blocked. Please contact the administrator."
     confirm_message: "Are you sure ?"
 
     gender:
