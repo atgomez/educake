@@ -1,6 +1,5 @@
 .header.well
-  .text-head
-    Hello John Doe!
+  .text-head= "Hello #{resource.try(:full_name)}!"
   .text-head
     You're invited to Teacher Management. Please change your password.
 

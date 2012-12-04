@@ -1,4 +1,4 @@
-class UserConfirmationsController < Devise::ConfirmationsController
+class Devise::UserConfirmationsController < Devise::ConfirmationsController
   skip_before_filter :authenticate_user!
   skip_authorization_check
 
