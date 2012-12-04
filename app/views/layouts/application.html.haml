@@ -14,8 +14,23 @@
         .clearfix
         .header
           %a.logo{:href => "/"}
+        #menu
+          / = render "shared/menu"
         .separator
 
+      - if notice
+        %div{:class => "alert alert-success fade in", 'data-alert' => "alert"}
+          %a{:class => "close", 'data-dismiss' => 'alert', :href => "#"} &times;
+          = notice
+
+      - if alert
+        %div{:class => "alert alert-error fade in", 'data-alert' => "alert"}
+          %a{:class => "close", 'data-dismiss' => "alert", :href => "#"} &times;
+          = alert
+
       = yield
+
     .footer
       = render(:partial => "shared/version")
+
+    = yield :js

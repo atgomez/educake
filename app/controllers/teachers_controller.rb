@@ -1,6 +1,4 @@
 class TeachersController < ApplicationController
-  layout "common"
-
   check_authorization
   authorize_resource :user
 
