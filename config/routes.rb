@@ -1,6 +1,4 @@
 TeacherMgnt::Application.routes.draw do
-  resources :schools
-
   resources :export do
     collection do
       get :export_student
