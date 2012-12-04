@@ -24,7 +24,7 @@ window.studentObject =
   setup: ->
     @addDatePicker()
     @clickOnGoal()
-    @clickOnStatus()
+    @clickOnGrade()
     @clickOnUsers()
     @activeTab()
     @clickOnStudents() 
@@ -49,7 +49,7 @@ window.studentObject =
         $("#student_selection").removeAttr("disabled")
 
   timeForField: ->
-    $('#status_time_to_complete').live "focus", ->
+    $('#grade_time_to_complete').live "focus", ->
       $(this).timepicker 
         hourGrid: 4,
         minuteGrid: 10
@@ -57,7 +57,7 @@ window.studentObject =
   
   allowInputNumber: ->
     $('#user_phone').filter_input({regex:'[0-9]'})
-    $('#status_value').filter_input({regex:'[0-9.]', live:true})
+    $('#grade_value').filter_input({regex:'[0-9.]', live:true})
     $(".numeric").filter_input({regex:'[0-9.]', live:true})
     $('#user_first_name').filter_input({regex:'[a-zA-Z- ]', live:true})
     $('#user_last_name').filter_input({regex:'[a-zA-Z- ]', live:true}) 
@@ -140,7 +140,7 @@ window.studentObject =
          $("#student_sharing_role_id").attr("disabled", false)
       
   clickOnGoal: -> 
-    $(".status a.goal").live 'click', () -> 
+    $(".grade a.goal").live 'click', () -> 
       page_id = ""
       href = $(".pagination li.active a").attr("href")
       if href
@@ -159,7 +159,7 @@ window.studentObject =
         $('#chart').attr("src", "/students/chart?goal_id="+id + "&color=" + $(this).attr('color'));
         $('#chart').attr("height", "500");
         $('#chart').attr("width", "100%");
-        $(".status a.goal").each ->
+        $(".grade a.goal").each ->
           if $(this).hasClass("icon-minus") && ($(this).attr("href") != id_content)
             $(this).removeClass("icon-minus").addClass("icon-plus")
             id = $(this).attr("href")
@@ -183,33 +183,33 @@ window.studentObject =
   activeTab: ->
     if $("#tab").val() == "user"
       $("#users").addClass("active")
-      $("#status").removeClass("active")
+      $("#grade").removeClass("active")
       loadUser()
     return
 
     
   clickPage: ->
-    $("#content-status").delegate '#goals_pages .pagination ul li a', 'click', (evt)-> 
-      loadPage(evt, "#content-status")
+    $("#content-grade").delegate '#goals_pages .pagination ul li a', 'click', (evt)-> 
+      loadPage(evt, "#content-grade")
 
-    $("#content-status .grades-container .pagination ul li a").live "click", (evt) ->
+    $("#content-grade .grades-container .pagination ul li a").live "click", (evt) ->
       evt.preventDefault()
       loadPage(evt, $(this).parents(".grades-container"))
     return 
    
-  clickOnStatus: ->
-    $("#status").click (e) ->
+  clickOnGrade: ->
+    $("#grade").click (e) ->
       e.preventDefault()
       $(this).addClass("active")
       $("#users").removeClass("active")
       $.ajax
         type: "GET"
-        url: $("#student_id").val()+"/load_status"
+        url: $("#student_id").val()+"/load_grade"
         data: {}
         success: (data)->
-          $(".status").attr("style","display:block")
+          $(".grade").attr("style","display:block")
           $(".users").attr("style","display:none")
-          $("#content-status").html(data)
+          $("#content-grade").html(data)
           return
         error: (errors, status)->
           $(".ajax-loading").addClass "hidden"
@@ -226,13 +226,13 @@ window.studentObject =
     $("#users").click (e) ->
       e.preventDefault()
       $(this).addClass("active")
-      $("#status").removeClass("active")
+      $("#grade").removeClass("active")
       loadUser()
       return
       
     $("#show_user").click ->
      $("#users").addClass("active")
-     $("#status").removeClass("active")
+     $("#grade").removeClass("active")
      loadUser()
      return
     return false
@@ -266,7 +266,7 @@ loadUser = ->
     data: {}
     success: (data)->
       $(".users").attr("style","display:block")
-      $(".status").attr("style","display:none")
+      $(".grade").attr("style","display:none")
       $("#content-users").html(data)
       return
     error: (errors, status)->
@@ -278,7 +278,7 @@ loadPage= (evt, element) ->
   evt.preventDefault()
   
   # Mask loading
-  #$('#content-status').addClass('loading')
+  #$('#content-grade').addClass('loading')
   sender = evt.target
   $.ajax({
     url: sender.href
@@ -289,7 +289,7 @@ loadPage= (evt, element) ->
     error: (data) ->
       return
     complete: () ->
-      $('#content-status').removeClass 'loading'
+      $('#content-grade').removeClass 'loading'
   })
   return
 

@@ -9,7 +9,7 @@
           = " " + goal.subject.name + " " + goal.curriculum.name
       
       .pull-right
-        .width-status.pull-left.accuracy.bold
+        .width-grade.pull-left.accuracy.bold
           = ::Util.round_f(goal.accuracy).to_s + "% by " + goal.due_date.strftime("%m/%Y")
         - if !on_edit_mode
           - if goal.on_track?
@@ -19,10 +19,10 @@
 
         - if on_edit_mode
           .pull-left.progress.progress-success.small
-            .bar.custom-bar{:style => "width: #{goal.goal_status}%"}
+            .bar.custom-bar{:style => "width: #{goal.goal_grade}%"}
 
           .complete-checkbox
-            = check_box_tag("complete_checkbox", goal.is_completed, goal.is_completed, :url => update_status_goal_path(goal), :id => "#{goal.id}", :class => "goal-complete")
+            = check_box_tag("complete_checkbox", goal.is_completed, goal.is_completed, :url => update_grade_goal_path(goal), :id => "#{goal.id}", :class => "goal-complete")
             = label_tag('complete_label', 'Goal complete')
             = link_to("Edit", edit_goal_path(goal, :student_id => @student.id), :class => "edit-goal", :remote => true)
             - redirect_link = url_for(:controller => "#{controller_namespace}/students", :action => 'edit', :id => @student.id)
@@ -30,7 +30,7 @@
                       :class => "delete-goal", :method => :delete, :confirm => t('common.confirm_message'))
         - else
           .pull-left.progress.progress-success
-            .bar.custom-bar{:style => "width: #{goal.goal_status}%"}
+            .bar.custom-bar{:style => "width: #{goal.goal_grade}%"}
 
       .clearfix
       .tab-content
@@ -39,8 +39,8 @@
           .introduce.wordwrap.pull-left{:class => (on_edit_mode ? 'small' : '')}
             = h goal.description
           .goal-progress.pull-right{:class => (on_edit_mode ? 'large' : '')}
-            - goal.progresses.order('due_date ASC').each do |status|
-              .width-status= ::Util.round_f(status.accuracy).to_s + "% by " + status.due_date.strftime("%m/%Y")
+            - goal.progresses.order('due_date ASC').each do |grade|
+              .width-grade= ::Util.round_f(grade.accuracy).to_s + "% by " + grade.due_date.strftime("%m/%Y")
           .clearfix
           .grades-container
   .pull-right#goals_pages= render_pagination goals

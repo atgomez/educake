@@ -133,16 +133,16 @@ class Student < ActiveRecord::Base
     end 
   end 
     
-  def goals_statuses
+  def goals_grades
     data = []
     progress = {}
     goals = self.goals
     goals.each do |goal|
-      statuses = goal.statuses.computable.order("due_date ASC")
-      statuses.map do |status|
-        vs_baseline = status.value - goal.baseline
-        progress[status.due_date] = [] if progress[status.due_date].nil?
-        progress[status.due_date] << vs_baseline/(goal.accuracy - goal.baseline)*100
+      grades = goal.grades.computable.order("due_date ASC")
+      grades.map do |grade|
+        vs_baseline = grade.value - goal.baseline
+        progress[grade.due_date] = [] if progress[grade.due_date].nil?
+        progress[grade.due_date] << vs_baseline/(goal.accuracy - goal.baseline)*100
       end 
     end
     
@@ -248,7 +248,7 @@ class Student < ActiveRecord::Base
 
     self.goals.incomplete.each do |goal|
       if !goal.on_track?
-        # Student status will not be on-track if there is any goal not on-track.
+        # Student grade will not be on-track if there is any goal not on-track.
         result = 2
         break
       else
@@ -280,7 +280,7 @@ class Student < ActiveRecord::Base
       sheet.add_row [nil], :style => left_text_style
       sheet.add_row [nil, "Status", "Due Date", "On Track"], :style => [left_text_style, bold, bold, bold]
       goals.each do |goal| 
-        sheet.add_row [goal.name, "#{(goal.goal_status*100).round / 100.0}%", 
+        sheet.add_row [goal.name, "#{(goal.goal_grade*100).round / 100.0}%", 
                       goal.due_date, 
                       goal.on_track? ? "ok" : "not ok"],
                       :style => [left_text_style, nil]
@@ -337,8 +337,8 @@ class Student < ActiveRecord::Base
     series = []
     goals.each do |goal| 
       data = []
-      goal.statuses.each{|status| 
-        data << [status.due_date, (status.accuracy*100).round / 100.0]
+      goal.grades.each{|grade| 
+        data << [grade.due_date, (grade.accuracy*100).round / 100.0]
       }
       #data << [goal.due_date, goal.accuracy]
       #Sort data by due date

@@ -36,8 +36,8 @@ en:
     delete_successfully: "Goal was remove successfully"
     delete_failed: "Cannot remove goal"
 
-  status:
-    created_successfully: "Created status successfully"
+  grade:
+    created_successfully: "Created grade successfully"
     import_successfully: "Imported .csv file for grades successfully"
     save_failed: "Some grades are invalid"
 

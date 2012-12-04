@@ -10,7 +10,7 @@ class TeachersController < ApplicationController
     series = []
     students = @user.accessible_students
     students.map do |student|
-      series += student.goals_statuses
+      series += student.goals_grades
     end
     if series.empty?
       @width = "0%"
@@ -36,14 +36,14 @@ class TeachersController < ApplicationController
     @series = []
     @students = current_user.accessible_students.includes(:goals)
     @students.map do |student|
-      goals_statuses = student.goals_statuses
+      goals_grades = student.goals_grades
       @series << {
         :name => student.full_name,
-        :data => goals_statuses,
+        :data => goals_grades,
         :yAxis => 2,
         :item_id => student.id,
         :url => student_path(student)
-      } unless goals_statuses.empty?
+      } unless goals_grades.empty?
     end
     @series = @series.to_json
     render :template => 'students/common_chart', :layout => "chart"

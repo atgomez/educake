@@ -16,13 +16,13 @@ module Shared::StudentActions
     end
   end
 
-  def load_status
+  def load_grade
     goals = Goal.load_data(filtered_params).where(:student_id => params[:id])
-    @goals_statuses = {}
+    @goals_grades = {}
     goals.each do |goal|
-      @goals_statuses[goal.id] = goal.statuses.order('due_date ASC').load_data(filtered_params)
+      @goals_grades[goal.id] = goal.grades.order('due_date ASC').load_data(filtered_params)
     end 
-    render :partial => "shared/students/view_goal", :locals => {:goals => goals, :statuses => @goals_statuses}
+    render :partial => "shared/students/view_goal", :locals => {:goals => goals, :grades => @goals_grades}
   end
   
   def destroy

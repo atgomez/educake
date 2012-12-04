@@ -29,11 +29,11 @@ class Goal < ActiveRecord::Base
 
   attr_accessible :accuracy, :curriculum_id, :due_date, :subject_id, :progresses_attributes, 
                   :baseline_date, :baseline, :trial_days_total, :trial_days_actual, 
-                  :grades, :is_completed, :description
+                  :grades_data, :is_completed, :description
 
   # ASSOCIATION
   has_many :progresses, :dependent => :destroy
-  has_many :statuses, :dependent => :destroy
+  has_many :grades, :dependent => :destroy
   belongs_to :student 
   belongs_to :subject 
   belongs_to :curriculum
@@ -48,7 +48,7 @@ class Goal < ActiveRecord::Base
     progress['accuracy'].blank? || progress['due_date'].blank?
   }
 
-  has_attached_file :grades, 
+  has_attached_file :grades_data, 
                     #:storage => :s3, 
                     #:s3_credentials => "#{Rails.root}/config/amazon_s3.yml",
                     :url  => ":rails_root/public/imports/:id/:style.:extension",
@@ -56,12 +56,12 @@ class Goal < ActiveRecord::Base
   
   # SCOPE
   scope :incomplete, where('is_completed = ?', false)
-  attr_accessor :last_status #For add/update purpose
+  attr_accessor :last_grade #For add/update purpose
 
   # CALLBACK
   before_validation :update_progresses
   before_save :custom_validations
-  after_save :update_all_status  
+  after_save :update_all_grade  
 
   # CLASS METHODS
   class << self
@@ -103,9 +103,9 @@ class Goal < ActiveRecord::Base
   end
 
   # Instance methods.
-  def update_status_state(status)
-    due_date = status.due_date
-    return status if (!due_date || due_date < self.baseline_date || due_date > self.due_date)
+  def update_grade_state(grade)
+    due_date = grade.due_date
+    return grade if (!due_date || due_date < self.baseline_date || due_date > self.due_date)
 
     # Initilization Data
     arr_progress_date = []
@@ -124,7 +124,7 @@ class Goal < ActiveRecord::Base
     arr_progress_accuracy << self.accuracy
 
     #
-    # Find the progress contains this status
+    # Find the progress contains this grade
     #
     current_progress_index = arr_progress_date.length - 1 # Default is goal date
     tmp_index = 0
@@ -146,39 +146,39 @@ class Goal < ActiveRecord::Base
     #
     # Find the ideal value
     #
-    distance_day_of_status = (status.due_date - previous_due_date).to_i
+    distance_day_of_grade = (grade.due_date - previous_due_date).to_i
     distance_day_of_progress = (current_due_date - previous_due_date).to_i
     needed_value_for_ideal_goal = current_progress - previous_progress
 
-    ideal_increment_value = needed_value_for_ideal_goal*distance_day_of_status/distance_day_of_progress
-    status.ideal_value = previous_progress + ideal_increment_value
+    ideal_increment_value = needed_value_for_ideal_goal*distance_day_of_grade/distance_day_of_progress
+    grade.ideal_value = previous_progress + ideal_increment_value
 
     #
     # Find the value
     #
     
-    # Get the list of [trial_days_total] previous statuses
-    previous_statuses = self.statuses.find(:all, :conditions => ['statuses.due_date < ?', status.due_date], :order => 'due_date DESC', :limit => (self.trial_days_total - 1))
+    # Get the list of [trial_days_total] previous grades
+    previous_grades = self.grades.find(:all, :conditions => ['grades.due_date < ?', grade.due_date], :order => 'due_date DESC', :limit => (self.trial_days_total - 1))
     
     # Sort by accuracy
-    previous_statuses = previous_statuses.sort_by { |hsh| hsh[:accuracy] }
+    previous_grades = previous_grades.sort_by { |hsh| hsh[:accuracy] }
 
-    if previous_statuses.count >= (self.trial_days_total - 1) #If enough statuses for calculating
+    if previous_grades.count >= (self.trial_days_total - 1) #If enough grades for calculating
       lowest_value_count = self.trial_days_total - self.trial_days_actual
       sum_value = 0
-      (lowest_value_count...9).each {|index| sum_value = sum_value + previous_statuses[index][:value]}
+      (lowest_value_count...9).each {|index| sum_value = sum_value + previous_grades[index][:value]}
 
-      # Add current status value to total
-      sum_value = sum_value + status.accuracy.to_f
-      status.value = sum_value/self.trial_days_actual
-      status.is_unused = false
+      # Add current grade value to total
+      sum_value = sum_value + grade.accuracy.to_f
+      grade.value = sum_value/self.trial_days_actual
+      grade.is_unused = false
 
-    else # If not enough status, set accuracy equal to value
-      status.value = status.accuracy
-      status.is_unused = true
+    else # If not enough grade, set accuracy equal to value
+      grade.value = grade.accuracy
+      grade.is_unused = true
     end
 
-    return status
+    return grade
   end
 
   # Get date in string.
@@ -190,19 +190,19 @@ class Goal < ActiveRecord::Base
     ::Util.date_to_string(self.baseline_date)
   end
 
-  def last_status
-    self.statuses.computable.order(:due_date).last
+  def last_grade
+    self.grades.computable.order(:due_date).last
   end
 
   # Check if a grade exist in now
   def on_grade_now?
-    !self.statuses.where(:due_date => Time.now).blank?
+    !self.grades.where(:due_date => Time.now).blank?
   end
 
   # Check if number of grades over trial date total
   def on_over_trial_days?
     result = false
-    if self.last_status and self.statuses.length >= self.trial_days_total
+    if self.last_grade and self.grades.length >= self.trial_days_total
       result = true
     end
     return result
@@ -215,7 +215,7 @@ class Goal < ActiveRecord::Base
     # TODO: should limit the minimum date?
     # min_date = Time.zone.now.to_date - self.trial_days_total.days
     
-    recent_grades = self.statuses.order(
+    recent_grades = self.grades.order(
       "due_date DESC"
     ).limit(self.trial_days_actual)
 
@@ -359,49 +359,49 @@ class Goal < ActiveRecord::Base
     (3-count_progress).times { self.progresses.build } if count_progress < 3
   end
 
-  def build_status(params, is_updatable = false)
+  def build_grade(params, is_updatable = false)
     #Find progress
     progress = self.progresses.find(:first, :conditions => ['due_date >= ?', params[:due_date]], :order => 'due_date ASC')
-    status = nil
+    grade = nil
     if is_updatable
-      status = self.statuses.find_or_initialize_by_due_date(params[:due_date])
-      status.goal = self
-      status.accuracy = params[:accuracy]
-      status.time_to_complete = params[:time_to_complete]
+      grade = self.grades.find_or_initialize_by_due_date(params[:due_date])
+      grade.goal = self
+      grade.accuracy = params[:accuracy]
+      grade.time_to_complete = params[:time_to_complete]
     else
-      status = self.statuses.new params
+      grade = self.grades.new params
     end
     
     if progress
-      status.progress = progress
+      grade.progress = progress
     end
-    return status
+    return grade
   end
   
   def parse_csv(path)
-    statuses = []
+    grades = []
     CSV.foreach(path) do |row|
-      statuses << {
+      grades << {
           :due_date => row[0],
           :accuracy => row[1].split("%").first,
           :time_to_complete => row[2]
         }
     end
 
-    return statuses
+    return grades
   end 
   
-  def goal_status
-    status = self.last_status
-    if (status)
-      vs_baseline = status.value - self.baseline
+  def goal_grade
+    grade = self.last_grade
+    if (grade)
+      vs_baseline = grade.value - self.baseline
       vs_baseline/(self.accuracy - self.baseline)*100
     else
       0
     end
   end
 
-  def grade_status(grade)
+  def grade_grade(grade)
     if (grade)
       vs_baseline = grade.value - self.baseline
       vs_baseline/(self.accuracy - self.baseline)*100
@@ -426,7 +426,7 @@ class Goal < ActiveRecord::Base
       sheet.add_row ["Report Date:", Date.today], :style => [left_text_style , nil]
       sheet.add_row [""], :style => left_text_style
       sheet.add_row ["", "Status", "Due Date", "On Track"], :style => [left_text_style, bold, bold, bold]
-      sheet.add_row [self.name, "#{(goal_status*100).round / 100.0}%", 
+      sheet.add_row [self.name, "#{(goal_grade*100).round / 100.0}%", 
                       due_date, 
                       on_track? ? "ok" : "not ok"], 
                     :style => [left_text_style, nil]
@@ -442,8 +442,8 @@ class Goal < ActiveRecord::Base
       (1..3).each {sheet.add_row [""], :style => left_text_style}
 
       sheet.add_row ["", "Date","Score"], :style => [left_text_style, bold, bold]
-      self.statuses.order(:due_date).each do |status|
-        sheet.add_row ["", status.due_date, "#{status.accuracy}%"], :style => [left_text_style, nil]
+      self.grades.order(:due_date).each do |grade|
+        sheet.add_row ["", grade.due_date, "#{grade.accuracy}%"], :style => [left_text_style, nil]
       end
 
       image_path = ChartProcess.renderPNG(context, tmpdir, self.series_json)
@@ -483,10 +483,10 @@ class Goal < ActiveRecord::Base
     if color && color == '#4572A7'
       series[0][:color] = "#AA4643"
     end
-    # For add status  
+    # For add grade  
     data = []
-    self.statuses.each{|status| 
-      data << [status.due_date, (status.accuracy*100).round / 100.0]
+    self.grades.each{|grade| 
+      data << [grade.due_date, (grade.accuracy*100).round / 100.0]
     }
     data = data.sort_by { |hsh| hsh[0] }
     series << {
@@ -506,11 +506,11 @@ class Goal < ActiveRecord::Base
       end
     end
 
-    def update_all_status
+    def update_all_grade
       self.transaction do
-        self.statuses.each do |status|
-          self.update_status_state(status)
-          status.save
+        self.grades.each do |grade|
+          self.update_grade_state(grade)
+          grade.save
         end
       end      
     end

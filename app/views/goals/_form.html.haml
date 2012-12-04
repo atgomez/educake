@@ -13,7 +13,7 @@
       - unless goal.new_record?
         - if goal.is_completed == true
           %div{:style=>"font-style:italic;"} Editing this goal will mark it as incomplete. You may mark it as complete below.
-    .modal-body
+    .modal-body{:style => "max-height:250px"}
       - if notification = f.error_notification
         .alert.alert-error.fade.in
           %a{:class => "close", 'data-dismiss' => "alert", :href => "#"} &times;
@@ -48,7 +48,7 @@
         - idx = 1
         - goal.progresses.each do |progress|
           = f.simple_fields_for(:progresses, progress) do |f_progress|
-            %label.status-name= "Progress Report #{idx}"
+            %label.grade-name= "Progress Report #{idx}"
             = f_progress.input(:due_date, :as => :string, :input_html => {:class => "select-date", 
                   :value => progress.due_date_string, :id => "goal_#{goal.id}_#{progress.object_id}"}, :label => "Due Date")
             = f_progress.input :accuracy, :as => :string, :label => "% Accuracy"
@@ -66,15 +66,16 @@
 
 
 :javascript
-  $("##{id}").on('show', function(){
+  /*
+   $("##{id}").on('show', function(){
     var win_height = $(window).height();
     //if(win_height <= $(this).height()){
-      var form_max_height = win_height - 400;
-      if(form_max_height <= 0)
-        form_max_height = 100;
-        
-      $(this).find(".modal-body").css({
-        "max-height": form_max_height + "px"
-      });
-    //}
-  })
+    var form_max_height = win_height - 400;
+    if(form_max_height <= 0)
+      form_max_height = 100;
+      
+    $(this).find(".modal-body").css({
+      "max-height": form_max_height + "px"
+    });
+  });*/
+  

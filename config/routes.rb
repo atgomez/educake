@@ -20,7 +20,7 @@ TeacherMgnt::Application.routes.draw do
   resources :students do 
     member do 
       get :load_users
-      get :load_status
+      get :load_grade
       get :search_user
       get :common_chart
     end
@@ -32,14 +32,14 @@ TeacherMgnt::Application.routes.draw do
 
   resources :goals do 
     collection do 
-      get :new_status 
-      post :add_status
+      get :new_grade 
+      post :add_grade
       get :initial_import_grades
       put :import_grades
     end
 
     member do
-      put :update_status
+      put :update_grade
     end
   end 
 
@@ -70,7 +70,7 @@ TeacherMgnt::Application.routes.draw do
     resources :students do 
       member do 
         get :load_users
-        get :load_status
+        get :load_grade
         get :search_user
         get :load_grades
       end 

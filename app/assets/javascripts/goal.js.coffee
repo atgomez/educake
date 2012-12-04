@@ -4,7 +4,7 @@ window.goal =
   setup: ->
     @add_date_picker()
     @setup_form()
-    @update_status()
+    @update_grade()
     return
 
   add_date_picker: ->
@@ -16,7 +16,7 @@ window.goal =
         changeYear: true
       })
     )
-    $("#status_due_date").livequery( ->
+    $("#grade_due_date").livequery( ->
       $(this).datepicker({
         dateFormat: "mm-dd-yy",
         yearRange: "-10:+10",
@@ -45,7 +45,7 @@ window.goal =
           window.location.reload()
         ,
 
-        error: (xhr, textStatus, error) -> 
+        error: (xhr, textStatusx, error) -> 
           try
             res = $.parseJSON(xhr.responseText)
           catch exc
@@ -59,7 +59,7 @@ window.goal =
       return false
     )
 
-    $(".status-form").livequery('submit', (e) ->
+    $(".grade-form").livequery('submit', (e) ->
       e.preventDefault()
 
       data = $(this).serialize()
@@ -86,7 +86,7 @@ window.goal =
       return false
     )
 
-  update_status: ->
+  update_grade: ->
     $(".complete-checkbox .goal-complete").live 'click', ->
       if $(this).attr("checked")
         $(this).val('true')
@@ -95,7 +95,7 @@ window.goal =
 
       value = $(this).attr('value')
       url = $(this).attr('url')
-      data = {status: value}
+      data = {grade: value}
       goal_id = $(this).attr('id')
 
       $.ajax({

@@ -179,7 +179,7 @@ $color-font: #E17C25;
     ul.nav-tabs {
     border-bottom: 1px solid $color-font;
     }
-    .status, .users { 
+    .grade, .users { 
       border-bottom: 1px solid $color-font;
       border-right: 1px solid $color-font;
       border-left: 1px solid $color-font;
@@ -193,7 +193,7 @@ $color-font: #E17C25;
       .export {
         margin-right: 20px;
       }
-      #content-status {
+      #content-grade {
         margin: 0 30px 0 30px;
 
         .pagination {
@@ -315,7 +315,7 @@ $color-font: #E17C25;
   .width-subject {
     width: 260px;
   }
-  .width-status{
+  .width-grade{
     padding-right: 10px;
   }
 
@@ -412,7 +412,7 @@ $color-font: #E17C25;
 
 .student .tabbable{
   margin-top: 0;
-  .status{
+  .grade{
     border-top: 1px solid #E17C25;
   }
 }

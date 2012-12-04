@@ -255,7 +255,7 @@ class User < ActiveRecord::Base
     data = []
     progress = {}
     self.accessible_students.each do |student|
-      student_data = student.goals_statuses
+      student_data = student.goals_grades
       student_data.each do |single_data| 
         progress[single_data[0]] = [] if progress[single_data[0]].nil?
         progress[single_data[0]] << single_data[1]

@@ -12,8 +12,8 @@ class Admin::StudentsController < Admin::BaseAdminController
     @data = []
     goals = @student.goals.incomplete
     goals.each do |goal| 
-      goal.statuses.each{|status| 
-        @data += [status.due_date, (status.accuracy*100).round / 100.0]
+      goal.grades.each{|grade| 
+        @data += [grade.due_date, (grade.accuracy*100).round / 100.0]
       }
     end
     if @data.empty?

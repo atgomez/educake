@@ -122,7 +122,7 @@ form#student-form {
   }
 }
 
-form#new_student_sharing, form.edit_student_sharing, form#new_status {
+form#new_student_sharing, form.edit_student_sharing, form#new_grade {
   .form-inputs {
     // width: 350px;
     .control-group {
@@ -220,7 +220,7 @@ a {
     margin: 15px 0;
   }
 
-  #add-status{
+  #add-grade{
     margin-top: 15px;
   }
   #import-grade{
@@ -233,7 +233,7 @@ a {
       width: 400px;
     }
 
-    .width-status{
+    .width-grade{
       width: 140px;
     }
 

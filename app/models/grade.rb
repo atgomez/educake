@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: statuses
+# Table name: grades
 #
 #  id               :integer          not null, primary key
 #  goal_id          :integer          not null
@@ -17,7 +17,7 @@
 #  note             :text
 #
 
-class Status < ActiveRecord::Base
+class Grade < ActiveRecord::Base
   include ::SharedMethods::Paging  
 
   attr_accessible :accuracy, :due_date, :goal_id, :user_id,
@@ -39,7 +39,7 @@ class Status < ActiveRecord::Base
   scope :computable, where('is_unused = ?', false)
 
   # CALLBACK
-  before_update :update_status_state
+  before_update :update_grade_state
   before_save :validate_due_date
   
   # CLASS METHODS
@@ -89,8 +89,8 @@ class Status < ActiveRecord::Base
   
   protected
   
-    def update_status_state
-      self.goal.update_status_state(self)
+    def update_grade_state
+      self.goal.update_grade_state(self)
     end
 
     def validate_due_date

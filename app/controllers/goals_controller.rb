@@ -1,5 +1,5 @@
 class GoalsController < ApplicationController
-  cross_role_action :new_status, :add_status, :update_status, :initial_import_grades, :import_grades,
+  cross_role_action :new_grade, :add_grade, :update_grade, :initial_import_grades, :import_grades,
                     :new, :edit, :create, :update, :destroy
 
   def new
@@ -78,16 +78,16 @@ class GoalsController < ApplicationController
     render(:json => result, :status => status_code)
   end
   
-  def new_status 
-    @status = Status.new
-    @status.due_date = Date.today
+  def new_grade 
+    @grade = Grade.new
+    @grade.due_date = Date.today
     student = Student.find(session[:student_id])
     if student 
       @goals = student.goals.incomplete.map{|g| [[g.subject.name, g.curriculum.name].join(" "), g.id]}
     end 
   end
   
-  def add_status
+  def add_grade
     result = {}
     status_code = 201
     student = Student.find(session[:student_id])
@@ -95,41 +95,41 @@ class GoalsController < ApplicationController
       @goals = student.goals.incomplete.map{|g| [[g.subject.name, g.curriculum.name].join(" "), g.id]}
     end 
 
-    @goal = Goal.incomplete.find_by_id(params[:status][:goal_id])
+    @goal = Goal.incomplete.find_by_id(params[:grade][:goal_id])
     if (@goal)
-      @status = @goal.build_status params[:status]
-      if (@status)
-        @status = @goal.update_status_state(@status)
-        if @status.save
+      @grade = @goal.build_grade params[:grade]
+      if (@grade)
+        @grade = @goal.update_grade_state(@grade)
+        if @grade.save
           status_code = 201
-          result[:message] = I18n.t('status.created_successfully')
+          result[:message] = I18n.t('grade.created_successfully')
           flash[:notice] = result[:message]
         else
           status_code = 400
-          result[:message] = I18n.t('status.save_failed')
-          result[:html] = render_to_string(:partial => 'goals/form_status')
+          result[:message] = I18n.t('grade.save_failed')
+          result[:html] = render_to_string(:partial => 'goals/form_grade')
         end
       else
-        @status = Status.new params[:status]
-        @status.errors.add(:due_date, "must be in range")
+        @grade = Grade.new params[:grade]
+        @grade.errors.add(:due_date, "must be in range")
         status_code = 400
-        result[:message] = I18n.t('status.save_failed')
-        result[:html] = render_to_string(:partial => 'goals/form_status')
+        result[:message] = I18n.t('grade.save_failed')
+        result[:html] = render_to_string(:partial => 'goals/form_grade')
       end
     else
-      @status = Status.new params[:status]
-      @status.errors.add(:goal_id, "must be selected")
+      @grade = Grade.new params[:grade]
+      @grade.errors.add(:goal_id, "must be selected")
       status_code = 400
-      result[:message] = I18n.t('status.save_failed')
-      result[:html] = render_to_string(:partial => 'goals/form_status')
+      result[:message] = I18n.t('grade.save_failed')
+      result[:html] = render_to_string(:partial => 'goals/form_grade')
     end
 
     render(:json => result, :status => status_code)
   end
 
-  def update_status
+  def update_grade
     @goal = Goal.find(params[:id])
-    if @goal.update_attribute(:is_completed, params[:status])
+    if @goal.update_attribute(:is_completed, params[:grade])
       render(:json => {:message => I18n.t('goal.updated_successfully')}, :status => 200)
     else
       render(:json => {:message => I18n.t('goal.save_failed')}, :status => 400)
@@ -137,7 +137,7 @@ class GoalsController < ApplicationController
   end
 
   def initial_import_grades
-    @status = Status.new
+    @grade = Grade.new
     @student = Student.find(session[:student_id])
     @goals = []
     session[:student_id] = @student.id 
@@ -157,20 +157,20 @@ class GoalsController < ApplicationController
       unless @file_import.nil?
         @format_csv = @file_import.original_filename.include?(".csv")
         if @format_csv
-          @goal.update_attribute(:grades, @file_import)
-          statuses = @goal.parse_csv(@goal.grades.url.split("?")[0])
-          Status.transaction do 
-            statuses.map do |status|
-              day = status[:due_date].split("/")
+          @goal.update_attribute(:grades_data, @file_import)
+          grades = @goal.parse_csv(@goal.grades_data.url.split("?")[0])
+          Grade.transaction do 
+            grades.map do |grade|
+              day = grade[:due_date].split("/")
               day = [day[1], day[0], day[2]].join("/")
-              status[:due_date] = Date.parse day
-              build_status = @goal.build_status(status, true)
+              grade[:due_date] = Date.parse day
+              build_grade = @goal.build_grade(grade, true)
               
-              if (build_status)
-                build_status = @goal.update_status_state(build_status)
-                if build_status.save
-                  build_status.update_attribute(:user_id, current_user.id)
-                  flash[:notice] = I18n.t('status.import_successfully')
+              if (build_grade)
+                build_grade = @goal.update_grade_state(build_grade)
+                if build_grade.save
+                  build_grade.update_attribute(:user_id, current_user.id)
+                  flash[:notice] = I18n.t('grade.import_successfully')
                 else
                   invalid_grade = true
                 end
@@ -180,7 +180,7 @@ class GoalsController < ApplicationController
         end
         if invalid_grade
           flash[:notice] = nil
-          flash[:alert] = I18n.t('status.save_failed')
+          flash[:alert] = I18n.t('grade.save_failed')
         end
       end
     end

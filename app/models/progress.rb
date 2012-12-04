@@ -13,7 +13,7 @@
 class Progress < ActiveRecord::Base
   attr_accessible :accuracy, :due_date
   belongs_to :goal
-  has_many :statuses, :dependent => :destroy
+  has_many :grades, :dependent => :destroy
 
   # VALIDATION
   validates :accuracy, :numericality => true, :inclusion => {:in => 0..100, :message => "must be from 0 to 100"}

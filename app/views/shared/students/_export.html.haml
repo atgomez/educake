@@ -1,7 +1,7 @@
 #export-dialog.modal.hide.fade{:tabindex => "-1"}
   .modal-header
     %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} ×
-    %h3#myModalLabel Export Status
+    %h3#myModalLabel Export
   = form_tag('/export/export_student', :method => :get) do
     .modal-body
       %table

@@ -18,8 +18,8 @@ class StudentsController < ApplicationController
     #Check to hide placeholder for chart
     @data = []
     @goals.each do |goal| 
-      goal.statuses.each{|status| 
-        @data += [status.due_date, (status.accuracy*100).round / 100.0]
+      goal.grades.each{|grade| 
+        @data += [grade.due_date, (grade.accuracy*100).round / 100.0]
       }
     end
     if @data.empty?
@@ -74,8 +74,8 @@ class StudentsController < ApplicationController
   
   def load_grades
     goal = Goal.find_by_id params[:goal_id]
-    statuses = goal.statuses.order('due_date ASC').load_data(filtered_params)
-    render :partial => "shared/load_grades", :locals => {:statuses => statuses}
+    grades = goal.grades.order('due_date ASC').load_data(filtered_params)
+    render :partial => "shared/load_grades", :locals => {:grades => grades}
   end 
   
   def search_user

@@ -1,5 +1,5 @@
-- if @status.errors.any?
-  - @status.errors.full_messages.each do |error| 
+- if @grade.errors.any?
+  - @grade.errors.full_messages.each do |error| 
     - if error.include?("Goal") 
       $("#goal_error").html("#{escape_javascript ( error )}");
     - elsif error.include?("Due date") 
