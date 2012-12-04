@@ -18,39 +18,43 @@ class ChartsController < ApplicationController
 
   # GET /charts/student_chart
   # Params:
-  # user_id: ID of teacher/parent
   # student_id: ID of student
   # 
   # Render: The chart of a student with goals of the student
 
   def student_chart
-  	if find_and_check_user
-      @student = @user.students.find params[:student_id]
-      if @student
+    @student = Student.find_by_id params[:student_id]
+    if @student
+      @user = @student.teacher
+    	if (can? :view_chart, @user)
         # start rendering here
         render_chart(@student.series_json params)
       else
         render_chart_not_available_message
-      end
-  	end
+    	end
+    else
+      render_chart_not_available_message
+    end
   end
 
   # GET /charts/goal_chart
   # Params:
-  # user_id: ID of teacher/parent
   # goal_id: ID of goal
   #
   # Render: The chart of particular goal
 
   def goal_chart
-  	if find_and_check_user
-  		@goal = @user.goals.find params[:goal_id]
-  		if @goal
+    @goal = Goal.find_by_id params[:goal_id]
+    if @goal
+      @user = @goal.student.teacher
+    	if (can? :view_chart, @user)
         render_chart(@goal.series_json params)
 	    else
 	    	render_chart_not_available_message
 	    end
-  	end
+    else
+      render_chart_not_available_message
+    end
   end
 
   protected

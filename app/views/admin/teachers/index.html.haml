@@ -56,7 +56,7 @@
         = link_to "Export", "#", :id => "export-button", :class => "btn export", "data-toggle" => "modal"
 
   %center.clearfix
-    %iframe{:frameborder => "0", :height => @height, :src => "/admin/teachers/show_teachers_chart?id=#{@user.id}", :width => @width, :id => "chart_student"}
+    %iframe{:frameborder => "0", :height => @height, :src => "/charts/user_chart?user_id=#{@user.id}", :width => @width, :id => "chart_student"}
     
   = render('form')
 

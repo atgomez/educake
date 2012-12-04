@@ -27,7 +27,7 @@
   %div.pull-right
     = link_to "Export", "#", :id => "export-button", :class => "btn export", "data-toggle" => "modal"
   %center.clearfix
-    %iframe{:frameborder => "0", :height => @height, :src => "/admin/teachers/show_charts?user_id=#{@teacher.id}", :width => @width, :id => "chart_student"}
+    %iframe{:frameborder => "0", :height => @height, :src => "/charts/user_chart?user_id=#{@teacher.id}", :width => @width, :id => "chart_student"}
 
 = render("export_students", :students => @teacher.accessible_students)
 

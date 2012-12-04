@@ -39,7 +39,7 @@
   .clearfix
   %center.clearfix
     = hidden_field_tag "check_is_add_grade", @data.empty?
-    %iframe{:frameborder => "0", :height => @height, :src => common_chart_student_path(params[:id]), 
+    %iframe{:frameborder => "0", :height => @height, :src => "/charts/student_chart?student_id=#{@student.id}", 
             :width => @width, :id => "chart"}
 
 .show-student

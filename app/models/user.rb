@@ -338,7 +338,7 @@ class User < ActiveRecord::Base
   def series_json(params={}, context)
     series = []
     if self.is?(:admin)
-      teachers = self.children.teachers.unlocked
+      teachers = self.children.teachers.unblocked
       teachers.map do |teacher|
         teacher_status = teacher.teacher_status
         series << {

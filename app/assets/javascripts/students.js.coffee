@@ -13,11 +13,7 @@ window.clickOnChart= ->
       $(id_content).slideUp('fast', ->
         $(id_content).attr("style","display:none;")
       )
-      page_id = ""
-      href = $(".pagination li.active a").attr("href")
-      if href
-        page_id = href.split("?")[1]
-      $('#chart').attr("src", "/students/"+ $("#student_id").val() + "/common_chart?"+page_id);
+      $('#chart').attr("src", "/charts/student_chart?student_id="+ $("#student_id").val());
       window.chartMode = 'view_all'
 
 window.studentObject =
@@ -141,10 +137,6 @@ window.studentObject =
       
   clickOnGoal: -> 
     $(".grade a.goal").live 'click', () -> 
-      page_id = ""
-      href = $(".pagination li.active a").attr("href")
-      if href
-        page_id = href.split("?")[1]
 
       id_content = $(this).attr("href")
       id = id_content.split("_")[1]
@@ -156,7 +148,7 @@ window.studentObject =
           $(id_content).attr("style","display:block;")
         )
         loadGrades(id)
-        $('#chart').attr("src", "/students/chart?goal_id="+id + "&color=" + $(this).attr('color'));
+        $('#chart').attr("src", "/charts/goal_chart?goal_id="+id + "&color=" + $(this).attr('color'));
         $('#chart').attr("height", "500");
         $('#chart').attr("width", "100%");
         $(".grade a.goal").each ->
@@ -176,7 +168,7 @@ window.studentObject =
         $(id_content).slideUp('fast', ->
           $(id_content).attr("style","display:none;")
         )
-        $('#chart').attr("src", "/students/"+ $("#student_id").val() + "/common_chart");
+        $('#chart').attr("src", "/charts/student_chart?student_id="+ $("#student_id").val());
         window.chartMode = 'view_all'
       return
   
