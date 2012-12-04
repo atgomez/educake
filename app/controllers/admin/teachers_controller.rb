@@ -8,8 +8,8 @@ class Admin::TeachersController < Admin::BaseAdminController
     else
       @user = current_user
     end 
-    @teachers = @user.children.teachers.unlocked.load_data(filtered_params)
-    @all_teachers = @user.children.teachers.unlocked
+    @teachers = @user.children.teachers.unblocked.load_data(filtered_params)
+    @all_teachers = @user.children.teachers.unblocked
     series = []
     @all_teachers.map do |teacher|
       teacher_status = teacher.teacher_status
@@ -37,7 +37,7 @@ class Admin::TeachersController < Admin::BaseAdminController
   # GET /admin/teachers/all
   # TODO: should apply endless pagination.
   def all
-    @teachers = current_user.children.teachers.unlocked.order("first_name ASC, last_name ASC")
+    @teachers = current_user.children.teachers.unblocked.order("first_name ASC, last_name ASC")
   end
 
   # GET /admin/teachers/:id/all_students
@@ -120,7 +120,7 @@ class Admin::TeachersController < Admin::BaseAdminController
 
   def show_teachers_chart
     @teacher = User.find_by_id params[:id]
-    teachers = @teacher.children.teachers.unlocked
+    teachers = @teacher.children.teachers.unblocked
     @series = []
     teachers.map do |teacher|
       teacher_status = teacher.teacher_status
@@ -158,7 +158,7 @@ class Admin::TeachersController < Admin::BaseAdminController
   end
 
   def get_students
-    teacher = current_user.children.teachers.unlocked.find_by_id(params[:teacher_id])
+    teacher = current_user.children.teachers.unblocked.find_by_id(params[:teacher_id])
     @students = teacher.accessible_students
     render :partial => 'admin/teachers/get_students'
   end
@@ -174,7 +174,7 @@ class Admin::TeachersController < Admin::BaseAdminController
       if current_user.is_super_admin?
         @teacher = User.find teacher_id
       else
-        @teacher = current_user.children.teachers.unlocked.find_by_id(teacher_id)
+        @teacher = current_user.children.teachers.unblocked.find_by_id(teacher_id)
       end 
       if @teacher.blank?
         respond_to do |format|

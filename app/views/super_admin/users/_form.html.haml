@@ -49,13 +49,13 @@
       = link_to "Reset Password", reset_password_super_admin_user_path(@user), :data => {:confirm => "Do you want to reset your password?"}, :method => :put, :remote => true
       %p This will send a reset password email to the user.
     .blocked
-      = hidden_field_tag "check_locked", @user.is_locked
+      = hidden_field_tag "check_locked", @user.is_blocked
       - mgs = ""
-      - if @user.is_locked
+      - if @user.is_blocked
         - mgs = "Do you want to unlock this user? Are you sure?"
       - else
         - mgs = "Do you want to lock this user? Are you sure?"
-      = link_to check_box_tag("is_locked", 1, 1), blocked_account_super_admin_user_path(@user)+"?is_locked="+(!@user.is_locked).to_s, :data => { :confirm => mgs }, :method => :put, :remote => true, :title => "Block Account" 
+      = link_to check_box_tag("is_blocked", 1, 1), blocked_account_super_admin_user_path(@user)+"?is_blocked="+(!@user.is_blocked).to_s, :data => { :confirm => mgs }, :method => :put, :remote => true, :title => "Block Account" 
       
       %span.ckb-label Block Account
       %p.text-block User will be locked out of their account until reinstated.

@@ -9,9 +9,9 @@ window.schoolObject =
   checkForCheckbox: ->
     checked = $("#check_locked").val()
     if checked == "true"
-      $("#is_locked").attr("checked", "checked")
+      $("#is_blocked").attr("checked", "checked")
     else
-      $("#is_locked").attr("checked", false)
+      $("#is_blocked").attr("checked", false)
     return
  
   removeClassInForm: -> 

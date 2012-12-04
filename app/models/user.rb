@@ -32,7 +32,7 @@
 #  is_admin               :boolean
 #  school_id              :integer
 #  notes                  :text
-#  is_locked              :boolean          default(FALSE)
+#  is_blocked              :boolean          default(FALSE)
 #
 
 class User < ActiveRecord::Base
@@ -123,7 +123,7 @@ class User < ActiveRecord::Base
   scope :teachers, lambda { self.with_role(:teacher) } 
 
   # Available
-  scope :unlocked, where(:is_locked => false) 
+  scope :unblocked, where(:is_blocked => false) 
 
   # Class methods
   class << self

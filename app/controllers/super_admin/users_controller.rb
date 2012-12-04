@@ -59,7 +59,7 @@ class SuperAdmin::UsersController < SuperAdmin::BaseSuperAdminController
   
   def blocked_account 
     @user = User.find params[:id]
-    @user.update_attribute(:is_locked, params[:is_locked])
+    @user.update_attribute(:is_blocked, params[:is_blocked])
   end
   
   def reset_password 
