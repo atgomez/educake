@@ -56,8 +56,6 @@ class User < ActiveRecord::Base
   # ASSOCIATIONS
   has_many :children, :class_name => "User", :foreign_key => 'parent_id' 
   belongs_to :parent, :class_name => "User", :foreign_key => 'parent_id'  
-  has_many :students, :foreign_key => "teacher_id", :dependent => :destroy
-  has_many :goals, :through => :students
 
   # All students belong to the current users and students are shared to the current user.
   # TODO: this association does not work probably when calling like this: user.accessible_students.order("first_name")
@@ -71,11 +69,15 @@ class User < ActiveRecord::Base
   #             Student.from(union_sql).order("first_name ASC, last_name ASC").select('DISTINCT *').to_sql
   #           }
 
+  has_one :student_sharing, :dependent => :destroy
   has_many :student_sharings, :dependent => :destroy
   has_many :shared_students, :through => :student_sharings, :source => :student
+  has_many :students, :foreign_key => "teacher_id", :dependent => :destroy
+
+
   belongs_to :role
   belongs_to :school
-  has_one :student_sharing, :dependent => :destroy
+
 
   has_attached_file :photo, :styles => { :small => "200x200>", :medium => "300x300>" }, 
                    :storage => :s3,
@@ -227,6 +229,10 @@ class User < ActiveRecord::Base
                 SELECT * FROM (#{self.shared_students.to_sql}) d2) #{Student.table_name}
               }
     Student.from(union_sql).select("DISTINCT students.*").order("students.first_name ASC, students.last_name ASC")
+  end
+
+  def goals
+    Goal.joins("join (#{accessible_students.to_sql}) AS acc_students on acc_students.id = goals.student_id")
   end
 
   def full_name
