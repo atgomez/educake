@@ -1,0 +1,16 @@
+.info.well
+  %strong.name
+    = link_to(student.full_name, url)
+
+  .birthday
+    %span= "Born on:"
+    %span= student.birthday_string
+  .gender
+    %span= "Gender:"
+    %span= student.gender_string
+  .goal
+    %span= "Goals:"
+    - if student.goals.length <= 0
+      %span= "no goal"
+    - else
+      %span= student.goals.length

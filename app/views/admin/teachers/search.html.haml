@@ -2,7 +2,7 @@
   %h3.school-name= current_user.school.try(:name)
   .search-header.clearfix
     %h4.search-title= "Search result for: #{params[:query]}"
-    = render('search_box')
+    = render 'shared/search_box', :action => "/admin/teachers/search", :placeholder => "Search name"
 
   .teachers-result.result-container
     - unless @teachers.blank?

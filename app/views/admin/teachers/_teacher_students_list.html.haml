@@ -11,23 +11,7 @@
           - else
             .default-avatar
 
-      .info.well
-        %strong.name
-          = link_to(student.full_name, student_home_url)
-
-        .birthday
-          %span= "Born on:"
-          %span= student.birthday_string
-        .gender
-          %span= "Gender:"
-          %span= student.gender_string
-        .goal
-          %span= "Goals:"
-          - if student.goals.length <= 0
-            %span= "no goal"
-          - else
-            %span= student.goals.length
-            
+      = render "shared/students/cell", :student => student, :url => student_home_url 
       .track-indicator-container
         - status = student.check_on_track? 
         - if status == 1

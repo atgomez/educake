@@ -1,17 +1,11 @@
 .admin.teacher
   - if current_user.is_super_admin?
-    %div.box-view-as
-      Now viewing as 
-      %b= @teacher.full_name + ", "
-      %b= @teacher.role.name + " at "
-      %b= truncate(@teacher.school.name, :length => 17, :separator => " ") + "."
-      %br
-      = link_to "Back to viewing as SuperAdmin.", super_admin_path
+    = render "shared/teachers/view_as_box", :user => @teacher 
   - else 
     .show-student  
       .clearfix.toolbar
         = link_to "All Teachers", admin_teachers_path, :class => "brown font18"
-        = render('search_box')
+        = render 'shared/search_box', :action => "/admin/teachers/search", :placeholder => "Search name"
 
       = render('teacher_box')
 

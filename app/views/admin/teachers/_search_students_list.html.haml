@@ -6,23 +6,7 @@
       %a{:href => student_home_url, :title => student.full_name}
         = image_tag(student.photo_url, :alt => student.full_name, :class => "student-avatar")
 
-    .info.well
-      %strong.name
-        - student_url = url_for(:controller => "admin/students", :action => "show", :id => student.id)
-        = link_to(student.full_name, student_home_url)
-
-      .birthday
-        %span= "Born on:"
-        %span= student.birthday_string
-      .gender
-        %span= "Gender:"
-        %span= student.gender_string
-      .goal
-        %span= "Goals:"
-        - if student.goals.length <= 0
-          %span= "no goal"
-        - else
-          %span= student.goals.length
+    = render "shared/students/cell", :student => student, :url => student_home_url 
               
       .teachers-container
         %a{:href => "#student-teachers-#{student.id}", :class => "icon-plus student-teacher-handler"}
