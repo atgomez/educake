@@ -26,7 +26,7 @@ class ChartsController < ApplicationController
     @student = Student.find_by_id params[:student_id]
     if @student
       @user = @student.teacher
-    	if (can? :view_chart, @user)
+    	if (can? :view, @user)
         # start rendering here
         render_chart(@student.series_json params)
       else
@@ -47,7 +47,7 @@ class ChartsController < ApplicationController
     @goal = Goal.find_by_id params[:goal_id]
     if @goal
       @user = @goal.student.teacher
-    	if (can? :view_chart, @user)
+    	if (can? :view, @user)
         render_chart(@goal.series_json params)
 	    else
 	    	render_unauthorized
