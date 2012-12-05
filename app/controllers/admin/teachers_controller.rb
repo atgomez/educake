@@ -40,14 +40,6 @@ class Admin::TeachersController < Admin::BaseAdminController
     end
   end
 
-  # GET /admin/teachers/:id/all_students
-  # TODO: should apply endless pagination.
-  def all_students
-    if find_or_redirect
-      @students = @teacher.accessible_students
-    end
-  end
-
   def create
     if find_or_redirect
       result = {}
@@ -75,48 +67,26 @@ class Admin::TeachersController < Admin::BaseAdminController
       render(:json => result, :status => status_code)
     end
   end
-  
-  def show    
-    if find_or_redirect
-      session[:teacher_id] = params[:id]
-      @students = @teacher.accessible_students.load_data(filtered_params)
-      series = []
-
-      @students.map do |student|
-        series += student.goals_grades
-      end
-      if series.empty?
-        @width = "0%"
-        @height = "0"
-      else 
-        @width = "100%"
-        @height = "500"
-      end
-
-      respond_to do |format|
-        format.js
-        format.html
-      end
-    end
-  end
 
   # GET: /admin/teacher/search?query=<QUERY>
   # TODO: optimize this method
   def search
-    query = params[:query]
-    if query.blank?
-      redirect_to(:action => 'index')
-    else
-      query.strip!
+    if find_or_redirect
+      query = params[:query]
+      if query.blank?
+        redirect_to(:action => 'index')
+      else
+        query.strip!
 
-      case params[:type]
-        when 'student' then
-          @students = Student.students_of_teacher(current_user).search_data(query, filtered_params)
-        when 'teacher' then
-          @teachers = current_user.children.search_data(query, filtered_params)
-        else
-          @students = Student.students_of_teacher(current_user).search_data(query, filtered_params)
-          @teachers = current_user.children.search_data(query, filtered_params)
+        case params[:type]
+          when 'student' then
+            @students = Student.students_of_teacher(@user).search_data(query, filtered_params)
+          when 'teacher' then
+            @teachers = @user.children.search_data(query, filtered_params)
+          else
+            @students = Student.students_of_teacher(@user).search_data(query, filtered_params)
+            @teachers = @user.children.search_data(query, filtered_params)
+        end
       end
     end
   end

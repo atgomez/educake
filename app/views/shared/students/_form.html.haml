@@ -8,7 +8,7 @@
       = notification
 
   .form-actions
-    - back_link = @student.new_record? ? back_link : url_for(:controller => "#{controller_namespace}/students", :action => 'show', :id => @student.id)
+    - back_link = @student.new_record? ? back_link : url_for(:controller => "students", :action => 'show', :id => @student.id, :user_id => @user.id)
     = link_to "Cancel", back_link, :class => "btn"
 
     - if @student.new_record?

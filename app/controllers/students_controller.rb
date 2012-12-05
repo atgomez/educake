@@ -121,7 +121,7 @@ class StudentsController < ApplicationController
       if (params[:user_id])
         @user = User.unblocked.find_by_id params[:user_id]
       else
-        @user = @current_user
+        @user = current_user
       end
       if !@user
         render_page_not_found

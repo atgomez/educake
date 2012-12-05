@@ -10,7 +10,7 @@
   .clearfix.toolbar
     = link_to "View all students", all_students_students_path(:user_id => @user.id),  :class => "brown font18"
     - if (!@current_user.is?(:parent))
-      = link_to 'Add Student', new_student_path(:back_link => "/teachers", :user_id => @user.id), :class => 'btn bg-brown white pull-right'
+      = link_to 'Add Student', new_student_path(:back_link => students_path(:user_id => @user.id), :user_id => @user.id), :class => 'btn bg-brown white pull-right'
   - unless @students.blank?
     #pagination_area
       = render('shared/students/list', :current_page => @current_page, :students => @students, :user => @user)
