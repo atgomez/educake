@@ -18,5 +18,5 @@
 - if with_pagination
   .clearfix
   .pagination-container.ajax
-    = render_pagination @students, :current_page => current_page
+    = render_pagination @students, :current_page => @current_page
     .loading.hide
