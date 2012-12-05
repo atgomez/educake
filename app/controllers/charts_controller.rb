@@ -28,7 +28,7 @@ class ChartsController < ApplicationController
       if @student
         render_chart(@student.series_json params)
       else
-        render_unauthorized
+        render_unauthorized(:iframe => true)
       end
     end
   end
@@ -45,15 +45,16 @@ class ChartsController < ApplicationController
       if @goal
         render_chart(@goal.series_json params)
       else
-        render_unauthorized
+        render_unauthorized(:iframe => true)
       end
     end
   end
 
   protected
+
   	def find_and_check_user
   		@user = User.find_by_id(params[:user_id])
-      render_unauthorized if (!@user || !(can? :view, @user))
+      render_unauthorized(:iframe => true) if (!@user || !(can? :view, @user))
       return (@user && (can? :view, @user))
   	end
 
