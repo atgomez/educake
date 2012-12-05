@@ -1,60 +1,83 @@
 class StudentsController < ApplicationController
   include ::Shared::StudentActions
   before_filter :destroy_session, :except => [:show, :destroy]
-  cross_role_action :common_chart, :chart, :search_user, 
-                    :show, :create, :edit, :update
+  cross_role_action :search_user, :show, :create, :edit, :update
 
   def index
-    redirect_to('/teachers')
+    if find_user
+      @students = @user.accessible_students.load_data(filtered_params)
+      series = []
+      students = @user.accessible_students
+      students.map do |student|
+        series += student.goals_grades
+      end
+      if series.empty?
+        @width = "0%"
+        @height = "0"
+      else 
+        @width = "100%"
+        @height = "500"
+      end 
+
+      respond_to do |format|
+        format.js
+        format.html
+      end
+    end
   end
 
   def show
-    @current_user = current_user
-    @student = Student.find(params[:id])
-    @teacher = @student.teacher 
-    @goals = @student.goals.incomplete.load_data(filtered_params)
-    @students = @teacher.accessible_students
-    #Check to hide placeholder for chart
-    @data = []
-    @goals.each do |goal| 
-      goal.grades.each{|grade| 
-        @data += [grade.due_date, (grade.accuracy*100).round / 100.0]
-      }
+    if find_user
+      @current_user = current_user
+      @student = @user.accessible_students.find(params[:id])
+      @goals = @student.goals.incomplete.load_data(filtered_params)
+      @students = @user.accessible_students
+      #Check to hide placeholder for chart
+      @data = []
+      @goals.each do |goal| 
+        goal.grades.each{|grade| 
+          @data += [grade.due_date, (grade.accuracy*100).round / 100.0]
+        }
+      end
+      if @data.empty?
+        @height = "0"
+        @width = "0%"
+      else
+        @height = "500"
+        @width = "100%"
+      end 
+      if request.xhr?
+        render :partial => "shared/students/view_goal", :locals => {:goals => @goals, :students => @students}
+      end
+      @invited_users = StudentSharing.where(:student_id => @student.id)
+      session[:student_id] = params[:id]
     end
-    if @data.empty?
-      @height = "0"
-      @width = "0%"
-    else
-      @height = "500"
-      @width = "100%"
-    end 
-    if request.xhr?
-      render :partial => "shared/students/view_goal", :locals => {:goals => @goals, :students => @students}
-    end
-    @invited_users = StudentSharing.where(:student_id => @student.id)
-    session[:student_id] = params[:id]
   end
 
   def create
-    @student = Student.new(params[:student])
-    @student.teacher = current_user
-    @back_link = params[:back_link]
-    
-    if @student.save
-      flash[:notice] = 'Student was successfully created.'
-      redirect_to :action => 'edit', :id => @student
-    else
-      render :action => "new"
+    if find_user
+      @student = @user.accessible_students.new(params[:student])
+      @student.teacher = current_user
+      @back_link = params[:back_link]
+      
+      if @student.save
+        flash[:notice] = 'Student was successfully created.'
+        redirect_to :action => 'edit', :id => @student
+      else
+        render :action => "new"
+      end
     end
   end
  
   def update
-    @student = Student.find(params[:id])
+    if find_user
+      @student = @user.accessible_students.find(params[:id])
 
-    if @student.update_attributes(params[:student])
-      redirect_to @student, :notice => 'Student was successfully updated.'
-    else
-      render :action => :edit
+      if @student.update_attributes(params[:student])
+        redirect_to @student, :notice => 'Student was successfully updated.'
+      else
+        render :action => :edit
+      end
     end
   end 
 
@@ -78,7 +101,19 @@ class StudentsController < ApplicationController
     end
   end 
 
+  def all_students
+    @students = current_user.accessible_students
+  end
+
   protected
+
+    def find_user
+      @user = current_user
+      if !@user
+        render_error("Page not found", :status => 404)
+      end
+      return @user
+    end
 
     def set_current_tab
       @current_tab = 'classroom'
@@ -87,4 +122,11 @@ class StudentsController < ApplicationController
     def destroy_session  
       session.delete :tab
     end 
+
+    protected
+
+    # You can override this method in the sub class.
+    def default_page_size
+      8
+    end
 end

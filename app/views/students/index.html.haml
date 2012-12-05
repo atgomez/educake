@@ -1,17 +1,18 @@
-%h1 Listing students
-
-%table
-  %tr
-    %th
-    %th
-    %th
-
-  - @students.each do |student|
-    %tr
-      %td= link_to 'Show', student
-      %td= link_to 'Edit', edit_student_path(student)
-      %td= link_to 'Destroy', student, method: :delete, data: { confirm: 'Are you sure?' }
-
-%br
-
-= link_to 'New Student', new_student_path
+.teacher
+  .clearfix.toolbar
+    = link_to "View all students", all_students_students_path,  :class => "brown font18"
+    - if (!@current_user.is?(:parent))
+      = link_to 'Add Student', new_student_path(:back_link => "/teachers"), :class => 'btn bg-brown white pull-right'
+  - unless @students.blank?
+    #pagination_area
+      = render(:partial => 'students_list')    
+  
+  %center.clearfix
+  .pull-right
+    - unless @students.blank?
+      = link_to "Export", "#", :id => "export-button", :class => "btn export", "data-toggle" => "modal"
+  %center.clearfix
+    - page = params[:page_id] || 1
+    %iframe{:frameborder => "0", :height => @height, :src => "/charts/user_chart?user_id=#{@user.id}", :width => @width}
+  
+= render "export"

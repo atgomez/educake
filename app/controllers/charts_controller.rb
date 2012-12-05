@@ -30,10 +30,10 @@ class ChartsController < ApplicationController
         # start rendering here
         render_chart(@student.series_json params)
       else
-        render_chart_not_available_message
+        render_unauthorized
     	end
     else
-      render_chart_not_available_message
+      render_unauthorized
     end
   end
 
@@ -50,17 +50,17 @@ class ChartsController < ApplicationController
     	if (can? :view_chart, @user)
         render_chart(@goal.series_json params)
 	    else
-	    	render_chart_not_available_message
+	    	render_unauthorized
 	    end
     else
-      render_chart_not_available_message
+      render_unauthorized
     end
   end
 
   protected
   	def find_and_check_user
   		@user = User.find_by_id(params[:user_id])
-      render_chart_not_available_message if (!@user || !(can? :view_chart, @user))
+      render_unauthorized if (!@user || !(can? :view_chart, @user))
       return (@user && (can? :view_chart, @user))
   	end
 
@@ -72,8 +72,4 @@ class ChartsController < ApplicationController
       @series = series
       render :template => 'charts/common_chart', :layout => "chart"
     end
-
-  	def render_chart_not_available_message
-      render :file => "public/403.html", :status => 403, :layout => false
-  	end
 end

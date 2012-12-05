@@ -4,25 +4,24 @@ TeacherMgnt::Application.routes.draw do
   # DO NOT change the order of the root config, otherwise it will not work properly
   root :to => "super_admin/schools#index", :constraints => RoleRouteConstraint.new(:super_admin)
   root :to => "admin/teachers#index", :constraints => RoleRouteConstraint.new(:admin)
-  root :to => "teachers#index", :constraints => RoleRouteConstraint.new(:parent, :teacher)
+  root :to => "students#index", :constraints => RoleRouteConstraint.new(:parent, :teacher)
   root :to => "home#index"
 
   # Chart rooting
-  get "charts/user_chart"
-  get "charts/student_chart"
-  get "charts/goal_chart"
+  resources :charts do
+    collection do
+      get :user_chart
+      get :student_chart
+      get :goal_chart
+    end
+  end
 
   resources :export do
     collection do
       get :export_student
     end
   end
-  resources :teachers do 
-    collection do 
-      get :show_charts
-      get :all_students
-    end 
-  end 
+
   resources :invitations 
 
   resources :students do 
@@ -30,11 +29,10 @@ TeacherMgnt::Application.routes.draw do
       get :load_users
       get :load_grade
       get :search_user
-      get :common_chart
     end
     collection do 
-      get :chart
       get :load_grades
+      get :all_students
     end 
   end
 

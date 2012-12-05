@@ -41,7 +41,7 @@ class Ability
         else
           false
         end
-      elsif 
+      else
         user.id == user_inview.id
       end
     end
