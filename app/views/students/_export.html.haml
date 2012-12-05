@@ -2,21 +2,25 @@
   .modal-header
     %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} ×
     %h3#myModalLabel Export
-  .modal-body
-    %table
-      %tr
-        %td
-          = label_tag "Export data for"
-        %td
-          = radio_button_tag "data", "individual", true
-          Individual Student
-          = radio_button_tag "data", "classroom"
-          Classroom
-      %tr
-        %td
-          = Student
-        %td
-          = select_tag("student_selection", options_from_collection_for_select(@students, "id", "full_name"))
-  .modal-footer
-    %button.btn{"aria-hidden" => "true", "data-dismiss" => "modal"} Cancel
-    %button.btn.btn-primary.not-implemented Export
+  = form_tag('/export/export_student', :method => :get) do
+    .modal-body
+      %table
+        %tr
+          %td
+            = label_tag "Export data for"
+          %td
+            %div{:style => "float:left; margin: 0 5px 0 5px"}
+              = radio_button_tag "data", "individual", true
+            = label_tag :data_individual, "Individual Student", :style => "float:left"
+            %div{:style => "float:left; margin: 0 5px 0 5px"}
+              = radio_button_tag "data", "classroom"
+            = label_tag :data_classroom, "Classroom", :style => "float:left"
+        %tr
+          %td
+            = Student
+          %td
+            - seleted_id = (@student ? @student.id : nil)
+            = select_tag("student_selection", options_from_collection_for_select(all_students, "id", "full_name", seleted_id), :name => :student_id)
+    .modal-footer
+      %button.btn{"aria-hidden" => "true", "data-dismiss" => "modal"} Cancel
+      %button.btn.btn-primary Export

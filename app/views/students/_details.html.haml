@@ -8,8 +8,7 @@
     .info.well.pull-left
       .pull-left
         %strong.name
-          = link_to(@student.full_name, 
-              url_for(:controller => "#{controller_namespace}/students", :action => 'show', :id => @student.id),
+          = link_to(@student.full_name, url_for(:controller => "#{controller_namespace}/students", :action => 'show', :id => @student.id, :user_id => @user.id),
               :class => "brown")
         .birthday
           %span= "Born on:"
@@ -26,11 +25,12 @@
     - if (!@current_user.is?(:parent))
       .action-link-container.pull-right
         .clearfix.action-link
-          = link_to "Edit", url_for(:controller => "#{controller_namespace}/students", :action => 'edit', :id => @student.id)
+          = link_to "Edit", url_for(:controller => "#{controller_namespace}/students", :action => 'edit', :id => @student.id, :user_id => @user.id)
         .clearfix.action-link
           = link_to "Users", "#", :id => "goto-users"
 
   = hidden_field_tag "student_id", params[:id]
+  = hidden_field_tag "user_id", @user.id
 
 - unless @goals.empty?
   .pull-right
@@ -38,7 +38,7 @@
   .clearfix
   %center.clearfix
     = hidden_field_tag "check_is_add_grade", @data.empty?
-    %iframe{:frameborder => "0", :height => @height, :src => "/charts/student_chart?student_id=#{@student.id}", 
+    %iframe{:frameborder => "0", :height => @height, :src => "/charts/student_chart?student_id=#{@student.id}&user_id=#{@user.id}", 
             :width => @width, :id => "chart"}
 
 .show-student
@@ -50,7 +50,7 @@
     .clearfix
     .line
     #content-grade.clearfix
-      = render "shared/students/view_goal", :goals => @goals
+      = render "shared/students/view_goal", :goals => @goals, :student => @student
   
   .separator.brown
     
@@ -63,4 +63,4 @@
     #content-users
       = render :partial => "shared/students/view_invited_user", :locals => {:invited_users => @invited_users, :read_only => @current_user.is?(:parent)}
 
-  = render "shared/students/export"
+  = render "export", :all_students => @all_students

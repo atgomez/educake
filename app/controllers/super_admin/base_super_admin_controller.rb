@@ -1,5 +1,4 @@
-class SuperAdmin::BaseSuperAdminController < ApplicationController
-  layout "admin"  
+class SuperAdmin::BaseSuperAdminController < ApplicationController  
   before_filter :authenticate_admin!
 
   def index

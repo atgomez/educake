@@ -86,7 +86,7 @@ class SuperAdmin::UsersController < SuperAdmin::BaseSuperAdminController
     if user.is?(:admin)
       redirect_to admin_teachers_path(:user_id => params[:id]) 
     elsif user.is?(:teacher) || user.is?(:parent)
-      redirect_to admin_teacher_path(user)
+      redirect_to students_path(:user_id => params[:id])
     end 
   end
   

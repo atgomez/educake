@@ -56,6 +56,12 @@ select.time{
   min-height: 500px;
 }
 
+.box-view-as {
+  background-color: grey;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
 form textarea{
   resize: vertical;
 }

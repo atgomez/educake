@@ -23,17 +23,13 @@ class ChartsController < ApplicationController
   # Render: The chart of a student with goals of the student
 
   def student_chart
-    @student = Student.find_by_id params[:student_id]
-    if @student
-      @user = @student.teacher
-    	if (can? :view, @user)
-        # start rendering here
+    if find_and_check_user
+      @student = @user.accessible_students.find_by_id params[:student_id]
+      if @student
         render_chart(@student.series_json params)
       else
         render_unauthorized
-    	end
-    else
-      render_unauthorized
+      end
     end
   end
 
@@ -44,16 +40,13 @@ class ChartsController < ApplicationController
   # Render: The chart of particular goal
 
   def goal_chart
-    @goal = Goal.find_by_id params[:goal_id]
-    if @goal
-      @user = @goal.student.teacher
-    	if (can? :view, @user)
+    if find_and_check_user
+      @goal = @user.goals.find_by_id params[:goal_id]
+      if @goal
         render_chart(@goal.series_json params)
-	    else
-	    	render_unauthorized
-	    end
-    else
-      render_unauthorized
+      else
+        render_unauthorized
+      end
     end
   end
 

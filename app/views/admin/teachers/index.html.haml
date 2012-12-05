@@ -1,14 +1,11 @@
 .admin.teacher
-  - if @is_view_as 
-    = render "shared/teachers/view_as_box", :user => @user 
-  - else
-    %h3.school-name= @user.school.try(:name)
-    .clearfix.toolbar
-      = link_to "View all teachers", all_admin_teachers_path,  :class => "brown font18"
-      - unless @teachers.blank?
-        = render 'shared/search_box', :action => "/admin/teachers/search", :placeholder => "Search name"
-    .clearfix.toolbar
-      = link_to 'Add Teacher', new_admin_teacher_path, :class => 'btn', :id => "add-teacher"
+  %h3.school-name= @user.school.try(:name)
+  .clearfix.toolbar
+    = link_to "View all teachers", all_admin_teachers_path,  :class => "brown font18"
+    - unless @teachers.blank?
+      = render 'shared/search_box', :action => "/admin/teachers/search", :placeholder => "Search name"
+  .clearfix.toolbar
+    = link_to 'Add Teacher', new_admin_teacher_path, :class => 'btn', :id => "add-teacher"
 
   - if params[:page_id].blank?
     - teacher = @user
@@ -17,7 +14,7 @@
     - showed_student_num = 4
     - if student_count > 0
       .teacher-container.clearfix
-        - teacher_home_url = admin_teacher_path(teacher)
+        - teacher_home_url = students_path(:user_id => teacher.id)
         .avatar-container.well
           %a{:href => teacher_home_url, :title => teacher.full_name}
             = image_tag(teacher.photo_url, :alt => teacher.full_name, :class => "teacher-avatar")

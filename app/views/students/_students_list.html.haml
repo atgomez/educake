@@ -2,7 +2,7 @@
 
 #pagination-listitem
   - @students.each_with_index do |student, idx|
-    - student_home_url = student_path(student)      
+    - student_home_url = student_path(student, :user_id => @user.id)      
     .student-container.pull-left.clearfix.link{:href => student_home_url}
       .avatar-container.thumbnail
         %a{:href => student_home_url}
@@ -39,5 +39,5 @@
 - if with_pagination
   .clearfix
   .pagination-container.ajax
-    = render_pagination @students, :current_page => @current_page
+    = render_pagination @students, :current_page => current_page
     .loading.hide

@@ -24,9 +24,9 @@
           .complete-checkbox
             = check_box_tag("complete_checkbox", goal.is_completed, goal.is_completed, :url => update_grade_goal_path(goal), :id => "#{goal.id}", :class => "goal-complete")
             = label_tag('complete_label', 'Goal complete')
-            = link_to("Edit", edit_goal_path(goal, :student_id => @student.id), :class => "edit-goal", :remote => true)
-            - redirect_link = url_for(:controller => "#{controller_namespace}/students", :action => 'edit', :id => @student.id)
-            = link_to("Delete", goal_path(goal, :student_id => @student.id, :redirect_link => redirect_link), 
+            = link_to("Edit", edit_goal_path(goal, :student_id => student.id), :class => "edit-goal", :remote => true)
+            - redirect_link = url_for(:controller => "#{controller_namespace}/students", :action => 'edit', :id => student.id)
+            = link_to("Delete", goal_path(goal, :student_id => student.id, :redirect_link => redirect_link), 
                       :class => "delete-goal", :method => :delete, :confirm => t('common.confirm_message'))
         - else
           .pull-left.progress.progress-success

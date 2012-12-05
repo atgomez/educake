@@ -289,21 +289,10 @@ class Student < ActiveRecord::Base
         sheet.add_row [nil], :style => left_text_style
       end
 
-      # Create tempfile
-      random_number = (rand * 10000).to_i
-      html_file = File.new(tmpdir + "/#{random_number.to_s}.html", 'wb',:encoding => 'ascii-8bit')
-      f = File.new(tmpdir + "/#{random_number.to_s}.png", 'wb', :encoding => 'ascii-8bit')
-
-      # Render PNG for the webpage
-      html = context.render_to_string :template => 'students/common_chart', :layout => "raw_script", :locals => {:series => self.series_json}
-      html_file.write(html)
-      file_content = ChartProcess.render(html_file.path)
-      
-      # Include image to Sheets
-      f.write(file_content)
+      image_path = ChartProcess.renderPNG(context, tmpdir, self.series_json)
 
       # Add Chart to first page
-      sheet.add_image(:image_src => f.path, :noSelect => true, :noMove => true) do |image|
+      sheet.add_image(:image_src => image_path, :noSelect => true, :noMove => true) do |image|
         image.width=1000
         image.height=500
         image.start_at 6, 2

@@ -2,7 +2,7 @@
 
 #pagination-listitem
   - @students.each_with_index do |student, idx|
-    - student_home_url = student_path(student, :user_id => student.teacher.id)
+    - student_home_url = student_path(student, :user_id => @teacher.id)
     .student-container.pull-left.clearfix.link{:href => student_home_url}
       .avatar-container.thumbnail
         %a{:href => student_home_url}

@@ -1,16 +1,13 @@
 .admin.teacher
-  - if current_user.is_super_admin?
-    = render "shared/teachers/view_as_box", :user => @teacher 
-  - else 
-    .show-student  
-      .clearfix.toolbar
-        = link_to "All Teachers", admin_teachers_path, :class => "brown font18"
-        = render 'shared/search_box', :action => "/admin/teachers/search", :placeholder => "Search name"
+  .show-student  
+    .clearfix.toolbar
+      = link_to "All Teachers", admin_teachers_path, :class => "brown font18"
+      = render 'shared/search_box', :action => "/admin/teachers/search", :placeholder => "Search name"
 
-      = render('teacher_box')
+    = render('teacher_box')
 
     .clearfix.toolbar
-      = link_to "All #{@teacher.full_name}'s Students", all_students_admin_teacher_path(@teacher), :class => "brown font18"
+      = link_to "All #{@teacher.full_name}'s Students", all_students_students_path(:user_id => @teacher), :class => "brown font18"
       = link_to 'Add Student', new_student_path(:user_id => @teacher.id, :back_link => "/admin/teachers/#{@teacher.id}"), :class => "btn pull-right"
 
   .teacher.clearfix.toolbar

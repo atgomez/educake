@@ -337,11 +337,6 @@ $color-font: #E17C25;
 
 .admin{
   &.teacher {
-    .box-view-as {
-      background-color: grey;
-      padding: 10px;
-      margin-bottom: 10px;
-    }
     .teacher-container, .student-container {
       .teacher-student, .student-teacher {
         max-height: 200px;

@@ -36,7 +36,7 @@ class ChartProcess
     f = File.new(tmpdir + "/#{random_number.to_s}.png", 'wb', :encoding => 'ascii-8bit')
 
     # Render PNG for the webpage
-    html = context.render_to_string :template => 'students/common_chart', :layout => "raw_script", :locals => {:series => series_json}
+    html = context.render_to_string :template => 'charts/common_chart', :layout => "raw_script", :locals => {:series => series_json}
     html_file.write(html)
     file_content = self.render(html_file.path)
     

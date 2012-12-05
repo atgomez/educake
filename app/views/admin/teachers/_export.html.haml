@@ -24,7 +24,7 @@
         %td
           Teacher
         %td
-          = select_tag("teacher_selection", options_from_collection_for_select(@all_teachers, "id", "full_name"), {'data-url' => get_students_admin_teachers_path})
+          = select_tag("teacher_selection", options_from_collection_for_select(@all_teachers, "id", "full_name"), {'data-url' => get_students_admin_teachers_path(:user_id => @user.id)})
       %tr
         %td
           Student

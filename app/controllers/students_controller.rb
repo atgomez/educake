@@ -1,14 +1,14 @@
 class StudentsController < ApplicationController
   include ::Shared::StudentActions
   before_filter :destroy_session, :except => [:show, :destroy]
-  cross_role_action :search_user, :show, :create, :edit, :update, :all_students, :load_users, :search_user
+  cross_role_action :new, :search_user, :index, :show, :create, :edit, :update, :all_students, :load_users, :search_user
 
   def index
     if find_user
       @students = @user.accessible_students.load_data(filtered_params)
       series = []
-      students = @user.accessible_students
-      students.map do |student|
+      @all_students = @user.accessible_students
+      @all_students.map do |student|
         series += student.goals_grades
       end
       if series.empty?
@@ -28,8 +28,8 @@ class StudentsController < ApplicationController
 
   def show
     if find_user
-      @current_user = current_user
       @student = @user.accessible_students.find_by_id(params[:id])
+      @all_students = @user.accessible_students
       if @student
         @goals = @student.goals.incomplete.load_data(filtered_params)
         @students = @user.accessible_students
@@ -61,7 +61,7 @@ class StudentsController < ApplicationController
   def create
     if find_user
       @student = @user.accessible_students.new(params[:student])
-      @student.teacher = current_user
+      @student.teacher = @user
       @back_link = params[:back_link]
       
       if @student.save
@@ -109,7 +109,9 @@ class StudentsController < ApplicationController
   end 
 
   def all_students
-    @students = current_user.accessible_students
+    if find_user
+      @students = @user.accessible_students
+    end
   end
 
   protected
@@ -117,7 +119,7 @@ class StudentsController < ApplicationController
     def find_user
       @current_user = current_user
       if (params[:user_id])
-        @user = User.find_by_id params[:user_id]
+        @user = User.unblocked.find_by_id params[:user_id]
       else
         @user = @current_user
       end

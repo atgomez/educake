@@ -7,6 +7,7 @@ class ApplicationController < ActionController::Base
   before_filter :restrict_namespace
   before_filter :pagination_ajax_setting
   before_filter :check_blocked_account
+  before_filter :check_view_as_state
 
   rescue_from CanCan::AccessDenied, :with => :render_unauthorized 
 
@@ -39,6 +40,17 @@ class ApplicationController < ActionController::Base
       render_error(I18n.t("common.error_blocked_account"), :status => 403)
     end
   end 
+
+  def check_view_as_state
+    if (current_user)
+      @is_view_as = current_user.is_super_admin? && params[:user_id]
+      if (@is_view_as)
+        @viewing_user = User.find_by_id(params[:user_id])
+      end
+
+      @is_view_as = false if !@viewing_user
+    end
+  end
 
   #
   # Protected instance methods.

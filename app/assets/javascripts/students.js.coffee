@@ -13,7 +13,7 @@ window.clickOnChart= ->
       $(id_content).slideUp('fast', ->
         $(id_content).attr("style","display:none;")
       )
-      $('#chart').attr("src", "/charts/student_chart?student_id="+ $("#student_id").val());
+      $('#chart').attr("src", "/charts/student_chart?student_id="+ $("#student_id").val() + "&user_id=" + $("#user_id").val());
       window.chartMode = 'view_all'
 
 window.studentObject =
@@ -146,7 +146,7 @@ window.studentObject =
           $(id_content).attr("style","display:block;")
         )
         loadGrades(id)
-        $('#chart').attr("src", "/charts/goal_chart?goal_id="+id + "&color=" + $(this).attr('color'));
+        $('#chart').attr("src", "/charts/goal_chart?goal_id="+id + "&color=" + $(this).attr('color') + "&user_id=" + $("#user_id").val());
         $('#chart').attr("height", "500");
         $('#chart').attr("width", "100%");
         $(".grade a.goal").each ->
@@ -166,7 +166,7 @@ window.studentObject =
         $(id_content).slideUp('fast', ->
           $(id_content).attr("style","display:none;")
         )
-        $('#chart').attr("src", "/charts/student_chart?student_id="+ $("#student_id").val());
+        $('#chart').attr("src", "/charts/student_chart?student_id="+ $("#student_id").val() + "&user_id=" + $("#user_id").val());
         window.chartMode = 'view_all'
       return
     

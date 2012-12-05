@@ -27,7 +27,8 @@
         %div{:class => "alert alert-error fade in", 'data-alert' => "alert"}
           %a{:class => "close", 'data-dismiss' => "alert", :href => "#"} &times;
           = alert
-
+      - if @is_view_as 
+        = render "shared/teachers/view_as_box", :user => @viewing_user 
       = yield
 
     .footer
