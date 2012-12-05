@@ -7,7 +7,7 @@ window.chartLoaded= (chart) ->
   )
 window.clickOnChart= ->
   if (window.chartMode == 'view_goal')
-    $('.goal').each ->
+    $('a.goal').each ->
       id_content = $(this).attr("href")
       $(this).removeClass("icon-minus").addClass("icon-plus")
       $(id_content).slideUp('fast', ->

@@ -14,6 +14,8 @@ class Admin::TeachersController < Admin::BaseAdminController
           :yAxis => 2
         } unless teacher_status.empty?
       end
+       puts "*"*20
+       puts @teachers.inspect
 
       if series.empty?
         @width = "0%"
@@ -142,19 +144,19 @@ class Admin::TeachersController < Admin::BaseAdminController
     #
 
     def find_or_redirect(teacher_id = params[:id])
-      @current_user = current_user
       if current_user.is_super_admin?
         @user = User.unblocked.find_by_id params[:user_id]
       else
-        @user = @current_user
+        @user = current_user
       end
       @teacher = @user.children.teachers.unblocked.find_by_id(teacher_id)
+      @current_user = current_user
 
       if !@user
         render_page_not_found
         return false
       end
 
-      @teacher
+      return true
     end
 end

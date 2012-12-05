@@ -1,4 +1,4 @@
 .teacher
   .clearfix.toolbar
     = link_to "View chart", students_path(:user_id => @user.id),  :class => "brown font18"
-  = render('shared/students_list', :with_pagination => false)
+  = render('students_list', :with_pagination => false)
