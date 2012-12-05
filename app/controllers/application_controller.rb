@@ -90,8 +90,9 @@ class ApplicationController < ActionController::Base
       @current_ability = Ability.new(current_user)
     end
     
-    def render_unauthorized
-      render_error(I18n.t("common.error_unauthorized"), :status => 403)
+    def render_unauthorized(options = {})
+      options.merge!({:status => 403})
+      render_error(I18n.t("common.error_unauthorized"), options)
     end
 
     # Render error message. This method can handle HTML and JSON format.
@@ -99,15 +100,29 @@ class ApplicationController < ActionController::Base
     # === Parameters
     #
     #   * message (String): the error message
-    #   * options (Hash) (optional): extra options for Rails render method, Ex :layout, :status, etc.
+    #   * options (Hash) (optional): extra options for Rails render() method, Ex :layout, :status, etc.
+    #       There is one more options[:iframe] (boolean) so that we can call when rendering in an iframe.
+    #       When the option :iframe is set as True, the default layout will be disabled.
+    #       Ex: render("Error message", :iframe => true) 
     #
     def render_error(message, options = {})
       # Set default status code (if necessary)
       options = {:status => 400}.merge!(options)
 
+      if options[:layout] == false
+        @without_default_layout = true
+      end
+
+      if options.delete(:iframe)
+        # Render error message from iframe
+        @iframe = true
+        # Disable the default layout      
+        options[:layout] = false
+      end
+
       respond_to do |format|
         format.html {
-          flash[:alert] = message
+          flash.now[:alert] = message
           render("shared/error", options)
         }
         
