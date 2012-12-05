@@ -46,6 +46,8 @@ RSpec.configure do |config|
   # Config database_cleaner
   config.before(:suite) do    
     DatabaseCleaner.clean
+    # Prepare seed data
+    load "#{Rails.root}/db/seeds.rb" 
   end
 
   config.before(:each) do

@@ -56,6 +56,7 @@ group :development, :test do
   gem "capybara"
   gem "database_cleaner", '>= 0.8.0'
   gem "faker"
+  gem "factory_girl_rails", '>= 4.1.0'
   # For code coverage
   gem "simplecov", :require => false
   gem "simplecov-rcov", :require => false

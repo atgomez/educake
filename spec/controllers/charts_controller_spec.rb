@@ -1,6 +1,12 @@
 require 'spec_helper'
 
 describe ChartsController do
+  render_views
+
+  before(:each) do
+    @user = FactoryGirl.create(:teacher)
+    sign_in @user
+  end
 
   describe "GET 'user_chart'" do
     it "returns http success" do
