@@ -7,6 +7,7 @@ en:
     error_resource_notfound: "Resource not found"
     error_unauthorized: "You are not authorized to access this resource"
     error_blocked_account: "Your account was blocked. Please contact the administrator."
+    error_page_not_found: "Page not found"
     confirm_message: "Are you sure ?"
 
     gender:

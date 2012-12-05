@@ -30,7 +30,7 @@ class Ability
     end
 
     # Chart Auth
-    can :view_chart, User do |user_inview|
+    can :view, User do |user_inview|
       if user.is_super_admin?
         !user_inview.is_super_admin?
       elsif user.is?(:admin)

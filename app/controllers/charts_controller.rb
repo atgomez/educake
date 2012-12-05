@@ -60,12 +60,8 @@ class ChartsController < ApplicationController
   protected
   	def find_and_check_user
   		@user = User.find_by_id(params[:user_id])
-      render_unauthorized if (!@user || !(can? :view_chart, @user))
-      return (@user && (can? :view_chart, @user))
-  	end
-
-  	def get_chart_data(user)
-  		
+      render_unauthorized if (!@user || !(can? :view, @user))
+      return (@user && (can? :view, @user))
   	end
 
     def render_chart(series)

@@ -108,11 +108,21 @@ class StudentsController < ApplicationController
   protected
 
     def find_user
-      @user = current_user
-      if !@user
-        render_error("Page not found", :status => 404)
+      @current_user = current_user
+      if (params[:user_id])
+        @user = User.find_by_id params[:user_id]
+      else
+        @user = @current_user
       end
-      return @user
+      if !@user
+        render_page_not_found
+        return false
+      end
+      if !(can? :view, @user)
+        render_unauthorized
+        return false
+      end
+      return true
     end
 
     def set_current_tab
