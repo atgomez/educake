@@ -1,4 +1,3 @@
-%p#notice= notice
 = link_to "Add User", new_super_admin_user_path(:back => "users"), :class => "btn"
 = render '/shared/search_box', :action => "search_result", :placeholder => "Enter the term search"
 %div{:style=>"margin-top: 10px;"}
@@ -22,5 +21,4 @@
         %td= highlight(truncate(user.school.name, :length => 17, :separator => " "), params[:query]) rescue ""
         %td= highlight(user.role.name, params[:query]) rescue ""
         
-= render_pagination @users 
-
+= render_pagination @users
