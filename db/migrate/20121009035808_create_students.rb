@@ -3,9 +3,13 @@ class CreateStudents < ActiveRecord::Migration
     create_table :students do |t|
       t.string :first_name, :null => false
       t.string :last_name, :null => false
-      t.date :birthday
+      t.date :birthday, :null => false
       t.integer :teacher_id
       t.boolean :gender
+      t.string :photo_file_name
+      t.string :photo_content_type
+      t.integer :photo_file_size
+      t.datetime :photo_updated_at
 
       t.timestamps
     end

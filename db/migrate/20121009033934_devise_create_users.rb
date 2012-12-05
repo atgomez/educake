@@ -39,13 +39,24 @@ class DeviseCreateUsers < ActiveRecord::Migration
       ## Token authenticatable
       # t.string :authentication_token
 
+      t.string :photo_file_name
+      t.string :photo_content_type
+      t.integer :photo_file_size
+      t.datetime :photo_updated_at
+      t.boolean :is_admin, :default => false
+      t.integer :school_id
+      t.text :notes
+      t.boolean :is_blocked, :default => false
 
       t.timestamps
     end
 
     add_index :users, :email,                :unique => true
     add_index :users, :reset_password_token, :unique => true
-    # add_index :users, :confirmation_token,   :unique => true
+    add_index :users, :confirmation_token,   :unique => true
+    add_index :users, :school_id
+    add_index :users, :parent_id
+    add_index :users, :role_id
     # add_index :users, :unlock_token,         :unique => true
     # add_index :users, :authentication_token, :unique => true
   end

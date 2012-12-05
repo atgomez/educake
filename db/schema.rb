@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121128212616) do
+ActiveRecord::Schema.define(:version => 20121119085521) do
 
   create_table "curriculums", :force => true do |t|
     t.string   "name",       :null => false
@@ -22,86 +22,99 @@ ActiveRecord::Schema.define(:version => 20121128212616) do
   add_index "curriculums", ["name"], :name => "index_curriculums_on_name", :unique => true
 
   create_table "goals", :force => true do |t|
-    t.integer  "student_id",                                    :null => false
-    t.integer  "subject_id",                                    :null => false
-    t.integer  "curriculum_id",                                 :null => false
-    t.date     "due_date"
-    t.float    "accuracy",            :default => 0.0
-    t.datetime "created_at",                                    :null => false
-    t.datetime "updated_at",                                    :null => false
-    t.boolean  "is_completed",        :default => false
-    t.float    "baseline",            :default => 0.0
-    t.date     "baseline_date",       :default => '2012-11-29', :null => false
-    t.integer  "trial_days_total",    :default => 0
-    t.integer  "trial_days_actual",   :default => 0
-    t.string   "grades_file_name"
-    t.string   "grades_content_type"
-    t.integer  "grades_file_size"
-    t.datetime "grades_updated_at"
+    t.integer  "student_id",                                  :null => false
+    t.integer  "subject_id",                                  :null => false
+    t.integer  "curriculum_id",                               :null => false
+    t.float    "accuracy",                 :default => 0.0,   :null => false
+    t.float    "baseline",                 :default => 0.0,   :null => false
+    t.date     "baseline_date",                               :null => false
+    t.date     "due_date",                                    :null => false
+    t.integer  "trial_days_total",                            :null => false
+    t.integer  "trial_days_actual",                           :null => false
+    t.string   "grades_data_file_name"
+    t.string   "grades_data_content_type"
+    t.integer  "grades_data_file_size"
+    t.datetime "grades_data_updated_at"
     t.text     "description"
+    t.boolean  "is_completed",             :default => false
+    t.datetime "created_at",                                  :null => false
+    t.datetime "updated_at",                                  :null => false
   end
 
+  add_index "goals", ["baseline_date"], :name => "index_goals_on_baseline_date"
   add_index "goals", ["curriculum_id"], :name => "index_goals_on_curriculum_id"
+  add_index "goals", ["due_date"], :name => "index_goals_on_due_date"
+  add_index "goals", ["student_id"], :name => "index_goals_on_student_id"
   add_index "goals", ["subject_id"], :name => "index_goals_on_subject_id"
+
+  create_table "grades", :force => true do |t|
+    t.integer  "goal_id",                             :null => false
+    t.integer  "user_id"
+    t.integer  "progress_id"
+    t.date     "due_date",                            :null => false
+    t.float    "accuracy",         :default => 0.0,   :null => false
+    t.float    "value",            :default => 0.0
+    t.float    "ideal_value",      :default => 0.0
+    t.time     "time_to_complete"
+    t.boolean  "is_unused",        :default => false
+    t.text     "note"
+    t.datetime "created_at",                          :null => false
+    t.datetime "updated_at",                          :null => false
+  end
+
+  add_index "grades", ["due_date"], :name => "index_grades_on_due_date"
+  add_index "grades", ["goal_id"], :name => "index_grades_on_goal_id"
+  add_index "grades", ["progress_id"], :name => "index_grades_on_progress_id"
+  add_index "grades", ["user_id"], :name => "index_grades_on_user_id"
 
   create_table "progresses", :force => true do |t|
     t.integer  "goal_id",                     :null => false
     t.date     "due_date",                    :null => false
-    t.float    "accuracy",   :default => 0.0
+    t.float    "accuracy",   :default => 0.0, :null => false
     t.datetime "created_at",                  :null => false
     t.datetime "updated_at",                  :null => false
   end
 
+  add_index "progresses", ["due_date"], :name => "index_progresses_on_due_date"
   add_index "progresses", ["goal_id"], :name => "index_progresses_on_goal_id"
 
   create_table "roles", :force => true do |t|
-    t.string   "name"
+    t.string   "name",       :null => false
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
+
+  add_index "roles", ["name"], :name => "index_roles_on_name", :unique => true
 
   create_table "schools", :force => true do |t|
-    t.string   "name"
-    t.string   "address1"
+    t.string   "name",       :null => false
+    t.string   "address1",   :null => false
     t.string   "address2"
     t.string   "city"
-    t.string   "state"
+    t.string   "state",      :null => false
     t.string   "zipcode"
-    t.string   "phone"
+    t.string   "phone",      :null => false
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
 
-  create_table "statuses", :force => true do |t|
-    t.integer  "goal_id",                             :null => false
-    t.date     "due_date"
-    t.float    "accuracy"
-    t.datetime "created_at",                          :null => false
-    t.datetime "updated_at",                          :null => false
-    t.integer  "user_id"
-    t.float    "value",            :default => 0.0
-    t.float    "ideal_value",      :default => 0.0
-    t.time     "time_to_complete"
-    t.integer  "progress_id"
-    t.boolean  "is_unused",        :default => false
-    t.text     "note"
-  end
-
-  add_index "statuses", ["goal_id"], :name => "index_statuses_on_goal_id"
+  add_index "schools", ["name", "city"], :name => "index_schools_on_name_and_city", :unique => true
+  add_index "schools", ["name", "state"], :name => "index_schools_on_name_and_state", :unique => true
 
   create_table "student_sharings", :force => true do |t|
+    t.string   "first_name",    :null => false
+    t.string   "last_name",     :null => false
     t.string   "email",         :null => false
-    t.integer  "role_id"
     t.integer  "student_id",    :null => false
     t.integer  "user_id"
+    t.integer  "role_id",       :null => false
+    t.string   "confirm_token"
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
-    t.string   "confirm_token"
-    t.string   "first_name"
-    t.string   "last_name"
   end
 
-  add_index "student_sharings", ["email"], :name => "index_student_sharings_on_email"
+  add_index "student_sharings", ["confirm_token"], :name => "index_student_sharings_on_confirm_token"
+  add_index "student_sharings", ["email", "student_id"], :name => "index_student_sharings_on_email_and_student_id", :unique => true
   add_index "student_sharings", ["role_id"], :name => "index_student_sharings_on_role_id"
   add_index "student_sharings", ["student_id"], :name => "index_student_sharings_on_student_id"
   add_index "student_sharings", ["user_id"], :name => "index_student_sharings_on_user_id"
@@ -109,15 +122,15 @@ ActiveRecord::Schema.define(:version => 20121128212616) do
   create_table "students", :force => true do |t|
     t.string   "first_name",         :null => false
     t.string   "last_name",          :null => false
-    t.date     "birthday"
+    t.date     "birthday",           :null => false
     t.integer  "teacher_id"
     t.boolean  "gender"
-    t.datetime "created_at",         :null => false
-    t.datetime "updated_at",         :null => false
     t.string   "photo_file_name"
     t.string   "photo_content_type"
     t.integer  "photo_file_size"
     t.datetime "photo_updated_at"
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
   end
 
   add_index "students", ["first_name", "last_name", "teacher_id"], :name => "index_students_on_first_name_and_last_name_and_teacher_id", :unique => true
@@ -150,19 +163,23 @@ ActiveRecord::Schema.define(:version => 20121128212616) do
     t.string   "confirmation_token"
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
-    t.datetime "created_at",                                :null => false
-    t.datetime "updated_at",                                :null => false
     t.string   "photo_file_name"
     t.string   "photo_content_type"
     t.integer  "photo_file_size"
     t.datetime "photo_updated_at"
-    t.boolean  "is_admin"
+    t.boolean  "is_admin",               :default => false
     t.integer  "school_id"
     t.text     "notes"
-    t.boolean  "is_locked",              :default => false
+    t.boolean  "is_blocked",             :default => false
+    t.datetime "created_at",                                :null => false
+    t.datetime "updated_at",                                :null => false
   end
 
+  add_index "users", ["confirmation_token"], :name => "index_users_on_confirmation_token", :unique => true
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
+  add_index "users", ["parent_id"], :name => "index_users_on_parent_id"
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
+  add_index "users", ["role_id"], :name => "index_users_on_role_id"
+  add_index "users", ["school_id"], :name => "index_users_on_school_id"
 
 end
