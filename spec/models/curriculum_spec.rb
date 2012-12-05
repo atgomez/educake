@@ -1,17 +1,15 @@
 # == Schema Information
 #
-# Table name: progresses
+# Table name: curriculums
 #
 #  id         :integer          not null, primary key
-#  goal_id    :integer          not null
-#  due_date   :date             not null
-#  accuracy   :float            default(0.0), not null
+#  name       :string(255)      not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
 
 require 'spec_helper'
 
-describe Progress do
+describe Curriculum do
   pending "add some examples to (or delete) #{__FILE__}"
 end

@@ -3,13 +3,13 @@
 # Table name: schools
 #
 #  id         :integer          not null, primary key
-#  name       :string(255)
-#  address1   :string(255)
+#  name       :string(255)      not null
+#  address1   :string(255)      not null
 #  address2   :string(255)
 #  city       :string(255)
-#  state      :string(255)
+#  state      :string(255)      not null
 #  zipcode    :string(255)
-#  phone      :string(255)
+#  phone      :string(255)      not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #

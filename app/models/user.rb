@@ -22,17 +22,16 @@
 #  confirmation_token     :string(255)
 #  confirmed_at           :datetime
 #  confirmation_sent_at   :datetime
-#  created_at             :datetime         not null
-#  updated_at             :datetime         not null
-#  school_name            :string(255)
 #  photo_file_name        :string(255)
 #  photo_content_type     :string(255)
 #  photo_file_size        :integer
 #  photo_updated_at       :datetime
-#  is_admin               :boolean
+#  is_admin               :boolean          default(FALSE)
 #  school_id              :integer
 #  notes                  :text
-#  is_blocked              :boolean          default(FALSE)
+#  is_blocked             :boolean          default(FALSE)
+#  created_at             :datetime         not null
+#  updated_at             :datetime         not null
 #
 
 class User < ActiveRecord::Base

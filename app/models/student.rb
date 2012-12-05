@@ -5,15 +5,15 @@
 #  id                 :integer          not null, primary key
 #  first_name         :string(255)      not null
 #  last_name          :string(255)      not null
-#  birthday           :date
+#  birthday           :date             not null
 #  teacher_id         :integer
 #  gender             :boolean
-#  created_at         :datetime         not null
-#  updated_at         :datetime         not null
 #  photo_file_name    :string(255)
 #  photo_content_type :string(255)
 #  photo_file_size    :integer
 #  photo_updated_at   :datetime
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
 #
 
 class Student < ActiveRecord::Base

@@ -3,15 +3,15 @@
 # Table name: student_sharings
 #
 #  id            :integer          not null, primary key
+#  first_name    :string(255)      not null
+#  last_name     :string(255)      not null
 #  email         :string(255)      not null
-#  role_id       :integer
 #  student_id    :integer          not null
 #  user_id       :integer
+#  role_id       :integer          not null
+#  confirm_token :string(255)
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
-#  confirm_token :string(255)
-#  first_name    :string(255)
-#  last_name     :string(255)
 #
 
 class StudentSharing < ActiveRecord::Base
