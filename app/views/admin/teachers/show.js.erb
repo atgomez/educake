@@ -1,6 +1,6 @@
 $("#pagination-listitem").hide('slide', {direction: '<%= @is_page_increment ? "left" : "right" %>'}, 300, function (){
 	$("#pagination_area").html("");
-	$("#pagination_area").html("<%= escape_javascript(render(:partial => 'teacher_students_list')) %>");
+	$("#pagination_area").html("<%= escape_javascript(render(:partial => 'shared/students/list', :locals => {:students => @students, :user => @teacher})) %>");
 	$("#pagination-listitem").show('slide', {direction: '<%= @is_page_increment ? "right" : "left" %>'}, 200);
 	$('.pagination li:not(.disabled) a').attr('data-remote', 'true');
 	$('.pagination li:not(.disabled) a').click(function(){

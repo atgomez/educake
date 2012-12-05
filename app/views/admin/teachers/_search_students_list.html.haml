@@ -2,23 +2,19 @@
 - students.each do |student|
   - student_home_url = url_for(:controller => "admin/students", :action => "show", :id => student.id)
   .student-container.clearfix.link{:href => student_home_url}
-    .avatar-container.well
-      %a{:href => student_home_url, :title => student.full_name}
-        = image_tag(student.photo_url, :alt => student.full_name, :class => "student-avatar")
-
     = render "shared/students/cell", :student => student, :url => student_home_url 
               
-      .teachers-container
-        %a{:href => "#student-teachers-#{student.id}", :class => "icon-plus student-teacher-handler"}
-          = "Teachers"
-        .teacher-student.hide.clearfix{:id => "student-teachers-#{student.id}"}
-          - teachers = student.sponsoring_teachers
-          - teachers.each do |teacher|
-            = link_to admin_teacher_path(teacher), :title => teacher.full_name, :rel => "tooltip", :class => "teacher-link" do 
-              = image_tag(teacher.photo_url, 
-                  :alt => teacher.full_name,
-                  :class => "teacher-avatar", 
-                  :id => "student-teacher-#{student.id}-#{teacher.id}")
+    .teachers-container
+      %a{:href => "#student-teachers-#{student.id}", :class => "icon-plus student-teacher-handler"}
+        = "Teachers"
+      .teacher-student.hide.clearfix{:id => "student-teachers-#{student.id}"}
+        - teachers = student.sponsoring_teachers
+        - teachers.each do |teacher|
+          = link_to admin_teacher_path(teacher), :title => teacher.full_name, :rel => "tooltip", :class => "teacher-link" do 
+            = image_tag(teacher.photo_url, 
+                :alt => teacher.full_name,
+                :class => "teacher-avatar", 
+                :id => "student-teacher-#{student.id}-#{teacher.id}")
 
 .clearfix
 - pagination_params ||= {}

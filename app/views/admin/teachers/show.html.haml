@@ -13,7 +13,7 @@
   .teacher.clearfix.toolbar
     - unless @students.blank?
       #pagination_area
-        = render(:partial => 'teacher_students_list')
+        = render(:partial => 'shared/students/list', :students => @students, :user => @teacher)
 
   %div.pull-right
     = link_to "Export", "#", :id => "export-button", :class => "btn export", "data-toggle" => "modal"

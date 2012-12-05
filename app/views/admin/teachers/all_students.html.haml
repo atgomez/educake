@@ -9,4 +9,4 @@
   .clearfix.toolbar
     = link_to "View chart", admin_teacher_path(@teacher),  :class => "brown font18"
   - unless @students.blank?
-    = render('teacher_students_list', :with_pagination => false)
+    = render('shared/students/list', :with_pagination => false, :students => @students, :user => @teacher)

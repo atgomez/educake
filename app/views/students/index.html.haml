@@ -13,7 +13,7 @@
       = link_to 'Add Student', new_student_path(:back_link => "/teachers", :user_id => @user.id), :class => 'btn bg-brown white pull-right'
   - unless @students.blank?
     #pagination_area
-      = render 'students_list', :current_page => @current_page
+      = render('shared/students/list', :current_page => @current_page, :students => @students, :user => @user)
   
   %center.clearfix
   .pull-right

@@ -1,16 +1,9 @@
 - with_pagination = ((with_pagination.nil? ? true : with_pagination) rescue true)
 
 #pagination-listitem
-  - @students.each_with_index do |student, idx|
-    - student_home_url = student_path(student, :user_id => @teacher.id)
+  - students.each_with_index do |student, idx|
+    - student_home_url = student_path(student, :user_id => user.id)      
     .student-container.pull-left.clearfix.link{:href => student_home_url}
-      .avatar-container.thumbnail
-        %a{:href => student_home_url}
-          - unless student.photo_url.blank?
-            = image_tag(student.photo_url, :class => "student-avatar")
-          - else
-            .default-avatar
-
       = render "shared/students/cell", :student => student, :url => student_home_url 
       .track-indicator-container
         - status = student.check_on_track? 
@@ -18,11 +11,12 @@
           .track-indicator.pull-left{:class => "on-track", :title => "On-track"}
         - elsif status == 2
           .track-indicator.pull-left{:title => "Not on-track"}
+        
     - if (idx + 1) % 4 == 0
       .clearfix
 
-  - if with_pagination
-    .clearfix
-    .pagination-container.ajax
-      = render_pagination(@students, {:current_page => @current_page})
-      .loading.hide
+- if with_pagination
+  .clearfix
+  .pagination-container.ajax
+    = render_pagination @students, :current_page => current_page
+    .loading.hide
