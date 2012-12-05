@@ -1,7 +1,7 @@
 class StudentsController < ApplicationController
   include ::Shared::StudentActions
   before_filter :destroy_session, :except => [:show, :destroy]
-  cross_role_action :search_user, :show, :create, :edit, :update
+  cross_role_action :search_user, :show, :create, :edit, :update, :all_students, :load_users, :search_user
 
   def index
     if find_user
@@ -29,28 +29,32 @@ class StudentsController < ApplicationController
   def show
     if find_user
       @current_user = current_user
-      @student = @user.accessible_students.find(params[:id])
-      @goals = @student.goals.incomplete.load_data(filtered_params)
-      @students = @user.accessible_students
-      #Check to hide placeholder for chart
-      @data = []
-      @goals.each do |goal| 
-        goal.grades.each{|grade| 
-          @data += [grade.due_date, (grade.accuracy*100).round / 100.0]
-        }
-      end
-      if @data.empty?
-        @height = "0"
-        @width = "0%"
+      @student = @user.accessible_students.find_by_id(params[:id])
+      if @student
+        @goals = @student.goals.incomplete.load_data(filtered_params)
+        @students = @user.accessible_students
+        #Check to hide placeholder for chart
+        @data = []
+        @goals.each do |goal| 
+          goal.grades.each{|grade| 
+            @data += [grade.due_date, (grade.accuracy*100).round / 100.0]
+          }
+        end
+        if @data.empty?
+          @height = "0"
+          @width = "0%"
+        else
+          @height = "500"
+          @width = "100%"
+        end 
+        if request.xhr?
+          render :partial => "shared/students/view_goal", :locals => {:goals => @goals, :students => @students}
+        end
+        @invited_users = StudentSharing.where(:student_id => @student.id)
+        session[:student_id] = params[:id]
       else
-        @height = "500"
-        @width = "100%"
-      end 
-      if request.xhr?
-        render :partial => "shared/students/view_goal", :locals => {:goals => @goals, :students => @students}
+        render_page_not_found
       end
-      @invited_users = StudentSharing.where(:student_id => @student.id)
-      session[:student_id] = params[:id]
     end
   end
 
@@ -72,11 +76,14 @@ class StudentsController < ApplicationController
   def update
     if find_user
       @student = @user.accessible_students.find(params[:id])
-
-      if @student.update_attributes(params[:student])
-        redirect_to @student, :notice => 'Student was successfully updated.'
+      if @student
+        if @student.update_attributes(params[:student])
+          redirect_to @student, :notice => 'Student was successfully updated.'
+        else
+          render :action => :edit
+        end
       else
-        render :action => :edit
+        render_page_not_found
       end
     end
   end 

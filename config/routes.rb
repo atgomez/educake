@@ -72,14 +72,6 @@ TeacherMgnt::Application.routes.draw do
         get :all_students
       end
     end
-
-    resources :students do 
-      member do 
-        get :load_users
-        get :load_grade
-        get :search_user
-      end 
-    end
   end
   
   namespace :super_admin do 
