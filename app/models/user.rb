@@ -351,7 +351,7 @@ class User < ActiveRecord::Base
           :data => teacher_status,
           :yAxis => 2,
           :item_id => teacher.id,
-          :url => context.admin_teacher_path(teacher)
+          :url => context.students_path(:user_id => teacher.id)
         } unless teacher_status.empty?
       end
     else

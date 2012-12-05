@@ -29,5 +29,6 @@
         = image_tag (f.object.new_record? ? "missing.png" : f.object.photo.url(:medium)), :size => "200x200", :id => 'upload-image'
       = f.input :photo, :as => :file, :label => "Upload photo"
       = hidden_field_tag "back_link", back_link
+      = hidden_field_tag "user_id", @user.id
       
   

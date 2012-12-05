@@ -1,7 +1,7 @@
 class StudentsController < ApplicationController
-  include ::Shared::StudentActions
+
   before_filter :destroy_session, :except => [:show, :destroy]
-  cross_role_action :new, :search_user, :index, :show, :create, :edit, :update, :all_students, :load_users, :search_user
+  cross_role_action :new, :search_user, :index, :destroy, :show, :create, :edit, :update, :all_students, :load_users, :search_user
 
   def index
     if find_user
@@ -58,6 +58,30 @@ class StudentsController < ApplicationController
     end
   end
 
+  def new
+    if find_user
+      @student = Student.new
+      @back_link = params[:back_link]
+    end
+  end  
+  
+  def edit
+    if find_user
+      @student = @user.accessible_students.find(params[:id])
+      if @student
+        @goals = @student.goals.order('is_completed ASC').load_data(filtered_params)
+        session[:student_id] = params[:id]
+        @invited_users = StudentSharing.where(:student_id => params[:id])
+
+        if request.xhr?
+          render :partial => "shared/students/view_goal", :locals => {:goals => @goals, :student => @student}
+        end
+      else
+        render_page_not_found
+      end
+    end
+  end
+
   def create
     if find_user
       @student = @user.accessible_students.new(params[:student])
@@ -66,19 +90,19 @@ class StudentsController < ApplicationController
       
       if @student.save
         flash[:notice] = 'Student was successfully created.'
-        redirect_to :action => 'edit', :id => @student
+        redirect_to :action => 'edit', :id => @student, :user_id => @user
       else
         render :action => "new"
       end
     end
   end
- 
+
   def update
     if find_user
       @student = @user.accessible_students.find(params[:id])
       if @student
         if @student.update_attributes(params[:student])
-          redirect_to @student, :notice => 'Student was successfully updated.'
+          redirect_to student_path(@student, :user_id => @user.id), :notice => 'Student was successfully updated.'
         else
           render :action => :edit
         end
@@ -87,6 +111,23 @@ class StudentsController < ApplicationController
       end
     end
   end 
+  
+  def destroy
+    if find_user
+      @student = @user.accessible_students.find(params[:id])
+      @student.destroy
+      redirect_to students_url
+    end
+  end
+
+  def load_grade
+    goals = Goal.load_data(filtered_params).where(:student_id => params[:id])
+    @goals_grades = {}
+    goals.each do |goal|
+      @goals_grades[goal.id] = goal.grades.order('due_date ASC').load_data(filtered_params)
+    end 
+    render :partial => "shared/students/view_goal", :locals => {:goals => goals, :grades => @goals_grades}
+  end
 
   def load_users 
     users = StudentSharing.where(:student_id => params[:id])

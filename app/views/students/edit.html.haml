@@ -10,7 +10,7 @@
         = link_to(" Add a goal", new_goal_path(:student_id => @student.id), :remote => true,
                     :class => "icon-plus-sign", :id => "add-goal")
         #content-grade.clearfix
-          = render(:partial => "shared/students/view_goal", :locals => {:goals => @goals})
+          = render(:partial => "shared/students/view_goal", :locals => {:goals => @goals, :student => @student})
     #new-goal-container
       = render(:partial => "goals/form", :locals => {:student => @student})
   .invited-user

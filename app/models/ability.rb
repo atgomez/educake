@@ -29,7 +29,7 @@ class Ability
       end  
     end
 
-    # Chart Auth
+    # View Auth - In case we need to know current user has any ability to view user's info or not
     can :view, User do |user_inview|
       if user.is_super_admin?
         !user_inview.is_super_admin?
