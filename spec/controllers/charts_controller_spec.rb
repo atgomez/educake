@@ -4,12 +4,7 @@ describe ChartsController do
   render_views
   
   let(:user) {FactoryGirl.create(:teacher)}
-  let(:student) { 
-    student = FactoryGirl.build(:student)
-    student.teacher = user
-    student.save!
-    student
-  }
+  let(:student) { FactoryGirl.create(:student, :teacher => user)  }
 
   before(:each) do
     sign_in user
