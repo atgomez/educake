@@ -1,9 +1,5 @@
-
-window.selectGoal= (goal_id, url) ->
-  if (url.search('#') == -1)
-    window.location = url
-  else
-    $('#goal' + goal_id).click()
+$ ->
+  teacher.setup()
 
 window.teacher =
   setup: -> 

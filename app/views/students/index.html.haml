@@ -1,3 +1,6 @@
+- content_for :head do
+  = javascript_include_tag('students.js')
+
 .admin.teacher
   - if @current_user.is?(:admin)
     - @teacher = @user

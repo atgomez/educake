@@ -1,3 +1,5 @@
+$ ->
+  studentObject.setup()
 
 window.chartMode = 'view_all'
 
@@ -211,11 +213,7 @@ window.studentObject =
         window.location.href = url
     )
     
-  clickExport: ->
-    $('#export-button').click((e) ->
-      e.preventDefault()
-      $('#export-dialog').modal('show')
-    )
+  
 
   onSaveInvitation: ->
     $('#invite_user form').live('submit', -> 

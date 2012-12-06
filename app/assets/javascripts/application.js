@@ -19,7 +19,6 @@
 //= require lib/jquery-ui-timepicker-addon
 //= require lib/highcharts/js/highcharts
 //= require lib/Placeholders.min
-//= require students
 //= require init
 //= require goal
 //= require helper

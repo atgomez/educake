@@ -1,4 +1,14 @@
+window.selectGoal= (goal_id, url) ->
+  if (url.search('#') == -1)
+    window.location = url
+  else
+    $('#goal' + goal_id).click()
+
 window.helper = 
+  setup: ->
+    @alert_not_implement()
+    @clickExport()
+
   alert_not_implement: () ->
     $(".not-implemented").click((e) ->
       alert("This feature is coming soon")
@@ -18,4 +28,10 @@ window.helper =
     catch exc
       result = null
     return result
+
+  clickExport: ->
+    $('#export-button').click((e) ->
+      e.preventDefault()
+      $('#export-dialog').modal('show')
+    )
 
