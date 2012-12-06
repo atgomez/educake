@@ -1,0 +1,22 @@
+- students ||= []
+- students.each do |student|
+  - student_home_url = student_path(student, :user_id => student.teacher.id)
+  .student-container.clearfix.link{:href => student_home_url}
+    = render "shared/students/cell", :student => student, :url => student_home_url 
+    
+    .teachers-container
+      %a{:href => "#student-teachers-#{student.id}", :class => "icon-plus student-teacher-handler"}
+        = "Teachers"
+      .teacher-student.hide.clearfix{:id => "student-teachers-#{student.id}"}
+        - teachers = student.sponsoring_teachers
+        - teachers.each do |teacher|
+          = link_to admin_teacher_path(teacher), :title => teacher.full_name, :rel => "tooltip", :class => "teacher-link" do 
+            = image_tag(teacher.photo_url, 
+                :alt => teacher.full_name,
+                :class => "teacher-avatar", 
+                :id => "student-teacher-#{student.id}-#{teacher.id}")
+
+.clearfix
+- pagination_params ||= {}
+= render_pagination(students, {:type => 'student', :current_page => @current_page}, pagination_params)
+.loading.hide

@@ -18,5 +18,5 @@
     - unless @students.blank?
       %h5= "Students"
       #students-list
-        = render('shared/students/list', :students => @students, 
+        = render('search_students_list', :students => @students, 
                   :pagination_params => {:inner_window  => 2, :outer_window => 1})

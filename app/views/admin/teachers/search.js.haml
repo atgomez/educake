@@ -1,6 +1,6 @@
 - case params[:type]
   - when 'student' then
-    = render('shared/students/list', :students => @students, 
+    = render('search_students_list', :students => @students, 
               :pagination_params => {:inner_window  => 1, :outer_window => 1})
   - when 'teacher' then
     = render('teachers_list', :teachers => @teachers, 
