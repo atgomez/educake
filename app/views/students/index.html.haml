@@ -8,7 +8,7 @@
       .clearfix.toolbar
         = link_to "All Teachers", admin_teachers_path, :class => "brown font18"
         = render 'shared/search_box', :action => "/admin/teachers/search", :placeholder => "Search name"
-      = render('/admin/teachers/teacher_box')
+      = render('/shared/teachers/teacher_box')
 .teacher
   .clearfix.toolbar
     = link_to "View all students", all_students_students_path(:user_id => @user.id),  :class => "brown font18"

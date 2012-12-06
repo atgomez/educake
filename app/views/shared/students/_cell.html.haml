@@ -20,3 +20,11 @@
       %span= "no goal"
     - else
       %span= student.goals.length
+- unless params[:query]
+  .track-indicator-container
+    - status = student.check_on_track? 
+    - if status == 1
+      .track-indicator.pull-left{:class => "on-track", :title => "On-track"}
+    - elsif status == 2
+      .track-indicator.pull-left{:title => "Not on-track"}
+

@@ -1,6 +1,6 @@
 - teachers ||= []
 - with_pagination = ((with_pagination.nil? ? true : with_pagination) rescue true)
-
+- row_size ||= 1
 #pagination-listitem  
   - teachers.each_with_index do |teacher, idx|
     - students = teacher.accessible_students
@@ -30,16 +30,20 @@
                       :id => "teacher-student-#{teacher.id}-#{student.id}")
               - if student_count > showed_student_num
                 = link_to("More...", all_students_students_path(:user_id => teacher.id))
-      .track-indicator-container
-        - is_track = teacher.check_on_track?
-        - if is_track == 1
-          .track-indicator{:class => "on-track", :title => "On-track"}
-        - elsif is_track == 2
-          .track-indicator{:title => "Not on-track"}
+      - unless params[:query]
+        .track-indicator-container
+          - is_track = teacher.check_on_track?
+          - if is_track == 1
+            .track-indicator{:class => "on-track", :title => "On-track"}
+          - elsif is_track == 2
+            .track-indicator{:title => "Not on-track"}
       .clearfix
-    - if (idx + 1) % 4 == 0
-      .clearfix
-
+    - unless params[:query]
+      - if (idx + 1) % 4 == 0
+        .clearfix
+    - else 
+      - if (idx + 1) % row_size == 0
+        .clearfix
 - if with_pagination
   .clearfix
   .pagination-container.ajax
