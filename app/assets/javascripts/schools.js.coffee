@@ -1,3 +1,6 @@
+$ ->
+  schoolObject.setup()
+
 window.schoolObject =
   setup: ->
     @checkForCheckbox()

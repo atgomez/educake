@@ -10,10 +10,10 @@
             = label_tag "Export data for"
           %td
             %div{:style => "float:left; margin: 0 5px 0 5px"}
-              = radio_button_tag "data", "individual", true
+              = radio_button_tag "data", "individual", true, :class => "export_data_selector"
             = label_tag :data_individual, "Individual Student", :style => "float:left"
             %div{:style => "float:left; margin: 0 5px 0 5px"}
-              = radio_button_tag "data", "classroom"
+              = radio_button_tag "data", "classroom", false, :class => "export_data_selector"
             = label_tag :data_classroom, "Classroom", :style => "float:left"
         %tr
           %td

@@ -12,7 +12,7 @@
       .form-inputs
         = f.input :goal_id, :collection => @goals, :prompt => "Select one", :input_html => {:class => "pull-left"}
         .clearfix
-        = f.input(:due_date, :as => :string, :input_html => {:class => "select-date pull-left", :value => @grade.due_date_string}, :label => "Due Date")
+        = f.input(:due_date, :as => :string, :input_html => {:class => "date-picker pull-left", :value => @grade.due_date_string}, :label => "Due Date")
         .clearfix
         = f.input :accuracy, :label => "% Accuracy", :input_html => {:class => "pull-left", :type => "text"}
         .clearfix

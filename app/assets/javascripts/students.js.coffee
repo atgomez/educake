@@ -20,25 +20,21 @@ window.clickOnChart= ->
 
 window.studentObject =
   setup: ->
-    @addDatePicker()
-    @clickOnGoal()
     @clickOnGrade()
     @clickOnStudents() 
     @clickPage()
     @searchUser()
     @autocompleteSearch()
     @uploadPhoto()
-    @clickExport()
     @onSaveInvitation()
     @scrollToUser()
-    @allowInputNumber()
     @timeForField()
     @checkClassroom()
     @disableSubmitForm()
     return
     
   checkClassroom: ->
-    $("input[name=data]").change ->
+    $(".export_data_selector").change ->
       if @value is "classroom"
         $("#student_selection").attr("disabled", "disabled")
       else
@@ -50,23 +46,6 @@ window.studentObject =
         hourGrid: 4,
         minuteGrid: 10
       return
-  
-  allowInputNumber: ->
-    $('#user_phone').filter_input({regex:'[0-9]'})
-    $('#grade_value').filter_input({regex:'[0-9.]', live:true})
-    $(".numeric").filter_input({regex:'[0-9.]', live:true})
-    $('#user_first_name').filter_input({regex:'[a-zA-Z- ]', live:true})
-    $('#user_last_name').filter_input({regex:'[a-zA-Z- ]', live:true}) 
-    $('#user_email').filter_input({regex:'[a-zA-Z0-9_.@\r]', live:true}) 
-    $('#student_sharing_first_name').filter_input({regex:'[a-zA-Z- ]', live:true})
-    $('#student_sharing_last_name').filter_input({regex:'[a-zA-Z- ]', live:true}) 
-    $('#student_sharing_email').filter_input({regex:'[a-zA-Z0-9_.@]', live:true})
-    $('#student_first_name').filter_input({regex:'[a-zA-Z- ]', live:true})
-    $('#student_last_name').filter_input({regex:'[a-zA-Z- ]', live:true}) 
-    $('.valid_name').filter_input({regex:'[a-zA-Z- ]', live:true})
-    $('.valid_email').filter_input({regex:'[a-zA-Z0-9_.@]', live:true}) 
-    $('.valid_number').filter_input({regex:'[0-9]', live:true}) 
-    return
 
   uploadPhoto: ->
     $('#student_photo').change((e) ->
@@ -92,15 +71,6 @@ window.studentObject =
       reader.readAsDataURL(file)
     
     )
-
-  addDatePicker: ->
-    $("#student_birthday").datepicker({
-      dateFormat: "mm-dd-yy",
-      yearRange: "-40:+0",
-      changeMonth: true,
-      changeYear: true
-    })
-    return 
 
   autocompleteSearch: -> 
     $('#student_sharing_email').live "keydown.autocomplete", -> 
@@ -135,42 +105,7 @@ window.studentObject =
        if search_email != email 
          $("#student_sharing_role_id").attr("disabled", false)
       
-  clickOnGoal: -> 
-    $(".grade a.goal").live 'click', () -> 
-
-      id_content = $(this).attr("href")
-      id = id_content.split("_")[1]
-      current_iframe = $('#chart').attr("src")
-      id_content = $(this).attr("href")
-      if $(this).hasClass("icon-plus")
-        $(this).removeClass("icon-plus").addClass("icon-minus")
-        $(id_content).slideDown('fast', ->
-          $(id_content).attr("style","display:block;")
-        )
-        loadGrades(id)
-        $('#chart').attr("src", "/charts/goal_chart?goal_id="+id + "&color=" + $(this).attr('color') + "&user_id=" + $("#user_id").val());
-        $('#chart').attr("height", "500");
-        $('#chart').attr("width", "100%");
-        $(".grade a.goal").each ->
-          if $(this).hasClass("icon-minus") && ($(this).attr("href") != id_content)
-            $(this).removeClass("icon-minus").addClass("icon-plus")
-            id = $(this).attr("href")
-            #$(id).attr("style","display:none;")
-            $(id).slideUp('fast', ->
-              $(id).attr("style","display:none;")
-            )
-        window.chartMode = 'view_goal'
-      else if $(this).hasClass("icon-minus")
-        if $("#check_is_add_grade").val() == "true"
-          $('#chart').attr("height", "0");
-          $('#chart').attr("width", "0%");
-        $(this).removeClass("icon-minus").addClass("icon-plus")
-        $(id_content).slideUp('fast', ->
-          $(id_content).attr("style","display:none;")
-        )
-        $('#chart').attr("src", "/charts/student_chart?student_id="+ $("#student_id").val() + "&user_id=" + $("#user_id").val());
-        window.chartMode = 'view_all'
-      return
+  
     
   clickPage: ->
     $("#content-grade").delegate '#goals_pages .pagination ul li a', 'click', (evt)-> 

@@ -1,29 +1,51 @@
 #= require 'lib/jquery.livequery.js'
 
+$ ->
+  goal.setup()
+
 window.goal =
   setup: ->
-    @add_date_picker()
     @setup_form()
     @update_grade()
+    @clickOnGoal()
     return
 
-  add_date_picker: ->
-    $(".goal-form .select-date").livequery( ->
-      $(this).datepicker({
-        dateFormat: "mm-dd-yy",
-        yearRange: "-10:+10",
-        changeMonth: true,
-        changeYear: true
-      })
-    )
-    $("#grade_due_date").livequery( ->
-      $(this).datepicker({
-        dateFormat: "mm-dd-yy",
-        yearRange: "-10:+10",
-        changeMonth: true,
-        changeYear: true
-      })
-    )
+  clickOnGoal: -> 
+    $(".grade a.goal").live 'click', () -> 
+
+      id_content = $(this).attr("href")
+      id = id_content.split("_")[1]
+      current_iframe = $('#chart').attr("src")
+      id_content = $(this).attr("href")
+      if $(this).hasClass("icon-plus")
+        $(this).removeClass("icon-plus").addClass("icon-minus")
+        $(id_content).slideDown('fast', ->
+          $(id_content).attr("style","display:block;")
+        )
+        loadGrades(id)
+        $('#chart').attr("src", "/charts/goal_chart?goal_id="+id + "&color=" + $(this).attr('color') + "&user_id=" + $("#user_id").val());
+        $('#chart').attr("height", "500");
+        $('#chart').attr("width", "100%");
+        $(".grade a.goal").each ->
+          if $(this).hasClass("icon-minus") && ($(this).attr("href") != id_content)
+            $(this).removeClass("icon-minus").addClass("icon-plus")
+            id = $(this).attr("href")
+            #$(id).attr("style","display:none;")
+            $(id).slideUp('fast', ->
+              $(id).attr("style","display:none;")
+            )
+        window.chartMode = 'view_goal'
+      else if $(this).hasClass("icon-minus")
+        if $("#check_is_add_grade").val() == "true"
+          $('#chart').attr("height", "0");
+          $('#chart').attr("width", "0%");
+        $(this).removeClass("icon-minus").addClass("icon-plus")
+        $(id_content).slideUp('fast', ->
+          $(id_content).attr("style","display:none;")
+        )
+        $('#chart').attr("src", "/charts/student_chart?student_id="+ $("#student_id").val() + "&user_id=" + $("#user_id").val());
+        window.chartMode = 'view_all'
+      return
 
   setup_form: ->
     $(".goal-form #btn-save-goal").livequery('click', (e) -> 

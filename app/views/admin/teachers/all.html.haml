@@ -1,3 +1,6 @@
+- content_for :head do
+  = javascript_include_tag('app/admin/teacher.js')
+
 .admin.teacher
   %h3.school-name= current_user.school.try(:name)
   .clearfix.toolbar

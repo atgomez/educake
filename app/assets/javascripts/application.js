@@ -19,11 +19,9 @@
 //= require lib/jquery-ui-timepicker-addon
 //= require lib/highcharts/js/highcharts
 //= require lib/Placeholders.min
-//= require init
 //= require goal
 //= require helper
 //= require schools
-//= require app/admin/teacher
 //= require jquery.iframe-transport
 //= require jquery.remotipart
 
