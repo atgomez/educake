@@ -4,12 +4,18 @@
   .form-actions
     %center
       - back = :back
-      - if (f.object.new_record? && @back == "users")
-        - back = super_admin_school_path(@school_id)
-      - elsif (f.object.new_record? && @back == "schools")
+      - if (@back == "users")
+        
+        - if !(@school_id.blank?)
+          - back = super_admin_school_path(@school_id)
+        - else
+
+          - back = search_result_super_admin_users_path(:query => params[:query], :school => params[:school], :user_id => params[:user_id])
+      - elsif (f.object.new_record?)
         - back = super_admin_schools_path
       - elsif !f.object.new_record?
         - back = super_admin_school_path(@user.school)
+
       = hidden_field_tag :back, @back
       = hidden_field_tag :school_id, @school_id
       = link_to "Cancel", back, :class => "btn"
@@ -41,6 +47,11 @@
       = f.input :email, :input_html => {:class => "valid_email"}
       = f.input :phone, :input_html => {:class => "valid_number"}
       = f.input :notes, :input_html => {:rows => "5", :class => "width-area"}
+      
+      = hidden_field_tag :back, params[:back]
+      = hidden_field_tag :query, params[:query]
+      = hidden_field_tag :school, params[:school]
+      = hidden_field_tag :school_id, params[:school_id]
       
 - unless @user.new_record?
   .account
