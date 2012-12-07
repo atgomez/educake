@@ -47,7 +47,7 @@ class Admin::TeachersController < Admin::BaseAdminController
 
       begin
         @teacher = @user.children.new_with_role_name(:teacher, params[:user])
-        @teacher.skip_password = true
+        @teacher.skip_password!
         if @teacher.save
           status_code = 201
           result[:message] = I18n.t('admin.teacher.created_successfully')

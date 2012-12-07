@@ -8,21 +8,17 @@ class SuperAdmin::UsersController < SuperAdmin::BaseSuperAdminController
   end
   
   def create
-    rand_pass = rand(1234567).to_s
-    params[:user][:password] = rand_pass
-    params[:user][:password_confirmation] = rand_pass   
     @user = User.new(params[:user])
     @school_id = params[:school_id]
     @back = params[:back]
     @school = School.find_by_id(@user.school_id)
 
     if (@school)
-      @user.skip_confirmation!
+      @user.skip_password!
       @user.parent = @school.admin
       @user.school = @school
 
       if @user.save
-        UserMailer.admin_confirmation(@user, rand_pass).deliver
         flash[:notice] = 'User was created successfully.' 
         redirect_to super_admin_school_path(@user.school)
       else

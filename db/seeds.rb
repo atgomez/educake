@@ -18,3 +18,14 @@ super_admin.assign_attributes({
 super_admin.is_admin = true
 super_admin.skip_confirmation!
 super_admin.save!
+
+# TODO: move curriculum and subject to sample_data
+# Create seed Curriculums
+["SEACO FPI 5.1", "SEACO FPI 5.2"].each do |curriculum|
+  Curriculum.create!(:name => curriculum)  
+end
+
+# Create seed Subjects
+["Math", "French"].each do |subject|
+  Subject.create!(:name => subject)  
+end

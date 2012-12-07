@@ -50,7 +50,7 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me, :first_name, 
+  attr_accessible :email, :password, :password_confirmation, :remember_me, :first_name,
                   :last_name, :phone, :classroom, :confirmed_at, :parent_id, :notes, :role_id, :school_id
   
   # ASSOCIATIONS
@@ -335,8 +335,16 @@ class User < ActiveRecord::Base
     return result
   end
 
+  # Skip password when validating.
+  def skip_password!
+    # Securely remove all password fields, otherwise user cannot confirm.
+    self.password = nil
+    self.password_confirmation = nil
+    self.encrypted_password = ''
+    self.skip_password = true
+  end
+  
   # EXPORTING
-
 
   # Collect data for charting
 

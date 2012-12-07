@@ -28,19 +28,13 @@ class SuperAdmin::SchoolsController < SuperAdmin::BaseSuperAdminController
 
   def create
     # Create the admin for the school.
-    rand_pass = rand(1234567)
     admin = User.new(params[:school].delete(:admin_attributes))
-    admin.password = rand_pass
-    admin.password_confirmation = rand_pass
-    # Skip Devise confirmation email, because we will manually send that email.
-    admin.skip_confirmation!
-
+    admin.skip_password!
     @school = School.new(params[:school])
     @school.admin = admin
 
     # Save the school and admin
     if @school.save
-      UserMailer.admin_confirmation(@school.admin, rand_pass).deliver
       flash[:notice] = 'School was successfully created.' 
       redirect_to super_admin_school_path @school
     else

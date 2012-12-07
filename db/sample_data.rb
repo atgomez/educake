@@ -29,16 +29,6 @@ admin.skip_confirmation!
 admin.save!
 puts "Created seed Admin (Principal): #{admin.email} / #{password}"
 
-# Create seed Curriculums
-["SEACO FPI 5.1", "SEACO FPI 5.2"].each do |curriculum|
-  Curriculum.create!(:name => curriculum)  
-end
-
-# Create seed Subjects
-["Math", "French"].each do |subject|
-  Subject.create!(:name => subject)  
-end
-
 # Create sample teacher
 teacher_role = Role.find_by_name('Teacher')
 teacher = User.new({
