@@ -87,3 +87,8 @@ form textarea{
 .wordbreak{
   word-break: break-all;
 }
+
+.navbar-search input.search-query{
+  background: url("/assets/search.png") no-repeat scroll 7px 7px #FCFCFC;
+  padding-left: 27px;
+}
