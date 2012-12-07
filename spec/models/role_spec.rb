@@ -11,5 +11,12 @@
 require 'spec_helper'
 
 describe Role do
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe "attributes" do
+    it { should have_attribute(:name) }
+  end
+
+  describe 'associations' do
+    it { should have_many(:student_sharings).dependent(:restrict)}
+    it { should have_many(:users).dependent(:restrict)}
+  end
 end

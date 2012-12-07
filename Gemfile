@@ -60,4 +60,5 @@ group :development, :test do
   # For code coverage
   gem "simplecov", :require => false
   gem "simplecov-rcov", :require => false
+  gem "shoulda-matchers"
 end
