@@ -146,11 +146,12 @@ class Student < ActiveRecord::Base
       end 
     end
     
-    progress.keys.sort.each do |key| 
+    progress.keys.sort.each do |key|
       data << [key, ((progress[key].sum/progress[key].count*100).round / 100.0)]
-    end 
+    end
     return data
-  end 
+  end
+
   def photo_url(style = :small)
     self.photo.url(style)
   end

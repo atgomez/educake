@@ -10,6 +10,7 @@ SimpleCov.start 'rails'
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'rspec/autorun'
+include ActionDispatch::TestProcess
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
@@ -44,15 +45,15 @@ RSpec.configure do |config|
   config.order = "random"
 
   # Config database_cleaner
-  config.before(:suite) do    
-    DatabaseCleaner.clean
-    # Prepare seed data
-    load "#{Rails.root}/db/seeds.rb" 
+  config.before(:suite) do
+    DatabaseCleaner.strategy = :truncation
+    DatabaseCleaner.clean    
   end
 
   config.before(:each) do
-    DatabaseCleaner.strategy = :truncation
     DatabaseCleaner.start
+    # Prepare seed data
+    load "#{Rails.root}/db/seeds.rb" 
   end
 
   config.after(:each) do

@@ -19,7 +19,39 @@
 require 'spec_helper'
 
 describe Student do
-  let(:teacher) {FactoryGirl.create(:teacher)}
+  let(:teacher) {
+    FactoryGirl.create(:teacher)
+  }
+  let(:student) {FactoryGirl.create(:student, :teacher => teacher)}
+  let(:txt_file) {fixture_file_upload('/files/data.txt', 'text/plain')}
+  let(:png_file) {fixture_file_upload('/files/search.png', 'image/png')}
+  let(:date_format) {I18n.t("date.formats.default")}
+  
+  describe "validate" do
+    let(:dummy_student) {Student.new}
+
+    context "invalid student" do
+      [:first_name, :last_name, :birthday].each do |attr|
+        it { dummy_student.should have_at_least(1).error_on(attr) }
+      end
+
+      context "with invalid photo" do
+        it "has error on photo" do          
+          dummy_student.photo = txt_file
+          dummy_student.valid?
+          dummy_student.errors[:photo].blank?.should be_false
+        end
+      end
+
+      context "without photo" do
+        it "does not need to validate photo type" do
+          dummy_student.photo = nil
+          dummy_student.valid?
+          dummy_student.errors[:photo].blank?.should be_true
+        end
+      end
+    end
+  end # validations
 
   describe ".students_of_teacher" do    
     let(:student1) { FactoryGirl.create(:student, :teacher => teacher)  }
@@ -34,21 +66,21 @@ describe Student do
       students.include?(student1.id).should be_true
       students.include?(student2.id).should be_true
     end
-  end
+  end # Student.students_of_teacher
 
   describe ".load_data" do
-    before(:all) do
+    before(:each) do
       10.times do |t|
         FactoryGirl.create(:student, :teacher => teacher)
       end
     end
 
     include_examples "paging_exact_page_size", Student, {:page_id => 1, :page_size => 4}
-  end
+  end # Student.load_data
 
   describe ".search_data" do
     context "with valid query" do
-      before(:all) do
+      before(:each) do
         @student = FactoryGirl.create(:student, :first_name => "John", :last_name => "Carter")
       end
 
@@ -59,7 +91,7 @@ describe Student do
     end
 
     context "with valid query and paging" do
-      before(:all) do
+      before(:each) do
         10.times do |t|
           FactoryGirl.create(:student, :first_name => "John #{t}", :last_name => "Carter #{t}")
         end
@@ -73,7 +105,7 @@ describe Student do
     end
 
     context "with invalid query" do
-      before(:all) do
+      before(:each) do
         @student = FactoryGirl.create(:student, :first_name => "John", :last_name => "Carter")
       end
 
@@ -81,6 +113,67 @@ describe Student do
         result = Student.search_data("xxx")
         result.empty?.should be_true
       end
+    end
+  end # Student.search_data
+
+  describe "#goals_grades" do
+    before(:each) do
+      2.times { FactoryGirl.create(:goal_with_grades, :student => student) }
+    end
+
+    it "returns correct data" do
+      result = student.goals_grades
+      result.nil?.should be_false
+    end
+  end
+
+  describe "#photo_url" do
+    context "with photo" do
+      it "returns the photo url with no parameter" do
+        student.stub_chain(:photo, :url).with(:small).and_return("file/url")
+        student.photo_url.blank?.should be_false
+      end
+    end
+
+    context "without photo" do
+      it "returns the default photo" do
+        student.photo_url.should == Student.attachment_definitions[:photo][:default_url]
+      end
+    end
+  end
+
+  describe "#full_name" do
+    it "returns the correct full name" do
+      student.full_name.should == "#{student.first_name} #{student.last_name}"
+    end
+  end
+
+  describe "#birthday_string" do
+    it {student.full_name.should be_a_kind_of(String)}
+  end
+
+  describe "#birthday=(value)" do
+    context "with String input" , :date => true do
+      before(:each) do
+        @input = Date.new(1990, 10, 10).strftime(date_format)
+        student.birthday = @input
+      end
+
+      it { student.birthday.should be_a_kind_of(Date) }
+      it { student.birthday.strftime(date_format).should == @input}
+    end
+
+    context "with Date input" do
+      before(:each) do
+        @input = Date.new(1990, 10, 10)
+        student.birthday = @input
+      end
+
+      it { student.birthday.should be_a_kind_of(Date) }
+    end
+
+    context "with Nil" do
+
     end
   end
 end
