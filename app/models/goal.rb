@@ -404,15 +404,6 @@ class Goal < ActiveRecord::Base
     end
   end
 
-  def grade_grade(grade)
-    if (grade)
-      vs_baseline = grade.value - self.baseline
-      vs_baseline/(self.accuracy - self.baseline)*100
-    else
-      0
-    end
-  end
-
   # EXPORTING
   def export_xml(package, context, tmpdir, sheet_index)
 
