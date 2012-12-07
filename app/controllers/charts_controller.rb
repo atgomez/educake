@@ -18,6 +18,7 @@ class ChartsController < ApplicationController
 
   # GET /charts/student_chart
   # Params:
+  # user_id: ID of teacher/parent
   # student_id: ID of student
   # 
   # Render: The chart of a student with goals of the student
@@ -35,6 +36,7 @@ class ChartsController < ApplicationController
 
   # GET /charts/goal_chart
   # Params:
+  # user_id: ID of teacher/parent
   # goal_id: ID of goal
   #
   # Render: The chart of particular goal

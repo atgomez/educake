@@ -44,9 +44,12 @@ class Goal < ActiveRecord::Base
   validates_presence_of :accuracy, :due_date, :curriculum_id, :subject_id, 
                         :baseline_date, :baseline, :trial_days_total, :trial_days_actual
 
+  # NESTED ATTRIBUTE
   accepts_nested_attributes_for :progresses, :reject_if => lambda { |progress| 
     progress['accuracy'].blank? || progress['due_date'].blank?
   }
+
+  # PAPERCLIP ATTACHMENT
 
   has_attached_file :grades_data, 
                     #:storage => :s3, 
