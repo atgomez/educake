@@ -67,6 +67,34 @@ class Admin::TeachersController < Admin::BaseAdminController
       render(:json => result, :status => status_code)
     end
   end
+  
+  def update
+    if find_or_redirect
+      result = {}
+      status_code = 201
+
+      begin
+        @teacher = @user.children.find params[:id]
+        @teacher.skip_password!
+        if @teacher.update_attributes(params[:user])
+          status_code = 201
+          result[:message] = I18n.t('admin.teacher.updated_successfully')
+          flash[:notice] = result[:message]
+        else
+          status_code = 400
+          result[:message] = I18n.t('admin.teacher.updated_failed')
+          result[:html] = render_to_string(:partial => 'admin/teachers/form', 
+                            :locals => {:teacher => @teacher})
+        end
+      rescue Exception => exc
+        ::Util.log_error(exc, "Admin::TeachersController#update")
+        status_code = 400
+        result[:message] = I18n.t('admin.teacher.updated_failed')
+      end
+
+      render(:json => result, :status => status_code)
+    end
+  end 
 
   # GET: /admin/teacher/search?query=<QUERY>
   # TODO: optimize this method

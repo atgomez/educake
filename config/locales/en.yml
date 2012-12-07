@@ -48,3 +48,5 @@ en:
       created_successfully: "The teacher was created successfully"
       create_failed: "Could not create the new teacher"
       not_found: "Could not find the teacher"
+      updated_successfully: "The teacher was updated successfully"
+      updated_failed: "Could not updated the teacher"

@@ -66,7 +66,7 @@ window.teacher =
     )
 
   setup_teacher_dialog: ->
-    $('#add-teacher').click((e) -> 
+    $('#add-teacher').click((e) ->
       e.preventDefault()
       $('#teacher-dialog').modal('show')
     )
@@ -81,10 +81,10 @@ window.teacher =
 
       data = $("#teacher-form").serialize()
       url = $("#teacher-form").attr('action')
-
+      v_method = $("#method").val()
       $.ajax({
         url: url,
-        type: 'POST',
+        type: v_method,
         data: data,
         success: (res) -> 
           window.location.reload()

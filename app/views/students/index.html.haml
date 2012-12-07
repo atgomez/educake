@@ -1,9 +1,11 @@
 - content_for :head do
   = javascript_include_tag('app/students.js')
-
+  = javascript_include_tag('app/admin/teacher.js')
 .admin.teacher
+  
   - if @current_user.is?(:admin)
     - @teacher = @user
+    = render 'admin/teachers/form', :teacher => @teacher
     .show-student
       .clearfix.toolbar
         = link_to "All Teachers", admin_teachers_path, :class => "brown font18"

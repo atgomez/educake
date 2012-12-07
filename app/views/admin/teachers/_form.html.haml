@@ -1,7 +1,13 @@
-- teacher ||= User.new
+- if !teacher.new_record?
+  - url = "admin/teachers/"+ teacher.id.to_s
+  - method = "PUT"
+- else
+  - url = admin_teachers_path(:teacher_id => teacher) 
+  - method = "POST"
 
+= hidden_field_tag "method", method
 #teacher-dialog.modal.hide.fade{:tabindex => "-1"}
-  = simple_form_for(teacher, :url => admin_teachers_path(:teacher_id => teacher), 
+  = simple_form_for(teacher, :url => url,  
         :html => { :id => 'teacher-form', :class => 'form-horizontal teacher-form' }) do |f|
     .modal-header
       %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} &times;
