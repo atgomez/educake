@@ -12,7 +12,7 @@ class SuperAdmin::SchoolsController < SuperAdmin::BaseSuperAdminController
     @school = School.find(params[:id])
     @users = @school.users.load_data(filtered_params)
     if params[:query]
-      redirect_to search_result_super_admin_users_path+"?school="+ @school.id.to_s
+      redirect_to search_result_super_admin_users_path(:school => @school.id, :query => params[:query])
     end
   end
 
