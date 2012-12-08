@@ -1,0 +1,17 @@
+!!!
+%html
+  %head
+    %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}
+  %body
+    %h1
+      Hi, #{@user.full_name}
+    %p
+      - if @user.is_blocked
+        Your account have just been blocked.
+      - else
+        Your account have just been reinstated.
+        %br
+        To login to the site, just follow this link:
+        = link_to(@url, @url)
+     
+    %p Best regards,

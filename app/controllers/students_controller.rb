@@ -152,6 +152,10 @@ class StudentsController < ApplicationController
   def all_students
     if find_user
       @students = @user.accessible_students
+      @series = []
+      @students.map do |student|
+        @series += student.goals_grades
+      end
     end
   end
 

@@ -17,5 +17,11 @@ class UserMailer < ActionMailer::Base
     @url = url_for :controller=>'devise/sessions', :action => 'new'
 
     mail(:to => user.email, :subject => "Reset Password")
-  end 
+  end
+  
+  def inform_blocked_account(user)
+    @user = user
+    @url = url_for :controller=>'devise/sessions', :action => 'new'
+    mail(:to => user.email, :subject => "Informing about your status account")
+  end
 end

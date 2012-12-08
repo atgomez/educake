@@ -39,7 +39,7 @@
           %td.action= link_to "", edit_super_admin_user_path(user), :class => "icon-pencil color-pen", :title => "Edit" 
           - confirm = "Are you sure?"
           - if user.students.count > 0
-            - confirm = "This teacher have some students, do you to delete?"
+            - confirm = "This teacher have some students, do you want to delete?"
           - unless user.is?(:admin)
             %td.action= link_to "", [:super_admin, user], :data => { :confirm => confirm }, :class => "icon-trash color-pen", :method => :delete, :title => "Delete" 
           - else 

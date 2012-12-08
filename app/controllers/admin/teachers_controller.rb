@@ -37,6 +37,15 @@ class Admin::TeachersController < Admin::BaseAdminController
   def all
     if find_or_redirect
       @teachers = @user.children.teachers.unblocked.order("first_name ASC, last_name ASC")
+      @series = []
+      @teachers.map do |teacher|
+        teacher_status = teacher.teacher_status
+        @series << {
+          :name => teacher.full_name,
+          :data => teacher_status,
+          :yAxis => 2
+        } unless teacher_status.empty?
+      end
     end
   end
 
@@ -127,6 +136,15 @@ class Admin::TeachersController < Admin::BaseAdminController
     end
   end
 
+  def destroy
+    if find_or_redirect
+      @teacher = @user.children.teachers.unblocked.find(params[:id])
+      @teacher.destroy
+      
+      redirect_to admin_teachers_path(:user_id => @user.id)
+    end
+  end
+  
   protected
 
     def set_current_tab

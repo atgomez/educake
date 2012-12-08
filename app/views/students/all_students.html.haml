@@ -3,5 +3,8 @@
   
 .teacher
   .clearfix.toolbar
-    = link_to "View chart", students_path(:user_id => @user.id),  :class => "brown font18"
+    - unless @series.empty?
+      = link_to "View chart", students_path(:user_id => @user.id),  :class => "brown font18"
+    - else
+      = link_to "Back", students_path(:user_id => @user.id),  :class => "brown font18"
   = render('shared/students/list', :with_pagination => false, :students => @students, :user => @user)

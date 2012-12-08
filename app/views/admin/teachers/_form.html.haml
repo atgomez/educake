@@ -1,6 +1,6 @@
 #teacher-dialog.modal.hide.fade{:tabindex => "-1"}
   - if !teacher.new_record?
-    - url = "admin/teachers/"+ teacher.id.to_s
+    - url = "admin/teachers/#{teacher.id}"
     - method = "PUT"
   - else
     - url = admin_teachers_path(:teacher_id => teacher) 

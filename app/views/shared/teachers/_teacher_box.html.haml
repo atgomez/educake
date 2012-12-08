@@ -16,4 +16,9 @@
         %span= "Phone:"
         %span= @teacher.phone
   
-  .pull-right= link_to "Edit", "#", :id => "add-teacher"
+  .pull-right
+    = link_to "", "#", :class => "icon-pencil color-pen", :title => "Edit", :id => "add-teacher"
+    - confirm = "Are you sure?"
+    - if @teacher.students.count > 0
+      - confirm = "This teacher have some students, do you want to delete?"
+    = link_to "", "/admin/teachers/#{@teacher.id}", :data => { :confirm => confirm }, :class => "icon-trash color-pen", :method => :delete, :title => "Delete" 
