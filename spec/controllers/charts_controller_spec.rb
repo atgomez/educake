@@ -8,13 +8,11 @@ describe ChartsController do
   let(:user) {FactoryGirl.create(:teacher)}
   let(:student) { FactoryGirl.create(:student, :teacher => user)  }
 
-  let(:goal) {
-    goal = FactoryGirl.build(:goal)
-    goal.student = student
-    goal.curriculum = curriculum
-    goal.subject = subject
-    goal.save!
-    goal
+  let(:goal) { 
+    FactoryGirl.create(:goal, 
+                       :curriculum => curriculum, 
+                       :subject => subject,
+                       :student => student)
   }
 
   before(:each) do

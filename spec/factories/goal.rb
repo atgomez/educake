@@ -1,9 +1,5 @@
 FactoryGirl.define do
   factory :goal do
-    due_date { Time.now + 1.years }
-    baseline_date {Time.now - 30.days}
-    accuracy { rand(50) + 50 }
-    baseline { rand(50)}
     trial_days_actual {9}
     trial_days_total {10}
     description { Faker::Lorem::paragraphs }
@@ -20,5 +16,17 @@ FactoryGirl.define do
         FactoryGirl.build(:grade, :due_date => Time.now - 2.days, :goal => goal)
       end
     end
+
+    # Base on data example
+    baseline_date { Date.parse '01/11/2012'}
+    due_date { Date.parse '01/11/2013'}
+    baseline { 20 }
+    accuracy { 90 }
+    
+
+    # Dynamic data
+    curriculum
+    subject
+    student
   end
 end

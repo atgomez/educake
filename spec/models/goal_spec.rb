@@ -28,23 +28,38 @@ require 'spec_helper'
 
 describe Goal do
 
-	let(:curriculum) {FactoryGirl.create(:curriculum)}
-	let(:subject) {FactoryGirl.create(:subject)}
+	let(:curriculum) {
+		curriculum = FactoryGirl.create(:curriculum)
+		curriculum.name = 'CURRICULUM ABC'
+		curriculum.save
+		curriculum
+	}
+	let(:subject) {
+		subject = FactoryGirl.create(:subject)
+		subject.name = 'SUBJECT ABC'
+		subject.save
+		subject
+	}
 	let(:user) {FactoryGirl.create(:teacher)}
-	let(:student) { 
-	  student = FactoryGirl.build(:student)
-	  student.teacher = user
-	  student.save!
-	  student
+	let(:student) { FactoryGirl.create(:student, :teacher => user) }
+
+	let(:goal) { 
+		FactoryGirl.create(:goal, 
+											 :curriculum => curriculum, 
+											 :subject => subject,
+											 :student => student)
 	}
 
-	let(:goal) {
-	  goal = FactoryGirl.build(:goal)
-	  goal.student = student
-	  goal.curriculum = curriculum
-	  goal.subject = subject
-	  goal.save!
-	  goal
+	let(:progress_1) {
+		FactoryGirl.create(:progress, :due_date => Date.parse('01/02/2013'), :accuracy => 45, :goal => goal)
+	}
+
+	let(:progress_2) {
+		FactoryGirl.create(:progress, :due_date => Date.parse('01/05/2013'), :accuracy => 70, :goal => goal)
+	}
+
+	let(:progress_3) {
+		FactoryGirl.create(:progress, :due_date => Date.parse('01/08/2013'), :accuracy => 80, :goal => goal)
 	}
 
 	context	'with Instance Methods' do 
@@ -56,8 +71,100 @@ describe Goal do
 			grade
 		}
 
-		context 'with #update_grade_state' do
+		context 'with #name' do
+			it {goal.name.should == "SUBJECT ABC CURRICULUM ABC"}
 		end
+
+		context 'with #update_grade_state' do
+
+			before(:all){
+				@goal = goal
+				@goal.save
+				@grades = []
+
+				# Base on data example
+				due_dates = ['02/11/2012', '05/11/2012', '06/11/2012', 
+										 '07/11/2012', '08/11/2012', '09/11/2012', 
+										 '12/11/2012', '13/11/2012', '14/11/2012',
+										 '15/11/2012', '16/11/2012', '19/11/2012']
+
+				@values = [20, 22, 22, 23, 19, 21, 25, 24, 26, 22.78, 23.22, 23.22]
+
+				[20, 22, 22, 23, 19, 21, 25, 24, 26, 22, 24, 22].each_with_index.map do |accuracy, index|
+					grade = FactoryGirl.build(:grade, :due_date => Date.parse(due_dates[index]), :accuracy => accuracy, :goal => @goal)
+					grade.user = user
+					@grades << grade
+				end
+			}
+
+			(0...12).each do |idx|
+				
+				context "when checking grade ##{idx}" do
+					before(:each){
+						(0..idx).each do |i|
+							@grade = @goal.update_grade_state(@grades[i])
+							@grade.goal = @goal
+							@grade.save!
+						end
+					}
+					
+					it {
+						puts @goal.grades.count
+						puts @goal.id
+						puts @grade.id
+						(@grade.value - @values[idx]).abs.should <= 0.01
+					}
+				end
+			end
+			
+		end
+
+		context 'with #due_date_string' do
+		end
+
+		context 'with #baseline_date_string' do 
+		end
+
+		context 'with #due_date=' do
+		end
+
+		context 'with #baseline_date=' do
+		end
+
+		context 'with #last_grade' do
+		end
+
+		context	'with #on_grade_now?' do
+		end
+
+		context 'with #on_over_trial_days?' do
+		end
+
+		context 'with #on_track?' do
+		end
+
+		context 'with #graph_ideal_value_for_date' do
+		end
+
+		context 'with #build_progresses' do
+		end
+
+		context 'with #build_grade' do
+		end
+
+		context 'with #parse_csv' do
+		end
+
+		context 'with #goal_grade' do
+		end
+
+		context 'with #export_xml' do
+		end
+
+		context 'with #series_json' do
+		end
+
+
 	end
 
 	context 'with Class Methods' do

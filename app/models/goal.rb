@@ -108,7 +108,6 @@ class Goal < ActiveRecord::Base
   # Instance methods.
   def update_grade_state(grade)
     due_date = grade.due_date
-    return grade if (!due_date || due_date < self.baseline_date || due_date > self.due_date)
 
     # Initilization Data
     arr_progress_date = []
