@@ -10,7 +10,7 @@ class SuperAdmin::SchoolsController < SuperAdmin::BaseSuperAdminController
 
   def show
     @school = School.find(params[:id])
-    @users = @school.users.unblocked.order('role_id').load_data(filtered_params)
+    @users = @school.users.order('role_id').load_data(filtered_params)
     if params[:query]
       redirect_to search_result_super_admin_users_path(:school => @school.id, :query => params[:query])
     end
@@ -23,7 +23,7 @@ class SuperAdmin::SchoolsController < SuperAdmin::BaseSuperAdminController
 
   def edit
     @school = School.find(params[:id])
-    @admin = @school.users.admins.unblocked.first
+    @admin = @school.users.admins.first
   end
 
   def create
