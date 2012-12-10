@@ -120,11 +120,11 @@ window.studentObject =
     
   clickPage: ->
     $("#content-grade").delegate '#goals_pages .pagination ul li a', 'click', (evt)-> 
-      loadPage(evt, "#content-grade")
+      helper.loadPage(evt, "#content-grade")
 
     $("#content-grade .grades-container .pagination ul li a").live "click", (evt) ->
       evt.preventDefault()
-      loadPage(evt, $(this).parents(".grades-container"))
+      helper.loadPage(evt, $(this).parents(".grades-container"))
     return 
    
   clickOnGrade: ->
@@ -170,43 +170,3 @@ window.studentObject =
       $(this).submit()
       $(this).attr("disabled", "disabled")
     return
-
-loadPage= (evt, element) ->
-  # Prevent loading page
-  evt.preventDefault()
-  
-  # Mask loading
-  #$('#content-grade').addClass('loading')
-  sender = evt.target
-  $.ajax({
-    url: sender.href
-    type: 'GET'
-    success: (data) ->
-      $(element).html(data)
-      return
-    error: (data) ->
-      return
-    complete: () ->
-      $('#content-grade').removeClass 'loading'
-  })
-  return
-
-loadGrades= (id) ->
-  $.ajax({
-    url: "/goals/load_grades",
-    type: 'GET',
-    data: {goal_id: id},
-    success: (res) ->
-      return
-    ,
-    error: (data) ->
-      return
-    ,
-    complete: (res) ->
-      $('#goal_' + id).find('.grades-container').html(res.responseText)
-      return
-  })
-  return
-
-
-

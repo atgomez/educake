@@ -66,3 +66,40 @@ window.helper =
         changeYear: true
       })
     )
+
+  loadPage: (evt, element) ->
+    # Prevent loading page
+    evt.preventDefault()
+    
+    # Mask loading
+    #$('#content-grade').addClass('loading')
+    sender = evt.target
+    $.ajax({
+      url: sender.href
+      type: 'GET'
+      success: (data) ->
+        $(element).html(data)
+        return
+      error: (data) ->
+        return
+      complete: () ->
+        $('#content-grade').removeClass 'loading'
+    })
+    return
+
+  loadGrades: (id) ->
+    $.ajax({
+      url: "/goals/load_grades",
+      type: 'GET',
+      data: {goal_id: id},
+      success: (res) ->
+        return
+      ,
+      error: (data) ->
+        return
+      ,
+      complete: (res) ->
+        $('#goal_' + id).find('.grades-container').html(res.responseText)
+        return
+    })
+    return

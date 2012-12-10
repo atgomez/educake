@@ -22,7 +22,7 @@ window.goal =
         $(id_content).slideDown('fast', ->
           $(id_content).attr("style","display:block;")
         )
-        loadGrades(id)
+        helper.loadGrades(id)
         $('#chart').attr("src", "/charts/goal_chart?goal_id="+id + "&color=" + $(this).attr('color') + "&user_id=" + $("#user_id").val());
         $('#chart').attr("height", "500");
         $('#chart').attr("width", "100%");
