@@ -45,6 +45,11 @@ class SuperAdmin::UsersController < SuperAdmin::BaseSuperAdminController
     @school_id = params[:school_id]
     @back = params[:back]
 
+    if @user.is?(:admin)
+      # Reject school_id when updating an admin
+      params[:user].delete(:school_id)
+    end
+
     if @user.update_attributes params[:user]
       message = I18n.t('user.updated_successfully', :name => @user.full_name)
       flash[:notice] =  message
