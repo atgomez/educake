@@ -4,7 +4,7 @@ FactoryGirl.define do
 
     # Dynamic data
     due_date { due_date }
-    accuracy { accuracy }
+    accuracy { rand(100) } # Fix stack level too deep error
     goal
   end
 end

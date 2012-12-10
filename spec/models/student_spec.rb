@@ -116,7 +116,7 @@ describe Student do
     end
   end # Student.search_data
 
-  describe "#goals_grades" do
+  describe "#goals_grades", :goal_grades => true do
     before(:each) do
       2.times { FactoryGirl.create(:goal_with_grades, :student => student) }
     end

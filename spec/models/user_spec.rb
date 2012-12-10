@@ -143,13 +143,15 @@ describe User do
   
     
   describe "Unblocked" do 
-    let(:account) { FactoryGirl.create(:teacher, :is_blocked => false)}
+    let(:admin) {FactoryGirl.create(:admin)}
+    let(:account) { FactoryGirl.create(:teacher, :is_blocked => false, :parent => admin)}
     it "return list unblocked accounts" do
       User.destroy_all
       account
       rs = User.unblocked
-      rs.count.should eq(1)
+      rs.count.should eq(2)
     end 
+
     it "return empty list unblocked accounts" do
       User.destroy_all
       rs = User.unblocked

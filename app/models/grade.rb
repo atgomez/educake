@@ -79,10 +79,11 @@ class Grade < ActiveRecord::Base
   # Override property setter.
   def due_date=(date)
     if date.is_a?(String)
-      date = ::Util.format_date(date)
-      if date
-        date = date.to_date
-      end
+      date = ::Util.format_date(date)      
+    end
+
+    if date
+      date = date.to_date
     end
     self.send(:write_attribute, :due_date, date)
   end

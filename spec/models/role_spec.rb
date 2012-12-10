@@ -49,8 +49,7 @@ describe Role do
   describe "clear caches" do 
     it "return empty caches" do 
       rs = Role.clear_caches 
-      rs.should equal {}
-      
+      rs.should == {}      
     end 
   end 
 end
