@@ -81,13 +81,9 @@ class School < ActiveRecord::Base
   def statistic
     # Generate SQL query to count teachers and students in a school.
     sql = self.users.teachers.joins(%Q{
-      LEFT JOIN (
-        SELECT teacher_id, count(students.id) AS students_count 
-        FROM students
-        GROUP BY teacher_id
-      ) students_data ON students_data.teacher_id = "users"."id"
-    }).select("COUNT(users.id) AS teachers_count, 
-        COALESCE(SUM(students_data.students_count), 0) AS students_count").to_sql
+      LEFT JOIN students ON students.teacher_id = users.id
+    }).select("COALESCE(COUNT(users.id), 0) AS teachers_count,
+        COALESCE(COUNT(students.id), 0) AS students_count").to_sql
 
     data = School.connection.execute(sql).first
     return {:teachers_count => data['teachers_count'].to_i, :students_count => data['students_count'].to_i}
