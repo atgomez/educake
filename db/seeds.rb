@@ -1,6 +1,9 @@
 # This file should contain all the record creation needed to seed the database with its default values.
 # The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
 
+# Clean all Roles
+Role.destroy_all
+
 # Create Roles
 Role::ROLE_NAMES.each do |role_name|
   Role.create(:name => role_name.titleize)

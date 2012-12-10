@@ -46,14 +46,13 @@ RSpec.configure do |config|
 
   # Config database_cleaner
   config.before(:suite) do
-    DatabaseCleaner.strategy = :truncation
-    DatabaseCleaner.clean    
+    DatabaseCleaner.strategy = :truncation, {:except => %w[roles]}
+    DatabaseCleaner.clean
+    load(Rails.root.join("db", "seeds.rb"))
   end
 
   config.before(:each) do
     DatabaseCleaner.start
-    # Prepare seed data
-    load "#{Rails.root}/db/seeds.rb" 
   end
 
   config.after(:each) do

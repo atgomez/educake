@@ -109,7 +109,7 @@ module SharedMethods
       end
         
       def exposed_attributes
-        self.class.except_attributes
+        self.class.exposed_attributes
       end
       
       def exposed_associations
