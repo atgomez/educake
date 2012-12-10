@@ -1,6 +1,7 @@
 - content_for :head do
   = javascript_include_tag('app/admin/teacher.js')
-
+  = javascript_include_tag('app/students.js')
+  
 .admin.teacher.search
   %h3.school-name= current_user.school.try(:name)
   .search-header.clearfix

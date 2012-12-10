@@ -8,18 +8,21 @@
         %td
           = label_tag "Export data for"
         %td
-          = radio_button_tag "data", "individual", true
-          Individual Student
+          .checkbox-group
+            = radio_button_tag "data", "individual", true
+            = label_tag :data_individual, "Individual Student"
       %tr
         %td
         %td
-          = radio_button_tag "data", "classroom"
-          Classroom
+          .checkbox-group
+            = radio_button_tag "data", "classroom"
+            = label_tag :data_classroom, "Classroom"            
       %tr
         %td
         %td
-          = radio_button_tag "data", "school"
-          School
+          .checkbox-group
+            = radio_button_tag "data", "school"
+            = label_tag :data_school, "School"
       %tr
         %td
           Teacher

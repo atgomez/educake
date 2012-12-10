@@ -14,8 +14,6 @@ class Admin::TeachersController < Admin::BaseAdminController
           :yAxis => 2
         } unless teacher_status.empty?
       end
-       puts "*"*20
-       puts @teachers.inspect
 
       if series.empty?
         @width = "0%"

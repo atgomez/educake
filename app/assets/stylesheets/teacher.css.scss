@@ -422,4 +422,16 @@ $color-font: #E17C25;
   #data_school {
     margin-bottom: 8px;
   }
+
+  .checkbox-group{
+    display: inline-block;
+
+    label{
+      display: inline-block;
+    }
+
+    &.margin-left{
+      margin-left: 10px;
+    }
+  }
 }
