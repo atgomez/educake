@@ -42,9 +42,9 @@ en:
     require_to_select: "Please select a goal."
 
   grade:
-    created_successfully: "Created grade successfully."
-    import_successfully: "Imported .csv file for grades successfully."
-    save_failed: "Some grades are invalid."
+    created_successfully: "Created grade successfully"
+    import_successfully: "Imported .csv file for grades successfully"
+    save_failed: "There are some first invalid grades on:"
 
   admin:
     teacher:

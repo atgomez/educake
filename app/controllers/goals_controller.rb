@@ -152,6 +152,7 @@ class GoalsController < ApplicationController
     @goals = @student.goals.incomplete.map{|g| [g.name, g.id]}
     @goal = Goal.find_by_id params[:goal][:id]
     @file_import = params[:goal][:grades]
+    invalid_days = []
     if @goal
       invalid_grade = false
       unless @file_import.nil?
@@ -173,6 +174,7 @@ class GoalsController < ApplicationController
                   flash[:notice] = I18n.t('grade.import_successfully')
                 else
                   invalid_grade = true
+                  invalid_days << grade[:due_date]
                 end
               end
             end
@@ -180,7 +182,7 @@ class GoalsController < ApplicationController
         end
         if invalid_grade
           flash[:notice] = nil
-          flash[:alert] = I18n.t('grade.save_failed')
+          flash[:alert] = Grade.show_errors(I18n.t('grade.save_failed'), invalid_days) 
         end
       end
     end

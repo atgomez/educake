@@ -44,6 +44,15 @@ class Grade < ActiveRecord::Base
   
   # CLASS METHODS
   class << self
+    def show_errors(message, invalid_days)
+      html = ""
+      days = invalid_days.slice(0, 4)
+      html += "<div>"+message+"</div>"
+      days.map do |day|
+        html += "<div>"+day.to_s+"</div>"
+      end
+      return html.html_safe
+    end 
     def load_data(params = {})
       paging_info = parse_paging_options(params)
       # Paginate with Will_paginate.
@@ -87,6 +96,7 @@ class Grade < ActiveRecord::Base
     end
     self.send(:write_attribute, :due_date, date)
   end
+  
   
   protected
   
