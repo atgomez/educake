@@ -4,6 +4,7 @@
 .admin.teacher
   
   - if @current_user.is?(:admin)
+    #new-form-teacher
     - @teacher = @user
     = render 'admin/teachers/form', :teacher => @teacher
     .show-student

@@ -10,7 +10,7 @@
     - unless @teachers.blank?
       = render 'shared/search_box', :action => "/admin/teachers/search", :placeholder => "Search name"
   .clearfix.toolbar
-    = link_to 'Add Teacher', new_admin_teacher_path, :class => 'btn', :id => "add-teacher", :remote => true
+    = link_to 'Add Teacher', new_admin_teacher_path(:user_id => @user.id), :class => 'btn', :id => "add-teacher", :remote => true
 
   - if params[:page_id].blank?
     - teacher = @user
