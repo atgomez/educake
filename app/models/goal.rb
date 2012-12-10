@@ -517,21 +517,21 @@ class Goal < ActiveRecord::Base
 
     def validate_baseline
       if self.baseline.to_f >= self.accuracy.to_f
-        self.errors.add(:baseline, "cannot be greater than or equal to goal percent")
+        self.errors.add(:baseline, "must be lower than goal")
       end
       return self.errors.blank?
     end
 
     def validate_baseline_date
       if self.baseline_date && self.due_date && self.baseline_date >= self.due_date
-        self.errors.add(:baseline_date, "cannot be greater than or equal to due date")
+        self.errors.add(:baseline_date, "must be before goal date")
       end
       return self.errors.blank?
     end
 
     def validate_trial_days
       if self.trial_days_actual.to_i >= self.trial_days_total.to_i
-        self.errors.add(:trial_days_actual, "cannot be greater than or equal to the ideal trial days")
+        self.errors.add(:trial_days_actual, "must be lower than the ideal trial days")
       end
       return self.errors.blank?
     end

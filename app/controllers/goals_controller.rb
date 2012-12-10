@@ -18,7 +18,7 @@ class GoalsController < ApplicationController
     @student = Student.find_by_id(params[:goal][:student_id])
 
     if @student.blank?
-      result[:message] = I18n.t('goal.student_not_found')
+      result[:message] = I18n.t('student.student_not_found')
       status_code = 400
     else
       #Remove id and student_id 
@@ -46,7 +46,7 @@ class GoalsController < ApplicationController
     @student = Student.find_by_id(params[:goal][:student_id])
 
     if @student.blank?
-      result[:message] = I18n.t('goal.student_not_found')
+      result[:message] = I18n.t('student.student_not_found')
       status_code = 400
     else
       @goal = @student.goals.find_by_id params[:id]

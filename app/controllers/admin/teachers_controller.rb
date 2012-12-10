@@ -59,7 +59,9 @@ class Admin::TeachersController < Admin::BaseAdminController
         @teacher.skip_password!
         if @teacher.save
           status_code = 201
-          result[:message] = I18n.t('admin.teacher.created_successfully')
+          message = I18n.t('admin.teacher.created_successfully')
+          message.gsub!("[NAME]", @teacher.full_name)
+          result[:message] = message
           flash[:notice] = result[:message]
         else
           status_code = 400
@@ -87,7 +89,9 @@ class Admin::TeachersController < Admin::BaseAdminController
         @teacher.skip_password!
         if @teacher.update_attributes(params[:user])
           status_code = 201
-          result[:message] = I18n.t('admin.teacher.updated_successfully')
+          message = I18n.t('admin.teacher.updated_successfully')
+          message.gsub!("[NAME]", @teacher.full_name)
+          result[:message] = message
           flash[:notice] = result[:message]
         else
           status_code = 400

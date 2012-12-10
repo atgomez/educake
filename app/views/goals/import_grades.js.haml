@@ -3,15 +3,15 @@
 - else
   $("#import").attr("disabled", false);
   - if @goal.nil?
-    $("#goal_choose").html("Please select one.");
+    $("#goal_choose").html("#{I18n.t('goal.require_to_select')}");
   - else
     $("#goal_choose").html("");
   - if @file_import.nil?
-    $("#file_choose").html("Please select one.");
+    $("#file_choose").html("#{I18n.t('common.file.require_to_select')}");
   - else
     $("#file_choose").html("");
   - if !@format_csv 
-    $("#file_choose").html("File must be of filetype .csv");
+    $("#file_choose").html("#{I18n.t('common.file.wrong_file_type')}");
   - else 
     $("#file_choose").html("");
   

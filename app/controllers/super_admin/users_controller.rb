@@ -19,14 +19,16 @@ class SuperAdmin::UsersController < SuperAdmin::BaseSuperAdminController
       @user.school = @school
 
       if @user.save
-        flash[:notice] = 'User was created successfully.' 
+        message = I18n.t('user.created_successfully')
+        message.gsub!("[NAME]", @user.full_name)
+        flash[:notice] = message
         redirect_to super_admin_school_path(@user.school)
       else
         load_roles
         render action: "new" 
       end
     else
-      flash[:alert] = "School is not available"
+      flash[:alert] = I18n.t('school.not_available')
       load_roles
       render action: "new" 
     end
@@ -45,7 +47,9 @@ class SuperAdmin::UsersController < SuperAdmin::BaseSuperAdminController
     @back = params[:back]
 
     if @user.update_attributes params[:user]
-      flash[:notice] = 'User was updated successfully.' 
+      message = I18n.t('user.updated_successfully')
+      message.gsub!("[NAME]", @user.full_name)
+      flash[:notice] =  message
       redirect_to super_admin_school_path(@user.school)
     else
       load_roles

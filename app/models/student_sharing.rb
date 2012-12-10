@@ -23,8 +23,8 @@ class StudentSharing < ActiveRecord::Base
   belongs_to :role
   
   # VALIDATION
-  validates :first_name, :last_name, :email, :student_id, :role_id, :presence => true
-  validates_format_of :email, :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i, :on => :create
+  validates :first_name, :last_name, :student_id, :role_id, :presence => true
+  validates_format_of :email, :with  => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i, :allow_blank => true, :if => :email_changed?
   validates :email, :uniqueness => { :scope => [:student_id]}
 
   # CALLBACK
