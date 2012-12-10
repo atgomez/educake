@@ -51,26 +51,18 @@ describe Goal do
 	}
 
 	let(:progress_1) {
-		FactoryGirl.create(:progress, :due_date => Date.parse('01/02/2013'), :accuracy => 45, :goal => goal)
+		FactoryGirl.build(:progress, :due_date => Date.parse('01/02/2013'), :accuracy => 45, :goal => goal)
 	}
 
 	let(:progress_2) {
-		FactoryGirl.create(:progress, :due_date => Date.parse('01/05/2013'), :accuracy => 70, :goal => goal)
+		FactoryGirl.build(:progress, :due_date => Date.parse('01/05/2013'), :accuracy => 70, :goal => goal)
 	}
 
 	let(:progress_3) {
-		FactoryGirl.create(:progress, :due_date => Date.parse('01/08/2013'), :accuracy => 80, :goal => goal)
+		FactoryGirl.build(:progress, :due_date => Date.parse('01/08/2013'), :accuracy => 80, :goal => goal)
 	}
 
 	context	'with Instance Methods' do 
-		let(:grade) {
-			grade = FactoryGirl.build(:grade)
-			grade.goal = goal
-			grade.user = user
-			grade.save!
-			grade
-		}
-
 		context 'with #name' do
 			it {goal.name.should == "SUBJECT ABC CURRICULUM ABC"}
 		end
@@ -79,6 +71,10 @@ describe Goal do
 
 			before(:all){
 				@goal = goal
+				@goal.build_progresses
+				@goal.progresses[0] = progress_1
+				@goal.progresses[1] = progress_2
+				@goal.progresses[2] = progress_3
 				@goal.save
 				@grades = []
 
@@ -104,14 +100,17 @@ describe Goal do
 						(0..idx).each do |i|
 							@grade = @goal.update_grade_state(@grades[i])
 							@grade.goal = @goal
-							@grade.save!
+							@grade.save
+							puts @grade.errors.messages
 						end
 					}
 					
 					it {
-						puts @goal.grades.count
+						puts @goal.progresses
 						puts @goal.id
 						puts @grade.id
+						puts @grade.value
+						puts @goal.grades.count
 						(@grade.value - @values[idx]).abs.should <= 0.01
 					}
 				end
