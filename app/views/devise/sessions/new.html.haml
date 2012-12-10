@@ -29,7 +29,7 @@
                         :wrapper_html => {:class => "login-remember"})
 
         #login-button
-          %input{:type => "image", :src => "/assets/login-button.png", :width => "143", :height => "38", :border => "0", :alt => "SUBMIT!"}
+          = f.submit "Sign in", :class => "btn btn-primary"
         .clearfix
           = render "devise/shared/links"
     #login-form-bottom-egde

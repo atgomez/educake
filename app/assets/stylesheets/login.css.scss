@@ -29,6 +29,11 @@
 
   #login-button{
     margin-bottom: 20px;
+    .btn{
+      font-size: 16px !important;
+      padding-left: 20px !important;
+      padding-right: 20px !important;
+    }
   }
 
   .login-remember{
@@ -60,9 +65,6 @@
 
 .clear{
   clear:both
-}
-
-#login-button{
 }
 
 #login-form-bottom-egde{
