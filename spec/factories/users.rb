@@ -15,11 +15,11 @@ FactoryGirl.define do
     u.password "123456"
     u.password_confirmation "123456"
     u.confirmed_at Time.now
-
-    u.after_create do |user|
-      user.is_admin = true
-      user.save
-    end
+    u.is_admin true
+    #u.after_create do |user|
+    #  user.is_admin = true
+    #  user.save
+    #end
   end
 
   factory :admin, :class => User do |u|

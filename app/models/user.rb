@@ -106,6 +106,8 @@ class User < ActiveRecord::Base
   scope :with_role, lambda { |role|
     if role.is_a?(String) or role.is_a?(Symbol)
       role = Role[role]
+    else 
+      role = nil
     end
     
     if role
