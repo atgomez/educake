@@ -26,8 +26,10 @@
   .form-inputs
     .title School Info
     .school-info
-      = f.input :school_id, :collection => School.order(:name), :label => "School Name", :prompt => "Select One",
-                :selected => @school_id
+      = f.input(:school_id, :collection => School.order(:name),
+                :label_method => :short_name,
+                :label => "School Name", :prompt => "Select One",
+                :selected => @school_id)
     .title= title_user
     .school-info
       = f.input :first_name, :input_html => {:class => "valid_name"}

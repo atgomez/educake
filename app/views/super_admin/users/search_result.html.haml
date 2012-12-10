@@ -17,7 +17,7 @@
     - @users.each do |user|
       %tr 
         %td= highlight(user.full_name, params[:query]) rescue ""
-        %td= highlight(truncate(user.school.name, :length => 17, :separator => " "), params[:query]) rescue ""
+        %td= highlight(user.school.short_name, params[:query]) rescue ""
         %td= highlight(user.role.name, params[:query]) rescue ""
         
 = render_pagination @users

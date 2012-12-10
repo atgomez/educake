@@ -1,7 +1,7 @@
 .super-admin.school
   %div.pull-left.show-school
     %div
-      %b= truncate(@school.name, :length => 17, :separator => " ")
+      %b= @school.short_name
     %div
       = @school.address1
     %div

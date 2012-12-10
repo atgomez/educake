@@ -88,4 +88,9 @@ class School < ActiveRecord::Base
     data = School.connection.execute(sql).first
     return {:teachers_count => data['teachers_count'].to_i, :students_count => data['students_count'].to_i}
   end
+
+  # Returns the truncated school name
+  def short_name(length = 40)
+    ::Util.truncate(self.name, :length => length)
+  end
 end
