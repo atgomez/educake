@@ -139,7 +139,7 @@ class StudentsController < ApplicationController
   end
   
   def search_user
-    user = User.find_by_email(params[:email])
+    user = User.unblocked.find_by_email(params[:email])
     existed_user = true
     unless user
       existed_user = false

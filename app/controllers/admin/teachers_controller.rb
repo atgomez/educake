@@ -123,10 +123,10 @@ class Admin::TeachersController < Admin::BaseAdminController
           when 'student' then
             @students = Student.students_of_teacher(@user).search_data(query, filtered_params)
           when 'teacher' then
-            @teachers = @user.children.search_data(query, filtered_params)
+            @teachers = @user.children.unblocked.search_data(query, filtered_params)
           else
             @students = Student.students_of_teacher(@user).search_data(query, filtered_params)
-            @teachers = @user.children.search_data(query, filtered_params)
+            @teachers = @user.children.unblocked.search_data(query, filtered_params)
         end
       end
     end

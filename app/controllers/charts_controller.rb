@@ -55,7 +55,7 @@ class ChartsController < ApplicationController
   protected
 
   	def find_and_check_user
-  		@user = User.find_by_id(params[:user_id])
+  		@user = User.unblocked.find_by_id(params[:user_id])
       render_unauthorized(:iframe => true) if (!@user || !(can? :view, @user))
       return (@user && (can? :view, @user))
   	end
