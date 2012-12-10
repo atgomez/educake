@@ -31,6 +31,7 @@ window.studentObject =
     @timeForField()
     @checkClassroom()
     @disableSubmitForm()
+    @addBirthDayPicker()
     return
     
   checkClassroom: ->
@@ -77,6 +78,16 @@ window.studentObject =
       $(this).autocomplete
         source: $(this).data('autocomplete-source')
     return
+
+  addBirthDayPicker: ->
+    $(".birthday-picker").livequery( ->
+      $(this).datepicker({
+        dateFormat: "mm-dd-yy",
+        yearRange: "-40:+0",
+        changeMonth: true,
+        changeYear: true
+      })
+    )
 
   searchUser: -> 
     email = $("#student_sharing_email").attr("value")
@@ -196,4 +207,6 @@ loadGrades= (id) ->
       return
   })
   return
+
+
 
