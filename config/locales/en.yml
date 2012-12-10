@@ -48,24 +48,24 @@ en:
 
   admin:
     teacher:
-      created_successfully: "Teacher [NAME] was created successfully"
-      updated_successfully: "Teacher [NAME] was updated successfully."
+      created_successfully: "Teacher %{name} was created successfully"
+      updated_successfully: "Teacher %{name} was updated successfully."
       create_failed: "Could not create the new teacher."
       not_found: "Could not find the teacher."
       updated_failed: "Could not updated the teacher."
 
   user:
-    created_successfully: "User [NAME] was created successfully."
-    updated_successfully: "User [NAME] was updated successfully."
+    created_successfully: "User %{name} was created successfully."
+    updated_successfully: "User %{name} was updated successfully."
 
 
   student:
-    created_successfully: "Student [NAME] was created successfully"
-    updated_successfully: "Student [NAME] was updated successfully."
+    created_successfully: "Student %{name} was created successfully"
+    updated_successfully: "Student %{name} was updated successfully."
     not_available: "Could not find the student."
 
   school:
-    created_successfully: "School [NAME] was created successfully."
-    updated_successfully: "School [NAME] was updated successfully."
+    created_successfully: "School %{name} was created successfully."
+    updated_successfully: "School %{name} was updated successfully."
     not_available: "School is not available."
 

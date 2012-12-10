@@ -89,8 +89,7 @@ class StudentsController < ApplicationController
       @back_link = params[:back_link]
       
       if @student.save
-        message = I18n.t('student.created_successfully')
-        message.gsub!('[NAME]', @student.full_name)
+        message = I18n.t('student.created_successfully', :name => @student.full_name)
         flash[:notice] = message
         redirect_to :action => 'edit', :id => @student, :user_id => @user
       else
@@ -104,8 +103,7 @@ class StudentsController < ApplicationController
       @student = @user.accessible_students.find(params[:id])
       if @student
         if @student.update_attributes(params[:student])
-          message = I18n.t('student.updated_successfully')
-          message.gsub!('[NAME]', @student.full_name)
+          message = I18n.t('student.updated_successfully', :name => @student.full_name)
           redirect_to student_path(@student, :user_id => @user.id), :notice => message
         else
           render :action => :edit

@@ -19,8 +19,7 @@ class SuperAdmin::UsersController < SuperAdmin::BaseSuperAdminController
       @user.school = @school
 
       if @user.save
-        message = I18n.t('user.created_successfully')
-        message.gsub!("[NAME]", @user.full_name)
+        message = I18n.t('user.created_successfully', :name => @user.full_name)
         flash[:notice] = message
         redirect_to super_admin_school_path(@user.school)
       else
@@ -47,8 +46,7 @@ class SuperAdmin::UsersController < SuperAdmin::BaseSuperAdminController
     @back = params[:back]
 
     if @user.update_attributes params[:user]
-      message = I18n.t('user.updated_successfully')
-      message.gsub!("[NAME]", @user.full_name)
+      message = I18n.t('user.updated_successfully', :name => @user.full_name)
       flash[:notice] =  message
       redirect_to super_admin_school_path(@user.school)
     else

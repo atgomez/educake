@@ -35,8 +35,7 @@ class SuperAdmin::SchoolsController < SuperAdmin::BaseSuperAdminController
 
     # Save the school and admin
     if @school.save
-      message = I18n.t('school.created_successfully')
-      message.gsub!("[NAME]", @school.name)
+      message = I18n.t('school.created_successfully', :name => @school.name)
       flash[:notice] = message
 
       redirect_to super_admin_school_path @school
@@ -49,8 +48,7 @@ class SuperAdmin::SchoolsController < SuperAdmin::BaseSuperAdminController
     @school = School.find(params[:id])
 
     if @school.update_attributes(params[:school])
-      message = I18n.t('school.updated_successfully')
-      message.gsub!("[NAME]", @school.name)
+      message = I18n.t('school.updated_successfully', :name => @school.name)
       flash[:notice] = message
       redirect_to super_admin_school_path @school
     else
