@@ -23,7 +23,7 @@ class SuperAdmin::SchoolsController < SuperAdmin::BaseSuperAdminController
 
   def edit
     @school = School.find(params[:id])
-    @admin = @school.users.admins.first
+    @admin = @school.admin
   end
 
   def create
