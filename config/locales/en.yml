@@ -3,37 +3,37 @@
 
 en:
   common:
-    invalid_params: "Invalid parameters."
-    error_resource_notfound: "Resource not found."
+    invalid_params: "Invalid parameters!"
+    error_resource_notfound: "Resource not found!"
     error_unauthorized: "You are not authorized to access this resource."
     error_blocked_account: "Your account was blocked. Please contact the administrator."
-    error_page_not_found: "Page not found."
-    confirm_message: "Are you sure ?."
+    error_page_not_found: "Page not found!"
+    confirm_message: "Are you sure ?"
 
     gender:
-      male: "Male."
-      female: "Female."
-      unknown: "Unknown."
+      male: "Male"
+      female: "Female"
+      unknown: "Unknown"
 
     wrong_file_type: "File must be of filetype .csv"
     require_to_select: "Please select a file."
 
   time:
     formats:
-      long_date: "%A, %b %d %Y."
-      short_date: "%B %d, %Y."
-      date_with_time: "%A, %b %d %Y at %H:%M."
-      api: "%Y-%m-%d %H:%M:%S."
+      long_date: "%A, %b %d %Y"
+      short_date: "%B %d, %Y"
+      date_with_time: "%A, %b %d %Y at %H:%M"
+      api: "%Y-%m-%d %H:%M:%S"
 
   date:
     formats:
-      default: "%m-%d-%Y."
-      short: "%b %e, %Y."
-      long: "%B %e, %Y."
-      api: "%Y-%m-%d."
+      default: "%m-%d-%Y"
+      short: "%b %e, %Y"
+      long: "%B %e, %Y"
+      api: "%Y-%m-%d"
 
   goal:
-    not_found: "Cannot find the goal."
+    not_found: "Cannot find the goal!"
     created_successfully: "Goal was created successfully."
     updated_successfully : "Goal was saved successfully."
     save_failed: "Could not save the goal."
