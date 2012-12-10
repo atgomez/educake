@@ -10,7 +10,7 @@
     - unless @teachers.blank?
       = render 'shared/search_box', :action => "/admin/teachers/search", :placeholder => "Search name"
   .clearfix.toolbar
-    = link_to 'Add Teacher', new_admin_teacher_path, :class => 'btn', :id => "add-teacher"
+    = link_to 'Add Teacher', new_admin_teacher_path, :class => 'btn', :id => "add-teacher", :remote => true
 
   - if params[:page_id].blank?
     - teacher = @user
@@ -53,8 +53,7 @@
 
   %center.clearfix
     %iframe{:frameborder => "0", :height => @height, :src => "/charts/user_chart?user_id=#{@user.id}", :width => @width, :id => "chart_student"}
-    
-  = render 'form', :teacher => User.new
+  #new-form-teacher
 
   - unless @teachers.blank?
     = render("export", :teachers => @teachers)
