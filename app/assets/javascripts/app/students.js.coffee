@@ -157,14 +157,13 @@ window.studentObject =
       url = $(this).attr('href')
       if $.trim(url) != ''
         window.location.href = url
-    )
-    
-  
+    ) 
 
   onSaveInvitation: ->
     $('#invite_user form').live('submit', -> 
       $(this).find('.submit-indicator').removeClass('hide')
     )
+
   disableSubmitForm: ->
     $("#import").live "click", () -> 
       $(this).submit()

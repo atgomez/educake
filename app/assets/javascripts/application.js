@@ -25,7 +25,6 @@
 //= require jquery.iframe-transport
 //= require jquery.remotipart
 
-
 $(document).ready(function() {
     $('.pagination-container.ajax .pagination a').attr('data-remote', 'true');
     $('.pagination-container.ajax .pagination a').click(function(){
