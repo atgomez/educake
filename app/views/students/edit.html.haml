@@ -4,9 +4,9 @@
   #render_invite_user
   %center= render 'shared/students/form'
   .clearfix
-  .invited-user.grade    
+  .goal-section.grade    
     .tabbable      
-      .grade
+      .grade.goal-container
         = link_to(" Add a goal", new_goal_path(:student_id => @student.id), :remote => true,
                     :class => "icon-plus-sign", :id => "add-goal")
         #content-grade.clearfix

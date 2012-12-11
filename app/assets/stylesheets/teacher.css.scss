@@ -160,7 +160,7 @@ $color-font: #E17C25;
     
   }
 
-  .tabbable, .invited-user {
+  .tabbable, .invited-user, .goal-section {
     margin-top: 20px;
     width: 100%;
     
@@ -194,7 +194,7 @@ $color-font: #E17C25;
         margin-right: 20px;
       }
       #content-grade {
-        margin: 0 30px 0 30px;
+        margin: 0 20px 0 20px;
 
         .pagination {
           height: auto;
@@ -322,6 +322,7 @@ $color-font: #E17C25;
   .introduce {
     width: 500px;
     margin-bottom: 10px;
+    padding-left: 15px;
     &.small{
       width: 460px;
     }
