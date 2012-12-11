@@ -23,31 +23,42 @@ describe Role do
   describe "With name" do 
     let(:admin) { FactoryGirl.create(:role, :name => "Admin")}
     let(:teacher) { FactoryGirl.create(:role, :name => "Teacher") }
-    it "return list roles" do 
+    it "returns list roles" do 
       rs = Role.with_name(:admin, :teacher)
       rs.count.should == 2
     end
     
-    it "return empty list roles" do 
+    it "returns empty list roles" do 
       rs = Role.with_name(:admin1, :teacher1)
       rs.count.should == 0
     end
   end 
     
   describe "Alias function [](name)" do 
-    it "return existed role" do
-      rs = Role.[]:admin  
-      rs.name.should == "Admin"
+    context "with name is Symbol or snake-case style string" do
+      it "returns existed role" do
+        rs = Role[:admin]
+        rs.name.should == "Admin"
+      end
+      
+      it "returns nil role object"do
+        rs = Role[:student]
+        rs.should be_nil
+      end
     end
-    
-    it "return nil role object"do
-      rs = Role.[]:student 
-      rs.should be_nil
-    end 
+
+    context "with name is full name like 'Teacher' or 'Parent'" do
+      it "returns correct Role object" do
+        input = "Teacher"
+        role = Role[input]
+        role.should be_a_kind_of(Role)
+        role.name.should == input
+      end
+    end
   end
 
   describe "clear caches" do 
-    it "return empty caches" do 
+    it "returns empty caches" do 
       rs = Role.clear_caches 
       rs.should == {}      
     end 

@@ -149,7 +149,7 @@ describe Student do
   end
 
   describe "#birthday_string" do
-    it {student.full_name.should be_a_kind_of(String)}
+    it {student.birthday_string.should be_a_kind_of(String)}
   end
 
   describe "#birthday=(value)" do
@@ -173,7 +173,194 @@ describe Student do
     end
 
     context "with Nil" do
+      it { 
+        student.birthday = nil
+        student.birthday.should be_nil 
+      }
+    end
+  end
 
+  describe "#gender_string" do
+    context "Unknown" do
+      it {student.gender_string.should == I18n.t('common.gender.unknown')}
+    end
+
+    context "Male" do
+      it {
+        student.gender = true
+        student.gender_string.should == I18n.t('common.gender.male')
+      }
+    end
+
+    context "Female" do
+      it {
+        student.gender = false
+        student.gender_string.should == I18n.t('common.gender.female')
+      }
+    end
+  end
+
+  context "with student sharing", :with_sharing => true do
+    let(:shared_teacher) {FactoryGirl.create(:teacher)}
+    let(:shared_parent) {FactoryGirl.create(:parent)}
+    let(:sharing_teacher) {
+      FactoryGirl.create(
+        :student_sharing, 
+        :student => student, 
+        :user => shared_teacher,
+        :role => shared_teacher.role
+      )
+    }
+
+    let(:sharing_parent) {
+      FactoryGirl.create(
+        :student_sharing, 
+        :student => student, 
+        :user => shared_parent,
+        :role => shared_parent.role
+      )
+    }
+
+    let(:expected_result) { [student.teacher_id, shared_teacher.id, shared_parent.id] }
+
+    before(:each) do
+      sharing_teacher
+      sharing_parent
+    end
+
+    describe "#sponsors", :sponsors => true do    
+      context "without role name input" do
+        it "returns the correct sponsors of the student" do
+          result = student.sponsors.collect(&:id)
+          (result - expected_result).should be_empty          
+        end
+      end
+
+      context "with role name input as underscore symbol" do
+        it "returns the correct sponsors of the student" do
+          result = student.sponsors(:teacher).collect(&:id)
+          result.length.should == 2
+          result.include?(student.teacher_id).should be_true
+          result.include?(shared_teacher.id).should be_true
+        end
+      end
+
+      context "with correct role full name like 'Parent' or 'Teacher'" do
+        it "returns the correct sponsors of the student" do
+          result = student.sponsors("Teacher").collect(&:id)
+          result.length.should == 2
+          result.include?(student.teacher_id).should be_true
+          result.include?(shared_teacher.id).should be_true
+        end
+      end
+
+      context "with invalid role name" do
+        it "returns only student teachers" do
+          result = student.sponsors(:abc).collect(&:id)
+          result.length.should == 1
+          result.include?(student.teacher_id).should be_true
+        end
+      end
+    end # sponsors
+
+    describe "#shared_users_with_role", :shared_users_with_role => true do    
+      context "with valid role name" do
+        it "returns the shared users" do
+          result = student.shared_users_with_role(:teacher).collect(&:id)
+          result.length.should == 1
+          result.include?(shared_teacher.id)
+        end
+      end
+
+      context "with invalid role name" do
+        it "returns nothing" do
+          result = student.shared_users_with_role(:abc).collect(&:id)
+          result.should be_empty
+        end
+      end
+    end # shared_users_with_role
+
+    describe "#sponsoring_teachers" do
+      it "returns all teachers of this student" do
+        result = student.sponsoring_teachers.collect(&:id)
+        result.length.should == 2
+        result.include?(student.teacher_id).should be_true
+        result.include?(shared_teacher.id).should be_true
+      end
+    end
+  end # with_sharing
+
+  describe "#check_on_track?", :check_on_track => true do
+    context "with goals" do
+      before(:each) do
+        2.times { FactoryGirl.create(:goal_with_grades, :student => student) }
+      end
+
+      context "with ALL on-track goals" do
+        it "returns 1 (on-track)" do
+          Goal.any_instance.stub(:on_track?).and_return(true)
+          student.check_on_track?.should == 1
+        end
+      end
+
+      context "with ONE not on-track goal" do
+        it "returns 2 (not on-track)" do
+          Goal.any_instance.stub(:on_track?).and_return(false)
+          student.check_on_track?.should == 2
+        end
+      end
+    end
+
+    context "with no goals" do
+      it "return 0 (not available)" do
+        student.check_on_track?.should == 0
+      end
+    end
+  end
+
+  describe "#export_xml", :export_xml => true do    
+    let(:package) { Axlsx::Package.new }
+    let(:context) { ExportController.new }
+    
+    let(:tmp_dir) { 
+      path = File.expand_path "#{Rails.root.join('tmp')}/#{Time.now.to_i}#{rand(1000)}/"
+      FileUtils.mkdir_p(path)
+      path
+    }
+
+    let(:tmp_file) {
+      temp = Tempfile.new("student-#{Time.now.to_i}.xlsx", tmp_dir)
+      temp.path
+    }
+
+    context "with goals" do
+      before(:each) do
+        2.times { FactoryGirl.create(:goal_with_grades, :student => student) }
+      end
+
+      it "returns the export file" do
+        result = student.export_xml(package, context, tmp_dir, tmp_file)
+        result.should be_true
+      end
+    end
+
+    context "with no goals" do
+      it "can run and return the export file" do
+        result = student.export_xml(package, context, tmp_dir, tmp_file)
+        result.should be_true
+      end
+    end
+  end
+
+  describe "#series_json", :series_json => true do
+    before(:each) do
+      2.times { FactoryGirl.create(:goal_with_grades, :student => student) }
+    end
+
+    it "returns JSON data" do
+      result = student.series_json
+      result.should be_a_kind_of(String)
+      JSON.parse(result).should be_a_kind_of(Array)
     end
   end
 end

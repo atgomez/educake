@@ -17,5 +17,13 @@
 require 'spec_helper'
 
 describe School do
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe ".load_data" do
+    before(:each) do
+      10.times do |t|
+        FactoryGirl.create(:school)
+      end
+    end
+
+    include_examples "paging_exact_page_size", School, {:page_id => 1, :page_size => 4}
+  end # Student.load_data
 end
