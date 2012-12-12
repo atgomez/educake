@@ -41,7 +41,7 @@ class StudentSharing < ActiveRecord::Base
     !self.user_id.blank?
   end
   def self.get_invited_users(student_id)
-    (self.joins(:user).where("student_sharings.student_id = ?", student_id).order("first_name ASC, last_name ASC") + self.where(:student_id => student_id).order("first_name ASC, last_name ASC")).uniq
+    (self.joins(:user).select("student_sharings.*, users.*").where("student_sharings.student_id = ? and users.is_blocked = ?", student_id, false).order("users.first_name ASC, users.last_name ASC") + self.where(:student_id => student_id).order("first_name ASC, last_name ASC")).uniq
   end 
   protected
 
