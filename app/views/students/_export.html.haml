@@ -12,9 +12,10 @@
             .checkbox-group
               = radio_button_tag "data", "individual", true, :class => "export_data_selector"
               = label_tag :data_individual, "Individual Student"
-            .checkbox-group.margin-left
-              = radio_button_tag "data", "classroom", false, :class => "export_data_selector"
-              = label_tag :data_classroom, "Classroom"
+            - if (!@user.is?(:parent))
+              .checkbox-group.margin-left
+                = radio_button_tag "data", "classroom", false, :class => "export_data_selector"
+                = label_tag :data_classroom, "Classroom"
         %tr
           %td
             = Student
