@@ -415,6 +415,7 @@ class Goal < ActiveRecord::Base
       # Styling
       left_text_style = sheet.styles.add_style ChartProcess::LEFT_TEXT_STYLE
       bold = sheet.styles.add_style ChartProcess::BOLD_STYLE
+      wrap_text = sheet.styles.add_style ChartProcess::WRAP_TEXT
 
       # Goal Header
       sheet.add_row ["Report Date:", Date.today], :style => [left_text_style , nil]
@@ -432,7 +433,8 @@ class Goal < ActiveRecord::Base
       end
       sheet.add_row [""], :style => left_text_style
       sheet.add_row ["Trial Days", "#{trial_days_actual}/#{trial_days_total}"], :style => [left_text_style, nil]
-      sheet.add_row ["Goal Description", description, ""], :style => [left_text_style, nil]
+      sheet.add_row ["Goal Description", description, ""], :style => [left_text_style, wrap_text, nil]
+      sheet.column_widths nil, 30, nil
       (1..3).each {sheet.add_row [""], :style => left_text_style}
 
       sheet.add_row ["", "Date","Score"], :style => [left_text_style, bold, bold]

@@ -8,9 +8,13 @@ class ChartProcess
 	LEFT_TEXT_STYLE = {:b => true, 
                      :bg_color => 'EEEEEE', 
                      :border => DEFAULT_BORDER_STYLE, 
-                     :alignment => { :horizontal=> :right }}
+                     :alignment => { :horizontal=> :right,
+                                     :vertical => :top
+                                  }
+                    }
   BOLD_STYLE = {:b => true, 
                 :border => DEFAULT_BORDER_STYLE }                  
+  WRAP_TEXT = {:alignment => { :wrap_text => true }}
 
 	def self.render(html_file_path)
 
