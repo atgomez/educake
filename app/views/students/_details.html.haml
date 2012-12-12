@@ -22,7 +22,7 @@
             %span= "no goal"
           - else
             %span= @student.goals.length
-    - if (!@current_user.is?(:parent))
+    - if (!@user.is?(:parent))
       .action-link-container.pull-right
         .clearfix.action-link
           = link_to "Edit", url_for(:controller => "#{controller_namespace}/students", :action => 'edit', :id => @student.id, :user_id => @user.id, :admin_id => @admin)
@@ -56,12 +56,12 @@
   .separator.brown
     
   .users.student-users
-    - if (!@current_user.is?(:parent))
+    - if (!@user.is?(:parent))
       .action-container
         = link_to " Invite a user", new_invitation_path, :remote => true, :class => "icon-plus-sign add invite-user"
 
     #render_invite_user
     #content-users
-      = render :partial => "shared/students/view_invited_user", :locals => {:invited_users => @invited_users, :read_only => @current_user.is?(:parent)}
+      = render :partial => "shared/students/view_invited_user", :locals => {:invited_users => @invited_users, :read_only => @user.is?(:parent)}
 
   = render "export", :all_students => @all_students
