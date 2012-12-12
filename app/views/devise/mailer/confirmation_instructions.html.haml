@@ -3,11 +3,11 @@
 %p
   - if @resource.is_admin_school?
     You are the admin at 
-    %b= @resource.school.try(:short_name)
+    %b= @resource.school.try(:name)
     school.
   - else 
     You joined at 
-    %b= @resource.school.try(:short_name)
+    %b= @resource.school.try(:name)
     school.
 %p You can confirm your account email through the link below:
 %p= link_to 'Confirm my account', confirmation_url(@resource, :confirmation_token => @resource.confirmation_token)
