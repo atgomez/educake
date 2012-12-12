@@ -4,24 +4,40 @@ class Admin::TeachersController < Admin::BaseAdminController
   def index
     if find_or_redirect
       @teachers = @user.children.teachers.unblocked.load_data(filtered_params)
-      @all_teachers = @user.children.teachers.unblocked
-      series = []
-      @all_teachers.map do |teacher|
-        teacher_status = teacher.teacher_status
-        series << {
-          :name => teacher.full_name,
-          :data => teacher_status,
-          :yAxis => 2
-        } unless teacher_status.empty?
-      end
 
-      if series.empty?
-        @width = "0%"
-        @height = "0"
-      else 
-        @width = "100%"
-        @height = "500"
-      end 
+      unless request.xhr?
+        # Only run here if not ajax request
+        all_teachers = @user.children.teachers.unblocked
+        series = []
+
+        # Options for export select box
+        @all_teachers_collection = []
+
+        all_teachers.each do |teacher|
+          if series.blank?
+            # Only need ONE serie to detect the width and height of the chart.
+            teacher_status = teacher.teacher_status
+            series << {
+              :name => teacher.full_name,
+              :data => teacher_status,
+              :yAxis => 2
+            } unless teacher_status.empty?
+          end
+
+          # Prepare options for export popup
+          @all_teachers_collection << [teacher.full_name, teacher.id]
+        end
+
+        @all_teachers_count = all_teachers.length
+
+        if series.empty?
+          @width = "0%"
+          @height = "0"
+        else 
+          @width = "100%"
+          @height = "500"
+        end
+      end
       
       respond_to do |format|
         format.js
