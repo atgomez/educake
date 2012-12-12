@@ -1,4 +1,6 @@
-class CurriculumController < ApplicationController
+class CurriculumsController < ApplicationController
+  authorize_resource :curriculum
+
 	def index
 	end
 	

@@ -89,5 +89,5 @@ TeacherMgnt::Application.routes.draw do
     end
   end 
 
-  resources :curriculum
+  resources :curriculums
 end
