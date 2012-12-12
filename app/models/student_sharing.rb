@@ -40,7 +40,9 @@ class StudentSharing < ActiveRecord::Base
   def confirmed?
     !self.user_id.blank?
   end
-
+  def self.get_invited_users(student_id)
+    (self.joins(:user).where("student_sharings.student_id = ?", student_id).order("first_name ASC, last_name ASC") + self.where(:student_id => student_id).order("first_name ASC, last_name ASC")).uniq
+  end 
   protected
 
     def save_token 
