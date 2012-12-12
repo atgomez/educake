@@ -64,6 +64,8 @@ class SuperAdmin::UsersController < SuperAdmin::BaseSuperAdminController
   def blocked_account 
     if find_user
       if @user.update_attribute(:is_blocked, params[:is_blocked])
+        sharing = StudentSharing.find_by_email(@user.email)
+        sharing.update_attribute(:is_blocked => params[:is_blocked]) if sharing
         UserMailer.inform_blocked_account(@user).deliver
       end 
     end

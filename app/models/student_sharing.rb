@@ -15,7 +15,7 @@
 #
 
 class StudentSharing < ActiveRecord::Base
-  attr_accessible :email, :first_name, :last_name, :student_id, :user_id, :role_id, :confirm_token
+  attr_accessible :email, :first_name, :last_name, :student_id, :user_id, :role_id, :confirm_token, :is_blocked
 
   # ASSOCIATION
   belongs_to :student
@@ -30,6 +30,7 @@ class StudentSharing < ActiveRecord::Base
   # CALLBACK
   after_create :save_token
 
+  scope :unblocked, where(:is_blocked => false) 
   # Instance methods
 
   def full_name
@@ -40,9 +41,7 @@ class StudentSharing < ActiveRecord::Base
   def confirmed?
     !self.user_id.blank?
   end
-  def self.get_invited_users(student_id)
-    (self.joins(:user).select("student_sharings.*, users.*").where("student_sharings.student_id = ? and users.is_blocked = ?", student_id, false).order("users.first_name ASC, users.last_name ASC") + self.where(:student_id => student_id).order("first_name ASC, last_name ASC")).uniq
-  end 
+  
   protected
 
     def save_token 
