@@ -38,6 +38,7 @@ class Goal < ActiveRecord::Base
   belongs_to :subject 
   belongs_to :curriculum
   
+  
   # VALIDATION
   validates :accuracy, :numericality => true, :inclusion => {:in => 0..100, :message => "must be from 0 to 100"}
   validates :baseline, :numericality => true, :inclusion => {:in => 0..100, :message => "must be from 0 to 100"}
@@ -513,6 +514,7 @@ class Goal < ActiveRecord::Base
       self.validate_baseline
       self.validate_trial_days
       self.validate_baseline_date
+      self.validates_goal_name
     end
 
     def validate_baseline
@@ -535,4 +537,21 @@ class Goal < ActiveRecord::Base
       end
       return self.errors.blank?
     end
+    
+    def validates_goal_name 
+      due_date_existed = Goal.exists?(:due_date => self.due_date)
+      subject_existed = Goal.exists?(:subject_id => self.subject_id)
+      curriculum_existed = Goal.exists?(:curriculum_id => self.curriculum_id)
+      existed = Goal.exists?(:subject_id => self.subject_id, :curriculum_id => self.curriculum_id, :due_date => self.due_date)
+      if existed
+        if due_date_existed
+          self.errors.add(:due_date, "has already been taken")
+        elsif  subject_existed
+          self.errors.add(:subject_id, "has already been taken")
+        elsif curriculum_existed 
+          self.errors.add(:curriculum_id, "has already been taken")
+        end 
+      end 
+      return self.errors.blank?
+    end 
 end
