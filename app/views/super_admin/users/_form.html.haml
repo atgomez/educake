@@ -26,15 +26,9 @@
   .form-inputs
     .title School Info
     .school-info
-      - if @user.new_record?
-        - selected_school_id = @school_id
-      - else
-        - selected_school_id = @user.school_id
-
-      = f.input(:school_id, :collection => School.order(:name),
+      = f.association(:school, :collection => School.order(:name),
                 :label_method => :short_name,
-                :label => "School Name", :prompt => "Select One",
-                :selected => selected_school_id, :disabled => @user.is?(:admin))
+                :label => "School Name", :prompt => "Select One", :disabled => @user.is?(:admin))
     .title= title_user
     .school-info
       = f.input :first_name, :input_html => {:class => "valid_name"}
