@@ -1,5 +1,5 @@
 
-= simple_form_for([:super_admin, @school], :html => {:class => "school-form form-horizontal"}) do |f|
+= simple_form_for([:super_admin, @school], :html => {:class => "school-form form-horizontal"} , :validate => true) do |f|
   = f.error_notification
   .form-actions
     %center
@@ -20,7 +20,7 @@
       = f.input :name, :label => "School Name", :input_html => {:class => "valid_name"}
       = f.input :address1, :label => "Address"
       = f.input :address2, :label => false
-      = f.input :city, :label => false, :error => false, :input_html => {:class => "pull-left", :placeholder => "city"}
+      = f.input :city, :label => false, :validate => false, :error => false, :input_html => {:class => "pull-left", :placeholder => "city"}
       .pull-left= state_select 'school', 'state', :show => :full
       = f.input :zipcode, :error => false, :label => false, :input_html => {:class => "valid_number pull-left", :placeholder => "zip code"}
       .clearfix

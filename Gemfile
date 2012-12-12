@@ -39,6 +39,10 @@ gem "remotipart", "~> 1.0"
 #Excel Parser
 gem "axlsx"
 
+# Client Validation
+gem 'client_side_validations'
+gem 'client_side_validations-simple_form'
+
 group :development do 
   gem "haml-rails"
   gem 'rails-erd'

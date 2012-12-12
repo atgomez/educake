@@ -24,6 +24,10 @@
 //= require schools
 //= require jquery.iframe-transport
 //= require jquery.remotipart
+//= require rails.validations
+//= require rails.validations.customValidators
+//= require rails.validations.simple_form
+
 
 $(document).ready(function() {
     $('.pagination-container.ajax .pagination a').attr('data-remote', 'true');
