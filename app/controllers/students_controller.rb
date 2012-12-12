@@ -1,7 +1,8 @@
 class StudentsController < ApplicationController
-
+  authorize_resource :student
   before_filter :destroy_session, :except => [:show, :destroy]
-  cross_role_action :new, :search_user, :index, :destroy, :show, :create, :edit, :update, :all_students, :load_users, :search_user
+  cross_role_action :new, :search_user, :index, :destroy, :show, :create, :edit, 
+                    :update, :all_students, :load_users, :search_user
 
   def index
     if find_user

@@ -1,4 +1,6 @@
 class ChartsController < ApplicationController
+  authorize_resource :student, :goal 
+
 	# This controller need user_id in all cases
 	# 
   cross_role_action :user_chart, :student_chart, :goal_chart

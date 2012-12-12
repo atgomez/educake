@@ -1,6 +1,7 @@
 class Admin::BaseAdminController < ApplicationController
   before_filter :authenticate_admin!
-
+  authorize_resource :user
+  
   def index
     redirect_to '/admin/teachers'
   end

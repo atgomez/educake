@@ -8,9 +8,11 @@ class Ability
       # Super admin
       can :manage, :all 
     elsif !user.new_record?
-      alias_action  :show, :index, :search, :load_users, :load_grade, :to => :read
-      alias_action  :new_grade, :add_grade, :to => :create
-      alias_action  :edit, :to => :update
+      alias_action  :show, :index, :search, :load_users, :load_grade, 
+                    :user_chart, :student_chart, :goal_chart, :all, :get_students,
+                    :initial_import_grades, :load_grades, :search_user, :all_students, :to => :read
+      alias_action  :new_grade, :add_grade, :import_grades, :to => :create
+      alias_action  :edit, :update_grade, :to => :update
       alias_action  :delete, :to => :destroy
 
       if user.is?(:admin)
@@ -19,13 +21,13 @@ class Ability
           # Only able to manage new user or the 'sub' user.
           (a_user.new_record? || a_user.parent_id == user.id)
         end
-        can :mangage, [Curriculum, Goal, Grade, Student, StudentSharing]
+        can :manage, [Curriculum, Goal, Grade, Student, StudentSharing]
       elsif user.is?(:teacher)
         can :read, User
-        can :mangage, [Curriculum, Goal, Grade, Student, StudentSharing]
+        can :manage, [Curriculum, Goal, Grade, Student, StudentSharing]
       elsif user.is?(:parent)
         can :read, [User, Curriculum, Goal, Student, StudentSharing]
-        can :mangage, [Grade]
+        can :manage, [Grade]
       end  
     end
 

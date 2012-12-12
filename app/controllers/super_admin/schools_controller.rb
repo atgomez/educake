@@ -1,5 +1,6 @@
 class SuperAdmin::SchoolsController < SuperAdmin::BaseSuperAdminController
   helper_method :sort_column, :sort_direction, :sort_criteria
+  
   def index
     load_params = filtered_params.merge({
       :sort_criteria => sort_criteria

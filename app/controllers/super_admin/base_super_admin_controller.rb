@@ -1,6 +1,7 @@
 class SuperAdmin::BaseSuperAdminController < ApplicationController  
   before_filter :authenticate_admin!
-
+  skip_authorization_check
+  
   def index
     redirect_to '/super_admin/schools'
   end
@@ -8,7 +9,7 @@ class SuperAdmin::BaseSuperAdminController < ApplicationController
   protected
 
     def authenticate_admin!
-      can?(:manage, :all)
+      authorize_action!(:all, :manage)
     end
 
     def render_page_not_found(options = {})

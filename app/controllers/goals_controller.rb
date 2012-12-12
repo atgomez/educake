@@ -1,4 +1,5 @@
 class GoalsController < ApplicationController
+  authorize_resource :goal, :grade
   cross_role_action :new_grade, :add_grade, :update_grade, :initial_import_grades, :import_grades,
                     :new, :edit, :create, :update, :destroy, :load_grades
 

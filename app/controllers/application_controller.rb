@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
-  
+  check_authorization :unless => :is_devise_controller?
+
   before_filter :authenticate_user!
   before_filter :do_filter_params
   before_filter :set_current_tab
@@ -9,7 +10,7 @@ class ApplicationController < ActionController::Base
   before_filter :check_blocked_account
   before_filter :check_view_as_state
 
-  rescue_from CanCan::AccessDenied, :with => :render_unauthorized 
+  rescue_from CanCan::AccessDenied, :with => :rescue_access_denied 
 
   PAGE_SIZE = 8
   MAX_PAGE_SIZE = 100
@@ -99,7 +100,11 @@ class ApplicationController < ActionController::Base
     # Override Cancan ability method
     def current_ability
       # Always refresh ability
-      @current_ability = Ability.new(current_user)
+      @current_ability ||= Ability.new(current_user)
+    end
+    
+    def rescue_access_denied
+      render_unauthorized
     end
     
     def render_unauthorized(options = {})

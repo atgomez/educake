@@ -1,5 +1,7 @@
 class ExportController < ApplicationController
+	authorize_resource :student
 	cross_role_action :export_student
+
 	def export_student
 		xlsx_package = Axlsx::Package.new
 		@student = Student.find params[:student_id]
