@@ -51,13 +51,15 @@ window.schoolObject =
           
           return
   clickOnSubmitAdmin: ->
-    $("#btn_admin").click ->
+    $("#btn_admin").click (event) ->
       email_admin = $("#email_admin").val()
       new_email = $("#user_email").attr("value")
       if email_admin != new_email
-        conf = confirm("Do you want to change your email?") 
+        conf = confirm("Do you want to change user email?") 
         if conf is true
           $("#user_form").submit()
+        else
+          event.preventDefault()
     return
     
     
