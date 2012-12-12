@@ -57,6 +57,12 @@ TeacherMgnt::Application.routes.draw do
   as :user do
     match '/user/confirmation' => 'devise/user_confirmations#update', :via => :put, :as => :update_user_confirmation
   end
+
+  devise_scope :user do
+    get :my_account, :to => 'profile#show'
+    post :change_password, :to => 'profile#change_password'
+  end
+
   get '/admin', :to => "admin/base_admin#index"
   get '/super_admin', :to => "super_admin/base_super_admin#index"
   namespace :admin do

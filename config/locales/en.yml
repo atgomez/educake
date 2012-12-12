@@ -69,3 +69,12 @@ en:
     updated_successfully: "School %{name} was updated successfully."
     not_available: "School is not available."
 
+  profile:
+    change_password: "Change password"
+    change_password_success: "Your password was changed successfully"
+    change_password_fail: "Cannot change your password"
+    back_link_text:
+      teacher: "View Classroom"
+      parent: "View Students"
+      admin: "View Teachers"
+      super_admin: "Home"

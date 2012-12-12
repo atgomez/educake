@@ -41,7 +41,7 @@ describe School do
         student
 
         result = school.statistic
-        result[:teachers_count].should == 2
+        result[:teachers_count].should == 1
         result[:students_count].should == 1
       end
     end
@@ -60,7 +60,7 @@ describe School do
         sharing_teacher
         parent
         result = school.statistic
-        result[:teachers_count].should == 2
+        result[:teachers_count].should == 1
         result[:students_count].should == 1
       end
     end

@@ -1,0 +1,17 @@
+- content_for(:page_title) do
+  Account Settings
+.profile
+  .clearfix.toolbar
+    = link_to(profile_back_link_text, "/", :class => "brown font18")
+
+  .clearfix.edit-account
+    .control-group
+      %span.field-name= "Email:"
+      %span= @user.email
+    .control-group
+      = link_to(t("profile.change_password"), "#", :id => "change-password", :class => "form-display-handler")
+      .change-password-container.form-container.hide
+        = render(:partial => "password_form")
+
+- content_for :js do
+  = javascript_include_tag('app/profile.js')

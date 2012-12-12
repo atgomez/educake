@@ -34,6 +34,30 @@ window.helper =
       result = null
     return result
 
+
+  create_message_panel: (type, message) ->
+    div = $('<div data-alert="alert" class="alert fade in">' +
+                '<a href="#" data-dismiss="alert" class="close">&times;</a></div>')
+    $(div).addClass("alert-" + type)
+    $(div).append(message)
+    return $(div)
+
+  # Append a message panel to #flash element.
+  flash_message: (type, message, append, container) ->
+    msg = helper.create_message_panel(type, message);
+    
+    if(!container)
+      container = "#flash"
+
+    $(container).hide()
+
+    if(append)
+      $(container).append(msg)
+    else
+      $(container).html(msg)
+
+    $(container).fadeIn()
+
   clickExport: ->
     $('#export-button').click((e) ->
       e.preventDefault()

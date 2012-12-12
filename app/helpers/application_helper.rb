@@ -51,5 +51,17 @@ module ApplicationHelper
       user_emails = (StudentSharing.joins(:role).where("roles.name = ? or roles.name = ?", "Teacher", "Parent").map(&:email) + User.unblocked.joins(:role).where("roles.name = ? or roles.name = ?", "Teacher", "Parent").map(&:email)).uniq.sort
     end
     return user_emails
-  end 
+  end
+
+  def profile_back_link_text(user = nil)
+    user ||= current_user
+    result = ""
+    if user.is_super_admin?
+      result = I18n.t("profile.back_link_text.super_admin")
+    else
+      result = user.role.try(:name).to_s.underscore
+      result = I18n.t("profile.back_link_text.#{result}")
+    end
+    return result
+  end
 end

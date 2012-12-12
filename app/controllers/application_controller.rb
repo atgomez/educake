@@ -176,7 +176,7 @@ class ApplicationController < ActionController::Base
     #
     def restrict_namespace
       user = current_user
-      return if (user.blank? || self.is_devise_controller?)
+      return if (user.blank? || self.is_devise_controller? || !self.is_restricted?)
       action = self.action_name.to_sym
       if (user.is?(:admin) && !self.is_a?(Admin::BaseAdminController) && 
             !self.crossed_role_action.include?(action))
@@ -189,5 +189,9 @@ class ApplicationController < ActionController::Base
 
     def is_devise_controller?
       self.is_a?(DeviseController)
+    end
+
+    def is_restricted?
+      @is_restricted = true
     end
 end

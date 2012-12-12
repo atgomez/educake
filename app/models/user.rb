@@ -292,10 +292,41 @@ class User < ActiveRecord::Base
   end
 
   def change_password(params)
-    self.update_attributes({
-      :password => params[:password],
-      :password_confirmation => params[:password_confirmation]
-    })
+    password_params = {}
+    [:current_password, :password, :password_confirmation].each do |key|
+      if params.has_key?(key)
+        password_params[key] = params[key]
+      end
+    end
+    
+    unless password_params.blank?      
+      if password_params[:current_password]
+        # Update with requiring current_password
+        self.update_with_password(password_params)
+      else
+        self.update_attributes({
+          :password => password_params[:password],
+          :password_confirmation => password_params[:password_confirmation]
+        })
+      end
+    end
+  end
+
+  # Change user's profile
+  #
+  def update_profile(params)
+    user_info = {}
+    
+    # Only allow update some fields
+    [:first_name, :last_name, :phone, :photo].each do |key|
+      if params.has_key?(key)
+        user_info[key] = params[key]
+      end
+    end
+    
+    unless user_info.blank?
+      self.update_without_password(user_info)
+    end
   end
 
   def only_if_unconfirmed

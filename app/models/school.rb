@@ -80,10 +80,8 @@ class School < ActiveRecord::Base
 
   def statistic
     # Generate SQL query to count teachers/parents and students in a school.
-    sql = self.users.joins(
+    sql = self.users.teachers.joins(
         "LEFT JOIN students ON students.teacher_id = users.id"
-      ).where("users.role_id <> ?", 
-        Role[:admin].try(:id)
       ).select("COALESCE(COUNT(DISTINCT users.id), 0) AS teachers_count,
           COALESCE(COUNT(DISTINCT students.id), 0) AS students_count").to_sql
 

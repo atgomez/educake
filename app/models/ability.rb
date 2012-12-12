@@ -28,7 +28,12 @@ class Ability
       elsif user.is?(:parent)
         can :read, [User, Curriculum, Goal, Student, StudentSharing]
         can :manage, [Grade]
-      end  
+      end
+
+      # Only allow user to change his/her own password.
+      can :change_password, User do |a_user|
+        (user.id == a_user.id)
+      end
     end
 
     # View Auth - In case we need to know current user has any ability to view user's info or not
