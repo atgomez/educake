@@ -17,6 +17,8 @@
 require 'spec_helper'
 
 describe School do
+  let(:school) {FactoryGirl.create(:school)}
+
   describe ".load_data" do
     before(:each) do
       10.times do |t|
@@ -25,5 +27,42 @@ describe School do
     end
 
     include_examples "paging_exact_page_size", School, {:page_id => 1, :page_size => 4}
-  end # Student.load_data
+  end # School.load_data
+
+  describe "#statistic" do
+    let(:teacher) {FactoryGirl.create(:teacher, :parent => school.admin, :school => school)}
+    let(:parent) {FactoryGirl.create(:parent, :parent => school.admin, :school => school)}
+    let(:student) {FactoryGirl.create(:student, :teacher => teacher)}
+
+    context "without student sharing" do
+      it "returns the correct number of teacher/parent and students" do
+        teacher
+        parent
+        student
+
+        result = school.statistic
+        result[:teachers_count].should == 2
+        result[:students_count].should == 1
+      end
+    end
+
+    context "with student sharing" do
+      let(:sharing_teacher) {
+        FactoryGirl.create(
+          :student_sharing, 
+          :student => student, 
+          :user => teacher,
+          :role => teacher.role
+        )
+      }
+
+      it "returns the correct number of teacher/parent and students" do
+        sharing_teacher
+        parent
+        result = school.statistic
+        result[:teachers_count].should == 2
+        result[:students_count].should == 1
+      end
+    end
+  end
 end
