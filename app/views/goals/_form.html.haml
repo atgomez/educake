@@ -49,9 +49,9 @@
         - goal.progresses.each do |progress|
           = f.simple_fields_for(:progresses, progress) do |f_progress|
             %label.grade-name= "Progress Report #{idx}"
-            = f_progress.input(:due_date, :as => :string, :input_html => {:class => "date-picker", 
+            = f_progress.input(:due_date, :as => :string, :required => false, :input_html => {:class => "date-picker", 
                   :value => progress.due_date_string, :id => "goal_#{goal.id}_#{progress.object_id}"}, :label => "Due Date")
-            = f_progress.input :accuracy, :as => :string, :label => "% Accuracy"
+            = f_progress.input :accuracy, :as => :string, :required => false, :label => "% Accuracy"
             - idx = idx + 1
             
     .modal-footer
