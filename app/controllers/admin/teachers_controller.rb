@@ -109,6 +109,7 @@ class Admin::TeachersController < Admin::BaseAdminController
   # TODO: optimize this method
   def search
     if find_or_redirect
+      searcher = @admin ? @admin : @user
       query = params[:query]
       if query.blank?
         redirect_to(:action => 'index')
@@ -117,12 +118,12 @@ class Admin::TeachersController < Admin::BaseAdminController
 
         case params[:type]
           when 'student' then
-            @students = Student.students_of_teacher(@user).search_data(query, filtered_params)
+            @students = Student.students_of_teacher(searcher).search_data(query, filtered_params)
           when 'teacher' then
-            @teachers = @user.children.unblocked.search_data(query, filtered_params)
+            @teachers = searcher.children.unblocked.search_data(query, filtered_params)
           else
-            @students = Student.students_of_teacher(@user).search_data(query, filtered_params)
-            @teachers = @user.children.unblocked.search_data(query, filtered_params)
+            @students = Student.students_of_teacher(searcher).search_data(query, filtered_params)
+            @teachers = searcher.children.unblocked.search_data(query, filtered_params)
         end
       end
     end
@@ -160,17 +161,20 @@ class Admin::TeachersController < Admin::BaseAdminController
     #
 
     def find_or_redirect(teacher_id = params[:id])
+      @admin = User.unblocked.find_by_id params[:admin_id]
+      @admin = nil if @admin && !@admin.is?(:admin)
       if current_user.is_super_admin?
         @user = User.unblocked.find_by_id params[:user_id]
       else
         @user = current_user
       end
-      @teacher = @user.children.teachers.unblocked.find_by_id(teacher_id)
       @current_user = current_user
 
       if !@user
         render_page_not_found
         return false
+      else
+        @teacher = @user.children.teachers.unblocked.find_by_id(teacher_id)
       end
 
       return true

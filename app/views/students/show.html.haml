@@ -2,17 +2,16 @@
   = javascript_include_tag('app/students.js')
 
 .admin.teacher
-  - if @current_user.is?(:admin) || @current_user.is_super_admin?
+  - if @user.is?(:admin) || (@admin)
     - @teacher = @user
     .show-student
       .clearfix.toolbar
-        = link_to "All Teachers", admin_teachers_path(:user_id => @user.parent), :class => "brown font18"
+        = link_to "All Teachers", admin_teachers_path(:user_id => @user.parent, :admin_id => @admin), :class => "brown font18"
         = render 'shared/search_box', :action => "/admin/teachers/search", :placeholder => "Search name"
       = render('/shared/teachers/teacher_box')
 .show-student
   - text = "All students"
   - if @current_user.is?(:admin) || @current_user.is_super_admin?
     - text = "All #{@user.full_name}'s Students"
-  = link_to text, students_path(:user_id => @user.id),  :class => "brown font18"
-= render('details', :back_link => "/students/#{@student.id}?user_id=#{@user.id}")
-
+  = link_to text, students_path(:user_id => @user.id, :admin_id => @admin),  :class => "brown font18"
+= render('details', :back_link => "/students/#{@student.id}?user_id=#{@user.id}&admin_id=#{@admin}")

@@ -36,4 +36,13 @@ $(document).ready(function() {
 	  	live: true, //Apply to future and modified elements too
     	hideOnFocus: true //Hide the placeholder when the element receives focus
 	  });
+
+	  if(typeof parent.setiFrameHeight == 'function')
+      parent.setiFrameHeight(document.body.scrollHeight); 
 });
+
+function setiFrameHeight(height){
+	if($('#iframe-view-as').length > 0){
+		$('#iframe-view-as').attr('height', height);
+	}
+}

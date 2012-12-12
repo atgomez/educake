@@ -8,7 +8,7 @@
     .info.well.pull-left
       .pull-left
         %strong.name
-          = link_to(@student.full_name, url_for(:controller => "#{controller_namespace}/students", :action => 'show', :id => @student.id, :user_id => @user.id),
+          = link_to(@student.full_name, url_for(:controller => "#{controller_namespace}/students", :action => 'show', :id => @student.id, :user_id => @user.id, :admin_id => @admin),
               :class => "brown")
         .birthday
           %span= "Born on:"
@@ -25,12 +25,13 @@
     - if (!@current_user.is?(:parent))
       .action-link-container.pull-right
         .clearfix.action-link
-          = link_to "Edit", url_for(:controller => "#{controller_namespace}/students", :action => 'edit', :id => @student.id, :user_id => @user.id)
+          = link_to "Edit", url_for(:controller => "#{controller_namespace}/students", :action => 'edit', :id => @student.id, :user_id => @user.id, :admin_id => @admin)
         .clearfix.action-link
           = link_to "Users", "#", :id => "goto-users"
 
   = hidden_field_tag "student_id", params[:id]
-  = hidden_field_tag "user_id", @user.id
+  = hidden_field_tag "user_id", params[:user_id]
+  = hidden_field_tag "admin_id", params[:admin_id]
 
 - unless @goals.empty?
   .pull-right

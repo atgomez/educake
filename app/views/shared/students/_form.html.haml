@@ -11,7 +11,7 @@
       = notification
 
   .form-actions
-    - back_link = @student.new_record? ? back_link : url_for(:controller => "students", :action => 'show', :id => @student.id, :user_id => @user.id)
+    - back_link = @student.new_record? ? back_link : url_for(:controller => "students", :action => 'show', :id => @student.id, :user_id => @user.id, :admin_id => @admin)
     = link_to "Cancel", back_link, :class => "btn"
 
     - if @student.new_record?
@@ -32,6 +32,6 @@
         = image_tag (f.object.new_record? ? "missing.png" : f.object.photo.url(:medium)), :size => "200x200", :id => 'upload-image'
       = f.input :photo, :as => :file, :label => "Upload photo"
       = hidden_field_tag "back_link", back_link
-      = hidden_field_tag "user_id", @user.id
-      
+      = hidden_field_tag "user_id", params[:user_id]
+      = hidden_field_tag "admin_id", params[:admin_id]
   

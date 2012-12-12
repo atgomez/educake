@@ -34,65 +34,70 @@ class SuperAdmin::UsersController < SuperAdmin::BaseSuperAdminController
   end
   
   def edit
-    load_roles
-    @user = User.find params[:id]
-    @school_id = params[:school_id]
-    @back = params[:back]
+    if find_user
+      load_roles
+      @school_id = params[:school_id]
+      @back = params[:back]
+    end
   end
   
   def update 
-    @user = User.find params[:id]
-    @school_id = params[:school_id]
-    @back = params[:back]
-
-    if @user.is?(:admin)
-      # Reject school_id when updating an admin
-      params[:user].delete(:school_id)
-    end
-
-    if @user.update_attributes params[:user]
-      message = I18n.t('user.updated_successfully', :name => @user.full_name)
-      flash[:notice] =  message
-      redirect_to super_admin_school_path(@user.school)
-    else
-      load_roles
-      render action: "edit" 
+    if find_user
+      @school_id = params[:school_id]
+      @back = params[:back]
+      
+      if @user.is?(:admin)
+        # Reject school_id when updating an admin
+        params[:user].delete(:school_id)
+      end
+      if @user.update_attributes params[:user]
+        message = I18n.t('user.updated_successfully', :name => @user.full_name)
+        flash[:notice] =  message
+        redirect_to super_admin_school_path(@user.school)
+      else
+        load_roles
+        render action: "edit" 
+      end
     end
   end
   
   def blocked_account 
-    @user = User.find params[:id]
-    if @user.update_attribute(:is_blocked, params[:is_blocked])
-      UserMailer.inform_blocked_account(@user).deliver
-    end 
+    if find_user
+      if @user.update_attribute(:is_blocked, params[:is_blocked])
+        UserMailer.inform_blocked_account(@user).deliver
+      end 
+    end
   end
   
   def reset_password 
-    @user = User.find params[:id]
-    rand_pass = rand(897564)
-    @success = false
-    @user.password = rand_pass
-    if @user.save
-      UserMailer.send_reset_password(@user, rand_pass).deliver
-      @success = true
+    if find_user
+      rand_pass = rand(897564)
+      @success = false
+      @user.password = rand_pass
+      if @user.save
+        UserMailer.send_reset_password(@user, rand_pass).deliver
+        @success = true
+      end
     end
   end
   
   def destroy
-    @user = User.find(params[:id])
-    school = @user.school
-    @user.destroy
-    
-    redirect_to super_admin_school_path(school)
+    if find_user
+      school = @user.school
+      @user.destroy
+      
+      redirect_to super_admin_school_path(school)
+    end
   end
   
   def view_as
-    user = User.find params[:id]
-    if user.is?(:admin)
-      redirect_to admin_teachers_path(:user_id => params[:id]) 
-    elsif user.is?(:teacher) || user.is?(:parent)
-      redirect_to students_path(:user_id => params[:id])
-    end 
+    if find_user
+      if @user.is?(:admin)
+        @path = admin_teachers_path(:user_id => params[:id]) 
+      else
+        @path = students_path(:user_id => params[:id])
+      end
+    end
   end
   
   def search_result
@@ -121,5 +126,11 @@ class SuperAdmin::UsersController < SuperAdmin::BaseSuperAdminController
 
     def load_roles
       @roles = [Role[:teacher]]
+    end
+
+    def find_user
+      @user = User.find_by_id(params[:id])
+      render_page_not_found if !@user
+      return @user
     end
 end

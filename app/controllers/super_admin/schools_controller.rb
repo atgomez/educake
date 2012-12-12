@@ -9,10 +9,11 @@ class SuperAdmin::SchoolsController < SuperAdmin::BaseSuperAdminController
   end
 
   def show
-    @school = School.find(params[:id])
-    @users = @school.users.order('role_id').load_data(filtered_params)
-    if params[:query]
-      redirect_to search_result_super_admin_users_path(:school => @school.id, :query => params[:query])
+    if find_school
+      @users = @school.users.order('role_id').load_data(filtered_params)
+      if params[:query]
+        redirect_to search_result_super_admin_users_path(:school => @school.id, :query => params[:query])
+      end
     end
   end
 
@@ -22,8 +23,9 @@ class SuperAdmin::SchoolsController < SuperAdmin::BaseSuperAdminController
   end
 
   def edit
-    @school = School.find(params[:id])
-    @admin = @school.admin
+    if find_school
+      @admin = @school.admin
+    end
   end
 
   def create
@@ -45,24 +47,25 @@ class SuperAdmin::SchoolsController < SuperAdmin::BaseSuperAdminController
   end
 
   def update
-    @school = School.find(params[:id])
-
-    if @school.update_attributes(params[:school])
-      message = I18n.t('school.updated_successfully', :name => @school.name)
-      flash[:notice] = message
-      redirect_to super_admin_school_path @school
-    else
-      render(:action => "edit")
+    if find_school
+      if @school.update_attributes(params[:school])
+        message = I18n.t('school.updated_successfully', :name => @school.name)
+        flash[:notice] = message
+        redirect_to super_admin_school_path @school
+      else
+        render(:action => "edit")
+      end
     end
   end
 
   def destroy
-    @school = School.find(params[:id])
-    @school.destroy
+    if find_school
+      @school.destroy
 
-    respond_to do |format|
-      format.html { redirect_to schools_url }
-      format.json { head :no_content }
+      respond_to do |format|
+        format.html { redirect_to schools_url }
+        format.json { head :no_content }
+      end
     end
   end
   
@@ -74,6 +77,12 @@ class SuperAdmin::SchoolsController < SuperAdmin::BaseSuperAdminController
     
     def sort_direction
       %w[asc desc].include?(params[:direction]) ?  params[:direction] : "asc"
+    end
+
+    def find_school
+      @school = School.find(params[:id])
+      render_page_not_found if !@school
+      return @school
     end
 
     def sort_criteria

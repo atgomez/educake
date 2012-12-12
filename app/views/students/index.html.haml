@@ -2,22 +2,20 @@
   = javascript_include_tag('app/students.js')
   = javascript_include_tag('app/admin/teacher.js')
 .admin.teacher
-  
-  - if @current_user.is?(:admin)
-    #new-form-teacher
+  - if @user.is?(:admin) || (@admin)
     - @teacher = @user
     = render 'admin/teachers/form', :teacher => @teacher
     .show-student
       .clearfix.toolbar
-        = link_to "All Teachers", admin_teachers_path, :class => "brown font18"
+        = link_to "All Teachers", admin_teachers_path(:user_id => @user.parent, :admin_id => @admin), :class => "brown font18"
         = render 'shared/search_box', :action => "/admin/teachers/search", :placeholder => "Search name"
       = render('/shared/teachers/teacher_box')
 .teacher
   .clearfix.toolbar
     - if @all_students.count > @students.count
       = link_to "View all students", all_students_students_path(:user_id => @user.id),  :class => "brown font18"
-    - if (!@current_user.is?(:parent))
-      = link_to 'Add Student', new_student_path(:back_link => students_path(:user_id => @user.id), :user_id => @user.id), :class => 'btn bg-brown white pull-right'
+    - if (!@user.is?(:parent))
+      = link_to 'Add Student', new_student_path(:back_link => students_path(:user_id => @user, :admin_id => @admin), :user_id => @user.id), :class => 'btn bg-brown white pull-right'
   - unless @students.blank?
     #pagination_area
       = render('shared/students/list', :current_page => @current_page, :students => @students, :user => @user)

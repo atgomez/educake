@@ -7,6 +7,7 @@ TeacherMgnt::Application.routes.draw do
   # root :to => "students#index", :constraints => RoleRouteConstraint.new(:parent, :teacher)
   root :to => "home#index"
 
+
   # Chart rooting
   resources :charts do
     collection do

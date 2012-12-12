@@ -10,14 +10,15 @@
     %link{:href => path_to_image('favicon.ico'), :type => "image/x-icon", :rel => "shortcut icon"}
   %body
     .container#main
-      #banner
-        .pull-right= render(:partial => "shared/user_box") if user_signed_in?
-        .clearfix
-        .header
-          %a.logo{:href => "/"}
-        #menu
-          / = render "shared/menu"
-        .separator
+      - if !@is_view_as
+        #banner
+          .pull-right= render(:partial => "shared/user_box") if user_signed_in?
+          .clearfix
+          .header
+            %a.logo{:href => "/"}
+          #menu
+            / = render "shared/menu"
+          .separator
 
       - if notice
         %div{:class => "alert alert-success fade in", 'data-alert' => "alert"}
@@ -28,11 +29,9 @@
         %div{:class => "alert alert-error fade in", 'data-alert' => "alert"}
           %a{:class => "close", 'data-dismiss' => "alert", :href => "#"} &times;
           = alert
-      - if @is_view_as 
-        = render "shared/teachers/view_as_box", :user => @viewing_user 
       = yield
-
-    .footer
-      = render(:partial => "shared/version")
+    - if !@is_view_as
+      .footer
+        = render(:partial => "shared/version")
 
     = yield :js

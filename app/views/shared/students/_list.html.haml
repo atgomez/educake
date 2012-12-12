@@ -3,9 +3,9 @@
 #pagination-listitem
   - students.each_with_index do |student, idx|
     - unless params[:query]
-      - student_home_url = student_path(student, :user_id => user.id) 
+      - student_home_url = student_path(student, :user_id => user.id, :admin_id => @admin) 
     - else params[:query]
-      - student_home_url = student_path(student, :user_id => student.teacher.id)     
+      - student_home_url = student_path(student, :user_id => student.teacher.id, :admin_id => @admin)     
     .student-container.clearfix.link{:href => student_home_url, :class => params[:query] ? "" : "pull-left"}
       = render "shared/students/cell", :student => student, :url => student_home_url 
     

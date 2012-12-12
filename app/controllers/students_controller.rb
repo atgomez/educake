@@ -91,7 +91,7 @@ class StudentsController < ApplicationController
       if @student.save
         message = I18n.t('student.created_successfully', :name => @student.full_name)
         flash[:notice] = message
-        redirect_to :action => 'edit', :id => @student, :user_id => @user
+        redirect_to :action => 'edit', :id => @student, :user_id => @user, :admin_id => @admin
       else
         render :action => "new"
       end
@@ -104,7 +104,7 @@ class StudentsController < ApplicationController
       if @student
         if @student.update_attributes(params[:student])
           message = I18n.t('student.updated_successfully', :name => @student.full_name)
-          redirect_to student_path(@student, :user_id => @user.id), :notice => message
+          redirect_to student_path(@student, :user_id => @user.id, :admin_id => @admin), :notice => message
         else
           render :action => :edit
         end
@@ -165,8 +165,10 @@ class StudentsController < ApplicationController
 
     def find_user
       @current_user = current_user
+      @admin = User.unblocked.find_by_id params[:admin_id]
+      @admin = nil if @admin && !@admin.is?(:admin)
       if (params[:user_id])
-        @user = User.unblocked.find_by_id params[:user_id]
+        @user = @admin ? @admin.children.teachers.find_by_id(params[:user_id]): User.unblocked.find_by_id(params[:user_id])
       else
         @user = current_user
       end

@@ -11,4 +11,9 @@ class SuperAdmin::BaseSuperAdminController < ApplicationController
       can?(:manage, :all)
     end
 
+    def render_page_not_found(options = {})
+      options.merge!({:status => 404})
+      render_error(I18n.t("common.error_page_not_found"), options)
+    end
+
 end
