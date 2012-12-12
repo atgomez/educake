@@ -25,8 +25,8 @@
 //= require jquery.iframe-transport
 //= require jquery.remotipart
 //= require rails.validations
-//= require rails.validations.customValidators
 //= require rails.validations.simple_form
+//= require rails.validations.customValidators
 
 
 $(document).ready(function() {
