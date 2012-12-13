@@ -1,6 +1,7 @@
 class InvitationsController < ApplicationController 
   authorize_resource :student_sharing
   cross_role_action :new, :create, :edit, :update, :destroy
+  before_filter :find_responder
 
   def new 
     @user = StudentSharing.new    
@@ -38,4 +39,12 @@ class InvitationsController < ApplicationController
     user = StudentSharing.find params[:id]
     user.destroy
   end
+
+  protected
+    # Must have user_id which can be current user id or other is viewed as
+    def find_responder
+      @responder = User.find_by_id params[:user_id]
+      @responder = current_user if !@responder
+      @responder
+    end
 end 
