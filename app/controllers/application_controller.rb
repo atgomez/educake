@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::Base
+  include MongodbLogger::Base
   protect_from_forgery
   check_authorization :unless => :is_devise_controller?
 
@@ -194,5 +195,9 @@ class ApplicationController < ActionController::Base
 
     def is_restricted?
       @is_restricted = true
+    end
+
+    def exception_engine_authentication
+      authenticate_admin!
     end
 end

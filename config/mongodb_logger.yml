@@ -1,0 +1,6 @@
+development:
+  database: teacher-dev
+  capsize: <%= 10.megabytes %>
+  host: localhost
+  port: 27017
+  replica_set: true

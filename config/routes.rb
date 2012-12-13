@@ -1,5 +1,9 @@
 TeacherMgnt::Application.routes.draw do
 
+  #Logger
+  mount MongodbLogger::Server.new, :at => "/mongodb"
+  mount MongodbLogger::Assets.instance, :at => "/mongodb/assets", :as => :mongodb_assets # assets
+
   # Config for dynamic root url
   # DO NOT change the order of the root config, otherwise it will not work properly
   # root :to => "super_admin/schools#index", :constraints => RoleRouteConstraint.new(:super_admin)
