@@ -169,8 +169,7 @@ class Goal < ActiveRecord::Base
     if previous_grades.count >= (self.trial_days_total - 1) #If enough grades for calculating
       lowest_value_count = self.trial_days_total - self.trial_days_actual
       sum_value = 0
-      (lowest_value_count...9).each {|index| sum_value = sum_value + previous_grades[index][:value]}
-
+      (lowest_value_count...9).each {|index| sum_value = sum_value + previous_grades[index][:accuracy]}
       # Add current grade value to total
       sum_value = sum_value + grade.accuracy.to_f
       grade.value = sum_value/self.trial_days_actual

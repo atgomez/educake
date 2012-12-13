@@ -76,21 +76,16 @@ describe Goal do
 				@goal.progresses[1] = progress_2
 				@goal.progresses[2] = progress_3
 				@goal.save
-				@grades = []
 
 				# Base on data example
-				due_dates = ['02/11/2012', '05/11/2012', '06/11/2012', 
+				@due_dates = ['02/11/2012', '05/11/2012', '06/11/2012', 
 										 '07/11/2012', '08/11/2012', '09/11/2012', 
 										 '12/11/2012', '13/11/2012', '14/11/2012',
 										 '15/11/2012', '16/11/2012', '19/11/2012']
 
 				@values = [20, 22, 22, 23, 19, 21, 25, 24, 26, 22.78, 23.22, 23.22]
+				@accuracies = [20, 22, 22, 23, 19, 21, 25, 24, 26, 22, 24, 22]
 
-				[20, 22, 22, 23, 19, 21, 25, 24, 26, 22, 24, 22].each_with_index.map do |accuracy, index|
-					grade = FactoryGirl.build(:grade, :due_date => Date.parse(due_dates[index]), :accuracy => accuracy, :goal => @goal)
-					grade.user = user
-					@grades << grade
-				end
 			}
 
 			(0...12).each do |idx|
@@ -98,19 +93,13 @@ describe Goal do
 				context "when checking grade ##{idx}" do
 					before(:each){
 						(0..idx).each do |i|
-							@grade = @goal.update_grade_state(@grades[i])
-							@grade.goal = @goal
-							@grade.save
-							puts @grade.errors.messages
+							@grade = @goal.grades.build(:due_date => Date.parse(@due_dates[i]), :accuracy => @accuracies[i])
+							@grade.goal = @goal 
+							@goal.update_grade_state(@grade).save!
 						end
 					}
 					
 					it {
-						puts @goal.progresses
-						puts @goal.id
-						puts @grade.id
-						puts @grade.value
-						puts @goal.grades.count
 						(@grade.value - @values[idx]).abs.should <= 0.01
 					}
 				end
@@ -171,10 +160,11 @@ describe Goal do
 			before {
 					@goals = []
 					(1..30).each do |i|
-						new_goal = FactoryGirl.build(:goal)
-					  new_goal.student = student
-					  new_goal.curriculum = curriculum
-					  new_goal.subject = subject
+						new_goal = FactoryGirl.build( :goal, 
+																					:student => student, 
+																					:curriculum => curriculum, 
+																					:subject => subject,
+																					:due_date => Date.today + 1.years + i.days)
 					  new_goal.is_completed = (i % 2 == 0)
 					  new_goal.save
 					  @goals << new_goal
