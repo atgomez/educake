@@ -70,7 +70,6 @@ class User < ActiveRecord::Base
   #             Student.from(union_sql).order("first_name ASC, last_name ASC").select('DISTINCT *').to_sql
   #           }
 
-  has_one :student_sharing, :dependent => :destroy
   has_many :student_sharings, :dependent => :destroy
   has_many :shared_students, :through => :student_sharings, :source => :student
   has_many :students, :foreign_key => "teacher_id", :dependent => :destroy
@@ -114,7 +113,7 @@ class User < ActiveRecord::Base
     end
     
     if role
-      where(:role_id => role.id)
+      self.where(:role_id => role.id)
     else
       self.limit(0) # Return an empty ActiveRecord::Relation
     end

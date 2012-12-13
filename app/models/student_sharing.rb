@@ -24,13 +24,16 @@ class StudentSharing < ActiveRecord::Base
   
   # VALIDATION
   validates :first_name, :last_name, :student_id, :email, :role_id, :presence => true
-  validates_format_of :email, :with  => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i, :allow_blank => true, :if => :email_changed?
+  validates_format_of :email, :with  => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i, 
+                      :allow_blank => true, :if => :email_changed?
   validates :email, :uniqueness => { :scope => [:student_id]}
+  validate :cross_school_sharing
 
   # CALLBACK
   after_create :save_token
+  before_validation :detect_shared_user
 
-  scope :unblocked, where(:is_blocked => false) 
+  scope :unblocked, where(:is_blocked => false)
   # Instance methods
 
   def full_name
@@ -50,5 +53,25 @@ class StudentSharing < ActiveRecord::Base
       if user
         self.update_attribute(:user_id, user.id)
       end
-    end  
+    end
+
+    # Check if user is trying to share to teacher of other school
+    def cross_school_sharing
+      if self.user
+        if self.user && self.user.school_id != self.student.teacher.school_id
+          self.errors.add(:email, "is already taken")
+        end
+      end
+    end
+
+    def detect_shared_user      
+      tmp_user = User.unblocked.find_by_email(self.email)
+      if tmp_user
+        self.first_name = tmp_user.first_name
+        self.last_name = tmp_user.last_name
+        self.role_id = tmp_user.role_id
+        self.user = tmp_user
+      end
+      return true
+    end
 end

@@ -38,13 +38,28 @@ module ApplicationHelper
     end
     return user_roles
   end
-  
+
   def emails(user)
     user_emails = []
-    if user.is_super_admin?
-      user_emails = (StudentSharing.unblocked.joins(:role).where("roles.name = ?", "Admin").map(&:email) + User.unblocked.joins(:role).where("roles.name = ?", "Admin").map(&:email)).uniq.sort
-    elsif user.is?(:teacher) || user.is?(:admin)
-      user_emails = (StudentSharing.unblocked.joins(:role).where("roles.name = ? or roles.name = ?", "Teacher", "Parent").map(&:email) + User.unblocked.joins(:role).where("roles.name = ? or roles.name = ?", "Teacher", "Parent").map(&:email)).uniq.sort
+    if user.is?(:teacher) || user.is?(:admin)
+      role_ids = [ Role[:parent].id, Role[:teacher].id ]
+      # Generate SQL for joining table, do not 
+      join_sql = User.send(:sanitize_sql, [
+        "LEFT JOIN student_sharings ON student_sharings.user_id = users.id
+                  AND student_sharings.is_blocked = ?", false
+      ])
+
+      # Get the sharing_students email and user email
+      # This is a trick because sharing_students email is stored in User object!
+      users = user.school.users.unblocked.joins(join_sql).where(
+        "users.role_id IN(?)", role_ids
+      ).select("users.email, student_sharings.email AS sharing_email")
+      users.each do |u|
+        user_emails << u['email']
+        user_emails << u['sharing_email'] unless u['sharing_email'].blank?
+      end
+      user_emails.uniq!
+      user_emails.sort!
     end
     return user_emails
   end
