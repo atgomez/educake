@@ -10,17 +10,26 @@
           = notification
       .form-inputs
         = f.input :email, :disabled=> !f.object.new_record?, :input_html => {:class => "pull-left", :data => {autocomplete_source: emails(current_user)}, :style => "width:215px;"}
-        #email_error.pull-right
         %input{:type => "button", :id => "search-email", :class => "pull-left btn margin-btn", :value => "Search"}
         .clearfix
+        .control-group.error 
+          .help-inline
+            #email_error.pull-left{:style => "padding-left:100px"}
+        .clearfix
         = f.input :first_name, :disabled=> !f.object.new_record?, :input_html => {:class => "pull-left name", :style => "width:220px;"}
-        #firstname_error.pull-right
+        .control-group.error 
+          .help-inline
+            #firstname_error.pull-left{:style => "padding-left:10px"}
         .clearfix
         = f.input :last_name, :disabled=> !f.object.new_record?, :input_html => {:class => "pull-left name", :style => "width:220px;"}
-        #lastname_error.pull-right
+        .control-group.error 
+          .help-inline
+            #lastname_error.pull-left{:style => "padding-left:10px"}
         .clearfix
         = f.input :role_id, :collection => roles(current_user), :prompt => "Select one", :input_html => {:class => "pull-left", :style => "width:230px;"}, :disabled => @user.confirmed?
-        #role_error.pull-right
+        .control-group.error 
+          .help-inline
+            #role_error.pull-left{:style => "padding-left:10px"}
         = f.hidden_field :student_id, :value => session[:student_id]
         .clearfix
       .modal-footer
