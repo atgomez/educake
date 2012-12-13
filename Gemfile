@@ -44,7 +44,7 @@ gem 'client_side_validations'
 gem 'client_side_validations-simple_form'
 
 # Logging
-gem "mongodb_logger"
+gem "mongodb_logger", :git => 'git://github.com/le0pard/mongodb_logger.git', :branch => 'master'
 gem "moped"
 
 group :development do 
