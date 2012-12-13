@@ -43,6 +43,10 @@ gem "axlsx"
 gem 'client_side_validations'
 gem 'client_side_validations-simple_form'
 
+# Logging
+gem "mongodb_logger"
+gem "moped"
+
 group :development do 
   gem "haml-rails"
   gem 'rails-erd'
