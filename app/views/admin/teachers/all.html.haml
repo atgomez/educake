@@ -6,9 +6,9 @@
   %h3.school-name= current_user.school.try(:name)
   .clearfix.toolbar
     - unless @series.empty?
-      = link_to "View chart", admin_teachers_path,  :class => "brown font18"
+      = link_to "View chart", admin_teachers_path(:user_id => @user.id, :admin_id => @user.id),  :class => "brown font18"
     - else 
-      = link_to "Back", admin_teachers_path,  :class => "brown font18"
+      = link_to "Back", admin_teachers_path(:user_id => @user.id, :admin_id => @user.id),  :class => "brown font18"
     - unless @teachers.blank?
       = render 'shared/search_box', :action => "/admin/teachers/search", :placeholder => "Search name"
 

@@ -6,11 +6,11 @@
   %h3.school-name= @user.school.try(:name)
   .clearfix.toolbar
     - if @all_teachers_count > @teachers.length
-      = link_to "View all teachers", all_admin_teachers_path,  :class => "brown font18"
+      = link_to "View all teachers", all_admin_teachers_path(:user_id => @user.id, :admin_id => @user.id),  :class => "brown font18"
     - unless @teachers.blank?
       = render 'shared/search_box', :action => "/admin/teachers/search", :placeholder => "Search name"
   .clearfix.toolbar
-    = link_to 'Add Teacher', new_admin_teacher_path(:user_id => @user.id), :class => 'btn', :id => "add-teacher", :remote => true
+    = link_to 'Add Teacher', new_admin_teacher_path(:user_id => @user.id, :admin_id => @user.id), :class => 'btn', :id => "add-teacher", :remote => true
 
   - if params[:page_id].blank?
     - teacher = @user

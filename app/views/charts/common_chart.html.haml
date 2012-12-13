@@ -101,8 +101,7 @@
         },
         xAxis: {
           type: 'datetime',
-          minTickInterval: 24 * 3600 * 1000,
-          numberOfTicks: 10,
+          minTickInterval: 24 * 3600 * 1000 * 5,
           labels: {
             formatter: function() {
               var a = new Date(this.value);

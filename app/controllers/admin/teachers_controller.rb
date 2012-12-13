@@ -158,7 +158,7 @@ class Admin::TeachersController < Admin::BaseAdminController
       @teacher = @user.children.teachers.unblocked.find(params[:id])
       @teacher.destroy
       
-      redirect_to admin_teachers_path(:user_id => @user.id)
+      redirect_to admin_teachers_path(:user_id => @user.id, :admin_id => @user.id)
     end
   end
   

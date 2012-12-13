@@ -27,8 +27,6 @@ $color-font: #E17C25;
       padding: 10px
     }
 
-    &:hover { background-color: white; }
-
     .avatar-container, .teacher-avatar, .student-avatar, .default-avatar {
       display: inline-block;
       width: 88px;
@@ -81,6 +79,10 @@ $color-font: #E17C25;
     }
   }
 
+  .hoverable {
+    &:hover { background-color: white; cursor:pointer }
+  }
+
   .student-container, .teacher-container{
     padding-top: 7px;
     padding-bottom: 40px;
@@ -95,7 +97,7 @@ $color-font: #E17C25;
       padding: 10px
     }
 
-    &:hover { background-color: white; }
+    
 
     .avatar-container, .teacher-avatar, .student-avatar, .default-avatar {
       display: inline-block;
