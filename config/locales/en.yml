@@ -14,9 +14,9 @@ en:
       male: "Male"
       female: "Female"
       unknown: "Unknown"
-
-    wrong_file_type: "File must be of filetype .csv"
-    require_to_select: "Please select a file."
+    file: 
+      wrong_file_type: "File must be of filetype .csv"
+      require_to_select: "Please select a file."
 
   time:
     formats:
