@@ -1,4 +1,4 @@
-= simple_form_for([:super_admin, @user], :html => {:class => "user-form form-horizontal", :id => "user_form"}) do |f|
+= simple_form_for([:super_admin, @user], :html => {:class => "user-form form-horizontal", :id => "user_form"}, :validate => true) do |f|
   - title_user = "User Info"
   = f.error_notification
   .form-actions
