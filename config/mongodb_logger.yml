@@ -4,5 +4,7 @@ development:
   host: localhost
   port: 27017
   replica_set: true
+
 production:
   uri: <%= ENV['MONGOLAB_URI'] %>
+  capsize: <%= 100.megabytes %>
