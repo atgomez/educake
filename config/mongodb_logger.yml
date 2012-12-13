@@ -8,7 +8,7 @@ development:
 production:
   database: heroku_app8243023
   capsize: <%= 100.megabytes %>
-  host: s045507.mongolab.com
+  host: ds045507.mongolab.com
   port: 45507
   username: heroku_app8243023
   password: kfk2j30e2v85e7241p6nlah23j
