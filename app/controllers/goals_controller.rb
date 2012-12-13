@@ -158,9 +158,9 @@ class GoalsController < ApplicationController
       invalid_grade = false
       unless @file_import.nil?
         @format_csv = @file_import.original_filename.include?(".csv")
+
         if @format_csv
-          @goal.update_attribute(:grades_data, @file_import)
-          grades = @goal.parse_csv(@goal.grades_data.url.split("?")[0])
+          grades = @goal.parse_csv(@file_import.path)
           Grade.transaction do 
             grades.map do |grade|
               day = grade[:due_date].split("/")
