@@ -10,13 +10,18 @@ class ProfileController < ApplicationController
   def change_password
     result = {}
     status_code = 400
-    
+    @user = current_user
+
     begin
-      if current_user.change_password(params[:user])
-        result[:message] = I18n.t("profile.change_password_success")
+      if @user.change_password(params[:user])
+        result[:status] = "ok"
+        flash[:notice] = I18n.t("profile.change_password_success")      
         status_code = 200
-      elsif !current_user.errors.blank?
-        @user = current_user
+
+        # Sign in the user by passing validation in case his password changed,
+        # Otherwise, the user will be logged out.
+        sign_in @user, :bypass => true
+      elsif !@user.errors.blank?
         result[:status] = "error"
         result[:html] = render_to_string(:partial => "profile/password_form")
       else

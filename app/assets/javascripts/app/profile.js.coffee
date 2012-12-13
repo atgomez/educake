@@ -33,8 +33,12 @@ window.profile =
     # Show/hide button
     $(".edit-account .form-display-handler").live("click", (e) ->
       e.preventDefault()
-      form = $(this).next(".form-container")
+      form = $(this).parents(".section-container").find(".form-container")
       if $(form).hasClass("hide")
+        # Clean old error message
+        $(form).find(".help-inline, .alert").remove()
+        $(form).find(".control-group.error").removeClass("error")
+
         $(form).slideDown("fast", () ->
           $(this).removeClass("hide")
         )
@@ -46,5 +50,5 @@ window.profile =
 
     # Cancel button
     $(".edit-account form.simple_form .btn-cancel").live("click", (e) ->
-      $(this).parents(".control-group").find(".form-display-handler").click()
+      $(this).parents(".section-container").find(".form-display-handler").click()
     )

@@ -118,3 +118,18 @@
   text-align:left;
   line-height: 24px;
 }
+
+.edit-account {
+  .label-value{
+    line-height: 20px;
+    padding-top: 5px;
+    vertical-align: middle;
+  }
+
+  .form-horizontal.display{
+    .control-group{
+      margin-top:20px;
+      margin-bottom: 0;
+    }
+  }
+}

@@ -5,11 +5,15 @@
     = link_to(profile_back_link_text, "/", :class => "brown font18")
 
   .clearfix.edit-account
-    .control-group
-      %span.field-name= "Email:"
-      %span= @user.email
-    .control-group
-      = link_to(t("profile.change_password"), "#", :id => "change-password", :class => "form-display-handler")
+    .form-horizontal.display
+      .control-group
+        %label.control-label.field-name= "Email:"
+        .controls
+          %span.label-value= @user.email
+    .form-horizontal.display.section-container
+      .control-group
+        .controls
+          = link_to(t("profile.change_password"), "#", :id => "change-password", :class => "form-display-handler")
       .change-password-container.form-container.hide
         = render(:partial => "password_form")
 
