@@ -61,12 +61,10 @@ class SuperAdmin::SchoolsController < SuperAdmin::BaseSuperAdminController
 
   def destroy
     if find_school
+      message = I18n.t('school.deleted_successfully', :name => @school.name)
       @school.destroy
-
-      respond_to do |format|
-        format.html { redirect_to schools_url }
-        format.json { head :no_content }
-      end
+      flash[:notice] = message
+      redirect_to super_admin_schools_path
     end
   end
   

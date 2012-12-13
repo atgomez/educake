@@ -32,9 +32,7 @@ module ApplicationHelper
     user_roles = []
     if user.is_super_admin?
       user_roles = [Role[:admin]]
-    elsif user.is?(:admin)
-      user_roles = [Role[:teacher]]
-    elsif user.is?(:teacher)
+    elsif user.is?(:teacher) || user.is?(:admin)
       # NOTE: use Role.with_name(*name) if there are more than 2 roles
       user_roles = [Role[:teacher], Role[:parent]]
     end
@@ -44,11 +42,9 @@ module ApplicationHelper
   def emails(user)
     user_emails = []
     if user.is_super_admin?
-      user_emails = (StudentSharing.joins(:role).where("roles.name = ?", "Admin").map(&:email) + User.unblocked.joins(:role).where("roles.name = ?", "Admin").map(&:email)).uniq.sort
-    elsif user.is?(:admin)
-      user_emails = (StudentSharing.joins(:role).where("roles.name = ?", "Teacher").map(&:email) + User.unblocked.joins(:role).where("roles.name = ?", "Teacher").map(&:email)).uniq.sort
-    elsif user.is?(:teacher) 
-      user_emails = (StudentSharing.joins(:role).where("roles.name = ? or roles.name = ?", "Teacher", "Parent").map(&:email) + User.unblocked.joins(:role).where("roles.name = ? or roles.name = ?", "Teacher", "Parent").map(&:email)).uniq.sort
+      user_emails = (StudentSharing.unblocked.joins(:role).where("roles.name = ?", "Admin").map(&:email) + User.unblocked.joins(:role).where("roles.name = ?", "Admin").map(&:email)).uniq.sort
+    elsif user.is?(:teacher) || user.is?(:admin)
+      user_emails = (StudentSharing.unblocked.joins(:role).where("roles.name = ? or roles.name = ?", "Teacher", "Parent").map(&:email) + User.unblocked.joins(:role).where("roles.name = ? or roles.name = ?", "Teacher", "Parent").map(&:email)).uniq.sort
     end
     return user_emails
   end

@@ -12,6 +12,7 @@
         %th= "Teachers"
         %th= "Students"
         %th= sortable "created_at", "Joined"
+        %th 
     %tbody
       - @schools.each do |school|
         - admin = school.admin
@@ -22,4 +23,5 @@
           %td= school_data[:teachers_count]
           %td= school_data[:students_count]
           %td= school.created_at.strftime("%m/%d/%y")
+          %td.action= link_to "", [:super_admin, school], :data => { :confirm => "Are you sure?" }, :class => "icon-trash color-pen", :method => :delete, :title => "Delete" 
   = render_pagination @schools

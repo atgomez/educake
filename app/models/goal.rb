@@ -539,12 +539,16 @@ class Goal < ActiveRecord::Base
       return self.errors.blank?
     end
     
-    def validates_goal_name 
+    def validates_goal_name
       due_date_existed = Goal.exists?(:due_date => self.due_date)
       subject_existed = Goal.exists?(:subject_id => self.subject_id)
       curriculum_existed = Goal.exists?(:curriculum_id => self.curriculum_id)
-      existed = Goal.exists?(:subject_id => self.subject_id, :curriculum_id => self.curriculum_id, :due_date => self.due_date)
-      if existed
+      unless self.id
+        existed = Goal.exists?(:subject_id => self.subject_id, :curriculum_id => self.curriculum_id, :due_date => self.due_date)
+      else
+        existed = Goal.exists?(:subject_id => self.subject_id, :curriculum_id => self.curriculum_id, :due_date => self.due_date) if self.changed? 
+      end 
+      if existed 
         if due_date_existed
           self.errors.add(:due_date, "has already been taken")
         elsif  subject_existed

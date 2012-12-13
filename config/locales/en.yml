@@ -68,6 +68,7 @@ en:
     created_successfully: "School %{name} was created successfully."
     updated_successfully: "School %{name} was updated successfully."
     not_available: "School is not available."
+    deleted_successfully: "School %{name} was deleted successfully."
 
   profile:
     change_password: "Change password"
