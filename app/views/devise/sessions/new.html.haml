@@ -20,9 +20,9 @@
                 %a{:class => "close", 'data-dismiss' => "alert", :href => "#"} &times;
                 = notification
           %li
-            = f.input :email, :required => false, :autofocus => true
+            = f.input :email, :required => false, :input_html => {:id => 'email', :class => 'input_string'}, :autofocus => true
           %li
-            = f.input :password, :required => false
+            = f.input :password, :required => false, :input_html => {:class => 'input_string'}
           %li.font18.brown.bold.left
             - if devise_mapping.rememberable?
               = f.input(:remember_me, :inline_label => "Remember me", :label => false, :as => :boolean, 
