@@ -52,3 +52,8 @@ window.profile =
     $(".edit-account form.simple_form .btn-cancel").live("click", (e) ->
       $(this).parents(".section-container").find(".form-display-handler").click()
     )
+
+    # Show alert message when navigating away from form without saving.
+    helper.unsaved_form_message({
+      form: ".edit-account form.simple_form"
+    })

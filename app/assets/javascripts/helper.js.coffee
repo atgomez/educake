@@ -34,7 +34,12 @@ window.helper =
       result = null
     return result
 
-
+  # Build a <div> element that contain alert message
+  #
+  # === params
+  #   type (String): can be: success, error, info
+  #   message (String): the message to show, this can be a raw text or HTML.
+  #
   create_message_panel: (type, message) ->
     div = $('<div data-alert="alert" class="alert fade in">' +
                 '<a href="#" data-dismiss="alert" class="close">&times;</a></div>')
@@ -42,7 +47,15 @@ window.helper =
     $(div).append(message)
     return $(div)
 
-  # Append a message panel to #flash element.
+  # Show a message panel to container (#flash) element.
+  #
+  # === params
+  #   type (String): can be: success, error, info
+  #   message (String): the message to show, this can be a raw text or HTML.
+  #   append (Bool): true/false to determine the message will be appended to the container
+  #                  or replace the content of container.
+  #   container (String/Selector): the container to include the message. The default selector is #flash.
+  #
   flash_message: (type, message, append, container) ->
     msg = helper.create_message_panel(type, message);
     
@@ -57,6 +70,41 @@ window.helper =
       $(container).html(msg)
 
     $(container).fadeIn()
+
+  # Show a warning message when navigating away without saving form data.
+  # This function use the 'beforeunload' event.
+  #
+  # === params
+  #   options[form] (selector) (optional): form selector. Default is "form"
+  #   options[message] (String) (optional): the message to show. 
+  #      Please note that some modern browsers will not allow us customize the message for beforeunload event.
+  #      So sometimes this message will not take effect.
+  #   options[extra_handler] (function object) (optional): extra handler will be call when the message was showed.
+  #
+  unsaved_form_message: (options) ->
+    changed = false
+
+    default_options = {
+      form: "form",
+      message: "You have entered new data on this page. Are you sure you want leave this page and lose it all ?",
+      extra_handler: null
+    }
+    
+    # Clone a new oneto prevent changing default_options
+    tmp_opts = default_options
+    # Initilize default value
+    options = $.extend(tmp_opts, options)
+
+    $(options.form).find('input, textarea, select').live('change', ->
+      changed = true
+    )
+
+    $(window).bind('beforeunload', ->
+      if(changed)
+        if(options.extra_handler)
+          options.extra_handler()
+        return options.message;
+    )
 
   clickExport: ->
     $('#export-button').click((e) ->
