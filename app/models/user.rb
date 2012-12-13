@@ -36,6 +36,7 @@
 
 class User < ActiveRecord::Base
   include ::SharedMethods::Paging  
+  include ::SharedMethods::SerializationConfig  
   attr_accessor :skip_password
   
   NAME = 1
@@ -133,6 +134,21 @@ class User < ActiveRecord::Base
 
   # Class methods
   class << self
+    # Names of methods will be exposed when serializing object to JSON, XML, etc.
+    def exposed_methods
+      []
+    end
+    
+    # Names of attributes will be exposed when serializing object to JSON, XML, etc.
+    def exposed_attributes
+      [:id, :first_name, :last_name, :email, :phone, :role_id, :school_id]
+    end
+    
+    # Names of ActiveRecord associations will be exposed when serializing object to JSON, XML, etc.
+    def exposed_associations
+      []
+    end
+
     def like_search(query, params = {})
       #results = []
       paging_info = parse_paging_options(params)

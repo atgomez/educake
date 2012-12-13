@@ -147,9 +147,9 @@ class StudentsController < ApplicationController
     end
     
     if user 
-      render :json => user.attributes.except("created_at, updated_at").merge(:disable => existed_user)
+      render :json => user.to_hash.merge(:disable => existed_user)
     else 
-      render :json => {:existed => false}
+      render :json => {:disable => false}
     end
   end 
 

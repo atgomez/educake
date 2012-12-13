@@ -74,9 +74,18 @@ window.studentObject =
     )
 
   autocompleteSearch: -> 
+    disable_elements = (disabled) ->
+      $("#student_sharing_first_name, 
+          #student_sharing_last_name, 
+          #student_sharing_role_id").attr("disabled", disabled)
+
     $('#student_sharing_email').live "keydown.autocomplete", -> 
       $(this).autocomplete
         source: $(this).data('autocomplete-source')
+        search: (event, ui) ->
+          disable_elements(false)
+        select: (event, ui) ->
+          disable_elements(true)
     return
 
   addBirthDayPicker: ->
@@ -100,15 +109,17 @@ window.studentObject =
         url: "/students/"+student_id+"/search_user"
         data: {email: email}
         success: (data)->
-          if data["existed"]
-            console.log "new user"
-          else
-            search_email = data["email"]
-            $("#student_sharing_email").attr("value", data["email"])
-            $("#student_sharing_first_name").attr("value", data["first_name"])
-            $("#student_sharing_last_name").attr("value", data["last_name"])
-            $("#student_sharing_role_id").attr("value", data["role_id"])
-            $("#student_sharing_role_id").attr("disabled", data["disable"])
+          search_email = data["email"]
+          $("#student_sharing_email").attr("value", data["email"])
+          $("#student_sharing_first_name").attr("value", data["first_name"])
+          $("#student_sharing_first_name").attr("disabled", data["disable"])
+
+          $("#student_sharing_last_name").attr("value", data["last_name"])
+          $("#student_sharing_last_name").attr("disabled", data["disable"])
+
+          $("#student_sharing_role_id").attr("value", data["role_id"])
+          $("#student_sharing_role_id").attr("disabled", data["disable"])
+
           return
         error: (errors, status)->
           $(".ajax-loading").addClass "hidden"
