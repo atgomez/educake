@@ -36,7 +36,7 @@
           %td= user.role.name rescue ""
           %td= user.full_name rescue ""
           %td= user.accessible_students.count rescue ""
-          %td.action= link_to "", edit_super_admin_user_path(user), :class => "icon-pencil color-pen", :title => "Edit" 
+          %td.action= link_to "", edit_super_admin_user_path(user, :school_id => @school.id), :class => "icon-pencil color-pen", :title => "Edit" 
           - confirm = "Are you sure?"
           - if user.students.count > 0
             - confirm = "This teacher have some students, do you want to delete?"

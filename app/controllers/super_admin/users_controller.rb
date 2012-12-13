@@ -1,9 +1,9 @@
 class SuperAdmin::UsersController < SuperAdmin::BaseSuperAdminController 
   def new 
-    @user = User.new
-    @user.build_school
     @school_id = params[:school_id]
     @back = params[:back]
+    @user = User.new
+    @user.build_school
     load_roles
   end
   
@@ -37,6 +37,7 @@ class SuperAdmin::UsersController < SuperAdmin::BaseSuperAdminController
     if find_user
       load_roles
       @school_id = params[:school_id]
+      @school = School.find_by_id(@school_id)
       @back = params[:back]
     end
   end
@@ -45,6 +46,7 @@ class SuperAdmin::UsersController < SuperAdmin::BaseSuperAdminController
     if find_user
       @school_id = params[:school_id]
       @back = params[:back]
+      @school = School.find_by_id(@school_id)
       
       if @user.is?(:admin)
         # Reject school_id when updating an admin
