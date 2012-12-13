@@ -175,7 +175,11 @@ class StudentsController < ApplicationController
         @user = current_user
       end
       if !@user
-        render_page_not_found
+        if @is_view_as
+          render_page_not_found(I18n.t("user.error_not_found"))
+        else
+          render_page_not_found
+        end
         return false
       end
       if !(can? :view, @user)
@@ -191,9 +195,7 @@ class StudentsController < ApplicationController
 
     def destroy_session  
       session.delete :tab
-    end 
-
-    protected
+    end
 
     # You can override this method in the sub class.
     def default_page_size

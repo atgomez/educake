@@ -11,10 +11,4 @@ class SuperAdmin::BaseSuperAdminController < ApplicationController
     def authenticate_admin!
       authorize_action!(:all, :manage)
     end
-
-    def render_page_not_found(options = {})
-      options.merge!({:status => 404})
-      render_error(I18n.t("common.error_page_not_found"), options)
-    end
-
 end

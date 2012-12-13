@@ -187,7 +187,7 @@ class Admin::TeachersController < Admin::BaseAdminController
       @current_user = current_user
 
       if !@user
-        render_page_not_found
+        render_page_not_found(I18n.t("user.error_not_found"))
         return false
       else
         @teacher = @user.children.teachers.unblocked.find_by_id(teacher_id)

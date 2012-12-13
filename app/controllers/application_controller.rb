@@ -112,9 +112,10 @@ class ApplicationController < ActionController::Base
       render_error(I18n.t("common.error_unauthorized"), options)
     end
 
-    def render_page_not_found(options = {})
+    def render_page_not_found(message = nil, options = {})
+      message ||= I18n.t("common.error_page_not_found")
       options.merge!({:status => 404})
-      render_error(I18n.t("common.error_page_not_found"), options)
+      render_error(message, options)
     end
 
     # Render error message. This method can handle HTML and JSON format.
