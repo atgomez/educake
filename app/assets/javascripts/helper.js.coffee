@@ -15,7 +15,7 @@ window.helper =
     @addDatePicker()
 
   alert_not_implement: () ->
-    $(".not-implemented").click((e) ->
+    $(".not-implemented").live('click', (e) ->
       alert("This feature is coming soon")
     )
 
@@ -107,7 +107,7 @@ window.helper =
     )
 
   clickExport: ->
-    $('#export-button').click((e) ->
+    $('#export-button').live('click', (e) ->
       e.preventDefault()
       $('#export-dialog').modal('show')
     )

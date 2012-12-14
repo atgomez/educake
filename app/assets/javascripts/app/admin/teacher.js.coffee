@@ -66,11 +66,6 @@ window.teacher =
     )
 
   setup_teacher_dialog: ->
-    $('#add-teacher').click((e) ->
-      e.preventDefault()
-      $('#teacher-dialog').modal('show')
-    )
-
     $("#teacher-form #btn-save-teacher").livequery('click', (e) -> 
       e.preventDefault()
       $("#teacher-form").submit()

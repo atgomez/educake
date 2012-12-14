@@ -1,4 +1,4 @@
-#teacher-dialog.modal.hide.fade{:tabindex => "-1"}
+#teacher-dialog.modal.hide.fade{:tabindex => "-1", "data-backdrop" => "static"}
   - if !teacher.new_record?
     - url = "admin/teachers/#{teacher.id}"
     - method = "PUT"
