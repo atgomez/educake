@@ -52,5 +52,16 @@ class Ability
         user.id == user_inview.id
       end
     end
+
+    # View Sepecific Student - Used to verify that current use has any ability to get Student info
+    can :view, Student do |student|
+      if user.is_super_admin?
+        true # Super Admin - No doubt
+      elsif user.is?(:admin)
+        Student.students_of_teacher(user).exists?
+      else
+        user.accessible_students.exists?(:id => student.id)
+      end
+    end
   end
 end

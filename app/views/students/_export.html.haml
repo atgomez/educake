@@ -2,7 +2,7 @@
   .modal-header
     %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} ×
     %h3#myModalLabel Export
-  = form_tag('/export/export_student', :method => :get) do
+  = form_tag('/export/relay', :method => :get) do
     .modal-body
       %table
         %tr
@@ -16,6 +16,7 @@
               .checkbox-group.margin-left
                 = radio_button_tag "data", "classroom", false, :class => "export_data_selector"
                 = label_tag :data_classroom, "Classroom"
+                = hidden_field_tag "teacher_id", @user.id
         %tr
           %td
             = Student

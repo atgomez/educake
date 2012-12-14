@@ -385,6 +385,10 @@ class User < ActiveRecord::Base
     return result
   end
 
+  def status
+    # TODO: NOT IMPLEMENT YET
+  end
+
   # Skip password when validating.
   def skip_password!
     # Securely remove all password fields, otherwise user cannot confirm.
@@ -393,8 +397,110 @@ class User < ActiveRecord::Base
     self.encrypted_password = ''
     self.skip_password = true
   end
+
+  # Get the status of student by getting average of goals status
+  def status
+    students = self.accessible_students 
+    return 0 if students.length == 0
+    sum = 0
+    students.each do |student|
+      sum = sum + student.status
+    end
+
+    return sum/students.length
+  end
+
+  # Get lastest due_date of goals
+
+  def due_date
+    students = self.students 
+    return nil if students.length == 0
+
+    date = self.students.first.due_date
+    students.each do |student|
+      if student.due_date 
+        if !date || student.due_date > date
+          date = student.due_date
+        end
+      end
+    end
+
+    date
+  end
   
   # EXPORTING
+  def export_excel(package, context, tmpdir, file_path)
+    if is?(:admin)
+      teachers = self.children.teachers.unblocked
+      # Create First Page Info
+      export_excel_teacher_page(package, context, tmpdir, "School Status", students)
+      # Export Teachers
+      idx = 1
+      teachers.each do |teacher|
+        teacher.export_excel_teacher_page(package, context, tmpdir, "#{teacher.full_name[0...25]} #{idx}", teacher.accessible_students)
+        idx = idx + 1
+      end
+    else
+      students = self.accessible_students
+      # Create First Page Info
+      export_excel_teacher_page(package, context, tmpdir, "Classroom Status", students)
+      # Export Students
+      idx = 1
+      students.each do |student|
+        student.export_excel_student_page(package, context, tmpdir, "#{student.full_name[0...25]} #{idx}", student.goals.incomplete)
+        idx = idx + 1
+      end
+      
+    end
+    package.serialize(file_path)
+  end
+
+  def export_excel_teacher_page(package, context, tmpdir, sheet_name, students)
+    package.workbook.add_worksheet(:name => sheet_name) do |sheet|
+      # Styling
+      teacher_name_style = sheet.styles.add_style ChartProcess::TITLE_NAME_STYLE
+      left_text_style = sheet.styles.add_style ChartProcess::LEFT_TEXT_STYLE
+      bold = sheet.styles.add_style ChartProcess::BOLD_STYLE
+
+      # Start adding row
+      sheet.add_row [self.full_name, "", "", "", "", "", "", "", 
+                     "", "", "", "", "", "", "", "", "", "", "", 
+                     "", "","", "","", "","", "","", "","", "",], :style => teacher_name_style
+      sheet.add_row [nil], :style => left_text_style
+      sheet.add_row ["Report Date:", Date.today], :style => [left_text_style, nil]
+      sheet.add_row [nil], :style => left_text_style
+      sheet.add_row [nil, "Status", "Due Date", "On Track"], :style => [left_text_style, bold, bold, bold]
+      list_on_track_state = ["not available", "ok", "not ok"]
+      if is?(:admin)
+        teachers = self.children.teachers.unblocked
+        teachers.each do |teacher| 
+          sheet.add_row [teacher.full_name, "#{(teacher.status*100).round / 100.0}%", 
+                        teacher.due_date, 
+                        list_on_track_state[teacher.check_on_track?]],
+                        :style => [left_text_style, nil]
+        end
+      else
+        students.each do |student| 
+          sheet.add_row [student.full_name, "#{(student.status*100).round / 100.0}%", 
+                        student.due_date, 
+                        list_on_track_state[student.check_on_track?]],
+                        :style => [left_text_style, nil]
+        end
+      end
+      (1..100).each do 
+        sheet.add_row [nil], :style => left_text_style
+      end
+
+      image_path = ChartProcess.renderPNG(context, tmpdir, self.series_json(nil, context))
+
+      # Add Chart to first page
+      sheet.add_image(:image_src => image_path, :noSelect => true, :noMove => true) do |image|
+        image.width=1000
+        image.height=500
+        image.start_at 6, 2
+      end
+    end
+  end
 
   # Collect data for charting
 

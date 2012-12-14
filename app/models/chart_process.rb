@@ -1,7 +1,7 @@
 class ChartProcess
 
 	DEFAULT_BORDER_STYLE = { :style => :thin, :color => "DDDDDD" }
-	STUDENT_NAME_STYLE = {:b => true, 
+	TITLE_NAME_STYLE = {:b => true, 
                         :sz => 13, 
                         :bg_color => 'EEEEEE',
                         :border => DEFAULT_BORDER_STYLE}

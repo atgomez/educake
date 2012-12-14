@@ -261,14 +261,64 @@ class Student < ActiveRecord::Base
     return result  
   end
 
+  # Get the status of student by getting average of goals status
+  def status
+    goals = self.goals 
+    return 0 if goals.length == 0
+    sum = 0
+    goals.each do |goal|
+      sum = sum + goal.goal_grade
+    end
+
+    return sum/goals.length
+  end
+
+  # Get lastest due_date of goals
+
+  def due_date
+    goals = self.goals 
+    return nil if goals.length == 0
+
+    date = self.goals.first.due_date
+    goals.each do |goal|
+      if goal.due_date > date
+        date = goal.due_date
+      end
+    end
+
+    date
+  end
+
   # EXPORTING
-  def export_xml(package, context, tmpdir, file_path)
+  def export_excel(package, context, tmpdir, file_path)
     goals = self.goals.incomplete
 
     # Create First Page Info
-    package.workbook.add_worksheet(:name => "Overall Status") do |sheet|
+    export_excel_student_page(package, context, tmpdir, "Overall Status", goals)
+
+    # Export Goals
+    idx = 1
+    goals.each do |goal| 
+      goal.export_xml(package, context, tmpdir, idx) do |sheet|
+        student_name_style = sheet.styles.add_style ChartProcess::TITLE_NAME_STYLE
+        left_text_style = sheet.styles.add_style ChartProcess::LEFT_TEXT_STYLE
+
+        sheet.add_row [self.full_name, "", "", "", "", "", "", "", 
+                     "", "", "", "", "", "", "", "", "", "", "", 
+                     "", "","", "","", "","", "","", "","", "",], :style => student_name_style
+        sheet.add_row [nil], :style => left_text_style
+      end
+      idx = idx + 1
+    end
+
+    package.serialize(file_path)
+  end
+
+  def export_excel_student_page(package, context, tmpdir, sheet_name, goals )
+    
+    package.workbook.add_worksheet(:name => sheet_name) do |sheet|
       # Styling
-      student_name_style = sheet.styles.add_style ChartProcess::STUDENT_NAME_STYLE
+      student_name_style = sheet.styles.add_style ChartProcess::TITLE_NAME_STYLE
       left_text_style = sheet.styles.add_style ChartProcess::LEFT_TEXT_STYLE
       bold = sheet.styles.add_style ChartProcess::BOLD_STYLE
 
@@ -300,24 +350,6 @@ class Student < ActiveRecord::Base
       end
 
     end
-
-    # Export Goals
-
-    idx = 1
-    goals.each do |goal| 
-      goal.export_xml(package, context, tmpdir, idx) do |sheet|
-        student_name_style = sheet.styles.add_style ChartProcess::STUDENT_NAME_STYLE
-        left_text_style = sheet.styles.add_style ChartProcess::LEFT_TEXT_STYLE
-
-        sheet.add_row [self.full_name, "", "", "", "", "", "", "", 
-                     "", "", "", "", "", "", "", "", "", "", "", 
-                     "", "","", "","", "","", "","", "","", "",], :style => student_name_style
-        sheet.add_row [nil], :style => left_text_style
-      end
-      idx = idx + 1
-    end
-
-    package.serialize(file_path)
   end
 
   # Collect data for charting

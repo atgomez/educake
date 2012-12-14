@@ -23,7 +23,10 @@ TeacherMgnt::Application.routes.draw do
 
   resources :export do
     collection do
+      get :relay
       get :export_student
+      get :export_classroom
+      get :export_school
     end
   end
 

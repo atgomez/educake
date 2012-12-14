@@ -2,37 +2,35 @@
   .modal-header
     %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} ×
     %h3#myModalLabel Export
-  .modal-body
-    %table
-      %tr
-        %td
-          = label_tag "Export data for"
-        %td
-          .checkbox-group
-            = radio_button_tag "data", "individual", true
-            = label_tag :data_individual, "Individual Student"
-      %tr
-        %td
-        %td
-          .checkbox-group
-            = radio_button_tag "data", "classroom"
-            = label_tag :data_classroom, "Classroom"
-      %tr
-        %td
-        %td
-          .checkbox-group
-            = radio_button_tag "data", "school"
-            = label_tag :data_school, "School"
-      %tr
-        %td
-          Teacher
-        %td
-          = select_tag("teacher_selection", options_for_select(@all_teachers_collection), {'data-url' => get_students_admin_teachers_path(:user_id => @user.id)})
-      %tr
-        %td
-          Student
-        %td
-          = select_tag("student_selection", options_from_collection_for_select(teachers[0].students, "id", "full_name"))
-  .modal-footer
-    %button.btn{"aria-hidden" => "true", "data-dismiss" => "modal"} Cancel
-    %button.btn.btn-primary.not-implemented Export
+  = form_tag('/export/relay', :method => :get) do
+    .modal-body
+      %table
+        %tr
+          %td{:valign => 'top'}
+            = label_tag "Export data for"
+          %td
+            .checkbox-group
+              = radio_button_tag "data", "individual", true, :class => "export_data_selector"
+              = label_tag :data_individual, "Individual Student"
+            .clearfix
+            .checkbox-group
+              = radio_button_tag "data", "classroom", false, :class => "export_data_selector"
+              = label_tag :data_classroom, "Classroom"
+            .clearfix
+            .checkbox-group
+              = radio_button_tag "data", "school", false, :class => "export_data_selector"
+              = label_tag :data_school, "School"
+              = hidden_field_tag "admin_id", @user.id
+        %tr
+          %td
+            Teacher
+          %td
+            = select_tag("teacher_selection", options_for_select(@all_teachers_collection), {'data-url' => get_students_admin_teachers_path(:user_id => @user.id), :name => :teacher_id})
+        %tr
+          %td
+            Student
+          %td
+            = select_tag("student_selection", options_from_collection_for_select(@all_teachers[0].accessible_students, "id", "full_name"), :name => :student_id)
+    .modal-footer
+      %button.btn{"aria-hidden" => "true", "data-dismiss" => "modal"} Cancel
+      %button.btn.btn-primary Export
