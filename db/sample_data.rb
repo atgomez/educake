@@ -45,7 +45,7 @@ teacher.skip_confirmation!
 teacher.save!
 puts "[Sampler] Created demo teacher #{teacher.email} / #{password}"
 
-25.times do 
+10.times do 
   begin
     teacher = User.new({
       :email => Faker::Internet.email,
@@ -61,7 +61,7 @@ puts "[Sampler] Created demo teacher #{teacher.email} / #{password}"
     teacher.save!
     puts "[Sampler] Created teacher #{teacher.email} / #{password}"
 
-    50.times do
+    10.times do
       teacher.students.create!({
         :first_name => Faker::Name.first_name,
         :last_name => Faker::Name.last_name,

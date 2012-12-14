@@ -12,7 +12,7 @@ end
 # Create a Super Admin
 super_admin = User.new
 super_admin.assign_attributes({
-  :email => "super.admin@teacher.com",
+  :email => "anne.gomez@techpropulsionlabs.com",
   :first_name => "Super",
   :last_name => "Admin",
   :password => "123456",
