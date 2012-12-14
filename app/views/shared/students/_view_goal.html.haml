@@ -31,6 +31,8 @@
         - else
           .pull-left.progress.progress-success
             .bar.custom-bar{:style => "width: #{goal.goal_grade}%"}
+          .pull-left
+            = link_to("Edit Goal", edit_goal_path(goal, :student_id => student.id), :class => "edit-goal on-show", :remote => true)
 
       .clearfix
       .tab-content
