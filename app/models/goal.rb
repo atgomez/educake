@@ -547,7 +547,9 @@ class Goal < ActiveRecord::Base
       unless self.id
         existed = scoped_goal.exists?(:subject_id => self.subject_id, :curriculum_id => self.curriculum_id, :due_date => self.due_date)
       else
-        existed = scoped_goal.exists?(:subject_id => self.subject_id, :curriculum_id => self.curriculum_id, :due_date => self.due_date) if self.changed? 
+        if self.due_date_changed? || self.subject_id_changed? || self.curriculum_id_changed?
+          existed = scoped_goal.exists?(:subject_id => self.subject_id, :curriculum_id => self.curriculum_id, :due_date => self.due_date) 
+        end
       end 
       if existed 
         if due_date_existed
