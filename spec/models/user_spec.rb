@@ -53,7 +53,6 @@ describe User do
 
   describe 'associations' do
     it { should have_many(:children).class_name("User")}#.foreign_key('patient_id')
-    it { should have_one(:student_sharing).dependent(:destroy)}
     it { should have_many(:student_sharings).dependent(:destroy)}
     it { should have_many(:shared_students).through(:student_sharings)}#.source(:student)
     it { should have_many(:students).dependent(:destroy)}#.foreign_key("teacher_id")
@@ -110,21 +109,23 @@ describe User do
       rs.should be_empty
     end 
   end 
+
   describe "Admins" do 
     let(:admin) { FactoryGirl.create(:admin)}
-    it "return list admins" do
+
+    it "return list admins", :admin => true do
       User.destroy_all
       admin
       rs = User.admins
       rs.count.should eq(1)
-    end 
+    end
+
     it "return empty list admins" do
       User.destroy_all
       rs = User.admins
       rs.should be_empty
     end 
-  end 
-  
+  end   
   
   describe "Teachers" do 
     let(:teacher) { FactoryGirl.create(:teacher)}
@@ -139,8 +140,7 @@ describe User do
       rs = User.teachers
       rs.should be_empty
     end 
-  end
-  
+  end  
     
   describe "Unblocked" do 
     let(:admin) {FactoryGirl.create(:admin)}
@@ -157,7 +157,5 @@ describe User do
       rs = User.unblocked
       rs.should be_empty
     end 
-  end
-  
-  
+  end  
 end
