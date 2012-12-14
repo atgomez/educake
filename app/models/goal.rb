@@ -540,13 +540,14 @@ class Goal < ActiveRecord::Base
     end
     
     def validates_goal_name
-      due_date_existed = Goal.exists?(:due_date => self.due_date)
-      subject_existed = Goal.exists?(:subject_id => self.subject_id)
-      curriculum_existed = Goal.exists?(:curriculum_id => self.curriculum_id)
+      scoped_goal = Goal.where(:student_id => self.student_id)
+      due_date_existed = scoped_goal.exists?(:due_date => self.due_date)
+      subject_existed = scoped_goal.exists?(:subject_id => self.subject_id)
+      curriculum_existed = scoped_goal.exists?(:curriculum_id => self.curriculum_id)
       unless self.id
-        existed = Goal.exists?(:subject_id => self.subject_id, :curriculum_id => self.curriculum_id, :due_date => self.due_date)
+        existed = scoped_goal.exists?(:subject_id => self.subject_id, :curriculum_id => self.curriculum_id, :due_date => self.due_date)
       else
-        existed = Goal.exists?(:subject_id => self.subject_id, :curriculum_id => self.curriculum_id, :due_date => self.due_date) if self.changed? 
+        existed = scoped_goal.exists?(:subject_id => self.subject_id, :curriculum_id => self.curriculum_id, :due_date => self.due_date) if self.changed? 
       end 
       if existed 
         if due_date_existed
