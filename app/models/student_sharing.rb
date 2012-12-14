@@ -58,7 +58,8 @@ class StudentSharing < ActiveRecord::Base
     # Check if user is trying to share to teacher of other school
     def cross_school_sharing
       if self.user
-        if self.user && self.user.school_id != self.student.teacher.school_id
+        if self.user && (self.user.school_id != self.student.teacher.school_id || 
+                        self.user.id == self.student.teacher_id)
           self.errors.add(:email, "is already taken")
         end
       end

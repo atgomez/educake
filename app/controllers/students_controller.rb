@@ -52,7 +52,6 @@ class StudentsController < ApplicationController
           render :partial => "shared/students/view_goal", :locals => {:goals => @goals, :students => @students}
         end
         @invited_users = StudentSharing.unblocked.where(:student_id => @student.id)
-        @invited_users << @student.teacher
         session[:student_id] = params[:id]
       else
         render_page_not_found

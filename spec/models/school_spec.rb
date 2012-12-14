@@ -51,14 +51,13 @@ describe School do
         FactoryGirl.create(
           :student_sharing, 
           :student => student, 
-          :user => teacher,
+          :user => parent,
           :role => teacher.role
         )
       }
 
       it "returns the correct number of teacher/parent and students" do
         sharing_teacher
-        parent
         result = school.statistic
         result[:teachers_count].should == 1
         result[:students_count].should == 1
