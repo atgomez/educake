@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121119085521) do
+ActiveRecord::Schema.define(:version => 20121212114203) do
 
   create_table "curriculums", :force => true do |t|
     t.string   "name",       :null => false
@@ -102,15 +102,16 @@ ActiveRecord::Schema.define(:version => 20121119085521) do
   add_index "schools", ["name", "state"], :name => "index_schools_on_name_and_state", :unique => true
 
   create_table "student_sharings", :force => true do |t|
-    t.string   "first_name",    :null => false
-    t.string   "last_name",     :null => false
-    t.string   "email",         :null => false
-    t.integer  "student_id",    :null => false
+    t.string   "first_name",                       :null => false
+    t.string   "last_name",                        :null => false
+    t.string   "email",                            :null => false
+    t.integer  "student_id",                       :null => false
     t.integer  "user_id"
-    t.integer  "role_id",       :null => false
+    t.integer  "role_id",                          :null => false
     t.string   "confirm_token"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.datetime "created_at",                       :null => false
+    t.datetime "updated_at",                       :null => false
+    t.boolean  "is_blocked",    :default => false
   end
 
   add_index "student_sharings", ["confirm_token"], :name => "index_student_sharings_on_confirm_token"

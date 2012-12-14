@@ -318,7 +318,7 @@ describe Student do
     end
   end
 
-  describe "#export_xml", :export_xml => true do    
+  describe "#export_excel", :export_xml => true do    
     let(:package) { Axlsx::Package.new }
     let(:context) { ExportController.new }
     
@@ -339,14 +339,14 @@ describe Student do
       end
 
       it "returns the export file" do
-        result = student.export_xml(package, context, tmp_dir, tmp_file)
+        result = student.export_excel(package, context, tmp_dir, tmp_file)
         result.should be_true
       end
     end
 
     context "with no goals" do
       it "can run and return the export file" do
-        result = student.export_xml(package, context, tmp_dir, tmp_file)
+        result = student.export_excel(package, context, tmp_dir, tmp_file)
         result.should be_true
       end
     end
