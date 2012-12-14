@@ -10,3 +10,10 @@ production:
   capsize: <%= 100.megabytes %>
   replica_set: true
   disable_file_logging: true
+
+test:
+  database: teacher-test
+  capsize: <%= 2.megabytes %>
+  host: localhost
+  port: 27017
+  replica_set: true
