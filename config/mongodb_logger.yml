@@ -6,9 +6,7 @@ development:
   replica_set: true
 
 production:
-  database: heroku_app8243023
+  url: <%= ENV['MONGOLAB_URI'] %>
   capsize: <%= 100.megabytes %>
-  host: ds045507.mongolab.com
-  port: 45507
-  username: heroku_app8243023
-  password: kfk2j30e2v85e7241p6nlah23j
+  replica_set: true
+  disable_file_logging: true
