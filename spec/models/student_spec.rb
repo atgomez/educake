@@ -201,8 +201,8 @@ describe Student do
   end
 
   context "with student sharing", :with_sharing => true do
-    let(:shared_teacher) {FactoryGirl.create(:teacher)}
-    let(:shared_parent) {FactoryGirl.create(:parent)}
+    let(:shared_teacher) {FactoryGirl.create(:teacher, :school => teacher.school)}
+    let(:shared_parent) {FactoryGirl.create(:parent, :school => teacher.school)}
     let(:sharing_teacher) {
       FactoryGirl.create(
         :student_sharing, 

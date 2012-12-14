@@ -16,22 +16,20 @@
 
 require 'spec_helper'
 
-describe StudentSharing do
-  let(:sharing) {FactoryGirl.create(:student_sharing)}
+describe StudentSharing do  
   let(:teacher) {FactoryGirl.create(:teacher)}
+  let(:student) {FactoryGirl.create(:student, :teacher => teacher)}
+  let(:parent) {FactoryGirl.create(:parent, :school => teacher.school)}
+  let(:sharing) {FactoryGirl.create(:student_sharing, :student => student, :email => parent.email)}
 
   describe "#full_name" do
-    it "returns the full name of shared user" do
+    it "returns the full name of shared user", :full_name => true do
       sharing.full_name.should == "#{sharing.first_name} #{sharing.last_name}"
     end
   end
 
   context "with user" do
-    before(:each) do
-      sharing.update_attributes(:user_id => teacher.id)
-    end
-
-    describe "#confirmed?" do
+    describe "#confirmed?", :confirmed => true do
       it "returns true" do
         sharing.confirmed?.should be_true
       end
@@ -39,16 +37,20 @@ describe StudentSharing do
   end
 
   context "without user" do
+    let(:new_sharing) {FactoryGirl.create(:student_sharing)}
     describe "#confirmed?" do
       it "returns false" do
-        sharing.confirmed?.should be_false
+        new_sharing.confirmed?.should be_false
       end
     end
   end
 
   describe "#save_token" do
+    let(:new_teacher) {FactoryGirl.create(:teacher, :school => teacher.school)}
+    let(:student) {FactoryGirl.create(:student, :teacher => new_teacher)}
+
     it "saves the user id" do
-      new_sharing = FactoryGirl.create(:student_sharing, :email => teacher.email)
+      new_sharing = FactoryGirl.create(:student_sharing, :student => student, :email => teacher.email)
       new_sharing.user_id.should == teacher.id
     end
   end
