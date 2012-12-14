@@ -17,8 +17,8 @@
         %span= @teacher.phone
   
   .pull-right
-    = link_to "", "#", :class => "icon-pencil color-pen", :title => "Edit", :id => "add-teacher"
+    = link_to "", "#", :class => "icon-pencil color-pen", :title => "Edit", :id => "add-teacher", :style => "display:inline-block"
     - confirm = "Are you sure?"
     - if @teacher.students.count > 0
       - confirm = "This teacher have some students, do you want to delete?"
-    = link_to "", "/admin/teachers/#{@teacher.id}", :data => { :confirm => confirm }, :class => "icon-trash color-pen", :method => :delete, :title => "Delete" 
+    = link_to "", {:action=>'destroy', :controller => 'admin/teachers', :id=>@teacher, :user_id => @admin, :admin_id => @admin}, :data => { :confirm => confirm }, :class => "icon-trash color-pen",  :title => "Delete" , :style => "display:inline-block", :method => :delete

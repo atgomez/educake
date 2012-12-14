@@ -1,5 +1,5 @@
 class Admin::TeachersController < Admin::BaseAdminController
-  cross_role_action :index, :show, :new, :edit, :create, :update, :all, :search, :get_students
+  cross_role_action :index, :show, :new, :edit, :create, :update, :destroy, :all, :search, :get_students
   # TODO: improve this method, because it load teachers 2 times.
   def index
     if find_or_redirect
