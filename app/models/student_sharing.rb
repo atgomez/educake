@@ -28,10 +28,12 @@ class StudentSharing < ActiveRecord::Base
                       :allow_blank => true, :if => :email_changed?
   validates :email, :uniqueness => { :scope => [:student_id]}
   validate :cross_school_sharing
+  validate :check_role
 
   # CALLBACK
-  after_create :save_token
   before_validation :detect_shared_user
+  after_create :save_token
+  
 
   scope :unblocked, where(:is_blocked => false)
   # Instance methods
@@ -62,6 +64,13 @@ class StudentSharing < ActiveRecord::Base
                         self.user.id == self.student.teacher_id)
           self.errors.add(:email, "is already taken")
         end
+      end
+    end
+
+    # Role is just for teacher, parent
+    def check_role
+      if !(Role.exists?(:id => self.role_id) && Role[:admin].id != self.role_id)
+        self.errors.add(:role_id, "is invalid")
       end
     end
 

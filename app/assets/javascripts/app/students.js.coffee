@@ -74,7 +74,6 @@ window.studentObject =
         img.css('margin-left', (200 - w)/2)
 
       reader.readAsDataURL(file)
-    
     )
 
   autocompleteSearch: -> 

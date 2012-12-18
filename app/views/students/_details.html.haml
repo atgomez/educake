@@ -62,6 +62,17 @@
         = link_to " Invite a user", new_invitation_path(:user_id => @user.id), :remote => true, :class => "icon-plus-sign add invite-user"
 
     #render_invite_user
+      #invite_user.modal.hide.fade{"data-backdrop" => "static"}
+        .modal-header
+          %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} ×
+          %h4#invite_user_title
+        .modal-body
+          #dynamic_container
+            / Dynamic contain here
+        .modal-footer
+          .submit-indicator.loading.hide
+          %a.btn{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} Cancel
+          = button_tag "Save", :class => "btn btn-primary", :id => "save-user", :disable_with => "Saving...", :onclick => "$('#invite_student_sharing_form').submit()"
     #content-users
       = render :partial => "shared/students/view_invited_user", :locals => {:invited_users => @invited_users, :read_only => @user.is?(:parent)}
 

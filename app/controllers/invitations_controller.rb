@@ -39,8 +39,8 @@ class InvitationsController < ApplicationController
   protected
     # Must have user_id which can be current user id or other is viewed as
     def find_responder
-      @responder = User.find_by_id params[:user_id]
-      @responder = current_user if !@responder
+      @responder = User.find_by_id(params[:user_id])
+      @responder ||= current_user
       @responder
     end
 end 

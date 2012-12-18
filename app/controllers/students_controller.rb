@@ -1,6 +1,6 @@
 class StudentsController < ApplicationController
   authorize_resource :student
-  before_filter :destroy_session, :except => [:show, :destroy]
+  before_filter :except => [:show, :destroy]
   cross_role_action :new, :search_user, :index, :destroy, :show, :create, :edit, 
                     :update, :all_students, :load_users, :search_user
 
@@ -190,10 +190,6 @@ class StudentsController < ApplicationController
 
     def set_current_tab
       @current_tab = 'classroom'
-    end
-
-    def destroy_session  
-      session.delete :tab
     end
 
     # You can override this method in the sub class.

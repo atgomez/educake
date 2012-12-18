@@ -1,39 +1,22 @@
-#invite_user.modal.hide.fade{"data-backdrop" => "static"}
-  .modal-header
-    %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} ×
-    %h4= label
-  .modal-body
-    = simple_form_for(@user, :url => url, :method => method, :remote => true) do |f|
-      - if notification = f.error_notification
-        .alert.alert-error.fade.in
-          %a{:class => "close", 'data-dismiss' => "alert", :href => "#"} &times;
-          = notification
-      .form-inputs
-        = f.input :email, :disabled=> !f.object.new_record?, :input_html => {:class => "pull-left", :data => {autocomplete_source: emails(@responder)}, :style => "width:215px;"}
-        %input{:type => "button", :id => "search-email", :class => "pull-left btn margin-btn", :value => "Search"}
-        .clearfix
-        .control-group.error 
-          .help-inline
-            #email_error.pull-left{:style => "padding-left:100px"}
-        .clearfix
-        = f.input :first_name, :disabled=> !f.object.new_record?, :input_html => {:class => "pull-left name", :style => "width:220px;"}
-        .control-group.error 
-          .help-inline
-            #firstname_error.pull-left{:style => "padding-left:10px"}
-        .clearfix
-        = f.input :last_name, :disabled=> !f.object.new_record?, :input_html => {:class => "pull-left name", :style => "width:220px;"}
-        .control-group.error 
-          .help-inline
-            #lastname_error.pull-left{:style => "padding-left:10px"}
-        .clearfix
-        = f.input :role_id, :collection => roles(@responder), :prompt => "Select one", :input_html => {:class => "pull-left", :style => "width:230px;"}, :disabled => @user.confirmed?
-        .control-group.error 
-          .help-inline
-            #role_error.pull-left{:style => "padding-left:10px"}
-        = f.hidden_field :student_id, :value => session[:student_id]
-        .clearfix
-      .modal-footer
-        .submit-indicator.loading.hide
-        %a.btn{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} Cancel
-        = f.submit "Save", :class => "btn btn-primary", :id => "save-user", :disable_with => "Saving..."
+
+= simple_form_for(@user, :url => url, :method => method, :remote => true, :html => {:id => :invite_student_sharing_form}) do |f|
+  - if notification = f.error_notification
+    .alert.alert-error.fade.in
+      %a{:class => "close", 'data-dismiss' => "alert", :href => "#"} &times;
+      = notification
+  .form-inputs
+    = f.input :email, :disabled=> !f.object.new_record?, :error => false, :input_html => {:class => "pull-left", :data => {autocomplete_source: emails(@responder)}, :style => "width:215px;"}
+    %input{:type => "button", :id => "search-email", :class => "pull-left btn margin-btn", :value => "Search"}
+    .control-group.error
+      .controls
+        = f.error :email
+    .clearfix
+    = f.input :first_name, :disabled=> !f.object.new_record?, :input_html => {:class => "pull-left name", :style => "width:220px;"}
+    .clearfix
+    = f.input :last_name, :disabled=> !f.object.new_record?, :input_html => {:class => "pull-left name", :style => "width:220px;"}
+    .clearfix
+    = f.input :role_id, :collection => roles(@responder), :prompt => "Select one", :input_html => {:class => "pull-left", :style => "width:230px;"}, :disabled => @user.confirmed?
+    = f.hidden_field :student_id, :value => session[:student_id]
+    = hidden_field_tag :user_id, params[:user_id]
+    .clearfix
         
