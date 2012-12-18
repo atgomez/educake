@@ -540,26 +540,13 @@ class Goal < ActiveRecord::Base
     end
     
     def validates_goal_name
-      scoped_goal = Goal.where(:student_id => self.student_id)
-      due_date_existed = scoped_goal.exists?(:due_date => self.due_date)
-      subject_existed = scoped_goal.exists?(:subject_id => self.subject_id)
-      curriculum_existed = scoped_goal.exists?(:curriculum_id => self.curriculum_id)
-      unless self.id
-        existed = scoped_goal.exists?(:subject_id => self.subject_id, :curriculum_id => self.curriculum_id, :due_date => self.due_date)
-      else
-        if self.due_date_changed? || self.subject_id_changed? || self.curriculum_id_changed?
-          existed = scoped_goal.exists?(:subject_id => self.subject_id, :curriculum_id => self.curriculum_id, :due_date => self.due_date) 
-        end
-      end 
+      scoped_goal = Goal.where('student_id = ? AND id <> ?', self.student_id, self.id || 0)
+      existed = scoped_goal.exists?(:subject_id => self.subject_id, :curriculum_id => self.curriculum_id, :due_date => self.due_date)
       if existed 
-        if due_date_existed
-          self.errors.add(:due_date, "has already been taken")
-        elsif  subject_existed
-          self.errors.add(:subject_id, "has already been taken")
-        elsif curriculum_existed 
-          self.errors.add(:curriculum_id, "has already been taken")
-        end 
+        self.errors.add(:due_date, "has already been taken")
+        self.errors.add(:subject_id, "has already been taken")
+        self.errors.add(:curriculum_id, "has already been taken")
       end 
-      return self.errors.blank?
+      return !existed
     end 
 end
