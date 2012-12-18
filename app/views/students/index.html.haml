@@ -26,6 +26,6 @@
       = link_to "Export", "#", :id => "export-button", :class => "btn export", "data-toggle" => "modal"
   %center.clearfix
     - page = params[:page_id] || 1
-    %iframe{:frameborder => "0", :height => @height, :src => "/charts/user_chart?user_id=#{@user.id}", :width => @width}
+    %iframe{:frameborder => "0", :height => @height, :src => url_for(user_chart_charts_path(:user_id => @user, :admin_id => @admin)), :width => @width}
   
 = render "export", :all_students => @all_students

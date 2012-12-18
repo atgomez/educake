@@ -527,7 +527,7 @@ class User < ActiveRecord::Base
           :data => goals_grades,
           :yAxis => 2,
           :item_id => student.id,
-          :url => context.student_path(student, :user_id => self.id)
+          :url => context.student_path(student, :user_id => self.id, :admin_id => params[:admin_id])
         } unless goals_grades.empty?
       end
     end

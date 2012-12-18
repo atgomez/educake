@@ -36,8 +36,12 @@
   .clearfix
   %center.clearfix
     = hidden_field_tag "check_is_add_grade", @data.empty?
-    %iframe{:frameborder => "0", :height => @height, :src => "/charts/student_chart?student_id=#{@student.id}&user_id=#{@user.id}", 
-            :width => @width, :id => "chart"}
+    %iframe{:frameborder => "0", :height => @height, 
+            :src => url_for(student_chart_charts_path(:student_id => @student, 
+                                                      :user_id => @user, 
+                                                      :admin_id => @admin)),
+            :width => @width, 
+            :id => "chart"}
 
 .show-student
   .grade

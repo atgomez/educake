@@ -14,7 +14,7 @@ class ChartsController < ApplicationController
 
   def user_chart
   	if find_and_check_user
-      render_chart(@user.series_json params, self)
+      render_chart(@user.series_json(params, self))
   	end
   end
 
