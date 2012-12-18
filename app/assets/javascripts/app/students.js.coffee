@@ -38,8 +38,12 @@ window.studentObject =
     $(".export_data_selector").change ->
       if @value is "classroom"
         $("#student_selection").attr("disabled", "disabled")
+      else if @value is "school"
+        $("#student_selection").attr("disabled", "disabled")
+        $("#teacher_selection").attr("disabled", "disabled")
       else
         $("#student_selection").removeAttr("disabled")
+        $("#teacher_selection").removeAttr("disabled")
 
   timeForField: ->
     $('#grade_time_to_complete').live "focus", ->
