@@ -14,16 +14,16 @@
     %link{:href => path_to_image('favicon.ico'), :type => "image/x-icon", :rel => "shortcut icon"}
   %body{:class => (@is_view_as ? "view-as" : nil)}
     .container#main
-      - if !@is_view_as
-        #banner
-          .pull-right= render(:partial => "shared/user_box") if user_signed_in?
-          .clearfix
-          .header
-            %a.logo{:href => "/"}
-          #menu
-            / = render "shared/menu"
-          .separator
-
+      #banner
+        .pull-right= render(:partial => "shared/user_box") if user_signed_in?
+        .clearfix
+        .header
+          %a.logo{:href => "/"}
+        #menu
+          / = render "shared/menu"
+        .separator
+      - if @is_view_as
+        = render "shared/teachers/view_as_box", :user => @admin || @user
       #flash
         - if notice
           %div{:class => "alert alert-success fade in", 'data-alert' => "alert"}
