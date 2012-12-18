@@ -12,7 +12,7 @@
     = csrf_meta_tags
     = yield :head
     %link{:href => path_to_image('favicon.ico'), :type => "image/x-icon", :rel => "shortcut icon"}
-  %body{:class => (@is_view_as ? "view-as" : nil)}
+  %body
     .container#main
       #banner
         .pull-right= render(:partial => "shared/user_box") if user_signed_in?
@@ -23,7 +23,7 @@
           / = render "shared/menu"
         .separator
       - if @is_view_as
-        = render "shared/teachers/view_as_box", :user => @admin || @user
+        = render "shared/teachers/view_as_box", :user => @viewing_user
       #flash
         - if notice
           %div{:class => "alert alert-success fade in", 'data-alert' => "alert"}

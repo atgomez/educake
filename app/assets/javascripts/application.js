@@ -41,29 +41,29 @@ $(document).ready(function() {
 	  });
 
 
-	  if(typeof parent.setiFrameHeight == 'function'){
-      parent.setiFrameHeight(document.body.scrollHeight);
-    }
+	  // if(typeof parent.setiFrameHeight == 'function'){
+   //    parent.setiFrameHeight(document.body.scrollHeight);
+   //  }
 
-    // Require jquery.ba-resize plugin.
-    $("body").resize(function(e){
-      // This condition check is very important to prevent infinit loop.
-      if($(this).find('#iframe-view-as').length > 0) // If in the main page
-        return false;
+   //  // Require jquery.ba-resize plugin.
+   //  $("body").resize(function(e){
+   //    // This condition check is very important to prevent infinit loop.
+   //    if($(this).find('#iframe-view-as').length > 0) // If in the main page
+   //      return false;
 
-      var height = $(e.currentTarget).height();
+   //    var height = $(e.currentTarget).height();
 
-      if(height && height > 0){
-        if(typeof parent.setiFrameHeight == 'function'){
-          parent.setiFrameHeight(height);
-        }
-      }
-    });
+   //    if(height && height > 0){
+   //      if(typeof parent.setiFrameHeight == 'function'){
+   //        parent.setiFrameHeight(height);
+   //      }
+   //    }
+   //  });
 });
 
-function setiFrameHeight(height){
-	if($('#iframe-view-as').length > 0){
-		$('#iframe-view-as').attr('height', height);
-	}
-};
+// function setiFrameHeight(height){
+// 	if($('#iframe-view-as').length > 0){
+// 		$('#iframe-view-as').attr('height', height);
+// 	}
+// };
 

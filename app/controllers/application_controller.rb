@@ -47,7 +47,11 @@ class ApplicationController < ActionController::Base
     if (current_user)
       @is_view_as = current_user.is_super_admin? && params[:user_id]
       if (@is_view_as)
-        @viewing_user = User.find_by_id(params[:user_id])
+        if (params[:admin_id])
+          @viewing_user = User.find_by_id(params[:admin_id])
+        else
+          @viewing_user = User.find_by_id(params[:user_id])
+        end
       end
 
       @is_view_as = false if !@viewing_user

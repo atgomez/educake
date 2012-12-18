@@ -171,7 +171,7 @@ class StudentsController < ApplicationController
       if (params[:user_id])
         @user = @admin ? @admin.children.teachers.find_by_id(params[:user_id]): User.unblocked.find_by_id(params[:user_id])
       else
-        @user = current_user
+        @user = current_user if !current_user.is?(:admin) && !current_user.is_super_admin?
       end
       if !@user
         if @is_view_as
