@@ -42,8 +42,8 @@ class Student < ActiveRecord::Base
   validates_length_of :last_name, :maximum => 15
   validates :first_name, :uniqueness => { :scope => [:last_name, :teacher_id],
     :message => "student's name should not be duplicated" }
-  validates_format_of :first_name, :with => /^[a-zA-Z\s]*$/
-  validates_format_of :last_name, :with => /^[a-zA-Z\s]*$/
+  validates_format_of :first_name, :with => /^[^0-9`!@#\$%\^&*+_=]+$/
+  validates_format_of :last_name, :with => /^[^0-9`!@#\$%\^&*+_=]+$/
 
   validate :validate_type_of_image
   
