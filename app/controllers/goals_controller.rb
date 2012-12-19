@@ -102,6 +102,7 @@ class GoalsController < ApplicationController
       if (@grade)
         @grade = @goal.update_grade_state(@grade)
         if @grade.save
+          @goal.update_all_grade
           status_code = 201
           result[:message] = I18n.t('grade.created_successfully')
           flash[:notice] = result[:message]

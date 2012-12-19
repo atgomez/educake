@@ -169,7 +169,8 @@ class Goal < ActiveRecord::Base
     if previous_grades.count >= (self.trial_days_total - 1) #If enough grades for calculating
       lowest_value_count = self.trial_days_total - self.trial_days_actual
       sum_value = 0
-      (lowest_value_count...9).each {|index| sum_value = sum_value + previous_grades[index][:accuracy]}
+      # Calculate the sume of rest value
+      (lowest_value_count...(self.trial_days_total - 1)).each {|index| sum_value = sum_value + previous_grades[index][:accuracy]}
       # Add current grade value to total
       sum_value = sum_value + grade.accuracy.to_f
       grade.value = sum_value/self.trial_days_actual
@@ -179,6 +180,8 @@ class Goal < ActiveRecord::Base
       grade.value = grade.accuracy
       grade.is_unused = true
     end
+
+
 
     return grade
   end
@@ -496,6 +499,15 @@ class Goal < ActiveRecord::Base
     series.to_json
   end
 
+  def update_all_grade
+    self.transaction do
+      self.grades.each do |grade|
+        self.update_grade_state(grade)
+        grade.save
+      end
+    end      
+  end
+
   protected
 
     def update_progresses
@@ -503,15 +515,6 @@ class Goal < ActiveRecord::Base
         progress.baseline_date = self.baseline_date
         progress.goal_date = self.due_date
       end
-    end
-
-    def update_all_grade
-      self.transaction do
-        self.grades.each do |grade|
-          self.update_grade_state(grade)
-          grade.save
-        end
-      end      
     end
 
     # Run all custom validations

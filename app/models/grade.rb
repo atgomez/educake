@@ -25,7 +25,7 @@ class Grade < ActiveRecord::Base
   
   # ASSOCIATIONS
   belongs_to :user
-  belongs_to :goal
+  belongs_to :goal, :touch => true
   belongs_to :progress
 
   # VALIDATION
