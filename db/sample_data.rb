@@ -34,10 +34,11 @@ def create_sample_students(teacher)
 
       # Create grade for goal
       10.times do |grade_t|
-        accuracy = goal.baseline + 5
+        accuracy = goal.baseline + 1
         if grade_t > 0
           accuracy = rand(70)
         end
+
         goal.grades.create(
           :due_date => goal.baseline_date + (rand(5)*grade_t).days,
           :accuracy => accuracy,
