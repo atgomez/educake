@@ -37,7 +37,7 @@ class School < ActiveRecord::Base
   validates_presence_of :city, :message => "City can't be blank."
   validates :zipcode, :length => { :maximum => 5, :too_long => "Zip code with %{count} characters is the maximum allowed" }
   validates :name, :length => { :maximum => 255, :too_long => "%{count} characters is the maximum allowed" }
-  validates_format_of :name, :with => /^[a-zA-Z.\d\s]*$/
+  validates_format_of :name, :with => /^[^!@#\$%\^&*+_=]+$/
   # CLASS METHODS
   class << self
     def load_data(params = {})

@@ -45,7 +45,7 @@ class Student < ActiveRecord::Base
   validates_format_of :first_name, :with => /^[^0-9!@#\$%\^&*+_=]+$/
   validates_format_of :last_name, :with => /^[^0-9!@#\$%\^&*+_=]+$/
 
-  validate :validate_type_of_image
+  # validate :validate_type_of_image
   
   # SCOPE
 
@@ -126,15 +126,15 @@ class Student < ActiveRecord::Base
 
   # Instance methods
 
-  def validate_type_of_image
-    return true if self.photo.original_filename.blank?
+  # def validate_type_of_image
+  #   return true if self.photo.original_filename.blank?
 
-    type = self.photo.original_filename.split(".").last 
-    unless %(jpg png).include?(type)
-      self.errors.add(:photo, "File must be of file type .jpg or .png")
-      return false
-    end 
-  end 
+  #   type = self.photo.original_filename.split(".").last 
+  #   unless %(jpg png).include?(type)
+  #     self.errors.add(:photo, "File must be of file type .jpg or .png")
+  #     return false
+  #   end 
+  # end 
     
   def goals_grades
     data = []
