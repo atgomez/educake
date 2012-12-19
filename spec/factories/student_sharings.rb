@@ -1,8 +1,8 @@
 FactoryGirl.define do
   factory :student_sharing do
     sequence(:email) { |n| "sample-user#{n}@teacher.com" }
-    sequence(:first_name) { |n| "First name#{n}" }
-    sequence(:last_name) { |n| "Last name#{n}" }
+    first_name { Faker::Name.first_name }
+    last_name { Faker::Name.last_name }
     student
     role {Role[:teacher]}
     sequence(:confirm_token) { |n| "abcdef1234-{n}" }

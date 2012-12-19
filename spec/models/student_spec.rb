@@ -35,14 +35,6 @@ describe Student do
         it { dummy_student.should have_at_least(1).error_on(attr) }
       end
 
-      context "with invalid photo" do
-        it "has error on photo" do          
-          dummy_student.photo = txt_file
-          dummy_student.valid?
-          dummy_student.errors[:photo].blank?.should be_false
-        end
-      end
-
       context "without photo" do
         it "does not need to validate photo type" do
           dummy_student.photo = nil
@@ -93,14 +85,16 @@ describe Student do
     context "with valid query and paging" do
       before(:each) do
         10.times do |t|
-          FactoryGirl.create(:student, :first_name => "John #{t}", :last_name => "Carter #{t}")
+          FactoryGirl.create(:student, 
+            :first_name => "John #{Faker::Name.first_name}", 
+            :last_name => Faker::Name.last_name)
         end
       end
 
       it "returns result with exactly page size" do
         params = {:page_id => 1, :page_size => 4}
         result = Student.search_data("john", params)
-        result.size.should equal(params[:page_size])
+        result.size.should eq(params[:page_size])
       end
     end
 

@@ -32,8 +32,8 @@ class StudentSharing < ActiveRecord::Base
 
   validates_length_of :first_name, :maximum => 15
   validates_length_of :last_name, :maximum => 15
-  validates_format_of :first_name, :with => /^[a-zA-Z\s]*$/
-  validates_format_of :last_name, :with => /^[a-zA-Z\s]*$/
+  validates_format_of :first_name, :with => /^[^0-9!@#\$%\^&*+_=]+$/
+  validates_format_of :last_name, :with => /^[^0-9!@#\$%\^&*+_=]+$/
 
   # CALLBACK
   before_validation :detect_shared_user
