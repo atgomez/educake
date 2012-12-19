@@ -88,7 +88,7 @@ class SuperAdmin::SchoolsController < SuperAdmin::BaseSuperAdminController
       columns = sort_column
       direction = sort_direction
       if columns == 'last_name'
-        return "first_name #{direction}, last_name #{direction}"
+        return "last_name #{direction}, first_name #{direction}"
       else
         return "#{columns} #{direction}"
       end

@@ -39,6 +39,8 @@ class User < ActiveRecord::Base
   include ::SharedMethods::SerializationConfig  
   attr_accessor :skip_password
   
+  DEFAULT_ORDER = "#{self.table_name}.last_name ASC, #{self.table_name}.first_name ASC"
+
   NAME = 1
   SCHOOL = 2
   ROLE = 3
@@ -67,7 +69,7 @@ class User < ActiveRecord::Base
   #               UNION ALL 
   #               SELECT * FROM (#{self.shared_students.to_sql}) d2) #{Student.table_name}
   #             }
-  #             Student.from(union_sql).order("first_name ASC, last_name ASC").select('DISTINCT *').to_sql
+  #             Student.from(union_sql).order(Student::DEFAULT_ORDER).select('DISTINCT *').to_sql
   #           }
 
   has_many :student_sharings, :dependent => :destroy
@@ -219,7 +221,7 @@ class User < ActiveRecord::Base
         if default_opts.blank?
           # This conditions will order records by directory and name first.
           default_opts = {
-            :sort_criteria => "users.first_name ASC, users.last_name ASC"
+            :sort_criteria => DEFAULT_ORDER
           }
         end
         paging_options(options, default_opts)
@@ -247,7 +249,7 @@ class User < ActiveRecord::Base
                 UNION ALL 
                 SELECT * FROM (#{self.shared_students.to_sql}) d2) #{Student.table_name}
               }
-    Student.from(union_sql).select("DISTINCT students.*").order("students.first_name ASC, students.last_name ASC")
+    Student.from(union_sql).select("DISTINCT students.*").order(Student::DEFAULT_ORDER)
   end
 
   def goals
@@ -383,10 +385,6 @@ class User < ActiveRecord::Base
     end
 
     return result
-  end
-
-  def status
-    # TODO: NOT IMPLEMENT YET
   end
 
   # Skip password when validating.

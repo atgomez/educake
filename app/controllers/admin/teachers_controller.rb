@@ -51,15 +51,19 @@ class Admin::TeachersController < Admin::BaseAdminController
   # TODO: should apply endless pagination.
   def all
     if find_or_redirect
-      @teachers = @user.children.teachers.unblocked.order("first_name ASC, last_name ASC")
+      @teachers = @user.children.teachers.unblocked.order(User::DEFAULT_ORDER)
       @series = []
-      @teachers.map do |teacher|
+      @teachers.each do |teacher|
         teacher_status = teacher.teacher_status
-        @series << {
-          :name => teacher.full_name,
-          :data => teacher_status,
-          :yAxis => 2
-        } unless teacher_status.empty?
+        unless teacher_status.empty?
+          @series << {
+            :name => teacher.full_name,
+            :data => teacher_status,
+            :yAxis => 2
+          }
+          # Exit the loop, because we only need to detect there is data for chart or not.
+          break
+        end
       end
     end
   end

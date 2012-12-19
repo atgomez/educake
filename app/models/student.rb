@@ -18,6 +18,7 @@
 
 class Student < ActiveRecord::Base
   include ::SharedMethods::Paging
+  DEFAULT_ORDER = "#{self.table_name}.last_name ASC, #{self.table_name}.first_name ASC"
 
   attr_accessible :birthday, :first_name, :gender, :last_name, :teacher_id, :photo
   belongs_to :teacher, :class_name => "User"
@@ -106,7 +107,7 @@ class Student < ActiveRecord::Base
         if default_opts.blank?
           # This conditions will order records by directory and name first.
           default_opts = {
-            :sort_criteria => "first_name ASC, last_name ASC"
+            :sort_criteria => DEFAULT_ORDER
           }
         end
         paging_options(options, default_opts)
@@ -207,7 +208,7 @@ class Student < ActiveRecord::Base
                   UNION ALL 
                 SELECT * FROM (#{shared_users_sql}) d2) data) users
               }
-    User.from(union_sql).order("users.first_name ASC, users.last_name ASC")
+    User.from(union_sql).order(User::DEFAULT_ORDER)
   end
 
   # Get all users that are shared for this student including teachers, parents.
