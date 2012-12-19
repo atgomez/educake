@@ -35,8 +35,7 @@
             %a{:class => "close", 'data-dismiss' => "alert", :href => "#"} &times;
             = alert
       = yield
-    - if !@is_view_as
-      .footer
-        = render(:partial => "shared/version")
+    .footer
+      = render(:partial => "shared/version")
 
     = yield :js

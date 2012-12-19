@@ -30,6 +30,11 @@ class StudentSharing < ActiveRecord::Base
   validate :cross_school_sharing
   validate :check_role
 
+  validates_length_of :first_name, :maximum => 15
+  validates_length_of :last_name, :maximum => 15
+  validates_format_of :first_name, :with => /^[a-zA-Z\s]*$/
+  validates_format_of :last_name, :with => /^[a-zA-Z\s]*$/
+
   # CALLBACK
   before_validation :detect_shared_user
   after_create :save_token

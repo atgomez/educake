@@ -29,7 +29,7 @@ class Student < ActiveRecord::Base
                    :path => "photos/:id/:style.:extension"
   #validates_attachment_size :photo, :less_than => 5.megabytes
   validates_attachment_content_type :photo, :content_type => [ 'image/jpeg', 'image/jpg', 'image/png' ],
-                                    :message => 'File must be of file type .jpg or .png'
+                                    :message => 'File must be of file type .jpeg, .jpg or .png'
 
   # ASSOCIATION
   has_many :goals, :dependent => :destroy
@@ -42,8 +42,8 @@ class Student < ActiveRecord::Base
   validates_length_of :last_name, :maximum => 15
   validates :first_name, :uniqueness => { :scope => [:last_name, :teacher_id],
     :message => "student's name should not be duplicated" }
-  validates_format_of :first_name, :with => /^[a-zA-Z\d\s]*$/
-  validates_format_of :last_name, :with => /^[a-zA-Z\d\s]*$/
+  validates_format_of :first_name, :with => /^[a-zA-Z\s]*$/
+  validates_format_of :last_name, :with => /^[a-zA-Z\s]*$/
 
   validate :validate_type_of_image
   
