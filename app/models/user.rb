@@ -93,8 +93,8 @@ class User < ActiveRecord::Base
   validates_presence_of :school_id, :if => :is_not_admin?
   validates_length_of :first_name, :maximum => 15
   validates_length_of :last_name, :maximum => 15
-  validates_format_of :first_name, :with => /^[^0-9`!@#\$%\^&*+_=]+$/
-  validates_format_of :last_name, :with => /^[^0-9`!@#\$%\^&*+_=]+$/
+  validates_format_of :first_name, :with => /^[^0-9!@#\$%\^&*+_=]+$/
+  validates_format_of :last_name, :with => /^[^0-9!@#\$%\^&*+_=]+$/
   
   # CALLBACK
   after_create :update_user_for_student_sharing
