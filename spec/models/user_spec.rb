@@ -73,23 +73,23 @@ describe User do
   describe "With role" do
     let(:admin_role) { FactoryGirl.create(:role, :name => "Admin1")}
     let(:admin) {FactoryGirl.create(:admin, :role => Role[:admin1])}
-    it "when input is symbol and retrurn list user with admin role" do
+    it "when input is symbol and return list user with admin role" do
       admin_role
       admin
       rs = User.with_role :admin1 
       rs.count.should eq(1)
     end 
-    it "when input is string and retrurn list user with admin role" do
+    it "when input is string and return list user with admin role" do
       admin_role
       admin
       rs = User.with_role "admin1" 
       rs.count.should eq(1)
     end
-    it "when input is integer and retrurn empty" do
+    it "when input is integer and return empty" do
       rs = User.with_role 54354
       rs.should be_empty  
     end
-    it "retrurn empty list user with teacher role" do
+    it "return empty list user with teacher role" do
       rs = User.with_role :teacher
       rs.should be_empty
     end

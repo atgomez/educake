@@ -1,8 +1,8 @@
 FactoryGirl.define do
   factory :user, :class => User do
     sequence(:email) { |n| "sample-user#{n}@teacher.com" }
-    sequence(:first_name) { |n| "First name#{n}" }
-    sequence(:last_name) { |n| "Last name#{n}" }
+    first_name { Faker::Name.first_name }
+    last_name { Faker::Name.last_name }
     password "123456"
     password_confirmation "123456"
     confirmed_at Time.now
@@ -10,8 +10,8 @@ FactoryGirl.define do
 
   factory :super_admin, :class => User do |u|
     u.sequence(:email) { |n| "super-admin#{n}@teacher.com" }
-    u.sequence(:first_name) { |n| "Super #{n}" }
-    u.sequence(:last_name) { |n| "Admin #{n}" }
+    u.first_name { Faker::Name.first_name }
+    u.last_name { Faker::Name.last_name }
     u.password "123456"
     u.password_confirmation "123456"
     u.confirmed_at Time.now
@@ -24,8 +24,8 @@ FactoryGirl.define do
 
   factory :admin, :class => User do |u|
     u.sequence(:email) { |n| "admin#{n}@teacher.com" }
-    u.sequence(:first_name) { |n| "New #{n}" }
-    u.sequence(:last_name) { |n| "Admin #{n}" }
+    u.first_name { Faker::Name.first_name }
+    u.last_name { Faker::Name.last_name }
     u.password "123456"
     u.password_confirmation "123456"
     u.confirmed_at Time.now
@@ -35,8 +35,8 @@ FactoryGirl.define do
 
   factory :teacher, :class => User do |u|
     u.sequence(:email) { |n| "teacher#{n}@teacher.com" }
-    u.sequence(:first_name) { |n| "New #{n}" }
-    u.sequence(:last_name) { |n| "Teacher #{n}" }
+    u.first_name { Faker::Name.first_name }
+    u.last_name { Faker::Name.last_name }
     u.password "123456"
     u.password_confirmation "123456"
     u.confirmed_at Time.now
@@ -47,8 +47,8 @@ FactoryGirl.define do
 
   factory :parent, :class => User do |u|
     u.sequence(:email) { |n| "parent#{n}@teacher.com" }
-    u.sequence(:first_name) { |n| "New #{n}" }
-    u.sequence(:last_name) { |n| "Parent #{n}" }
+    u.first_name { Faker::Name.first_name }
+    u.last_name { Faker::Name.last_name }
     u.password "123456"
     u.password_confirmation "123456"
     u.confirmed_at Time.now

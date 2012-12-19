@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :school do
-    sequence(:name) { |n| "School#{n}" }
+    name { Faker::Company.name }
     city { Faker::Address.city }
     state { Faker::Address.state }
     address1 { Faker::Address.street_address }

@@ -1,7 +1,7 @@
 shared_examples_for "paging_exact_page_size" do |obj, params|
   it "returns result with exactly page size" do
     result = obj.load_data(params)
-    result.size.should equal(params[:page_size])
+    result.size.should eq(params[:page_size])
   end
 end
 
