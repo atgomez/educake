@@ -14,4 +14,5 @@ class Curriculum < ActiveRecord::Base
 
   # VALIDATION
   validates :name, :presence => true, :uniqueness => true
+  validates_format_of :name, :with => /^[a-zA-Z\d\s]*$/
 end
