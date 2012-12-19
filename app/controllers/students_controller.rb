@@ -158,12 +158,6 @@ class StudentsController < ApplicationController
   def all_students
     if find_user
       @students = @user.accessible_students
-      @series = []
-      @students.each do |student|
-        @series += student.goals_grades
-        # Exit the loop, because we only need to detect there is data for chart or not.
-        break unless @series.blank?
-      end
     end
   end
 
