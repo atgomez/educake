@@ -31,26 +31,25 @@ window.profile =
     )
 
     # Show/hide button
-    $(".edit-account .form-display-handler").live("click", (e) ->
+    $("#change-password").live("click", (e) ->
       e.preventDefault()
-      form = $(this).parents(".section-container").find(".form-container")
-      if $(form).hasClass("hide")
-        # Clean old error message
-        $(form).find(".help-inline, .alert").remove()
-        $(form).find(".control-group.error").removeClass("error")
+      form = $('#account_password_change')
+      # Clean old error message
+      form.find(".help-inline, .alert").remove()
+      form.find(".control-group.error").removeClass("error")
 
-        $(form).slideDown("fast", () ->
-          $(this).removeClass("hide")
-        )
-      else
-        $(form).slideUp("fast", () ->
-          $(this).addClass("hide")
-        )
+      $(this).fadeOut(100)
+
+      form.slideDown("fast", () ->
+        $(this).removeClass("hide")
+      )
     )
 
     # Cancel button
     $(".edit-account form.simple_form .btn-cancel").live("click", (e) ->
-      $(this).parents(".section-container").find(".form-display-handler").click()
+      $('#account_password_change').slideUp("fast", () ->
+        $('#change-password').fadeIn(100)
+      )
     )
 
     # Show alert message when navigating away from form without saving.

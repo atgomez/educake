@@ -9,12 +9,9 @@
       .control-group
         %label.control-label.field-name= "Email:"
         .controls
-          %span.label-value= @user.email
-    .form-horizontal.display.section-container
-      .control-group
-        .controls
+          .label-value= @user.email
           = link_to(t("profile.change_password"), "#", :id => "change-password", :class => "form-display-handler")
-      .change-password-container.form-container.hide
+      #account_password_change.change-password-container.form-container.hide
         = render(:partial => "password_form")
 
 - content_for :js do
