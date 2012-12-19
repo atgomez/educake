@@ -34,10 +34,6 @@
         = f_admin.input :first_name, :input_html => {:class => "valid_name"}
         = f_admin.input :last_name, :input_html => {:class => "valid_name"}
         = f_admin.input :email, :input_html => {:class => "valid_email"}
-        - if f.object.new_record?
-          / = f_admin.input :password, :as => :hidden, :input_html => {:value => rand_pass}
-          / = f_admin.input :password_confirmation, :as => :hidden, :input_html => {:value => rand_pass}
-          / = f_admin.input :temp_pass, :as => :hidden, :input_html => {:value => rand_pass}
         = f_admin.input :phone, :input_html => {:class => "valid_number"}
         = f_admin.input :notes, :input_html => {:rows => "5", :class => "width-area"}
         = f_admin.input :role_id, :as => :hidden, :input_html => {:value => Role[:admin].try(:id)}

@@ -9,9 +9,12 @@ class StudentsController < ApplicationController
       @students = @user.accessible_students.load_data(filtered_params)
       series = []
       @all_students = @user.accessible_students
-      @all_students.map do |student|
+      @all_students.each do |student|
         series += student.goals_grades
+        # Exit the loop, because we only need to detect there is data for chart or not.
+        break unless series.blank?
       end
+
       if series.empty?
         @width = "0%"
         @height = "0"
@@ -156,8 +159,10 @@ class StudentsController < ApplicationController
     if find_user
       @students = @user.accessible_students
       @series = []
-      @students.map do |student|
+      @students.each do |student|
         @series += student.goals_grades
+        # Exit the loop, because we only need to detect there is data for chart or not.
+        break unless @series.blank?
       end
     end
   end

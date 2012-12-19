@@ -248,15 +248,19 @@ class Goal < ActiveRecord::Base
   #  |               |
   # O|______F._______|G
   #
+  # Given:
+  #   - OA is the less nearest progress accuracy (or goal's baseline)
+  #   - GC is the great nearest progress accuracy (or goal's accuracy)
+  #   - BC = (GC - OA)
+  #   - (*) EF is a random value between OA and GC, this is the unknown value.
+  #
   # Our goal is calculating the value of EF.
-  # Given: ABC is a square triagle.
+  #
+  # How to do?
+  # We have ABC is a square triagle.
   #   tang(A) = ED/AD = BC/AB
   #   => ED = AD*BC/AB (gotcha!)
   #   => EF = OA + ED
-  #
-  # Where:
-  #   - OA is the less nearest progress accuracy (or goal's baseline)
-  #   - GC is the great nearest progress accuracy (or goal's accuracy)
   #
   def graph_ideal_value_for_date(date)
     # Firstly, try to use goal's baseline and target
