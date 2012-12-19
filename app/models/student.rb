@@ -28,7 +28,7 @@ class Student < ActiveRecord::Base
                    :default_url => 'default-avatar.jpeg',
                    :path => "photos/:id/:style.:extension"
   #validates_attachment_size :photo, :less_than => 5.megabytes
-  validates_attachment_content_type :photo, :content_type => [ 'image/jpeg','image/png' ],
+  validates_attachment_content_type :photo, :content_type => [ 'image/jpeg', 'image/jpg', 'image/png' ],
                                     :message => 'File must be of file type .jpg or .png'
 
   # ASSOCIATION
