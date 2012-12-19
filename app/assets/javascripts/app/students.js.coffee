@@ -55,23 +55,31 @@ window.studentObject =
   uploadPhoto: ->
     $('#student_photo').change((e) ->
       file = e.target.files[0]
+      console.log(e.target.files)
       reader = new FileReader()
       reader.onload = (e) ->
         img = $('#upload-image')
         img.attr('width', '')
         img.attr('height', '')
-        $('#upload-image').attr('src', e.target.result)
-        h = img.height()
-        w = img.width()
         img.css('width', '')
         img.css('height', '')
-        
-        if (h > w) 
-          img.css('width', 200)
-        else
-          img.css('height', 200)
-        w = img.width()
-        img.css('margin-left', (200 - w)/2)
+        img.css('margin-top', '')
+        img.css('margin-left', '')
+        img.attr('src', e.target.result).load(() ->
+          console.log('Image loaded')
+          h = $(this).height()
+          w = $(this).width()
+          
+          console.log('Start cropping image with ' + w + 'px width and ' + h + 'px height')
+          if (h > w) 
+            $(this).css('width', 200)
+            h = $(this).height()
+            $(this).css('margin-top', (200 - h)/2)
+          else
+            $(this).css('height', 200)
+            w = $(this).width()
+            $(this).css('margin-left', (200 - w)/2)
+        )
 
       reader.readAsDataURL(file)
     )
