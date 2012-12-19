@@ -55,7 +55,7 @@ window.schoolObject =
       email_admin = $("#email_admin").val()
       new_email = $("#user_email").attr("value")
       if email_admin != new_email
-        conf = confirm("Do you want to change user email?") 
+        conf = confirm("The email changed, would you like to continue saving?") 
         if conf is true
           $("#user_form").submit()
         else
