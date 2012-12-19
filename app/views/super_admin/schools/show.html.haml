@@ -30,12 +30,16 @@
         %th
         %th
         %th
+        %th
     %tbody
       - @users.each do |user|
         %tr
           %td= user.role.name rescue ""
           %td= user.full_name rescue ""
           %td= user.accessible_students.count rescue ""
+          %td
+            - if user.is_blocked?
+              %a.icon-lock.color-pen
           %td.action= link_to "", edit_super_admin_user_path(user, :school_id => @school.id), :class => "icon-pencil color-pen", :title => "Edit" 
           - confirm = "Are you sure?"
           - if user.students.count > 0
