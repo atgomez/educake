@@ -1,6 +1,55 @@
 # This file should contain dummy records creation needed to demonstrate the app or to test.
 # The data can then be loaded with the rake db:sample_data.
 
+@curriculums = Curriculum.all
+@subjects = Subject.all
+
+def create_sample_students(teacher)
+  10.times do
+    first_name = Faker::Name.first_name
+    last_name = Faker::Name.last_name
+    # puts "Student name: #{first_name} #{last_name}"
+    student = teacher.students.create!({
+      :first_name => first_name,
+      :last_name => last_name,
+      :birthday => Time.now - 16.years
+    })
+
+    # Create goals
+    2.times do |t|
+      baseline = rand(30)
+      accuracy = baseline + 50
+
+      goal = student.goals.create(
+        :curriculum_id => @curriculums[t].id, 
+        :subject_id => @subjects[t].id,
+        :baseline_date => Time.now - 6.months,
+        :due_date => Time.now + 6.months,
+        :description => Faker::Lorem.sentence(10),
+        :baseline => baseline,
+        :accuracy => accuracy,          
+        :trial_days_actual => 9,
+        :trial_days_total => 10
+      )
+
+      # Create grade for goal
+      10.times do |grade_t|
+        accuracy = goal.baseline + 5
+        if grade_t > 0
+          accuracy = rand(70)
+        end
+        goal.grades.create(
+          :due_date => goal.baseline_date + (rand(5)*grade_t).days,
+          :accuracy => accuracy,
+          :user_id => teacher.id,
+          :time_to_complete => "0#{rand(5)}:00",
+          :note => Faker::Lorem.sentence(5)
+        )
+      end
+    end
+  end
+end
+
 # Create sample school
 school = School.create!({
   :name => "Demo School",
@@ -45,12 +94,17 @@ teacher.skip_confirmation!
 teacher.save!
 puts "[Sampler] Created demo teacher #{teacher.email} / #{password}"
 
+create_sample_students(teacher)
+
 10.times do 
   begin
+    first_name = Faker::Name.first_name
+    last_name = Faker::Name.last_name
+    # puts "Teacher name: #{first_name} #{last_name}"
     teacher = User.new({
       :email => Faker::Internet.email,
-      :first_name => Faker::Name.first_name,
-      :last_name => Faker::Name.last_name,
+      :first_name => first_name,
+      :last_name => last_name,
       :password => "123456",
       :password_confirmation => "123456",
       :school_id => school.id
@@ -61,13 +115,7 @@ puts "[Sampler] Created demo teacher #{teacher.email} / #{password}"
     teacher.save!
     puts "[Sampler] Created teacher #{teacher.email} / #{password}"
 
-    10.times do
-      teacher.students.create!({
-        :first_name => Faker::Name.first_name,
-        :last_name => Faker::Name.last_name,
-        :birthday => Time.now - 16.years
-      })
-    end
+    create_sample_students(teacher)
   rescue Exception => e
     puts "[Sampler] Error in creating sample teacher: #{e.inspect}"
   end
