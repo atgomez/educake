@@ -140,9 +140,9 @@ class Student < ActiveRecord::Base
     data = []
     progress = {}
     goals = self.goals
-    goals.each do |goal|
+    goals.find_each do |goal|
       grades = goal.grades.computable.order("due_date ASC")
-      grades.map do |grade|
+      grades.find_each do |grade|
         vs_baseline = grade.value - goal.baseline
         progress[grade.due_date] = [] if progress[grade.due_date].nil?
         progress[grade.due_date] << vs_baseline/(goal.accuracy - goal.baseline)*100
@@ -250,7 +250,7 @@ class Student < ActiveRecord::Base
   def check_on_track?
     result = 0 
 
-    self.goals.incomplete.each do |goal|
+    self.goals.incomplete.find_each do |goal|
       if !goal.on_track?
         # Student grade will not be on-track if there is any goal not on-track.
         result = 2
@@ -269,7 +269,7 @@ class Student < ActiveRecord::Base
     goals = self.goals 
     return 0 if goals.length == 0
     sum = 0
-    goals.each do |goal|
+    goals.find_each do |goal|
       sum = sum + goal.goal_grade
     end
 
@@ -283,7 +283,7 @@ class Student < ActiveRecord::Base
     return nil if goals.length == 0
 
     date = self.goals.first.due_date
-    goals.each do |goal|
+    goals.find_each do |goal|
       if goal.due_date > date
         date = goal.due_date
       end
@@ -301,7 +301,7 @@ class Student < ActiveRecord::Base
 
     # Export Goals
     idx = 1
-    goals.each do |goal| 
+    goals.find_each do |goal| 
       goal.export_xml(package, context, tmpdir, idx) do |sheet|
         student_name_style = sheet.styles.add_style ChartProcess::TITLE_NAME_STYLE
         left_text_style = sheet.styles.add_style ChartProcess::LEFT_TEXT_STYLE
@@ -360,9 +360,9 @@ class Student < ActiveRecord::Base
   def series_json(params={})
     goals = self.goals.incomplete
     series = []
-    goals.each do |goal| 
+    goals.find_each do |goal| 
       data = []
-      goal.grades.each{|grade| 
+      goal.grades.find_each{|grade| 
         data << [grade.due_date, (grade.accuracy*100).round / 100.0]
       }
       #data << [goal.due_date, goal.accuracy]

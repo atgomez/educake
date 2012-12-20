@@ -486,7 +486,7 @@ class Goal < ActiveRecord::Base
     end
     # For add grade  
     data = []
-    self.grades.each{|grade| 
+    self.grades.find_each{|grade| 
       data << [grade.due_date, (grade.accuracy*100).round / 100.0]
     }
     data = data.sort_by { |hsh| hsh[0] }
@@ -500,7 +500,7 @@ class Goal < ActiveRecord::Base
 
   def update_all_grade
     self.transaction do
-      self.grades.each do |grade|
+      self.grades.find_each do |grade|
         self.update_grade_state(grade)
         grade.save
       end

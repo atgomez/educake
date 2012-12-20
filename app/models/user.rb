@@ -286,7 +286,7 @@ class User < ActiveRecord::Base
   def teacher_status
     data = []
     progress = {}
-    self.accessible_students.each do |student|
+    self.accessible_students.find_each do |student|
       student_data = student.goals_grades
       student_data.each do |single_data| 
         progress[single_data[0]] = [] if progress[single_data[0]].nil?
@@ -401,7 +401,7 @@ class User < ActiveRecord::Base
     students = self.accessible_students 
     return 0 if students.length == 0
     sum = 0
-    students.each do |student|
+    students.find_each do |student|
       sum = sum + student.status
     end
 
@@ -415,7 +415,7 @@ class User < ActiveRecord::Base
     return nil if students.length == 0
 
     date = self.students.first.due_date
-    students.each do |student|
+    students.find_each do |student|
       if student.due_date 
         if !date || student.due_date > date
           date = student.due_date
@@ -434,7 +434,7 @@ class User < ActiveRecord::Base
       export_excel_teacher_page(package, context, tmpdir, "School Status", students)
       # Export Teachers
       idx = 1
-      teachers.each do |teacher|
+      teachers.find_each do |teacher|
         teacher.export_excel_teacher_page(package, context, tmpdir, "#{teacher.full_name[0...25]} #{idx}", teacher.accessible_students)
         idx = idx + 1
       end
@@ -444,7 +444,7 @@ class User < ActiveRecord::Base
       export_excel_teacher_page(package, context, tmpdir, "Classroom Status", students)
       # Export Students
       idx = 1
-      students.each do |student|
+      students.find_each do |student|
         student.export_excel_student_page(package, context, tmpdir, "#{student.full_name[0...25]} #{idx}", student.goals.incomplete)
         idx = idx + 1
       end
@@ -471,14 +471,14 @@ class User < ActiveRecord::Base
       list_on_track_state = ["not available", "ok", "not ok"]
       if is?(:admin)
         teachers = self.children.teachers.unblocked
-        teachers.each do |teacher| 
+        teachers.find_each do |teacher| 
           sheet.add_row [teacher.full_name, "#{(teacher.status*100).round / 100.0}%", 
                         teacher.due_date, 
                         list_on_track_state[teacher.check_on_track?]],
                         :style => [left_text_style, nil]
         end
       else
-        students.each do |student| 
+        students.find_each do |student| 
           sheet.add_row [student.full_name, "#{(student.status*100).round / 100.0}%", 
                         student.due_date, 
                         list_on_track_state[student.check_on_track?]],
@@ -489,7 +489,7 @@ class User < ActiveRecord::Base
         sheet.add_row [nil], :style => left_text_style
       end
 
-      image_path = ChartProcess.renderPNG(context, tmpdir, self.series_json(nil, context))
+      image_path = ChartProcess.renderPNG(context, tmpdir, self.series_json({}, context))
 
       # Add Chart to first page
       sheet.add_image(:image_src => image_path, :noSelect => true, :noMove => true) do |image|
