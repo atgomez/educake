@@ -1,6 +1,9 @@
 
 = simple_form_for([:super_admin, @school], :html => {:class => "school-form form-horizontal"} , :validate => true) do |f|
-  = f.error_notification
+  - if notification = f.error_notification
+    .alert.alert-error.fade.in
+      %a{:class => "close", 'data-dismiss' => "alert", :href => "#"} &times;
+      = notification
   .form-actions
     %center
       - back = :back
@@ -22,10 +25,10 @@
       = f.input :address2, :label => false
       = f.input :city, :label => false, :validate => false, :error => false, :input_html => {:class => "pull-left", :placeholder => "city"}
       .pull-left= state_select 'school', 'state', :show => :full
-      = f.input :zipcode, :error => false, :label => false, :input_html => {:class => "valid_number pull-left", :placeholder => "zip code"}
+      = f.input :zipcode, :error => false, :validate => false, :label => false, :input_html => {:class => "valid_number pull-left", :placeholder => "zip code"}
       .clearfix
-      %div= f.error :city, :id => "city"
-      %div= f.error :zipcode, :id => "city"
+      %div= f.full_error :city, :id => "city"
+      %div= f.error :zipcode, :id => "zipcode"
       = f.input :phone, :input_html => {:class => "valid_number"}
     .line
     .title Admin Info

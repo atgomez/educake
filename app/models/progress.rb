@@ -16,7 +16,7 @@ class Progress < ActiveRecord::Base
   has_many :grades, :dependent => :destroy
 
   # VALIDATION
-  validates :accuracy, :numericality => true, :inclusion => {:in => 0..100, :message => "must be from 0 to 100"}
+  validates :accuracy, :numericality => true, :inclusion => {:in => 0..100, :message => :out_of_range_100}
   validates_presence_of :accuracy, :due_date
 	validate :validate_due_date
 
@@ -41,12 +41,12 @@ class Progress < ActiveRecord::Base
   
   	def validate_due_date
       if (self.baseline_date > self.due_date)
-        self.errors.add(:due_date, "must be equal or greater than baseline date")
+        self.errors.add(:due_date, :must_eq_greater_than_baseline)
         return false
       end
 
       if (self.goal_date < self.due_date)
-        self.errors.add(:due_date, "must be equal or less than goal due date")
+        self.errors.add(:due_date, :must_eq_less_than_goal_due_date)
         return false
       end
     end

@@ -1,5 +1,6 @@
 class UserMailer < ActionMailer::Base
   default from: "teacher@gmail.com"
+
   def invited_confirmation(user) 
     @user = user
     @existed = User.exists?(:email => user.email)
@@ -8,7 +9,7 @@ class UserMailer < ActionMailer::Base
     else
       @url = url_for :controller=>'devise/user_registrations', :action => 'new'
     end 
-    mail(:to => user.email, :subject => "Confirmation for inviting")
+    mail(:to => user.email, :subject => I18n.t("mail.user.invitation_confirm_subject"))
   end
   
   def send_reset_password(user, password)
@@ -16,12 +17,12 @@ class UserMailer < ActionMailer::Base
     @password = password
     @url = url_for :controller=>'devise/sessions', :action => 'new'
 
-    mail(:to => user.email, :subject => "Reset Password")
+    mail(:to => user.email, :subject => I18n.t("mail.user.reset_password_subject"))
   end
   
   def inform_blocked_account(user)
     @user = user
     @url = url_for :controller=>'devise/sessions', :action => 'new'
-    mail(:to => user.email, :subject => "Informing about your status account")
+    mail(:to => user.email, :subject => I18n.t("mail.user.inform_block_status_subject"))
   end
 end

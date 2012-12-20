@@ -66,6 +66,7 @@ en:
     not_available: "Could not find the student."
 
   school:
+    error_zipcode_too_long: "Zip code with %{count} characters is the maximum allowed"
     created_successfully: "School %{name} was created successfully."
     updated_successfully: "School %{name} was updated successfully."
     not_available: "School is not available."
@@ -80,3 +81,39 @@ en:
       parent: "View Students"
       admin: "View Teachers"
       super_admin: "Home"
+
+  mail:
+    user:
+      invitation_confirm_subject: "Confirmation for inviting"
+      reset_password_subject: "Confirmation for inviting"
+      inform_block_status_subject: "Informing about your status account"
+
+  activerecord:
+    errors:
+      messages:
+        not_selected: "must be selected"
+        out_of_range: "must be in range"
+        out_of_range_100: "must be from 0 to 100"
+        only_once_per_day: "should happen once per day"
+        name_too_long: "%{count} characters is the maximum allowed"
+
+      models:
+        goal:
+          attributes:
+            baseline:
+              must_lower_than_goal: "must be lower than goal"
+            baseline_date:
+              must_lower_than_due_date: "must be before goal date"
+            trial_days_actual:
+              must_lower_than_ideal: "must be lower than the ideal trial days"
+        grade:
+          attributes:
+            due_date:
+              must_eq_greater_than_goal_baseline: "must be equal or greater than goal baseline date"
+              must_eq_less_than_goal_due_date: "must be less than or equal to goal due date"
+              must_eq_less_than_goal_today: "must be less than or equal to today"
+        progress:
+          attributes:
+            due_date:
+              must_eq_greater_than_baseline: "must be equal or greater than baseline date"
+              must_eq_less_than_goal_due_date: "must be less than or equal to goal due date"

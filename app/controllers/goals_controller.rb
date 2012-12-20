@@ -55,7 +55,6 @@ class GoalsController < ApplicationController
         #Remove id and student_id 
         params[:goal].delete :id
         params[:goal].delete :student_id
-        check_time_update = @goal.updated_at.to_s
         before_checked = @goal.is_completed
         if (@goal.changed? && before_checked == true) || (params[:goal][:is_completed].to_i ==  1 && (before_checked == true))
           params[:goal][:is_completed] = false
@@ -113,14 +112,14 @@ class GoalsController < ApplicationController
         end
       else
         @grade = Grade.new params[:grade]
-        @grade.errors.add(:due_date, "must be in range")
+        @grade.errors.add(:due_date, :out_of_range)
         status_code = 400
         result[:message] = I18n.t('grade.save_failed')
         result[:html] = render_to_string(:partial => 'goals/form_grade')
       end
     else
       @grade = Grade.new params[:grade]
-      @grade.errors.add(:goal_id, "must be selected")
+      @grade.errors.add(:goal_id, :not_selected)
       status_code = 400
       result[:message] = I18n.t('grade.save_failed')
       result[:html] = render_to_string(:partial => 'goals/form_grade')

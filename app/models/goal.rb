@@ -36,12 +36,11 @@ class Goal < ActiveRecord::Base
   has_many :grades, :dependent => :destroy
   belongs_to :student 
   belongs_to :subject 
-  belongs_to :curriculum
-  
+  belongs_to :curriculum  
   
   # VALIDATION
-  validates :accuracy, :numericality => true, :inclusion => {:in => 0..100, :message => "must be from 0 to 100"}
-  validates :baseline, :numericality => true, :inclusion => {:in => 0..100, :message => "must be from 0 to 100"}
+  validates :accuracy, :numericality => true, :inclusion => {:in => 0..100, :message => :out_of_range_100}
+  validates :baseline, :numericality => true, :inclusion => {:in => 0..100, :message => :out_of_range_100}
   validates_presence_of :accuracy, :due_date, :curriculum_id, :subject_id, 
                         :baseline_date, :baseline, :trial_days_total, :trial_days_actual
 
@@ -95,7 +94,7 @@ class Goal < ActiveRecord::Base
         if default_opts.blank?
           # This conditions will order records by directory and name first.
           default_opts = {
-            :sort_criteria => "created_at DESC"
+            :sort_criteria => "goals.created_at DESC"
           }
         end
         paging_options(options, default_opts)
@@ -527,32 +526,34 @@ class Goal < ActiveRecord::Base
 
     def validate_baseline
       if self.baseline.to_f >= self.accuracy.to_f
-        self.errors.add(:baseline, "must be lower than goal")
+        self.errors.add(:baseline, :must_lower_than_goal)
       end
       return self.errors.blank?
     end
 
     def validate_baseline_date
       if self.baseline_date && self.due_date && self.baseline_date >= self.due_date
-        self.errors.add(:baseline_date, "must be before goal date")
+        self.errors.add(:baseline_date, :must_lower_than_due_date)
       end
       return self.errors.blank?
     end
 
     def validate_trial_days
       if self.trial_days_actual.to_i >= self.trial_days_total.to_i
-        self.errors.add(:trial_days_actual, "must be lower than the ideal trial days")
+        self.errors.add(:trial_days_actual, :must_lower_than_ideal)
       end
       return self.errors.blank?
     end
     
     def validates_goal_name
       scoped_goal = Goal.where('student_id = ? AND id <> ?', self.student_id, self.id || 0)
-      existed = scoped_goal.exists?(:subject_id => self.subject_id, :curriculum_id => self.curriculum_id, :due_date => self.due_date)
+      existed = scoped_goal.exists?(:subject_id => self.subject_id, 
+        :curriculum_id => self.curriculum_id, 
+        :due_date => self.due_date)
       if existed 
-        self.errors.add(:due_date, "has already been taken")
-        self.errors.add(:subject_id, "has already been taken")
-        self.errors.add(:curriculum_id, "has already been taken")
+        self.errors.add(:due_date, :taken)
+        self.errors.add(:subject_id, :taken)
+        self.errors.add(:curriculum_id, :taken)
       end 
       return !existed
     end 

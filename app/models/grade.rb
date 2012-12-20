@@ -30,9 +30,8 @@ class Grade < ActiveRecord::Base
 
   # VALIDATION
   validates :accuracy, :numericality => true, 
-            :inclusion => {:in => 0..100, :message => "must be from 0 to 100"}
-  validates :goal_id, :uniqueness => { :scope => :due_date,
-            :message => "should happen once per day" }
+            :inclusion => {:in => 0..100, :message => :out_of_range_100}
+  validates :goal_id, :uniqueness => { :scope => :due_date, :message => :only_once_per_day }
   validates_presence_of :accuracy, :due_date, :goal_id
 
   # SCOPE
@@ -53,6 +52,7 @@ class Grade < ActiveRecord::Base
       end
       return html.html_safe
     end 
+
     def load_data(params = {})
       paging_info = parse_paging_options(params)
       # Paginate with Will_paginate.
@@ -106,16 +106,16 @@ class Grade < ActiveRecord::Base
 
     def validate_due_date
       if (self.goal.baseline_date > self.due_date)
-        self.errors.add(:due_date, "must be equal or greater than goal baseline date")
+        self.errors.add(:due_date, :must_eq_greater_than_goal_baseline)
         return false
       end
 
       if (self.goal.due_date < self.due_date)
-        self.errors.add(:due_date, "must be less than or equal to goal due date")
+        self.errors.add(:due_date, :must_eq_less_than_goal_due_date)
         return false
       end
       if (self.due_date > Time.zone.now.to_date)
-        self.errors.add(:due_date, "must be less than or equal to today")
+        self.errors.add(:due_date, :must_eq_less_than_goal_today)
         return false
       end
     end
