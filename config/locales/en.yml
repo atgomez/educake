@@ -8,6 +8,7 @@ en:
     error_unauthorized: "You are not authorized to access this resource."
     error_blocked_account: "Your account was blocked. Please contact the administrator."
     error_page_not_found: "Page not found!"
+    error_photo_file_type: "File must be of file type .jpeg, .jpg or .png"
     confirm_message: "Are you sure ?"
 
     gender:

@@ -82,7 +82,7 @@ class StudentSharing < ActiveRecord::Base
       if self.user
         if self.user && (self.user.school_id != self.student.teacher.school_id || 
                         self.user.id == self.student.teacher_id)
-          self.errors.add(:email, "is already taken")
+          self.errors.add(:email, :taken)
         end
       end
     end
@@ -90,7 +90,7 @@ class StudentSharing < ActiveRecord::Base
     # Role is just for teacher, parent
     def check_role
       if !(Role.exists?(:id => self.role_id) && Role[:admin].id != self.role_id)
-        self.errors.add(:role_id, "is invalid")
+        self.errors.add(:role_id, :invalid)
       end
     end
 
