@@ -131,7 +131,6 @@ form#student-form {
 
 form#invite_student_sharing_form, form#new_grade {
   .form-inputs {
-    // width: 350px;
     .control-group {
       label {
         width: 100px;
@@ -267,5 +266,15 @@ a {
 
   .edit-goal.on-show{
     margin-left: 15px;
+  }
+}
+
+.invitation-form{
+  input[type="text"], input[type="email"]{
+    width:220px;
+  }
+
+  select{
+    width:230px;
   }
 }

@@ -4,22 +4,22 @@ class InvitationsController < ApplicationController
   before_filter :find_responder
 
   def new 
-    @user = StudentSharing.new    
+    @sharing = StudentSharing.new    
   end 
   
   def create
-    @user = StudentSharing.new params[:student_sharing]
-    if @user.save 
-      UserMailer.invited_confirmation(@user).deliver
+    @sharing = StudentSharing.new params[:student_sharing]
+    if @sharing.save 
+      UserMailer.invited_confirmation(@sharing).deliver
     end 
   end 
   
   def edit 
-    @user = StudentSharing.find params[:id]
+    @sharing = StudentSharing.find params[:id]
   end 
   
   def update
-    @user = StudentSharing.find params[:id]
+    @sharing = StudentSharing.find params[:id]
 
     # To prevent hacking role
     existed_user = User.unblocked.find_by_email params[:student_sharing][:email]
@@ -27,13 +27,13 @@ class InvitationsController < ApplicationController
       params[:student_sharing][:role_id] = existed_user.role.id
     end 
 
-    if @user.update_attributes params[:student_sharing]
+    if @sharing.update_attributes params[:student_sharing]
     end 
   end
   
   def destroy 
-    user = StudentSharing.find params[:id]
-    user.destroy
+    sharing = StudentSharing.find params[:id]
+    sharing.destroy
   end
 
   protected

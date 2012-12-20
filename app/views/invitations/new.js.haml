@@ -1,4 +1,2 @@
-$("#invite_user_title").html('Invite a user');
-$("#dynamic_container").html("#{escape_javascript render :partial => 'form', :locals => {:url => invitations_path, :method => :post}}");
-$("#invite_user").modal('show');
-
+$("#render_invite_user").html("#{escape_javascript render :partial => 'form', :locals => {:url => invitations_path, :method => :post}}");
+$("#render_invite_user").modal('show');

@@ -182,7 +182,7 @@ window.studentObject =
     ) 
 
   onSaveInvitation: ->
-    $('#invite_user form').live('submit', -> 
+    $('#render_invite_user form').live('submit', -> 
       $(this).find('.submit-indicator').removeClass('hide')
     )
 

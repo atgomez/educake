@@ -1,6 +1,5 @@
-- if @user.errors.any?
-  $("#invite_user_title").html('Edit a user');
-  $("#dynamic_container").html("#{escape_javascript render :partial => 'form', :locals => {:url => invitation_path(@user), :method => :put}}");
-  $("#invite_user").modal('show');
+- if @sharing.errors.any?
+  $("#render_invite_user").html("#{escape_javascript render :partial => 'form', :locals => {:url => invitation_path(@sharing), :method => :put}}");
+  $("#render_invite_user").modal('show');
 - else
   location.reload()
