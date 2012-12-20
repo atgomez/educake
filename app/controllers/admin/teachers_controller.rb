@@ -2,7 +2,7 @@ class Admin::TeachersController < Admin::BaseAdminController
   cross_role_action :index, :show, :new, :edit, :create, :update, :destroy, :all, :search, :get_students
   # TODO: improve this method, because it load teachers 2 times.
   def index
-    if find_or_redirect
+    if find_user
       @teachers = @user.children.teachers.unblocked.load_data(filtered_params)
 
       unless request.xhr?
@@ -50,7 +50,7 @@ class Admin::TeachersController < Admin::BaseAdminController
   # GET /admin/teachers/all
   # TODO: should apply endless pagination.
   def all
-    if find_or_redirect
+    if find_user
       @teachers = @user.children.teachers.unblocked.order(User::DEFAULT_ORDER)
       @series = []
       @teachers.each do |teacher|
@@ -69,7 +69,7 @@ class Admin::TeachersController < Admin::BaseAdminController
   end
 
   def create
-    if find_or_redirect
+    if find_user
       result = {}
       status_code = 201
 
@@ -96,9 +96,18 @@ class Admin::TeachersController < Admin::BaseAdminController
       render(:json => result, :status => status_code)
     end
   end
+
+  def edit
+    if find_user
+      @teacher = @user.children.teachers.unblocked.find_by_id(params[:id])
+      if @teacher.blank?
+        render_page_not_found(I18n.t("user.error_not_found"))
+      end
+    end
+  end
   
   def update
-    if find_or_redirect
+    if find_user
       result = {}
       status_code = 201
 
@@ -129,7 +138,7 @@ class Admin::TeachersController < Admin::BaseAdminController
   # GET: /admin/teacher/search?query=<QUERY>
   # TODO: optimize this method
   def search
-    if find_or_redirect
+    if find_user
       searcher = @admin ? @admin : @user
       query = params[:query]
       if query.blank?
@@ -151,7 +160,7 @@ class Admin::TeachersController < Admin::BaseAdminController
   end
 
   def get_students
-    if find_or_redirect
+    if find_user
       teacher = @user.children.teachers.unblocked.find_by_id(params[:teacher_id])
       @students = teacher.accessible_students
       render :partial => 'admin/teachers/get_students'
@@ -159,9 +168,13 @@ class Admin::TeachersController < Admin::BaseAdminController
   end
 
   def destroy
-    if find_or_redirect
-      @teacher = @user.children.teachers.unblocked.find(params[:id])
-      @teacher.destroy
+    if find_user
+      teacher = @user.children.teachers.unblocked.find_by_id(params[:id])
+      if teacher
+        teacher.destroy
+      else
+        flash[:alert] = I18n.t("user.error_not_found")
+      end
       
       redirect_to admin_teachers_path(:user_id => @user.id, :admin_id => @user.id)
     end
@@ -173,15 +186,14 @@ class Admin::TeachersController < Admin::BaseAdminController
       @current_tab = 'classroom'
     end
 
-    # Find record and redirect to index page if the record does not exist
+    # Find record and render page not found if the record does not exist.
     # If current_user is Super Admin
     #   Get user admin via user_id
     # else
     #   Get user admin via current_user
     # Get teacher from id
     #
-
-    def find_or_redirect(teacher_id = params[:id])
+    def find_user(teacher_id = params[:id])
       @admin = User.unblocked.find_by_id params[:admin_id]
       @admin = nil if @admin && !@admin.is?(:admin)
       if current_user.is_super_admin?

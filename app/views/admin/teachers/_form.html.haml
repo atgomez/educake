@@ -1,17 +1,20 @@
 #teacher-dialog.modal.hide.fade{:tabindex => "-1", "data-backdrop" => "static"}
-  - if !teacher.new_record?
-    - url = "admin/teachers/#{teacher.id}"
-    - method = "PUT"
-  - else
+  - if teacher.new_record?
     - url = admin_teachers_path(:teacher_id => teacher) 
     - method = "POST"
+  - else
+    - url = "admin/teachers/#{teacher.id}"
+    - method = "PUT"
 
   = hidden_field_tag "method", method
   = simple_form_for(teacher, :url => url,  
         :html => { :id => 'teacher-form', :class => 'form-horizontal teacher-form' }) do |f|
     .modal-header
       %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} &times;
-      %h4 Add a Teacher
+      - if teacher.new_record?
+        %h4 Add a Teacher
+      - else
+        %h4 Edit Teacher
     .modal-body
       - if notification = f.error_notification
         .alert.alert-error.fade.in

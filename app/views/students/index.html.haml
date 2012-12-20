@@ -4,7 +4,6 @@
 .admin.teacher
   - if @user.is?(:admin) || (@admin)
     - @teacher = @user
-    = render 'admin/teachers/form', :teacher => @teacher
     .show-student
       .clearfix.toolbar
         = link_to "All Teachers", admin_teachers_path(:user_id => @user.parent, :admin_id => @admin), :class => "brown font18"

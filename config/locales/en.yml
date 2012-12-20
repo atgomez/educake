@@ -48,6 +48,7 @@ en:
 
   admin:
     teacher:
+      confirm_delete: "All students of this teacher will be also deleted. Are you sure you want to do this ?"
       created_successfully: "Teacher %{name} was created successfully"
       updated_successfully: "Teacher %{name} was updated successfully."
       create_failed: "Could not create the new teacher."
