@@ -5,7 +5,9 @@
       %a{:class => "close", 'data-dismiss' => "alert", :href => "#"} &times;
       = notification
   .form-inputs
-    = f.input :email, :disabled=> !f.object.new_record?, :error => false, :input_html => {:class => "pull-left", :data => {autocomplete_source: emails(@responder)}, :style => "width:215px;"}
+    = f.input(:email, :disabled=> !f.object.new_record?, :error => false, 
+              :input_html => {:class => "pull-left", :data => {:autocomplete_source => emails(@responder)}, 
+              :style => "width:215px;"})
     %input{:type => "button", :id => "search-email", :class => "pull-left btn margin-btn", :value => "Search"}
     .control-group.error
       .controls
