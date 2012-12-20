@@ -15,6 +15,8 @@
 #
 
 class StudentSharing < ActiveRecord::Base
+  include ::SharedMethods::SerializationConfig  
+
   attr_accessible :email, :first_name, :last_name, :student_id, :user_id, :role_id, :confirm_token, :is_blocked
 
   # ASSOCIATION
@@ -41,7 +43,20 @@ class StudentSharing < ActiveRecord::Base
   
 
   scope :unblocked, where(:is_blocked => false)
+
+  # 
+  # Class methods
+  #
+  class << self
+    # Names of attributes will be exposed when serializing object to JSON, XML, etc.
+    def exposed_attributes
+      [:id, :first_name, :last_name, :email, :role_id]
+    end
+  end
+
+  #
   # Instance methods
+  #
 
   def full_name
     [self.first_name, self.last_name].join(" ")
