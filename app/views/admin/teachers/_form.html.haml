@@ -22,9 +22,9 @@
       = f.input :last_name
       = f.input :email, :required => true
       = f.input(:classroom, :label => "Classroom (opt)", :required => false)
-      = f.input(:phone, :label => "Phone (opt)", :required => false)
+      = f.input(:phone, :as => :string, :label => "Phone (opt)", :required => false)
       = f.input :school_id, :as => :hidden, :input_html => {:value => current_user.school.nil? ? 0 : current_user.school.id }
       = hidden_field_tag "user_id", params[:user_id]
     .modal-footer
-      %button.btn{"aria-hidden" => "true", "data-dismiss" => "modal", :class => "close-dialog"} Cancel
+      %input.btn{:value => "Cancel", :type => "button", "aria-hidden" => "true", "data-dismiss" => "modal", :class => "close-dialog"}
       = f.submit "Save", :id => "btn-save-teacher", :class => "btn btn-primary", :disable_with => "Saving..."
