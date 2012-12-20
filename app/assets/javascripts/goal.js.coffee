@@ -1,5 +1,3 @@
-#= require 'lib/jquery.livequery.js'
-
 $ ->
   goal.setup()
 

@@ -20,6 +20,7 @@
 //= require lib/highcharts/js/highcharts
 //= require lib/Placeholders.min
 //= require lib/jquery.ba-resize.min
+//= require lib/jquery.livequery.js
 //= require goal
 //= require helper
 //= require schools
