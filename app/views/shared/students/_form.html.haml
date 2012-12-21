@@ -4,34 +4,39 @@
 / add student from: admin/students/new
 - controller_namespace = ((controller_namespace.nil? ? nil : controller_namespace) rescue nil)
 
-= simple_form_for([controller_namespace, @student], :html => { :multipart => true, :id => "student-form" }, :back_link => back_link ||= "" ) do |f|
+= simple_form_for([controller_namespace, @student], :html => { :multipart => true, :id => "student-form" }, 
+                  :back_link => back_link ||= "" ) do |f|
   - if notification = f.error_notification
     .alert.alert-error.fade.in
       %a{:class => "close", 'data-dismiss' => "alert", :href => "#"} &times;
       = notification
 
   .form-actions
-    - back_link = @student.new_record? ? back_link : url_for(:controller => "students", :action => 'show', :id => @student.id, :user_id => @user.id, :admin_id => @admin)
-    = link_to "Cancel", back_link, :class => "btn"
+    - back_link = @student.new_record? ? back_link : url_for(:controller => "students", :action => 'show', 
+                                                        :id => @student.id, 
+                                                        :user_id => @user.id, 
+                                                        :admin_id => @admin)
+    = link_to t("common.cancel"), back_link, :class => "btn"
 
     - if @student.new_record?
-      = f.button :submit, :value => "Add Student"
+      = f.button :submit, :value => t("student.add")
     - else
-      = f.button :submit, :value => "Save"
+      = f.button :submit, :value => t("common.save")
 
   .form-inputs
     .pull-right
       = f.input :first_name, :input_html => {:class => "name"}
       = f.input :last_name, :input_html => {:class => "name"}
-      = f.input :birthday, :as => :string, :input_html => {:class => "birthday-picker", :value => f.object.birthday_string}, :label => "DOB"
+      = f.input :birthday, :as => :string, :input_html => {:class => "birthday-picker", 
+                                                :value => f.object.birthday_string}, :label => t("student.birthday")
       = f.label :gender, :class => 'pull-left gender'
-      = f.collection_radio_buttons :gender, [[true, 'Male'] ,[false, 'Female']], :first, :last
+      = f.collection_radio_buttons(:gender, genders_collection_for_select, :first, :last)
       .clearfix
     .pull-left
       .crop_image
-        = image_tag (f.object.new_record? ? "missing.png" : f.object.photo.url(:medium)), :size => "200x200", :id => 'upload-image'
+        = image_tag((f.object.new_record? ? "missing.png" : f.object.photo.url(:medium)), 
+                    :size => "200x200", :id => 'upload-image')
       = f.input :photo, :as => :file, :label => false
       = hidden_field_tag "back_link", back_link
       = hidden_field_tag "user_id", params[:user_id]
-      = hidden_field_tag "admin_id", params[:admin_id]
-  
+      = hidden_field_tag "admin_id", params[:admin_id]  

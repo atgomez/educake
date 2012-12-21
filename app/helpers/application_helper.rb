@@ -1,5 +1,4 @@
-module ApplicationHelper
-  
+module ApplicationHelper  
    def sortable(column, title = nil)
     title ||= column.titleize
     css_class = (column == sort_column) ? "current #{sort_direction}" : nil
@@ -74,5 +73,9 @@ module ApplicationHelper
       result = I18n.t("profile.back_link_text.#{result}")
     end
     return result
+  end
+
+  def genders_collection_for_select
+    [[true, t("common.gender.male")], [false, t("common.gender.female")]]
   end
 end

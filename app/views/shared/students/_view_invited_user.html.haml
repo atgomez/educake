@@ -8,5 +8,10 @@
         %td.width-role= user.role.name
         %td.width-action
           - if !read_only
-            = link_to "", edit_invitation_path(user, :user_id => @user, :admin_id => @admin), :class => "icon-pencil color-pen", :method => :get, :remote => true, :title => "Edit"
-            = link_to "", invitation_path(user, :user_id => @user, :admin_id => @admin), :data => { :confirm => 'Are you sure?' }, :class => "icon-trash color-pen", :method => :delete, :remote => true, :title => "Delete"
+            = link_to("", edit_invitation_path(user, :user_id => @user, :admin_id => @admin), 
+                      :class => "icon-pencil color-pen", :method => :get, 
+                      :remote => true, :title => t("common.edit"))
+            = link_to("", invitation_path(user, :user_id => @user, :admin_id => @admin), 
+                      :data => { :confirm => t("common.confirm_message") }, 
+                      :class => "icon-trash color-pen", :method => :delete, 
+                      :remote => true, :title => t("common.delete"))

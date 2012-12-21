@@ -2,19 +2,19 @@
   %table.table.table-striped
     %thead
       %tr
-        %th{:width => '15%'} Date 
-        %th{:width => '10%'} Score
-        %th{:width => '15%'} Time
-        %th{:width => '25%'} Notes
-        %th{:width => '15%'} User
+        %th.date{:width => '15%'}= t("grade.date") 
+        %th.score{:width => '10%'}= t("grade.score")
+        %th.time{:width => '15%'}= t("grade.time")
+        %th.note{:width => '25%'}= t("grade.note")
+        %th.user{:width => '15%'}= t("grade.user")
     %tbody
       - grades.each do |grade|
         %tr 
-          %td= grade.due_date.strftime("%m/%d/%y") rescue ""
-          %td= ::Util.round_f(grade.accuracy).to_s+"%" rescue ""
-          %td= grade.time_to_complete.strftime("%H:%M") rescue ""
-          %td
+          %td.date= grade.due_date.strftime("%m/%d/%y") rescue ""
+          %td.score= ::Util.round_f(grade.accuracy).to_s+"%" rescue ""
+          %td.time= grade.time_to_complete.strftime("%H:%M") rescue ""
+          %td.note
             .wordbreak
               = grade.note
-          %td= grade.user.full_name
+          %td.user= grade.user.full_name
 #grades_pages= render_pagination grades

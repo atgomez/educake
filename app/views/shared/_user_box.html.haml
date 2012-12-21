@@ -1,6 +1,6 @@
 %span.brown
-  = "Welcome,"
+  = t("user.welcome_label")
   = link_to(current_user.try(:full_name), my_account_path)
 %span= "|"
 %span.blue
-  = link_to("Sign Out", destroy_user_session_path, :method => "delete", :id => "sign_out")  
+  = link_to(t("devise.session.sign_out_action"), destroy_user_session_path, :method => "delete", :id => "sign_out")  

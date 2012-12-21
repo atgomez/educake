@@ -9,22 +9,22 @@
     = link_to(student.full_name, url)
 
   .birthday
-    %span= "Born on:"
+    %span= t("common.born_on_label")
     %span= student.birthday_string
   .gender
-    %span= "Gender:"
+    %span= t("common.gender_label")
     %span= student.gender_string
   .goal
-    %span= "Goals:"
+    %span= t("student.goal_label")
     - if student.goals.length <= 0
-      %span= "no goal"
+      %span= t("student.no_goal")
     - else
       %span= student.goals.length
 - unless params[:query]
   .track-indicator-container
     - status = student.check_on_track? 
     - if status == 1
-      .track-indicator.pull-left{:class => "on-track", :title => "On-track"}
+      .track-indicator.pull-left{:class => "on-track", :title => t("common.on_track")}
     - elsif status == 2
-      .track-indicator.pull-left{:title => "Not on-track"}
+      .track-indicator.pull-left{:title => t("common.not_on_track")}
 

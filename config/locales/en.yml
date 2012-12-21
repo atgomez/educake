@@ -17,6 +17,8 @@ en:
     more: "More..."
     send: "Send"
     update: "Update"
+    edit: "Edit"
+    delete: "Delete"
     import: "Import"
     search: "Search"
     on_track: "On-track"
@@ -31,6 +33,8 @@ en:
     confirm_password: "Confirm password"
     select_prompt: "Select one"
     due_date: "Due Date"
+    gender_label: "Gender:"
+    born_on_label: "Born on:"
 
     gender:
       male: "Male"
@@ -53,6 +57,10 @@ en:
       short: "%b %e, %Y"
       long: "%B %e, %Y"
       api: "%Y-%m-%d"
+
+  menu:
+    classroom: "Classroom"
+    curriculum: "Curriculum"
 
   goal:
     not_found: "Cannot find the goal!"
@@ -80,6 +88,10 @@ en:
     add: "Add a Grade"
     accuracy: "% Accuracy"
     note: "Notes"
+    date: "Date"
+    score: "Score"
+    time: "Time"
+    user: "User"
     import:
       title: "Import Grades"
       student: "Student:"
@@ -106,12 +118,22 @@ en:
     created_successfully: "User %{name} was created successfully."
     updated_successfully: "User %{name} was updated successfully."
     error_not_found: "Sorry, could not find this user. The user may be blocked. Please contact the administrator."
-
+    email_label: "Email:"
+    classroom_label: "Classroom:"
+    phone_label: "Phone:"
+    view_as_title: "Now viewing as"
+    back_to_super_admin: "Back to viewing as SuperAdmin."
+    welcome_label: "Welcome,"
   student:
     created_successfully: "Student %{name} was created successfully."
     updated_successfully: "Student %{name} was updated successfully."
     not_available: "Could not find the student."
     error_duplicated_name: "Student's name should not be duplicated"
+    goal_label: "Goals:"
+    no_goal: "no goal"
+    add: "Add Student"
+    birthday: "DOB"
+    edit_goal: "Edit Goal"
 
   school:
     error_zipcode_too_long: "Zip code with %{count} characters is the maximum allowed"
@@ -179,6 +201,7 @@ en:
     session:
       sign_in_title: "Sign in with your account"
       sign_in_action: "Sign in"
+      sign_out_action: "Sign out"
       remember_me: "Remember me"
     change_password_action: "Change my password"
     unlock_action: "Unlock my account"

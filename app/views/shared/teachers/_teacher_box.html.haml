@@ -8,25 +8,25 @@
         = @teacher.full_name
       - if !@teacher.classroom.blank?
         .classroom
-          %span= "Classroom:"
+          %span= t("user.classroom_label")
           %span= @teacher.classroom
       - if !@teacher.email.blank?
         .email
-          %span= "Email:"
+          %span= t("user.email_label")
           %span= @teacher.email
       - if !@teacher.classroom.blank?
         .phone
-          %span= "Phone:"
+          %span= t("user.phone_label")
           %span= @teacher.phone
   
   .pull-right
     = link_to("", edit_admin_teacher_path(:id => @teacher, :user_id => @admin), 
-              :class => "icon-pencil color-pen", :title => "Edit", 
+              :class => "icon-pencil color-pen", :title => t("common.edit"), 
               :style => "display:inline-block", :remote => true)
     = link_to("", { :action => 'destroy', :controller => 'admin/teachers', 
                     :id => @teacher, :user_id => @admin, :admin_id => @admin }, 
                   :data => { :confirm => t('admin.teacher.confirm_delete') }, 
-                  :class => "icon-trash color-pen", :title => "Delete", 
+                  :class => "icon-trash color-pen", :title => t("common.delete"), 
                   :style => "display:inline-block", :method => :delete )
 
 -# Place holder for teacher form dialog

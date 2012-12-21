@@ -507,6 +507,11 @@ class Goal < ActiveRecord::Base
     end      
   end
 
+  # Returns the full name of this goal, including subject, curriculum, etc.
+  def full_name
+    "#{self.subject.name} #{self.curriculum.name}"
+  end
+
   protected
 
     def update_progresses
