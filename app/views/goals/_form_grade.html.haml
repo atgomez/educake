@@ -1,26 +1,29 @@
 - id ||= 'add_grade'
 .modal.hide.fade{:tabindex => "-1", :id => id}
-  = simple_form_for(@grade, :url => add_grade_goals_path, :method => :post, :remote => true, :html => {:class => "grade-form"}) do |f|
+  = simple_form_for(@grade, :url => add_grade_goals_path, :method => :post, :remote => true, 
+                    :html => {:class => "grade-form"}) do |f|
     .modal-header
-      %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} ×
-      %h4 Add grade 
+      %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} &times;
+      %h4= t("grade.add")
     .modal-body
       - if notification = f.error_notification
         .alert.alert-error.fade.in
           %a{:class => "close", 'data-dismiss' => "alert", :href => "#"} &times;
           = notification
       .form-inputs
-        = f.input :goal_id, :collection => @goals, :prompt => "Select one", :input_html => {:class => "pull-left"}
+        = f.input(:goal_id, :collection => @goals, :prompt => t("common.select_prompt"), 
+                  :input_html => {:class => "pull-left"})
         .clearfix
-        = f.input(:due_date, :as => :string, :input_html => {:class => "date-picker pull-left", :value => @grade.due_date_string}, :label => "Due Date")
+        = f.input(:due_date, :as => :string, :input_html => {:class => "date-picker pull-left", :value => @grade.due_date_string}, :label => t("common.due_date"))
         .clearfix
-        = f.input :accuracy, :label => "% Accuracy", :input_html => {:class => "pull-left", :type => "text"}
+        = f.input :accuracy, :label => t("grade.accuracy"), :input_html => {:class => "pull-left", :type => "text"}
         .clearfix
         = f.input :time_to_complete, :as => :string, :ampm => true
-        = f.input :note, :as => :text, :label => "Notes", :input_html => {:rows =>"5"}
+        = f.input :note, :as => :text, :label => t("grade.note"), :input_html => {:rows =>"5"}
         = f.hidden_field :user_id, :value => current_user.id
         .clearfix
     .modal-footer
-      %a.btn{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} Cancel
-      = f.submit "Save", :class => "btn btn-primary", :id => "save-user"
+      %input.btn{:value => t("common.cancel"), :type => "button", "aria-hidden" => "true", 
+                  "data-dismiss" => "modal", :class => "close-dialog"}
+      = f.submit t("common.save"), :class => "btn btn-primary"
 

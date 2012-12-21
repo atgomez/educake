@@ -1,20 +1,22 @@
 .modal#import_grades.hide.fade
-  = form_tag(import_grades_goals_path, :method => :put, :remote => true,:multipart => true, :html => {:class => "grade-form"}) do
+  = form_tag(import_grades_goals_path, :method => :put, :remote => true, :multipart => true, 
+              :html => {:class => "grade-form"}) do
     .modal-header
       %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} ×
-      %h4 Import Grades
+      %h4= t("grade.import.title")
     .modal-body
       .form-inputs
         = hidden_field_tag "student_id", @student.id
         %div.input-margin
-          %span Student: 
+          %span= t("grade.import.student")
           %span= @student.full_name
-        %div= select "goal", :id, @goals, {:prompt => "Select one", :class => "pull-left"}
+        %div= select "goal", :id, @goals, {:prompt => t("common.select_prompt"), :class => "pull-left"}
         #goal_choose.font-error
         %div.input-margin= file_field_tag "goal[grades]"
         #file_choose.font-error
       .modal-footer
-        %a.btn{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} Cancel
-        = submit_tag "Import", :class => "btn btn-primary", :id => "import"
+        %input.btn{:value => t("common.cancel"), :type => "button", "aria-hidden" => "true", 
+                  "data-dismiss" => "modal", :class => "close-dialog"}
+        = submit_tag t("common.import"), :class => "btn btn-primary", :id => "import"
 
 

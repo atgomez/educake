@@ -17,6 +17,7 @@ en:
     more: "More..."
     send: "Send"
     update: "Update"
+    import: "Import"
     on_track: "On-track"
     not_on_track: "Not on-track"    
     search_place_holder: "Search name"
@@ -26,6 +27,8 @@ en:
     password: "Password"
     new_password: "New password"
     confirm_password: "Confirm password"
+    select_prompt: "Select one"
+    due_date: "Due Date"
 
     gender:
       male: "Male"
@@ -57,11 +60,27 @@ en:
     delete_successfully: "Goal was remove successfully."
     delete_failed: "Cannot remove goal."
     require_to_select: "Please select a goal."
+    add: "Add a Goal"
+    edit: "Edit Goal"
+    completed_warning: "Editing this goal will mark it as incomplete. You may mark it as complete below."
+    curriculum: "Curriculum Core"
+    subject: "Subject"
+    accuracy: "Goal % Accuracy"
+    baseline: "Baseline % Accuracy"    
+    progress_with_id: "Progress Report %{id}"
+    progress_accuracy: "% Accuracy"
+    mark_completed: "Mark as complete"
 
   grade:
     created_successfully: "Created grade successfully"
     import_successfully: "Imported .csv file for grades successfully"
     save_failed: "There are some first invalid grades on:"
+    add: "Add a Grade"
+    accuracy: "% Accuracy"
+    note: "Notes"
+    import:
+      title: "Import Grades"
+      student: "Student:"
 
   admin:
     teacher:

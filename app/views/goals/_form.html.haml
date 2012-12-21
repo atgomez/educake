@@ -3,31 +3,32 @@
 - goal.build_progresses
 - id ||= 'goal-dialog'
 .modal.hide.fade{:tabindex => "-1", :id => id, "data-backdrop" => "static"}
-  = simple_form_for(goal, :html => { :id => "goal-form#{goal.id}", :class => 'goal-form form-horizontal goal-form' }) do |f|
+  = simple_form_for(goal, :html => { :id => "goal-form#{goal.id}", 
+                    :class => 'goal-form form-horizontal goal-form' }) do |f|
     .modal-header
       %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} &times;
       - if goal.new_record?
-        %h4 Add a Goal
+        %h4= t("goal.add")
       - else
-        %h4 Edit Goal
+        %h4= t("goal.edit")
       - unless goal.new_record?
         - if goal.is_completed == true
-          %div{:style=>"font-style:italic;"} Editing this goal will mark it as incomplete. You may mark it as complete below.
+          %div{:style=>"font-style:italic;"}= t("goal.completed_warning")
     .modal-body{:style => "max-height:250px"}
       - if notification = f.error_notification
         .alert.alert-error.fade.in
           %a{:class => "close", 'data-dismiss' => "alert", :href => "#"} &times;
           = notification
 
-      = f.association :curriculum, :label => "Curriculum Core"
-      = f.association :subject, :label => "Subject & Standard"
+      = f.association :curriculum, :label => t("goal.curriculum")
+      = f.association :subject, :label => t("goal.subject")
       = f.input(:due_date, :as => :string, :input_html => {:class => "date-picker", 
                 :value => goal.due_date_string, :id => "goal_due_date#{goal.id}"})
       = f.input(:description, :input_html => {:rows => '5'})
-      = f.input :accuracy, :as => :string, :label => "Goal % Accuracy", :input_html => {:id => "accuracy-#{goal.id}"}
+      = f.input :accuracy, :as => :string, :label => t("goal.accuracy"), :input_html => {:id => "accuracy-#{goal.id}"}
       = f.input(:baseline_date, :as => :string, :input_html => {:class => "date-picker", 
                 :value => goal.baseline_date_string, :id => "baseline_date#{goal.id}"})
-      = f.input(:baseline, :as => :string, :label => "Baseline % Accuracy", :input_html => {:id => "baseline-#{goal.id}"})
+      = f.input(:baseline, :as => :string, :label => t("goal.baseline"), :input_html => {:id => "baseline-#{goal.id}"})
 
       .control-group.date.required{:class => (goal.errors[:trial_days_actual].blank? ? "" : "error")}
         %label.date.required.control-label{:for => "goal_baseline_date_1i"}
@@ -45,25 +46,25 @@
       .horizontal-bar
       
       .progress-report-container
-        - idx = 1
-        - goal.progresses.each do |progress|
+        - goal.progresses.each_with_index do |progress, idx|
           = f.simple_fields_for(:progresses, progress) do |f_progress|
-            %label.grade-name= "Progress Report #{idx}"
-            = f_progress.input(:due_date, :as => :string, :required => false, :input_html => {:class => "date-picker", 
-                  :value => progress.due_date_string, :id => "goal_#{goal.id}_#{progress.object_id}"}, :label => "Due Date")
-            = f_progress.input :accuracy, :as => :string, :required => false, :label => "% Accuracy"
-            - idx = idx + 1
-            
+            %label.grade-name= t("goal.progress_with_id", :id => idx + 1)
+            = f_progress.input( :due_date, :as => :string, :required => false, 
+                                :input_html => {:class => "date-picker", 
+                                    :value => progress.due_date_string, 
+                                    :id => "goal_#{goal.id}_#{progress.object_id}"}, 
+                                :label => t("common.due_date"))
+            = f_progress.input :accuracy, :as => :string, :required => false, :label => t("goal.progress_accuracy")
+
     .modal-footer
       .submit-indicator.loading.hide
 
       - unless goal.new_record?
-        = f.input(:is_completed, :label => "Mark as complete", :wrapper_html => {:class => "archived-input"})
+        = f.input(:is_completed, :label => t("goal.mark_completed"), :wrapper_html => {:class => "archived-input"})
         
-      %input.reset-form-button.hide{:type => "reset"}
-      %button.btn{"aria-hidden" => "true", "data-dismiss" => "modal", :class => "close-dialog", :id => "btn-cancel"} Cancel
-      = f.submit "Save", :class => "btn btn-primary", :disable_with => "Saving..."
-
+      %input.btn{:value => t("common.cancel"), :type => "button", "aria-hidden" => "true", 
+                  "data-dismiss" => "modal", :class => "close-dialog"} 
+      = f.submit t("common.save"), :class => "btn btn-primary", :disable_with => t("common.saving")
 
 :javascript
   /*
