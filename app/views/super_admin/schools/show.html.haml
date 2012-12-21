@@ -5,7 +5,7 @@
     %div
       = @school.address1
     %div
-      = @school.city+", "+ @school.state + " " + @school.zipcode
+      = "#{@school.city}, #{@school.state} #{@school.zipcode}"
     %div
       = @school.phone
     %br
@@ -13,20 +13,20 @@
       = @school.created_at.strftime("%m/%d/%y")
   
   %div.pull-left
-    = link_to "Edit School", edit_super_admin_school_path(@school)
+    = link_to t("school.edit"), edit_super_admin_school_path(@school)
     = " | "
-    = link_to "Back", super_admin_schools_path
-  .pull-right= render '/shared/search_box', :action => "", :placeholder => "Search"
+    = link_to t("common.back"), super_admin_schools_path
+  .pull-right= render '/shared/search_box', :action => "", :placeholder => t("common.search_place_holder")
   .clearfix
   .add_user
-    = link_to "Add User", new_super_admin_user_path(:back => "users", :school_id => @school.id), :class => "btn"
+    = link_to t("school.add_user"), new_super_admin_user_path(:back => "users", :school_id => @school.id), :class => "btn"
 
   %table.table.table-striped.schools
     %thead
       %tr
-        %th Role
-        %th Name
-        %th Students
+        %th.role= t("school.role")
+        %th.name= t("school.user_name")
+        %th.students= t("common.students")
         %th
         %th
         %th
@@ -40,14 +40,16 @@
           %td
             - if user.is_blocked?
               %a.icon-lock.color-pen
-          %td.action= link_to "", edit_super_admin_user_path(user, :school_id => @school.id), :class => "icon-pencil color-pen", :title => "Edit" 
-          - confirm = "Are you sure?"
-          - if user.students.count > 0
-            - confirm = "This teacher have some students, do you want to delete?"
+          %td.action
+            = link_to("", edit_super_admin_user_path(user, :school_id => @school.id), 
+                      :class => "icon-pencil color-pen", :title => t("common.edit"))
           - unless user.is?(:admin)
-            %td.action= link_to "", [:super_admin, user], :data => { :confirm => confirm }, :class => "icon-trash color-pen", :method => :delete, :title => "Delete" 
+            %td.action
+              = link_to("", [:super_admin, user], 
+                        :data => { :confirm => t("admin.teacher.confirm_delete") },
+                        :class => "icon-trash color-pen", :method => :delete, :title => t("common.delete"))
           - else 
             %td.action
-          %td= link_to "view as", view_as_super_admin_user_path(user)
+          %td= link_to t("admin.view_as"), view_as_super_admin_user_path(user)
   = render_pagination @users 
 

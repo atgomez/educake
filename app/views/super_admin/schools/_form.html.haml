@@ -1,4 +1,3 @@
-
 = simple_form_for([:super_admin, @school], :html => {:class => "school-form form-horizontal"} , :validate => true) do |f|
   - if notification = f.error_notification
     .alert.alert-error.fade.in
@@ -11,27 +10,29 @@
         - back = super_admin_schools_path
       - elsif !f.object.new_record?
         - back = super_admin_school_path(@school)
-      = link_to "Cancel", back, :class => "btn"
+      = link_to t("common.cancel"), back, :class => "btn"
       - if f.object.new_record?
-        = f.button :submit, :value => "Create School"
+        = f.button :submit, :value => t("school.create")
       - else
-        = f.button :submit, :value => "Save"
+        = f.button :submit, :value => t("common.save")
   - rand_pass = rand(1234567)
   .form-inputs
     .title School Info
     .school-info
-      = f.input :name, :label => "School Name", :input_html => {:class => "valid_name"}
-      = f.input :address1, :label => "Address"
+      = f.input :name, :label => t("school.name"), :input_html => {:class => "valid_name"}
+      = f.input :address1, :label => t("school.address")
       = f.input :address2, :label => false
-      = f.input :city, :label => false, :validate => false, :error => false, :input_html => {:class => "pull-left", :placeholder => "city"}
+      = f.input :city, :label => false, :validate => false, :error => false, 
+                :input_html => {:class => "pull-left", :placeholder => "city"}
       .pull-left= state_select 'school', 'state', :show => :full
-      = f.input :zipcode, :error => false, :validate => false, :label => false, :input_html => {:class => "valid_number pull-left", :placeholder => "zip code"}
+      = f.input :zipcode, :error => false, :validate => false, :label => false, 
+                :input_html => {:class => "valid_number pull-left", :placeholder => "zip code"}
       .clearfix
       %div= f.full_error :city, :id => "city"
       %div= f.error :zipcode, :id => "zipcode"
       = f.input :phone, :input_html => {:class => "valid_number"}
     .line
-    .title Admin Info
+    .title= t("school.admin_info")
     .school-info
       = f.simple_fields_for :admin, @admin do |f_admin|
         = f_admin.input :first_name, :input_html => {:class => "valid_name"}

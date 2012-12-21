@@ -1,17 +1,17 @@
 .super-admin.school
-  = link_to "Add School", new_super_admin_school_path, :class => "btn"
+  = link_to t("school.add"), new_super_admin_school_path, :class => "btn"
   - unless @schools.empty?
-    = link_to "Add User", new_super_admin_user_path(:back => "schools"), :class => "btn"
-  = render '/shared/search_box', :action => "users/search_result", :placeholder => "Search"
+    = link_to t("school.add_user"), new_super_admin_user_path(:back => "schools"), :class => "btn"
+  = render '/shared/search_box', :action => "users/search_result", :placeholder => t("common.search_place_holder")
 
   %table.table.table-striped.schools
     %thead
       %tr
-        %th= sortable "name", "School"
-        %th= sortable "last_name", "Admin"
-        %th= "Teachers"
-        %th= "Students"
-        %th= sortable "created_at", "Joined"
+        %th= sortable "name", t("school.label")
+        %th= sortable "last_name", t("school.admin")
+        %th= t("common.teachers")
+        %th= t("common.students")
+        %th= sortable "created_at", t("school.joined")
         %th 
     %tbody
       - @schools.each do |school|
@@ -23,5 +23,8 @@
           %td= school_data[:teachers_count]
           %td= school_data[:students_count]
           %td= school.created_at.strftime("%m/%d/%y")
-          %td.action= link_to "", [:super_admin, school], :data => { :confirm => "Are you sure?" }, :class => "icon-trash color-pen", :method => :delete, :title => "Delete" 
+          %td.action
+            = link_to("", [:super_admin, school], 
+                    :data => { :confirm => t("common.confirm_message") }, 
+                    :class => "icon-trash color-pen", :method => :delete, :title => t("common.delete"))
   = render_pagination @schools

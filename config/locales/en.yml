@@ -36,6 +36,7 @@ en:
     due_date: "Due Date"
     gender_label: "Gender:"
     born_on_label: "Born on:"
+    address: "Address"
 
     gender:
       male: "Male"
@@ -102,6 +103,7 @@ en:
     edit_title: "Edit Invitation"
 
   admin:
+    view_as: "view as"
     teacher:
       confirm_delete: "All students of this teacher will be also deleted. Are you sure you want to do this ?"
       created_successfully: "Teacher %{name} was created successfully"
@@ -150,6 +152,17 @@ en:
     updated_successfully: "School %{name} was updated successfully."
     not_available: "School is not available."
     deleted_successfully: "School %{name} was deleted successfully."
+    create: "Create School"
+    add: "Add School"
+    edit: "Edit School"
+    name: "School Name"
+    admin_info: "Admin Info"
+    add_user: "Add User"
+    admin: "Admin"
+    label: "School"
+    joined: "Joined"
+    role: "Role"
+    user_name: "Name"
 
   profile:
     title: "Account Settings"
