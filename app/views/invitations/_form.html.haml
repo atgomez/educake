@@ -4,9 +4,9 @@
     %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} &times;
     %h4#invite_user_title
       - if @sharing.new_record?
-        Invite a user
+        = t("invitation.new_title")
       - else
-        Edit invitation
+        = t("invitation.edit_title")
 
   .modal-body
     - if notification = f.error_notification
@@ -16,7 +16,7 @@
     .form-inputs
       = f.input(:email, :disabled=> !f.object.new_record?, :error => false, 
                 :input_html => {:class => "pull-left", :data => {:autocomplete_source => emails(@responder)}})
-      %input{:type => "button", :id => "search-email", :class => "pull-left btn margin-btn", :value => "Search"}
+      %input{:type => "button", :id => "search-email", :class => "pull-left btn margin-btn", :value => t("common.search")}
       .control-group.error
         .controls
           = f.error :email
@@ -25,7 +25,7 @@
       .clearfix
       = f.input :last_name, :disabled=> !f.object.new_record?, :input_html => {:class => "pull-left name"}
       .clearfix
-      = f.input(:role_id, :collection => roles(@responder), :prompt => "Select one", 
+      = f.input(:role_id, :collection => roles(@responder), :prompt => t("common.select_prompt"), 
                 :input_html => {:class => "pull-left"}, :disabled => @sharing.confirmed?)
       = f.hidden_field :student_id, :value => session[:student_id]
       = hidden_field_tag :user_id, params[:user_id]
@@ -33,5 +33,6 @@
 
   .modal-footer
     .submit-indicator.loading.hide
-    %a.btn{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} Cancel
-    = f.submit "Save", :id => "save-user", :class => "btn btn-primary", :disable_with => "Saving..."
+    %input.btn{:value => t("common.cancel"), :type => "button", "aria-hidden" => "true", 
+                  "data-dismiss" => "modal", :class => "close-dialog"} 
+    = f.submit t("common.save"), :id => "save-user", :class => "btn btn-primary", :disable_with => t("common.saving")

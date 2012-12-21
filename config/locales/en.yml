@@ -18,6 +18,7 @@ en:
     send: "Send"
     update: "Update"
     import: "Import"
+    search: "Search"
     on_track: "On-track"
     not_on_track: "Not on-track"    
     search_place_holder: "Search name"
@@ -81,6 +82,10 @@ en:
     import:
       title: "Import Grades"
       student: "Student:"
+
+  invitation:
+    new_title: "Invite a User"
+    edit_title: "Edit Invitation"
 
   admin:
     teacher:
