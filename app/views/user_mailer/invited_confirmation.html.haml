@@ -3,19 +3,19 @@
   %head
     %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}
   %body
-    %h1
-      Hi, #{@user.full_name}
+    %h1= t("mail.hi", :name => @sharing.full_name)
     %p
-      You have just been invited for student: 
-      = [@user.student.first_name, @user.student.last_name].join(" ")
-      , your email is: #{@user.email}.
+      = t("mail.user.invited_inform")
+      %b= @sharing.student.full_name
+      ,
+      = t("mail.user.invited_email_info", :email => @sharing.email)
       %br/
     %p
       - if @existed
-        To login to the site, just follow this link:
+        = t("mail.user.login_instruction")
         = link_to(@url, @url)
       - else 
-        To signup to the site, just follow this link:
-        - confirm_url = "#{@url}?user_token=#{@user.confirm_token}"
+        = t("mail.user.invited_confirm")
+        - confirm_url = "#{@url}?user_token=#{@sharing.confirm_token}"
         = link_to(confirm_url, confirm_url)
-    %p Thanks for joining and have a great day!
+    %p= t("mail.user.invited_end")

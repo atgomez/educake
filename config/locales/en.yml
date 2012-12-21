@@ -197,10 +197,21 @@ en:
   mail:
     user:
       invitation_confirm_subject: "Confirmation for inviting"
-      reset_password_subject: "Confirmation for inviting"
+      reset_password_subject: "Your password has been reset"
+      reset_password_info: "Here is your new password:"
       inform_block_status_subject: "Informing about your status account"
+      invited_inform: "You have just been invited for student:"
+      invited_email_info: "your email is: %{email}."
+      login_instruction: "To login to the site, just follow this link:"
+      invited_confirm: "To signup to the site, just follow this link:"
+      invited_end: "Thanks for joining and have a great day!"
+      blocked_inform: "Your account has just been blocked."
+      reinstated_inform: "Your account has just been reinstated."
+
     welcome: "Welcome %{name}!"
+    regard_end: "Best regards."
     hello: "Hello %{name}!"
+    hi: "Hi %{name}!"
     school_end: "school."
     new_user:
       admin: "You are the admin at"

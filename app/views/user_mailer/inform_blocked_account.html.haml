@@ -3,15 +3,14 @@
   %head
     %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}
   %body
-    %h1
-      Hi, #{@user.full_name}
+    %h1= t("mail.hi", :name => @user.full_name)
     %p
       - if @user.is_blocked
-        Your account have just been blocked.
+        = t("mail.user.blocked_inform")
       - else
-        Your account have just been reinstated.
+        = t("mail.user.reinstated_inform")
         %br
-        To login to the site, just follow this link:
+        = t("mail.user.login_instruction")
         = link_to(@url, @url)
      
-    %p Best regards,
+    %p= t("mail.regard_end")
