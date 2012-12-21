@@ -1,5 +1,5 @@
 .center-form
-  %h4.brown Resend confirmation instructions
+  %h4.brown= t("devise.resend_confirmation")
   = simple_form_for(resource, :as => resource_name, :url => confirmation_path(resource_name), 
         :html => { :method => :post, :class => 'form-horizontal' }) do |f|
     - if notification = f.error_notification
@@ -9,5 +9,5 @@
     .form-inputs
       = f.input :email, :required => true
     .form-actions
-      = f.button :submit, "Resend confirmation instructions"
+      = f.button :submit, t("common.send")
   = render "devise/shared/links"

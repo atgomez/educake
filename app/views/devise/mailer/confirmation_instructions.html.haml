@@ -1,13 +1,13 @@
 %p
-  Welcome #{@resource.full_name}!
+  = t("mail.welcome", :name => @resource.full_name)
 %p
   - if @resource.is_admin_school?
-    You are the admin at 
+    = t("mail.new_user.admin")
     %b= @resource.school.try(:name)
-    school.
+    = t("mail.school_end")
   - else 
-    You joined at 
+    = t("mail.new_user.normal_user")
     %b= @resource.school.try(:name)
-    school.
-%p You can confirm your account email through the link below:
-%p= link_to 'Confirm my account', confirmation_url(@resource, :confirmation_token => @resource.confirmation_token)
+    = t("mail.school_end")
+%p= t("mail.new_user.confirm_link_instruction")
+%p= link_to t("mail.new_user.confirm"), confirmation_url(@resource, :confirmation_token => @resource.confirmation_token)

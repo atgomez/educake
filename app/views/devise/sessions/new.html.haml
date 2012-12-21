@@ -11,7 +11,7 @@
         #logo-login
           = image_tag("logo.png", :width => "295", :height => "46", :alt => "")
         .font20.bold.white.padding-top20.height10
-          Sign in with your account
+          = t("devise.session.sign_in_title")
         %ul.clearfix{:id => "login-input-list"}
           %li
             - if notification = flash[:alert]
@@ -20,16 +20,18 @@
                 %a{:class => "close", 'data-dismiss' => "alert", :href => "#"} &times;
                 = notification
           %li
-            = f.input :email, :required => false, :input_html => {:id => 'email', :class => 'input_string'}, :autofocus => true
+            = f.input :email, :required => false, :input_html => {:id => 'email', :class => 'input_string'}, 
+                      :autofocus => true
           %li
             = f.input :password, :required => false, :input_html => {:class => 'input_string'}
           %li.font18.brown.bold.left
             - if devise_mapping.rememberable?
-              = f.input(:remember_me, :inline_label => "Remember me", :label => false, :as => :boolean, 
+              = f.input(:remember_me, :inline_label => t("devise.session.remember_me"), 
+                        :label => false, :as => :boolean, 
                         :wrapper_html => {:class => "login-remember"})
 
         #login-button
-          = f.submit "Sign in", :class => "btn btn-primary"
+          = f.submit t("devise.session.sign_in_action"), :class => "btn btn-primary"
         .clearfix
           = render "devise/shared/links"
     #login-form-bottom-egde
