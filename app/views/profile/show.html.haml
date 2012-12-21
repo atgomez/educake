@@ -1,5 +1,6 @@
 - content_for(:page_title) do
-  Account Settings
+  = t("profile.title")
+
 .profile
   .clearfix.toolbar
     = link_to(profile_back_link_text, "/", :class => "brown font18")
@@ -7,7 +8,7 @@
   .clearfix.edit-account
     .form-horizontal.display
       .control-group
-        %label.control-label.field-name= "Email:"
+        %label.control-label.field-name= t("profile.email")
         .controls
           .label-value= @user.email
           = link_to(t("profile.change_password"), "#", :id => "change-password", :class => "form-display-handler")

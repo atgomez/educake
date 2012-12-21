@@ -26,6 +26,7 @@ en:
     teachers: "Teachers"
     students: "Students"    
     password: "Password"
+    old_password: "Old password"
     new_password: "New password"
     confirm_password: "Confirm password"
     select_prompt: "Select one"
@@ -120,9 +121,11 @@ en:
     deleted_successfully: "School %{name} was deleted successfully."
 
   profile:
+    title: "Account Settings"
     change_password: "Change password"
     change_password_success: "Your password was changed successfully"
     change_password_fail: "Cannot change your password"
+    email: "Email:"
     back_link_text:
       teacher: "View Classroom"
       parent: "View Students"
