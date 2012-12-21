@@ -146,9 +146,9 @@ class Goal < ActiveRecord::Base
     previous_due_date = arr_progress_date[current_progress_index - 1]
 
     #
-    # Find the ideal value
+    # Set the ideal value
     #
-    distance_day_of_grade = (grade.due_date - previous_due_date).to_i
+    distance_day_of_grade = (due_date - previous_due_date).to_i
     distance_day_of_progress = (current_due_date - previous_due_date).to_i
     needed_value_for_ideal_goal = current_progress - previous_progress
 
@@ -230,7 +230,7 @@ class Goal < ActiveRecord::Base
     recent_grades.each do |grade|
       total_grade += 1
       actual_value += grade.accuracy
-      ideal_value += self.graph_ideal_value_for_date(grade.due_date)
+      ideal_value += grade.ideal_value
     end
 
     if total_grade > 0
@@ -295,8 +295,8 @@ class Goal < ActiveRecord::Base
 
     if self.association(:progresses).loaded?
       # Search in memory
-      begin_progress = self.progresses.sort(&:due_date).reverse.detect{|p| p.due_date <= date}
-      end_progress = self.progresses.sort(&:due_date).detect{|p| p.due_date >= date}
+      begin_progress = self.progresses.sort_by(&:due_date).reverse.detect{|p| p.due_date <= date}
+      end_progress = self.progresses.sort_by(&:due_date).detect{|p| p.due_date >= date}
     else
       # Search in DB
       begin_progress = self.progresses.where("due_date <= ?", date).order("due_date DESC").first

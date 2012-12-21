@@ -44,14 +44,14 @@ describe Goal do
 	let(:student) { FactoryGirl.create(:student, :teacher => user) }
 
 	let(:goal) { 
-		FactoryGirl.create(:goal, 
+		FactoryGirl.build(:goal, 
 											 :curriculum => curriculum, 
 											 :subject => subject,
 											 :student => student)
 	}
 
 	let(:progress_1) {
-		FactoryGirl.build(:progress, :due_date => Date.parse('01/02/2013'), :accuracy => 45, :goal => goal)
+		progress_1 = FactoryGirl.build(:progress, :due_date => Date.parse('01/02/2013'), :accuracy => 45, :goal => goal)
 	}
 
 	let(:progress_2) {
@@ -63,19 +63,17 @@ describe Goal do
 	}
 
 	context	'with Instance Methods' do 
-		context 'with #name' do
-			it {goal.name.should == "SUBJECT ABC CURRICULUM ABC"}
-		end
-
-		context 'with #update_grade_state' do
-
-			before(:all){
+		before(:each){
 				@goal = goal
 				@goal.build_progresses
 				@goal.progresses[0] = progress_1
 				@goal.progresses[1] = progress_2
 				@goal.progresses[2] = progress_3
 				@goal.save
+				progress_1.save
+				progress_2.save
+				progress_3.save
+				
 
 				# Base on data example
 				@due_dates = ['02/11/2012', '05/11/2012', '06/11/2012', 
@@ -85,22 +83,25 @@ describe Goal do
 
 				@values = [20, 22, 22, 23, 19, 21, 25, 24, 26, 22.78, 23.22, 23.22]
 				@accuracies = [20, 22, 22, 23, 19, 21, 25, 24, 26, 22, 24, 22]
-
+				@grades = []
+				(0...12).each do |i|
+					grade = @goal.build_grade({:due_date => Date.parse(@due_dates[i]), :accuracy => @accuracies[i]}, true)
+					grade = @goal.update_grade_state(grade)
+					grade.save!
+					@grades << grade
+				end
 			}
 
+		context 'with #name' do
+			it {goal.name.should == "SUBJECT ABC CURRICULUM ABC"}
+		end
+
+		context 'with #update_grade_state' do
 			(0...12).each do |idx|
 				
 				context "when checking grade ##{idx}" do
-					before(:each){
-						(0..idx).each do |i|
-							@grade = @goal.grades.build(:due_date => Date.parse(@due_dates[i]), :accuracy => @accuracies[i])
-							@grade.goal = @goal 
-							@goal.update_grade_state(@grade).save!
-						end
-					}
-					
 					it {
-						(@grade.value - @values[idx]).abs.should <= 0.01
+						(@grades[idx].value - @values[idx]).abs.should <= 0.01
 					}
 				end
 			end
@@ -108,36 +109,68 @@ describe Goal do
 		end
 
 		context 'with #due_date_string' do
+			it { goal.due_date_string.should == ::Util.date_to_string(goal.due_date)}
 		end
 
 		context 'with #baseline_date_string' do 
+			it { goal.baseline_date_string.should == ::Util.date_to_string(goal.baseline_date)}
 		end
 
 		context 'with #due_date=' do
+			it { 
+				goal.due_date = '20/11/2013'
+				goal.due_date.should == ::Util.format_date('20/11/2013')
+			}
 		end
 
 		context 'with #baseline_date=' do
+			it { 
+				goal.baseline_date = '20/11/2011'
+				goal.baseline_date.should == ::Util.format_date('20/11/2011')
+			}
 		end
 
 		context 'with #last_grade' do
 		end
 
 		context	'with #on_grade_now?' do
+			it {@goal.on_grade_now?.should == false}
 		end
 
 		context 'with #on_over_trial_days?' do
+			it {@goal.on_over_trial_days?.should == true}
 		end
 
 		context 'with #on_track?' do
+			it {@goal.on_track?.should == false}
 		end
 
 		context 'with #graph_ideal_value_for_date' do
+			context 'in range date' do
+				it {
+					ideal_value = @goal.graph_ideal_value_for_date(Date.parse('12/11/2012'))
+					(ideal_value - 22.99).abs.should <= 0.01
+				}
+			end
+
+			context 'out of range date' do 
+				it {
+					ideal_value = @goal.graph_ideal_value_for_date(Date.parse('12/11/2014'))
+					ideal_value.should == @goal.accuracy
+				}
+
+				it {
+					ideal_value = @goal.graph_ideal_value_for_date(Date.parse('12/11/2010'))
+					ideal_value.should == @goal.baseline
+				}
+			end
 		end
 
 		context 'with #build_progresses' do
-		end
-
-		context 'with #build_grade' do
+			it {
+				goal.build_progresses
+				goal.progresses.length.should == 3
+			}
 		end
 
 		context 'with #parse_csv' do
@@ -285,6 +318,19 @@ describe Goal do
 					invalid_trial_days.save
 					invalid_trial_days.errors.should have_at_least(1).error_on(:trial_days_actual)
 				}
+			end
+
+			context 'with validate goal name' do
+				before(:each){
+					@goal = goal
+					@goal.save
+					@duplicated_goal = goal.clone
+					@duplicated_goal.id = nil
+					@duplicated_goal.save
+				}
+				it{	@duplicated_goal.errors.should have_at_least(1).error_on(:due_date)	}
+				it{	@duplicated_goal.errors.should have_at_least(1).error_on(:subject_id)	}
+				it{	@duplicated_goal.errors.should have_at_least(1).error_on(:curriculum_id)	}
 			end
 	 	end
 	end

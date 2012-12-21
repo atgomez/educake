@@ -53,6 +53,9 @@ describe ChartsController do
         @goal.progresses[1] = progress_2
         @goal.progresses[2] = progress_3
         @goal.save
+        progress_1.save
+        progress_2.save
+        progress_3.save
         get 'goal_chart', :user_id => user.id, :goal_id => @goal.id
         response.should be_success
       end
