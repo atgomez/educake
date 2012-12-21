@@ -25,7 +25,7 @@ en:
     on_track: "On-track"
     not_on_track: "Not on-track"    
     search_place_holder: "Search name"
-    search_result_for: "Search result for: %{query}"
+    search_result_for: "Search results for: %{query}"
     teachers: "Teachers"
     students: "Students"    
     password: "Password"
@@ -117,6 +117,13 @@ en:
       phone: "Phone (opt)"
       home: "School Home"
       all_teachers: "All Teachers"
+      reset_password: "Reset Password"
+      reset_password_confirm: "Do you want to reset password of this user ?"
+      reset_password_description: "This will send a reset password email to the user."
+      block_confirm: "Are you sure you want to block this user ?"
+      unblock_confirm: "Are you sure you want to unblock this user ?"
+      block_account: "Block Account"
+      block_account_description: "User will be locked out of their account until reinstated."
 
   user:
     created_successfully: "User %{name} was created successfully."
@@ -127,7 +134,7 @@ en:
     phone_label: "Phone:"
     view_as_title: "Now viewing as"
     back_to_super_admin: "Back to viewing as SuperAdmin."
-    welcome_label: "Welcome,"
+    welcome_label: "Welcome,"    
 
   student:
     created_successfully: "Student %{name} was created successfully."
@@ -156,13 +163,17 @@ en:
     add: "Add School"
     edit: "Edit School"
     name: "School Name"
+    create_user: "Create User"
     admin_info: "Admin Info"
+    user_info: "User Info"
+    school_info: "School Info"
     add_user: "Add User"
     admin: "Admin"
     label: "School"
     joined: "Joined"
     role: "Role"
     user_name: "Name"
+    account: "Account"
 
   profile:
     title: "Account Settings"

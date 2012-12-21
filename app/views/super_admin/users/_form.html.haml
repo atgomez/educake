@@ -1,5 +1,6 @@
-= simple_form_for([:super_admin, @user], :html => {:class => "user-form form-horizontal", :id => "user_form"}, :validate => true) do |f|
-  - title_user = "User Info"
+= simple_form_for([:super_admin, @user], :html => {:class => "user-form form-horizontal", :id => "user_form"}, 
+                  :validate => true) do |f|
+  - title_user = t("school.user_info")
   - if notification = f.error_notification
     .alert.alert-error.fade.in
       %a{:class => "close", 'data-dismiss' => "alert", :href => "#"} &times;
@@ -16,18 +17,18 @@
 
       = hidden_field_tag :back, @back
       = hidden_field_tag :school_id, @school_id
-      = link_to "Cancel", back, :class => "btn"
+      = link_to t("common.cancel"), back, :class => "btn"
       - if f.object.new_record?
-        = f.button :submit, :value => "Create User"
+        = f.button :submit, :value => t("school.create_user")
       - else
         - if @user.is?(:admin) 
           = hidden_field_tag "email_admin", @user.email
-          - title_user = "Admin Info"
-          = f.button :submit, :value => "Save", :id  => "btn_admin"
+          - title_user = t("school.admin_info")
+          = f.button :submit, :value => t("common.save"), :id  => "btn_admin"
         - else
-          = f.button :submit, :value => "Save"
+          = f.button :submit, :value => t("common.save")
   .form-inputs
-    .title School Info
+    .title= t("school.school_info")
     .school-info
       = f.association(:school, :collection => School.order(:name),
                 :selected => @school ? @school.id : @school_id,
@@ -53,18 +54,22 @@
       
 - unless @user.new_record?
   .account
-    .title Account 
+    .title= t("school.account") 
     .reset_password
-      = link_to "Reset Password", reset_password_super_admin_user_path(@user), :data => {:confirm => "Do you want to reset your password?"}, :method => :put, :remote => true
-      %p This will send a reset password email to the user.
+      = link_to(t("admin.teacher.reset_password"), reset_password_super_admin_user_path(@user), 
+                :data => {:confirm => t("admin.teacher.reset_password_confirm")}, 
+                :method => :put, :remote => true)
+      %p= t("admin.teacher.reset_password_description")
     .blocked
       = hidden_field_tag "check_locked", @user.is_blocked
       - mgs = ""
       - if @user.is_blocked
-        - mgs = "Do you want to unlock this user? Are you sure?"
+        - mgs = t("admin.teacher.unblock_confirm")
       - else
-        - mgs = "Do you want to lock this user? Are you sure?"
-      = link_to check_box_tag("is_blocked", 1, 1), blocked_account_super_admin_user_path(@user)+"?is_blocked="+(!@user.is_blocked).to_s, :data => { :confirm => mgs }, :method => :put, :remote => true, :title => "Block Account" 
-      
-      %span.ckb-label Block Account
-      %p.text-block User will be locked out of their account until reinstated.
+        - mgs = t("admin.teacher.block_confirm")
+      = link_to(check_box_tag("is_blocked", 1, 1), 
+                blocked_account_super_admin_user_path(@user, :is_blocked => (!@user.is_blocked).to_s), 
+                :data => { :confirm => mgs }, :method => :put, :remote => true, 
+                :title => t("admin.teacher.block_account"))
+      %span.ckb-label= t("admin.teacher.block_account")
+      %p.text-block= t("admin.teacher.block_account_description")
