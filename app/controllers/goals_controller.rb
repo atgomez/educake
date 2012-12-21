@@ -188,7 +188,7 @@ class GoalsController < ApplicationController
         end
         if invalid_grade
           flash[:notice] = nil
-          flash[:alert] = Grade.show_errors(I18n.t('grade.save_failed'), errors) 
+          flash[:alert] = show_errors(I18n.t('grade.save_failed'), errors) 
         end
       end
     end
@@ -229,5 +229,16 @@ class GoalsController < ApplicationController
     grades = goal.grades.order('due_date ASC').load_data(filtered_params)
     render :partial => "shared/load_grades", :locals => {:grades => grades}
   end 
+
+  protected
+    def show_errors(message, errors)
+      html = ""
+      msgs = errors.slice(0, 4)
+      html += "<div>"+message+"</div>"
+      msgs.map do |msg|
+        html += "<div>"+msg+"</div>"
+      end
+      return html.html_safe
+    end 
   
 end

@@ -38,21 +38,10 @@ class Grade < ActiveRecord::Base
   scope :computable, where('is_unused = ?', false)
 
   # CALLBACK
-  before_update :update_grade_state
   before_save :validate_due_date
   
   # CLASS METHODS
   class << self
-    def show_errors(message, errors)
-      html = ""
-      msgs = errors.slice(0, 4)
-      html += "<div>"+message+"</div>"
-      msgs.map do |msg|
-        html += "<div>"+msg+"</div>"
-      end
-      return html.html_safe
-    end 
-
     def load_data(params = {})
       paging_info = parse_paging_options(params)
       # Paginate with Will_paginate.
@@ -99,10 +88,6 @@ class Grade < ActiveRecord::Base
   
   
   protected
-  
-    def update_grade_state
-      self.goal.update_grade_state(self)
-    end
 
     def validate_due_date
       if (self.goal.baseline_date > self.due_date)

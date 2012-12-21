@@ -7,6 +7,7 @@ FactoryGirl.define do
     factory :valid_goal, :class => Goal do
       curriculum
       subject
+      student
     end
 
     # Build Goal with two grades
