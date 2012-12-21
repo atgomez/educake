@@ -8,23 +8,24 @@
         %strong.name
           = @student.full_name
         .birthday
-          %span= "Born on:"
+          %span= t("common.born_on_label")
           %span= @student.birthday_string
         .gender
-          %span= "Gender:"
+          %span= t("common.gender_label")
           %span= @student.gender_string
         .goal
-          %span= "Goals:"
+          %span= t("student.goal_label")
           - if @student.goals.length <= 0
-            %span= "no goal"
+            %span= t("student.no_goal")
           - else
             %span= @student.goals.length
     - if (!@user.is?(:parent))
       .action-link-container.pull-right
         .clearfix.action-link
-          = link_to "Edit", url_for(:controller => "students", :action => 'edit', :id => @student.id, :user_id => @user.id, :admin_id => @admin)
+          = link_to(t("common.edit"), url_for(:controller => "students", :action => 'edit', 
+                :id => @student.id, :user_id => @user.id, :admin_id => @admin))
         .clearfix.action-link
-          = link_to "Users", "#", :id => "goto-users"
+          = link_to t("student.invitation_anchor"), "#", :id => "goto-users"
 
   = hidden_field_tag "student_id", params[:id]
   = hidden_field_tag "user_id", params[:user_id]
@@ -32,7 +33,7 @@
 
 - unless @goals.empty?
   .pull-right
-    = link_to "Export", "#", :id => "export-button", :class => "btn export", "data-toggle" => "modal"
+    = link_to t("common.export"), "#", :id => "export-button", :class => "btn export", "data-toggle" => "modal"
   .clearfix
   %center.clearfix
     = hidden_field_tag "check_is_add_grade", @data.empty?
@@ -47,8 +48,9 @@
   .grade
     #render_add_grade
     - if @goals.size > 0
-      .pull-right= link_to " Add Grade", new_grade_goals_path, :remote => true, :class => "btn", :id => "add-grade"
-      .pull-right= link_to " Import Grades", initial_import_grades_goals_path, :remote => true, :class => "btn", :id => "import-grade"
+      .pull-right= link_to t("grade.add"), new_grade_goals_path, :remote => true, :class => "btn", :id => "add-grade"
+      .pull-right= link_to(t("grade.import.title"), initial_import_grades_goals_path, 
+                            :remote => true, :class => "btn", :id => "import-grade")
     .clearfix
     .line
     #content-grade.clearfix
@@ -59,12 +61,15 @@
   .users.student-users
     - if (!@user.is?(:parent))
       .action-container
-        = link_to " Invite a user", new_invitation_path(:user_id => @user.id), :remote => true, :class => "icon-plus-sign add invite-user"
+        = link_to(" " + t("invitation.new_title"), new_invitation_path(:user_id => @user.id), 
+                  :remote => true, :class => "icon-plus-sign add invite-user")
 
     -# Place holder for invitation form
     #render_invite_user.modal.hide.fade{"data-backdrop" => "static"}
       
     #content-users
-      = render :partial => "shared/students/view_invited_user", :locals => {:invited_users => @invited_users, :read_only => @user.is?(:parent)}
+      = render( :partial => "shared/students/view_invited_user", 
+                :locals => {:invited_users => @invited_users, 
+                            :read_only => @user.is?(:parent)})
 
   = render "export", :all_students => @all_students

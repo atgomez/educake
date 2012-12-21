@@ -20,6 +20,7 @@ en:
     edit: "Edit"
     delete: "Delete"
     import: "Import"
+    export: "Export"
     search: "Search"
     on_track: "On-track"
     not_on_track: "Not on-track"    
@@ -85,7 +86,7 @@ en:
     created_successfully: "Created grade successfully"
     import_successfully: "Imported .csv file for grades successfully"
     save_failed: "There are some first invalid grades on:"
-    add: "Add a Grade"
+    add: "Add Grade"
     accuracy: "% Accuracy"
     note: "Notes"
     date: "Date"
@@ -97,7 +98,7 @@ en:
       student: "Student:"
 
   invitation:
-    new_title: "Invite a User"
+    new_title: "Invite a user"
     edit_title: "Edit Invitation"
 
   admin:
@@ -113,6 +114,7 @@ en:
       classroom: "Classroom (opt)"
       phone: "Phone (opt)"
       home: "School Home"
+      all_teachers: "All Teachers"
 
   user:
     created_successfully: "User %{name} was created successfully."
@@ -124,6 +126,7 @@ en:
     view_as_title: "Now viewing as"
     back_to_super_admin: "Back to viewing as SuperAdmin."
     welcome_label: "Welcome,"
+
   student:
     created_successfully: "Student %{name} was created successfully."
     updated_successfully: "Student %{name} was updated successfully."
@@ -132,8 +135,14 @@ en:
     goal_label: "Goals:"
     no_goal: "no goal"
     add: "Add Student"
+    edit: "Edit Student"
+    new: "New Student"
     birthday: "DOB"
     edit_goal: "Edit Goal"
+    invitation_anchor: "Users"
+    teacher_home: "Teacher Home"
+    all_students: "All Students"
+    all_students_of: "All %{user}'s Students"
 
   school:
     error_zipcode_too_long: "Zip code with %{count} characters is the maximum allowed"
@@ -155,11 +164,11 @@ en:
       super_admin: "Home"
 
   export:
-    label: "Export"
     export_data: "Export data for"
     individual_student: "Individual Student"
     classroom: "Classroom"
     school: "School"
+    student: "Student"
 
   mail:
     user:

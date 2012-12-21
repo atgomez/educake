@@ -1,5 +1,5 @@
 .student
-  %h3 Editing student
+  %h3= t("student.edit")
   #error_edit_student
   #render_invite_user.modal.hide.fade
   %center= render 'shared/students/form'
@@ -7,7 +7,7 @@
   .goal-section.grade    
     .tabbable      
       .grade.goal-container
-        = link_to(" Add a goal", new_goal_path(:student_id => @student.id), :remote => true,
+        = link_to(" " + t("goal.add"), new_goal_path(:student_id => @student.id), :remote => true,
                     :class => "icon-plus-sign", :id => "add-goal")
         #content-grade.clearfix
           = render(:partial => "shared/students/view_goal", :locals => {:goals => @goals, :student => @student})
@@ -16,6 +16,7 @@
   .invited-user
     .tabbable      
       .grade
-        = link_to " Invite a user", new_invitation_path(:user_id => @user.id), :remote => true, :class => "icon-plus-sign add"
+        = link_to(" " + t("invitation.new_title"), new_invitation_path(:user_id => @user.id), 
+                  :remote => true, :class => "icon-plus-sign add")
         = render "shared/students/view_invited_user", :invited_users => @student.sharings
         

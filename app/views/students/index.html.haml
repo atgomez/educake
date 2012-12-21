@@ -6,15 +6,19 @@
     - @teacher = @user
     .show-student
       .clearfix.toolbar
-        = link_to "All Teachers", admin_teachers_path(:user_id => @user.parent, :admin_id => @admin), :class => "brown font18"
-        = render 'shared/search_box', :action => "/admin/teachers/search", :placeholder => "Search name"
+        = link_to(t("admin.teacher.all_teachers"), 
+                  admin_teachers_path(:user_id => @user.parent, :admin_id => @admin), 
+                  :class => "brown font18")
+        = render 'shared/search_box', :action => "/admin/teachers/search", :placeholder => t("common.search_place_holder")
       = render('/shared/teachers/teacher_box')
 .teacher
   .clearfix.toolbar
     - if @all_students.count > @students.length
-      = link_to "All Students", all_students_students_path(:user_id => @user.id, :admin_id => @admin),  :class => "brown font18"
+      = link_to(t("student.all_students"), all_students_students_path(:user_id => @user.id, :admin_id => @admin),
+                :class => "brown font18")
     - if (!@user.is?(:parent))
-      = link_to 'Add Student', new_student_path(:back_link => students_path(:user_id => @user, :admin_id => @admin), :user_id => @user.id), :class => 'btn bg-brown white pull-right'
+      = link_to(t("student.add"), new_student_path(:back_link => students_path(:user_id => @user, :admin_id => @admin), 
+                :user_id => @user.id), :class => 'btn bg-brown white pull-right')
   - unless @students.blank?
     #pagination_area
       = render('shared/students/list', :current_page => @current_page, :students => @students, :user => @user)
@@ -22,7 +26,7 @@
   %center.clearfix
   .pull-right
     - unless @all_students.blank?
-      = link_to "Export", "#", :id => "export-button", :class => "btn export", "data-toggle" => "modal"
+      = link_to t("common.export"), "#", :id => "export-button", :class => "btn export", "data-toggle" => "modal"
   %center.clearfix
     - page = params[:page_id] || 1
     %iframe{:frameborder => "0", :height => @height, :src => url_for(user_chart_charts_path(:user_id => @user, :admin_id => @admin)), :width => @width}

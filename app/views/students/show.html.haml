@@ -7,11 +7,11 @@
     .show-student
       .clearfix.toolbar
         = link_to "All Teachers", admin_teachers_path(:user_id => @user.parent, :admin_id => @admin), :class => "brown font18"
-        = render 'shared/search_box', :action => "/admin/teachers/search", :placeholder => "Search name"
+        = render 'shared/search_box', :action => "/admin/teachers/search", :placeholder => t("common.search_place_holder")
       = render('/shared/teachers/teacher_box')
 .show-student
-  - text = "All students"
+  - text = t("student.all_students")
   - if @current_user.is?(:admin) || @current_user.is_super_admin?
-    - text = "All #{@user.full_name}'s Students"
+    - text = t("student.all_students_of", :user => @user.full_name)
   = link_to text, students_path(:user_id => @user.id, :admin_id => @admin),  :class => "brown font18"
 = render('details', :back_link => "/students/#{@student.id}?user_id=#{@user.id}&admin_id=#{@admin}")

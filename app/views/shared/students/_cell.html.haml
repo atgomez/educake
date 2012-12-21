@@ -1,9 +1,6 @@
 .avatar-container.thumbnail
   %a{:href => url}
-    - unless student.photo_url.blank?
-      = image_tag(student.photo_url, :class => "student-avatar")
-    - else
-      .default-avatar
+    = image_tag(student.photo_url, :class => "student-avatar")
 .info.well
   %strong.name
     = link_to(student.full_name, url)
@@ -27,4 +24,3 @@
       .track-indicator.pull-left{:class => "on-track", :title => t("common.on_track")}
     - elsif status == 2
       .track-indicator.pull-left{:title => t("common.not_on_track")}
-

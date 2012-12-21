@@ -1,28 +1,28 @@
 #export-dialog.modal.hide.fade{:tabindex => "-1"}
   .modal-header
     %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} ×
-    %h3#myModalLabel Export
+    %h3= t("common.export")
   = form_tag('/export/relay', :method => :get) do
     .modal-body
       %table
         %tr
           %td
-            = label_tag "Export data for"
+            = label_tag t("export.export_data")
           %td
             .checkbox-group
               = radio_button_tag "data", "individual", true, :class => "export_data_selector"
-              = label_tag :data_individual, "Individual Student"
+              = label_tag :data_individual, t("export.individual_student")
             - if (!@user.is?(:parent))
               .checkbox-group.margin-left
                 = radio_button_tag "data", "classroom", false, :class => "export_data_selector"
-                = label_tag :data_classroom, "Classroom"
+                = label_tag :data_classroom, t("export.classroom")
                 = hidden_field_tag "teacher_id", @user.id
         %tr
           %td
-            = Student
+            = t("export.student")
           %td
             - seleted_id = (@student ? @student.id : nil)
             = select_tag("student_selection", options_from_collection_for_select(all_students, "id", "full_name", seleted_id), :name => :student_id)
     .modal-footer
-      %button.btn{"aria-hidden" => "true", "data-dismiss" => "modal"} Cancel
-      %button.btn.btn-primary Export
+      %button.btn{"aria-hidden" => "true", "data-dismiss" => "modal"}= t("common.cancel")
+      %button.btn.btn-primary= t("common.export")
