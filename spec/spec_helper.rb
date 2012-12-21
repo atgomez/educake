@@ -46,6 +46,7 @@ RSpec.configure do |config|
 
   # Config database_cleaner
   config.before(:suite) do
+    SpecUtil.cleanup
     DatabaseCleaner.strategy = :truncation, {:except => %w[roles]}
     DatabaseCleaner.clean
     load(Rails.root.join("db", "seeds.rb"))
@@ -57,5 +58,12 @@ RSpec.configure do |config|
 
   config.after(:each) do
     DatabaseCleaner.clean
+  end
+end
+
+module SpecUtil
+  def self.cleanup
+    puts "[SpecUtil] Begin cleaning up..."
+    FileUtils.rm_rf("tmp/*")
   end
 end
