@@ -19,30 +19,31 @@
 
 require 'spec_helper'
 
-let(:curriculum) {
-	curriculum = FactoryGirl.create(:curriculum)
-	curriculum.name = 'CURRICULUM ABC'
-	curriculum.save
-	curriculum
-}
-let(:subject) {
-	subject = FactoryGirl.create(:subject)
-	subject.name = 'SUBJECT ABC'
-	subject.save
-	subject
-}
-let(:user) {FactoryGirl.create(:teacher)}
-let(:student) { FactoryGirl.create(:student, :teacher => user) }
-
-let(:goal) { 
-	FactoryGirl.create(:goal_with_grades, 
-										 :curriculum => curriculum, 
-										 :subject => subject,
-										 :student => student)
-}
-
-
 describe Grade do
+  let(:curriculum) {
+    curriculum = FactoryGirl.create(:curriculum)
+    curriculum.name = 'CURRICULUM ABC'
+    curriculum.save
+    curriculum
+  }
+
+  let(:subject) {
+    subject = FactoryGirl.create(:subject)
+    subject.name = 'SUBJECT ABC'
+    subject.save
+    subject
+  }
+  
+  let(:user) {FactoryGirl.create(:teacher)}
+  let(:student) { FactoryGirl.create(:student, :teacher => user) }
+
+  let(:goal) { 
+    FactoryGirl.create(:goal_with_grades, 
+                       :curriculum => curriculum, 
+                       :subject => subject,
+                       :student => student)
+  }
+
   context	'with Instance Methods' do
   end
 
