@@ -10,6 +10,21 @@ en:
     error_page_not_found: "Page not found!"
     error_photo_file_type: "File must be of file type .jpeg, .jpg or .png"
     confirm_message: "Are you sure ?"
+    save: "Save"
+    saving: "Saving..."
+    cancel: "Cancel"
+    more: "More..."
+    on_track: "On-track"
+    not_on_track: "Not on-track"
+    back: "Back"
+    search_place_holder: "Search name"
+    search_result_for: "Search result for: %{query}"
+    teachers: "Teachers"
+    students: "Students"
+    send: "Send"
+    password: "Password"
+    new_password: "New password"
+    confirm_password: "Confirm password"
 
     gender:
       male: "Male"
@@ -55,6 +70,11 @@ en:
       create_failed: "Could not create the new teacher."
       not_found: "Could not find the teacher."
       updated_failed: "Could not updated the teacher."
+      add: "Add Teacher"
+      edit: "Edit Teacher"
+      classroom: "Classroom (opt)"
+      phone: "Phone (opt)"
+      home: "School Home"
 
   user:
     created_successfully: "User %{name} was created successfully."
@@ -62,9 +82,10 @@ en:
     error_not_found: "Sorry, could not find this user. The user may be blocked. Please contact the administrator."
 
   student:
-    created_successfully: "Student %{name} was created successfully"
+    created_successfully: "Student %{name} was created successfully."
     updated_successfully: "Student %{name} was updated successfully."
     not_available: "Could not find the student."
+    error_duplicated_name: "Student's name should not be duplicated"
 
   school:
     error_zipcode_too_long: "Zip code with %{count} characters is the maximum allowed"
@@ -83,11 +104,44 @@ en:
       admin: "View Teachers"
       super_admin: "Home"
 
+  export:
+    label: "Export"
+    export_data: "Export data for"
+    individual_student: "Individual Student"
+    classroom: "Classroom"
+    school: "School"
+
   mail:
     user:
       invitation_confirm_subject: "Confirmation for inviting"
       reset_password_subject: "Confirmation for inviting"
       inform_block_status_subject: "Informing about your status account"
+    welcome: "Welcome %{name}!"
+    hello: "Hello %{name}!"
+    school_end: "school."
+    new_user:
+      admin: "You are the admin at"
+      normal_user: "You joined at"
+      confirm_link_instruction: "You can confirm your account email through the link below:"
+      confirm: "Confirm my account"
+    password:
+      reset_warning: "Someone has requested a link to change your password, and you can do this through the link below."
+      reset_ignore: "If you didn't request this, please ignore this email."
+      reset_instruction: "Your password won't change until you access the link above and create a new one."
+    lock:
+      warning: "Your account has been locked due to an excessive amount of unsuccessful sign in attempts."
+      instruction: "Click the link below to unlock your account:"
+
+  devise:
+    resend_confirmation: "Resend confirmation instructions"
+    confirmation:
+      change_password_title: "Please change your password"
+    password:
+      change_password_title: "Change your password"
+      forgot_password_title: "Forgot your password?"
+      send_reset_password: "Send me reset password instructions"
+    change_password_action: "Change my password"
+    unlock_action: "Unlock my account"
 
   activerecord:
     errors:

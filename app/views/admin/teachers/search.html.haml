@@ -5,19 +5,19 @@
 .admin.teacher.search
   %h3.school-name= current_user.school.try(:name)
   .search-header.clearfix
-    %h4.search-title= "Search result for: #{params[:query]}"
-    = render 'shared/search_box', :action => "/admin/teachers/search", :placeholder => "Search name"
+    %h4.search-title= t("common.search_result_for", :query => params[:query])
+    = render 'shared/search_box', :action => "/admin/teachers/search", :placeholder => t("common.search_place_holder")
 
   .teachers-result.result-container
     - unless @teachers.blank?
-      %h5= "Teachers"
+      %h5= t("common.teachers")
       #teachers-list
         = render('teachers_list', :teachers => @teachers, 
                   :pagination_params => {:inner_window  => 2, :outer_window => 1})
 
   .students-result.result-container
     - unless @students.blank?
-      %h5= "Students"
+      %h5= t("common.students")
       #students-list
         = render('shared/students/list', :students => @students, 
                   :pagination_params => {:inner_window  => 2, :outer_window => 1})

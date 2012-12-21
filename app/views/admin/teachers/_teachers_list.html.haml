@@ -29,14 +29,14 @@
                       :class => "student-avatar", 
                       :id => "teacher-student-#{teacher.id}-#{student.id}")
               - if student_count > showed_student_num
-                = link_to("More...", all_students_students_path(:user_id => teacher.id, :admin_id => @user))
+                = link_to(t("common.more"), all_students_students_path(:user_id => teacher.id, :admin_id => @user))
       - unless params[:query]
         .track-indicator-container
           - is_track = teacher.check_on_track?
           - if is_track == 1
-            .track-indicator{:class => "on-track", :title => "On-track"}
+            .track-indicator{:class => "on-track", :title => t("common.on_track")}
           - elsif is_track == 2
-            .track-indicator{:title => "Not on-track"}
+            .track-indicator{:title => t("common.not_on_track")}
       .clearfix
     - unless params[:query]
       - if (idx + 1) % 4 == 0

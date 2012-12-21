@@ -52,19 +52,6 @@ class Admin::TeachersController < Admin::BaseAdminController
   def all
     if find_user
       @teachers = @user.children.teachers.unblocked.order(User::DEFAULT_ORDER)
-      @series = []
-      @teachers.each do |teacher|
-        teacher_status = teacher.teacher_status
-        unless teacher_status.empty?
-          @series << {
-            :name => teacher.full_name,
-            :data => teacher_status,
-            :yAxis => 2
-          }
-          # Exit the loop, because we only need to detect there is data for chart or not.
-          break
-        end
-      end
     end
   end
 
