@@ -44,6 +44,7 @@ class Student < ActiveRecord::Base
     :message => I18n.t("student.error_duplicated_name") }
   validates_format_of :first_name, :with => /^[^0-9!@#\$%\^&*+_=]+$/
   validates_format_of :last_name, :with => /^[^0-9!@#\$%\^&*+_=]+$/
+  before_validation :valid_birthday?
 
   # validate :validate_type_of_image
   
@@ -176,9 +177,9 @@ class Student < ActiveRecord::Base
   # Override property setter.
   def birthday=(date)
     if date.is_a?(String)
-      date = ::Util.format_date(date)
-      if date
-        date = date.to_date
+      format_date = ::Util.format_date(date)
+      if format_date
+        date = format_date.to_date
       end
     end
     self.send(:write_attribute, :birthday, date)
@@ -384,4 +385,10 @@ class Student < ActiveRecord::Base
     end
     series.to_json
   end
+
+  protected
+    
+    def valid_birthday?
+      self.errors.add(:birthday, :invalid) unless ::Util.try_to_parse_date(self.birthday)
+    end
 end

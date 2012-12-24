@@ -63,6 +63,15 @@ module Util
         ""
       end
     end
+
+    def try_to_parse_date(date)
+      return true if date.is_a?(Date)
+      begin
+        format_date = ::Util.format_date(date)
+      rescue ArgumentError
+        false
+      end
+    end
     
     def compare_decimals(num1, num2)
       return 0 if num1.nil? && num2.nil?

@@ -281,3 +281,7 @@ en:
             due_date:
               must_eq_greater_than_baseline: "must be equal or greater than baseline date"
               must_eq_less_than_goal_due_date: "must be less than or equal to goal due date"
+        student:
+          attributes:
+            birthday:
+              invalid: "must be in format MM-DD-YYYY"
