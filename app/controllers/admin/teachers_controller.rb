@@ -14,7 +14,7 @@ class Admin::TeachersController < Admin::BaseAdminController
         @all_teachers_collection = []
         @first_teacher = nil
 
-        @all_teachers.each do |teacher|
+        @all_teachers.find_each do |teacher|
           if series.blank?
             # Only need ONE serie to detect the width and height of the chart.
             teacher_status = teacher.teacher_status
@@ -100,7 +100,11 @@ class Admin::TeachersController < Admin::BaseAdminController
       status_code = 201
 
       begin
-        @teacher = @user.children.find params[:id]
+        @teacher = @user.children.teachers.unblocked.find_by_id(params[:id])
+        if @teacher.blank?
+          render_page_not_found(I18n.t("user.error_not_found"))
+          return
+        end
         @teacher.skip_password!
         if @teacher.update_attributes(params[:user])
           status_code = 201
@@ -150,6 +154,10 @@ class Admin::TeachersController < Admin::BaseAdminController
   def get_students
     if find_user
       teacher = @user.children.teachers.unblocked.find_by_id(params[:teacher_id])
+      if teacher.blank?
+        render_page_not_found(I18n.t("user.error_not_found"))
+        return
+      end
       @students = teacher.accessible_students
       render :partial => 'admin/teachers/get_students'
     end
@@ -158,10 +166,15 @@ class Admin::TeachersController < Admin::BaseAdminController
   def destroy
     if find_user
       teacher = @user.children.teachers.unblocked.find_by_id(params[:id])
-      if teacher
-        teacher.destroy
+      if teacher.blank?
+        render_page_not_found(I18n.t("user.error_not_found"))
+        return
+      end
+
+      if teacher.destroy
+        flash[:notice] = I18n.t("user.deleted_successfully", :name => teacher.full_name)
       else
-        flash[:alert] = I18n.t("user.error_not_found")
+        flash[:alert] = I18n.t("user.delete_failed")
       end
       
       redirect_to admin_teachers_path(:user_id => @user.id, :admin_id => @user.id)

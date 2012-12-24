@@ -154,7 +154,7 @@ class ApplicationController < ActionController::Base
           render("shared/error", options)
         }
         
-        format.json {
+        format.any(:json, :js) {
           options.merge!({:json => message})
           render(options)
         }

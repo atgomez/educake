@@ -128,6 +128,8 @@ en:
   user:
     created_successfully: "User %{name} was created successfully."
     updated_successfully: "User %{name} was updated successfully."
+    deleted_successfully: "User %{name} was removed successfully."
+    delete_failed: "Cannot delete the user"
     error_not_found: "Sorry, could not find this user. The user may be blocked. Please contact the administrator."
     email_label: "Email:"
     classroom_label: "Classroom:"
