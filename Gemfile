@@ -11,8 +11,7 @@ gem 'pg'
 # in production environments by default.
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
-  gem 'coffee-rails', '~> 3.2.1'
-  gem 'therubyracer', :platforms => :ruby
+  gem 'coffee-rails', '~> 3.2.1'  
   gem 'uglifier', '>= 1.0.3'
 end
 
@@ -57,6 +56,8 @@ group :development do
 
   # For models annotation
   gem 'annotate', ">=2.5.0"
+  gem 'therubyracer', :platforms => :ruby
+  gem 'libv8', '>= 3.11.8.4'
 end
 
 group :development, :test do
