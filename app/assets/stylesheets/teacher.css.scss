@@ -85,7 +85,7 @@ $color-font: #E17C25;
 
   .student-container, .teacher-container{
     padding-top: 7px;
-    padding-bottom: 40px;
+    padding-bottom: 25px;
     padding-left: 10px;
     border-bottom: 1px solid #ddd;
     position: relative;
@@ -125,6 +125,7 @@ $color-font: #E17C25;
       height: 68px;
       width: 170px;
       margin-left: 2px;
+      margin-bottom: 10px;
       float: left;
       color: #6D6E71;
       padding-top: 0;

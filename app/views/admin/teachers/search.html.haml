@@ -12,7 +12,7 @@
     - unless @teachers.blank?
       %h5= t("common.teachers")
       #teachers-list
-        = render('teachers_list', :teachers => @teachers, 
+        = render('teachers_list', :teachers => @teachers, :big_teacher_cell => true,
                   :pagination_params => {:inner_window  => 2, :outer_window => 1})
 
   .students-result.result-container
