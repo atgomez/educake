@@ -17,27 +17,30 @@ form#student-form {
          }
         
       }
-      span {
-        #student_gender_true {
-          float:left;
-          margin-right: 10px;
-        }
-        .collection_radio_buttons {
-          float: left;
-          margin-right: 20px;
-        }
-        #student_gender_false {
-          float: left;
-          margin-right: 10px;
-        }
-      }
     } 
     .control-group.file {
       width: 198px;
     }
   }
-  .gender {
-    margin-right: 68px;
+
+  .gender-container {
+    /*margin-right: 68px;*/
+    span{
+      margin-right: 10px;
+    }
+    input{
+      float: none !important;
+      margin-top: 0 !important;
+      margin-bottom: 0 !important;
+      margin-left: 0 !important;
+      margin-right: 5px !important;
+    }
+
+    label{
+      display: inline-block !important;
+      float: none !important;
+      width: auto !important;
+    }
   }
 
   .crop_image { width: 200px; height: 200px; overflow: hidden; }
