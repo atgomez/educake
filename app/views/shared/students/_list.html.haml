@@ -16,7 +16,8 @@
           .teacher-student.hide.clearfix{:id => "student-teachers-#{student.id}"}
             - teachers = student.sponsoring_teachers.unblocked
             - teachers.each do |teacher|
-              = link_to admin_teacher_path(teacher), :title => teacher.full_name, :rel => "tooltip", :class => "teacher-link" do 
+              - teacher_url = students_path(:user_id => teacher.id, :admin_id => @user.id)
+              = link_to teacher_url, :title => teacher.full_name, :rel => "tooltip", :class => "teacher-link" do 
                 = image_tag(teacher.photo_url, 
                     :alt => teacher.full_name,
                     :class => "teacher-avatar", 
