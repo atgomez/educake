@@ -13,6 +13,8 @@ group :assets do
   gem 'sass-rails',   '~> 3.2.3'
   gem 'coffee-rails', '~> 3.2.1'  
   gem 'uglifier', '>= 1.0.3'
+  gem 'therubyracer', :platforms => :ruby
+  gem 'libv8', '>= 3.11.8.4'
 end
 
 gem "twitter-bootstrap-rails"
@@ -55,9 +57,7 @@ group :development do
   gem "hpricot", ">= 0.8.5"
 
   # For models annotation
-  gem 'annotate', ">=2.5.0"
-  gem 'therubyracer', :platforms => :ruby
-  gem 'libv8', '>= 3.11.8.4'
+  gem 'annotate', ">=2.5.0"  
 end
 
 group :development, :test do
