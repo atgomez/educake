@@ -58,6 +58,12 @@ class Student < ActiveRecord::Base
     where(:teacher_id => teacher_ids)
   }
 
+  # CALL BACK
+  before_post_process :photo?
+  def photo?
+    !(photo_content_type =~ /^image.*/).nil?
+  end
+
   # CLASS METHODS
 
   class << self

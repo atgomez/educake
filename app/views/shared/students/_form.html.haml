@@ -37,6 +37,9 @@
         = image_tag((f.object.new_record? ? "missing.png" : f.object.photo.url(:medium)), 
                     :size => "200x200", :id => 'upload-image')
       = f.input :photo, :as => :file, :label => false
+      .control-group.error
+        .controls
+          = f.error :photo_content_type
       = hidden_field_tag "back_link", back_link
       = hidden_field_tag "user_id", params[:user_id]
       = hidden_field_tag "admin_id", params[:admin_id]  
