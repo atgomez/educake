@@ -66,9 +66,10 @@ class Grade < ActiveRecord::Base
       end
   end # End class method.
 
-  def condition_goal 
-    !goal_id.nil?
-  end
+  # Comment this 'cuz unused method
+  # def condition_goal 
+  #   !goal_id.nil?
+  # end
    
   def due_date_string
     ::Util.date_to_string(self.due_date)
