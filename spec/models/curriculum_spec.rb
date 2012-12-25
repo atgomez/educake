@@ -2,10 +2,16 @@
 #
 # Table name: curriculums
 #
-#  id         :integer          not null, primary key
-#  name       :string(255)      not null
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id                  :integer          not null, primary key
+#  curriculum_core_id  :integer          not null
+#  subject_id          :integer          not null
+#  curriculum_grade_id :integer          not null
+#  curriculum_area_id  :integer          not null
+#  standard            :integer          not null
+#  description1        :string(255)      not null
+#  description2        :text             not null
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
 #
 
 require 'spec_helper'

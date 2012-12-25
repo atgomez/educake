@@ -4,7 +4,6 @@
 #
 #  id                       :integer          not null, primary key
 #  student_id               :integer          not null
-#  subject_id               :integer          not null
 #  curriculum_id            :integer          not null
 #  accuracy                 :float            default(0.0), not null
 #  baseline                 :float            default(0.0), not null
