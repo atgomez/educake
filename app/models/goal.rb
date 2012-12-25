@@ -4,7 +4,6 @@
 #
 #  id                       :integer          not null, primary key
 #  student_id               :integer          not null
-#  subject_id               :integer          not null
 #  curriculum_id            :integer          not null
 #  accuracy                 :float            default(0.0), not null
 #  baseline                 :float            default(0.0), not null
@@ -27,22 +26,20 @@ require 'csv'
 class Goal < ActiveRecord::Base
   include ::SharedMethods::Paging
 
-  attr_accessible :accuracy, :curriculum_id, :due_date, :subject_id, :progresses_attributes, 
+  attr_accessible :accuracy, :curriculum_id, :due_date, :progresses_attributes, 
                   :baseline_date, :baseline, :trial_days_total, :trial_days_actual, 
                   :grades_data, :is_completed, :description
 
   # ASSOCIATION
   has_many :progresses, :dependent => :destroy
   has_many :grades, :dependent => :destroy
-  belongs_to :student 
-  belongs_to :subject 
+  belongs_to :student
   belongs_to :curriculum  
   
   # VALIDATION
   validates :accuracy, :numericality => true, :inclusion => {:in => 0..100, :message => :out_of_range_100}
   validates :baseline, :numericality => true, :inclusion => {:in => 0..100, :message => :out_of_range_100}
-  validates_presence_of :accuracy, :curriculum_id, :subject_id, 
-                        :baseline, :trial_days_total, :trial_days_actual
+  validates_presence_of :accuracy, :curriculum_id, :baseline, :trial_days_total, :trial_days_actual
 
   # NESTED ATTRIBUTE
   accepts_nested_attributes_for :progresses, :reject_if => lambda { |progress| 
@@ -101,11 +98,15 @@ class Goal < ActiveRecord::Base
       end
   end # End class method.
 
-  def name 
-    [self.subject.name, self.curriculum.name].join(" ")
+  #
+  # Instance methods.
+  #
+
+  # Returns the full name of this goal, including subject, curriculum, etc.
+  def name
+    "#{self.subject.name} #{self.curriculum.name}"
   end
 
-  # Instance methods.
   def update_grade_state(grade)
     due_date = grade.due_date
 
@@ -507,10 +508,9 @@ class Goal < ActiveRecord::Base
     end      
   end
 
-  # Returns the full name of this goal, including subject, curriculum, etc.
-  def full_name
-    "#{self.subject.name} #{self.curriculum.name}"
-  end
+  def subject
+    @subject ||= self.curriculum.subject
+  end  
 
   protected
 
@@ -552,12 +552,10 @@ class Goal < ActiveRecord::Base
     
     def validates_goal_name
       scoped_goal = Goal.where('student_id = ? AND id <> ?', self.student_id, self.id || 0)
-      existed = scoped_goal.exists?(:subject_id => self.subject_id, 
-        :curriculum_id => self.curriculum_id, 
+      existed = scoped_goal.exists?(:curriculum_id => self.curriculum_id, 
         :due_date => self.due_date)
       if existed 
         self.errors.add(:due_date, :taken)
-        self.errors.add(:subject_id, :taken)
         self.errors.add(:curriculum_id, :taken)
       end 
       return !existed

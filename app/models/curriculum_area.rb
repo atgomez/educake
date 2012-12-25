@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: subjects
+# Table name: curriculum_areas
 #
 #  id         :integer          not null, primary key
 #  name       :string(255)      not null
@@ -8,7 +8,7 @@
 #  updated_at :datetime         not null
 #
 
-class Subject < ActiveRecord::Base
+class CurriculumArea < ActiveRecord::Base
   attr_accessible :name
   has_many :curriculums, :dependent => :restrict
 

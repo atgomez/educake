@@ -8,6 +8,7 @@ class CreateStudentSharings < ActiveRecord::Migration
       t.integer :user_id
       t.integer :role_id, :null => false
       t.string :confirm_token
+      t.boolean :is_blocked, :default => false
 
       t.timestamps
     end
