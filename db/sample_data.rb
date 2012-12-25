@@ -2,7 +2,6 @@
 # The data can then be loaded with the rake db:sample_data.
 
 @curriculums = Curriculum.all
-@subjects = Subject.all
 
 def create_sample_students(teacher)
   Goal.transaction do
@@ -13,7 +12,7 @@ def create_sample_students(teacher)
       student = teacher.students.create!({
         :first_name => first_name,
         :last_name => last_name,
-        :birthday => Time.now - 16.years
+        :birthday => (Time.now - 16.years).to_date
       })
 
       # Create goals
@@ -23,9 +22,8 @@ def create_sample_students(teacher)
 
         goal = student.goals.create(
           :curriculum_id => @curriculums[t].id, 
-          :subject_id => @subjects[t].id,
-          :baseline_date => Time.now - 6.months,
-          :due_date => Time.now + 6.months,
+          :baseline_date => (Time.now - 6.months).to_date,
+          :due_date => (Time.now + 6.months).to_date,
           :description => Faker::Lorem.sentence(10),
           :baseline => baseline,
           :accuracy => accuracy,          
@@ -41,7 +39,7 @@ def create_sample_students(teacher)
           end
 
           goal.grades.create(
-            :due_date => goal.baseline_date + (rand(5)*grade_t).days,
+            :due_date => (goal.baseline_date + (rand(5)*grade_t).days).to_date,
             :accuracy => accuracy,
             :user_id => teacher.id,
             :time_to_complete => "0#{rand(5)}:00",
