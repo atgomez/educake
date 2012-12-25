@@ -122,7 +122,6 @@ module Util
     # 
 
     def check_date_validation(context, attributes_list, attribute, check_blank)
-      puts attributes_list.inspect
       if context[attribute].nil? && attributes_list[attribute.to_s].empty? && check_blank
         context.errors.add attribute, :blank
       elsif context[attribute].nil?

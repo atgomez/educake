@@ -6,7 +6,7 @@
     .cont.goal-container{:id => "goal-container-#{goal.id}"}
       .width-subject.pull-left
         %a{:href=>"#goal_#{goal.id}", "data-toggle" =>"tab", "data-dismiss"=>"div", :class => "icon-plus goal", :id => "goal#{goal.id}"}
-          = " " + goal.full_name
+          = " " + goal.name
       
       .pull-right
         .width-grade.pull-left.accuracy.bold

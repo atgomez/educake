@@ -14,7 +14,10 @@
 .teacher
   .clearfix.toolbar
     - if @all_students.count > @students.length
-      = link_to(t("student.all_students"), all_students_students_path(:user_id => @user.id, :admin_id => @admin),
+      - text = t("student.all_students")
+      - if @current_user.is?(:admin) || @current_user.is_super_admin?
+        - text = t("student.all_students_of", :user => @user.full_name)
+      = link_to(text, all_students_students_path(:user_id => @user.id, :admin_id => @admin),
                 :class => "brown font18")
     - if (!@user.is?(:parent))
       = link_to(t("student.add"), new_student_path(:back_link => students_path(:user_id => @user, :admin_id => @admin), 
