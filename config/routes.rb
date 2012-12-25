@@ -89,7 +89,8 @@ TeacherMgnt::Application.routes.draw do
   end
   
   namespace :super_admin do 
-    resources :schools  
+    resources :schools
+    resources :curriculums
     resources :users do 
       member do 
         put :blocked_account
@@ -101,6 +102,4 @@ TeacherMgnt::Application.routes.draw do
       end 
     end
   end 
-
-  resources :curriculums
 end

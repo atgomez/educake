@@ -126,6 +126,7 @@ en:
       block_account_description: "User will be locked out of their account until reinstated."
 
   user:
+    title: "User Management"
     created_successfully: "User %{name} was created successfully."
     updated_successfully: "User %{name} was updated successfully."
     deleted_successfully: "User %{name} was removed successfully."
@@ -176,6 +177,16 @@ en:
     role: "Role"
     user_name: "Name"
     account: "Account"
+
+  curriculum:
+    title: "Curriculum Management"
+    add: "Add Curriculum"
+    core: "Core"
+    subject: "Subject"
+    grade: "Grade"
+    area: "Area"
+    standard: "Standard"
+    description: "Description"
 
   profile:
     title: "Account Settings"
