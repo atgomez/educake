@@ -42,6 +42,21 @@ $(document).ready(function() {
     	hideOnFocus: true //Hide the placeholder when the element receives focus
 	  });
 
+    /* Handle remote link */
+
+    // Temporary move href attribut to another attribute
+    $.each($("a[data-remote=true]"), function(index, value){ $(value).attr("url_tmp",$(value).attr("href")) })
+    $.each($("a[data-remote=true]"), function(index, value){ $(value).attr("href", "#") })
+
+    // Handle ajax event to get right
+    $("a[data-remote=true]").live("ajax:before", function(event) {
+      $(this).attr("href", $(this).attr("url_tmp"));
+    });
+
+    $("a[data-remote=true]").live("ajax:complete", function(event) {
+      $(this).attr("href", "#");
+    });
+
 
 	  // if(typeof parent.setiFrameHeight == 'function'){
    //    parent.setiFrameHeight(document.body.scrollHeight);
