@@ -90,7 +90,13 @@ TeacherMgnt::Application.routes.draw do
   
   namespace :super_admin do 
     resources :schools
-    resources :curriculums
+    resources :curriculums do
+      collection do
+        get :init_import
+        post :import
+      end
+    end
+
     resources :users do 
       member do 
         put :blocked_account

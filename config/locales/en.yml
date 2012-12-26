@@ -185,6 +185,7 @@ en:
     add: "Add Curriculum"
     edit: "Edit Curriculum"
     all_curriculums: "All Curriculums"
+    import_title: "Import Curriculum"
     core: "Core"
     subject: "Subject"
     grade: "Grade"
@@ -200,6 +201,9 @@ en:
     delete_failed_without_name: "Cannot delete the curriculum."
     updated_failed_without_name: "Cannot save the curriculum."
     error_delete_in_used: "Cannot delete the curriculum '%{name}' because it is in-used."
+    import_line_failed: "Cannot import the line."
+    import_failed: "Cannot import the file."
+    import_successfully: "Importing curriculums is successful"
 
   profile:
     title: "Account Settings"

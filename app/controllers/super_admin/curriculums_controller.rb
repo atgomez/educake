@@ -49,6 +49,32 @@ class SuperAdmin::CurriculumsController < SuperAdmin::BaseSuperAdminController
       end
     end
   end
+
+  # GET /super_admin/curriculums/init_import
+  def init_import
+
+  end
+
+  # POST /super_admin/curriculums/import
+  def import
+    begin      
+      data_source = params[:import_file].path
+      errors = Curriculum.import_data(data_source)
+      if errors.blank?
+        flash[:notice] = I18n.t("curriculum.import_successfully")
+      else
+        puts errors.inspect
+        flash[:alert] = I18n.t("curriculum.import_failed")
+      end
+    rescue Exception => exc
+      ::Util.log_error(exc, "SuperAdmin::CurriculumsController#import")
+      flash[:alert] = I18n.t("curriculum.import_failed")
+    end
+
+    respond_to do |format|
+      format.html { redirect_to :action => 'index' }
+    end
+  end
 	
 	protected
 

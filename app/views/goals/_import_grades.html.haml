@@ -1,6 +1,6 @@
 .modal#import_grades.hide.fade
   = form_tag(import_grades_goals_path, :method => :put, :remote => true, :multipart => true, 
-              :html => {:class => "grade-form"}) do
+              :class => "grade-form") do
     .modal-header
       %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} ×
       %h4= t("grade.import.title")
@@ -14,9 +14,9 @@
         #goal_choose.font-error
         %div.input-margin= file_field_tag "goal[grades]"
         #file_choose.font-error
-      .modal-footer
-        %input.btn{:value => t("common.cancel"), :type => "button", "aria-hidden" => "true", 
-                  "data-dismiss" => "modal", :class => "close-dialog"}
-        = submit_tag t("common.import"), :class => "btn btn-primary", :id => "import"
+    .modal-footer
+      %input.btn{:value => t("common.cancel"), :type => "button", "aria-hidden" => "true", 
+                "data-dismiss" => "modal", :class => "close-dialog"}
+      = submit_tag t("common.import"), :class => "btn btn-primary", :id => "import"
 
 

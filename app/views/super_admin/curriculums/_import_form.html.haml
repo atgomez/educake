@@ -1,0 +1,15 @@
+.modal#import-form.hide.fade
+  = form_tag(import_super_admin_curriculums_path, :method => :post, :remote => true, 
+              :multipart => true, :class => "import-form") do
+    .modal-header
+      %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} ×
+      %h4= t("curriculum.import_title")
+    .modal-body
+      .form-inputs
+        .input-margin= file_field_tag "import_file"
+    .modal-footer
+      %input.btn{:value => t("common.cancel"), :type => "button", "aria-hidden" => "true", 
+                "data-dismiss" => "modal", :class => "close-dialog"}
+      = submit_tag t("common.import"), :class => "btn btn-primary", :id => "import"
+
+

@@ -14,6 +14,9 @@
 #  updated_at          :datetime         not null
 #
 
+require 'csv'
+require 'buffered_hash'
+
 class Curriculum < ActiveRecord::Base
   include ::SharedMethods::Paging
 
@@ -23,6 +26,7 @@ class Curriculum < ActiveRecord::Base
                   :standard, :description1, :description2,
                   :curriculum_core_value # Virtual attribute
 
+  DEFAULT_CSV_SEPARATOR = ","
   SORTABLE_MAP = {
     "curriculum_core" => "curriculum_cores.name",
     "subject" => "subjects.name",
@@ -61,6 +65,81 @@ class Curriculum < ActiveRecord::Base
         :per_page => paging_info.page_size,
         :order => paging_info.sort_string
       })
+    end
+
+    def import_data(data_source, options = {})
+      errors = {}
+
+      # Size of each cache
+      cache_size = 10
+
+      # CurriculumCore
+      curriculum_core_id = CurriculumCore.first.try(:id)
+
+      # Cache the Subject
+      tmp_data = {}
+      Subject.limit(cache_size).each do |r|
+        tmp_data[r.name] = r.id
+      end
+      subjects = BufferedHash.new(cache_size, tmp_data) do |name|
+        Subject.find_by_name(name).try(:id)
+      end
+
+      # Cache the CurrculumGrade
+      tmp_data = {}
+      CurrculumGrade.limit(cache_size).each do |r|
+        tmp_data[r.name] = r.id
+      end
+      curriculum_grades = BufferedHash.new(cache_size, tmp_data) do |name|
+        CurrculumGrade.find_by_name(name).try(:id)
+      end
+
+      # Cache the CurrculumArea
+      tmp_data = {}
+      CurrculumArea.limit(cache_size).each do |r|
+        tmp_data[r.name] = r.id
+      end
+      curriculum_areas = BufferedHash.new(cache_size, tmp_data) do |name|
+        CurrculumArea.find_by_name(name).try(:id)
+      end
+
+      Curriculum.transaction do
+        CSV.foreach(data_source, :col_sep => DEFAULT_CSV_SEPARATOR) do |row|
+          # Get the current line number
+          # See http://stackoverflow.com/questions/12407035/ruby-csv-get-current-line-row-number
+          line_num = $.
+
+          begin
+            finder_attrs = {
+              :curriculum_core_id => curriculum_core_id,
+              :subject_id => subjects[row[0].strip],
+              :curriculum_grade_id => curriculum_grades[row[1].strip],
+              :curriculum_area_id => curriculum_areas[row[2].strip],
+              :standard => row[3].strip              
+            }
+
+            extra_attrs = {
+              :description1 => row[4].strip,
+              :description2 => row[5].strip
+            }
+
+            curriculum = Curriculum.where(finder_attrs).first
+            if curriculum
+              curriculum.update_attributes!(extra_attrs)
+            else
+              # Create a new curriculum
+              curriculum = Curriculum.new(finder_attrs.merge(extra_attrs))
+              curriculum.save!
+            end
+            puts "[Curriculum] Imported: #{curriculum.inspect}"
+          rescue Exception => exc
+            ::Util.log_error(exc, "Curriculum.import_data#foreach")
+            errors[line_num] = I18n.t("curriculum.import_line_failed")
+          end
+        end
+      end
+
+      return errors
     end
 
     protected

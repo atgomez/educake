@@ -3,7 +3,8 @@
 
 .super-admin.curriculum
   .toolbar
-    = link_to t("curriculum.add"), new_super_admin_curriculum_path, :class => "btn"
+    =# link_to t("curriculum.add"), new_super_admin_curriculum_path, :class => "btn"
+    = link_to t("curriculum.add"), init_import_super_admin_curriculums_path, :class => "btn", :remote => true
     = link_to t("user.title"), super_admin_schools_path
 
   .table-container
@@ -34,3 +35,5 @@
                     :data => { :confirm => t("common.confirm_message") }, 
                     :class => "icon-trash color-pen", :method => :delete, :title => t("common.delete"))
     = render_pagination @curriculums
+
+  #import-container
