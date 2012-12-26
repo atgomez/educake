@@ -7,15 +7,30 @@
     = link_to t("user.title"), super_admin_schools_path
 
   .table-container
-    %table.table.table-striped.curriculums
-      %thead
-        %tr
-          %th.core= t("curriculum.core")
-          %th.subject= t("curriculum.subject")
-          %th.grade= t("curriculum.grade")
-          %th.area= t("curriculum.area")
-          %th.standard= t("curriculum.standard")
-          %th.description= t("curriculum.description")
-          %th.actions
-      %tbody
+    - unless @curriculums.blank?
+      %table.table.table-striped.curriculums
+        %thead
+          %tr
+            %th.core= t("curriculum.core")
+            %th.subject= t("curriculum.subject")
+            %th.grade= t("curriculum.grade")
+            %th.area= t("curriculum.area")
+            %th.standard= t("curriculum.standard")
+            %th.description= t("curriculum.description")
+            %th.actions
+        %tbody
+          - @curriculums.each do |cur|
+            %tr.curriculum{:id => "curriculum-#{cur.id}"}
+              %td.core= cur.curriculum_core.name
+              %td.subject= cur.subject.name
+              %td.grade= cur.curriculum_grade.name
+              %td.area= cur.curriculum_area.name
+              %td.standard= cur.standard
+              %td.description= cur.description1
+              %td.actions
+                = link_to("", edit_super_admin_curriculum_path(cur), 
+                    :class => "icon-pencil color-pen", :title => t("common.edit"))
+                = link_to("", [:super_admin, cur], 
+                    :data => { :confirm => t("common.confirm_message") }, 
+                    :class => "icon-trash color-pen", :method => :delete, :title => t("common.delete"))
     = render_pagination @curriculums

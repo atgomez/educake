@@ -1,0 +1,9 @@
+- content_for(:page_title) do
+  = t("curriculum.edit")
+
+.super-admin.curriculum
+  .toolbar
+    = link_to t("curriculum.all_curriculums"), super_admin_curriculums_path
+
+  .form-container
+    = render 'form'

@@ -181,12 +181,21 @@ en:
   curriculum:
     title: "Curriculum Management"
     add: "Add Curriculum"
+    edit: "Edit Curriculum"
+    all_curriculums: "All Curriculums"
     core: "Core"
     subject: "Subject"
     grade: "Grade"
     area: "Area"
     standard: "Standard"
     description: "Description"
+    description1: "Description1"
+    description2: "Description2"
+    not_found: "Cannot find the curriculum"
+    deleted_successfully: "The curriculum '%{name}' was deleted successfully."
+    delete_failed: "Cannot delete the curriculum '%{name}'."
+    delete_failed_without_name: "Cannot delete the curriculum."
+    error_delete_in_used: "Cannot delete the curriculum '%{name}' because it is in-used."
 
   profile:
     title: "Account Settings"
