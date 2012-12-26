@@ -138,8 +138,10 @@ class Student < ActiveRecord::Base
   #     return false
   #   end 
   # end 
+
+  # Get the progress of student's goals
     
-  def goals_grades
+  def goals_progress
     data = []
     progress = {}
     goals = self.goals

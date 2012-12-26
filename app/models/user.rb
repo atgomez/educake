@@ -287,7 +287,7 @@ class User < ActiveRecord::Base
     data = []
     progress = {}
     self.accessible_students.find_each do |student|
-      student_data = student.goals_grades
+      student_data = student.goals_progress
       student_data.each do |single_data| 
         progress[single_data[0]] = [] if progress[single_data[0]].nil?
         progress[single_data[0]] << single_data[1]
@@ -519,14 +519,14 @@ class User < ActiveRecord::Base
     else
       students = self.accessible_students.includes(:goals)
       students.each do |student|
-        goals_grades = student.goals_grades
+        goals_progresses = student.goals_progress
         series << {
           :name => student.full_name,
-          :data => goals_grades,
+          :data => goals_progresses,
           :yAxis => 2,
           :item_id => student.id,
           :url => context.student_path(student, :user_id => self.id, :admin_id => params[:admin_id])
-        } unless goals_grades.empty?
+        } unless goals_progresses.empty?
       end
     end
     series.to_json

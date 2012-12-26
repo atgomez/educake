@@ -10,7 +10,7 @@ class StudentsController < ApplicationController
       series = []
       @all_students = @user.accessible_students
       @all_students.each do |student|
-        series += student.goals_grades
+        series += student.goals_progress
         # Exit the loop, because we only need to detect there is data for chart or not.
         break unless series.blank?
       end
