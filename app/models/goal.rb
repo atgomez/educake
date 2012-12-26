@@ -43,6 +43,7 @@ class Goal < ActiveRecord::Base
   validates :baseline, :numericality => true, :inclusion => {:in => 0..100, :message => :out_of_range_100}
   validates_presence_of :accuracy, :curriculum_id, :subject_id, 
                         :baseline, :trial_days_total, :trial_days_actual
+  validate :custom_validations
 
   # NESTED ATTRIBUTE
   accepts_nested_attributes_for :progresses, :reject_if => lambda { |progress| 
@@ -63,7 +64,6 @@ class Goal < ActiveRecord::Base
 
   # CALLBACK
   before_validation :update_progresses, :valid_date_attribute?
-  before_save :custom_validations
   after_save :update_all_grade  
 
   # CLASS METHODS
