@@ -5,6 +5,7 @@ $(function() {
 curriculum = {
   setup: function(){
     curriculum.setup_comboboxes();
+    curriculum.setup_validations();
   },
 
   setup_comboboxes: function(){
@@ -20,9 +21,14 @@ curriculum = {
       allow_new_value: false
     });
 
-    $(".editable-combobox").combobox();
-
-    
+    $(".editable-combobox").combobox();   
     $(".extended-combobox").readonly_combobox();
+  },
+
+  setup_validations: function(){
+    $(".reset-on-changed").change(function(e) {
+      // Reset the client-side validation states.
+      $(".curriculum-form").resetClientSideValidations();
+    });
   }
 };

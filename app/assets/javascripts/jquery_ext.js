@@ -49,11 +49,11 @@ jquery_ext = {
                             }
                             temp_opt.html(value);
                             temp_opt.val(value);
-                            select.val(value);
+                            select.val(value).change();
                         }
                         else {
                             // remove invalid value, as it didn't match anything
-                            select.val( "" );
+                            select.val( "" ).change();
                             input.data( "autocomplete" ).term = "";
                         }
                         return false;
@@ -95,6 +95,8 @@ jquery_ext = {
                             that._trigger( "selected", event, {
                                 item: ui.item.option
                             });
+
+                            select.change();
                         },
                         change: function( event, ui ) {
                             if ( !ui.item )

@@ -15,16 +15,16 @@
   .form-inputs
     .school-info
       = f.input :curriculum_core_value, :as => :select, :collection => CurriculumCore.order(:name),
-                :label => t("curriculum.core"), :input_html => {:class => "editable-combobox"}
+                :label => t("curriculum.core"), :input_html => {:class => "editable-combobox reset-on-changed"}
       = f.association(:subject, :collection => Subject.order(:name),
                 :label => t("curriculum.subject"), :include_blank => false,
-                :input_html => {:class => "extended-combobox"})
+                :input_html => {:class => "extended-combobox reset-on-changed"})
       = f.association(:curriculum_grade, :collection => CurriculumGrade.order(:name),
                 :label => t("curriculum.grade"), :include_blank => false,
-                :input_html => {:class => "extended-combobox"})
+                :input_html => {:class => "extended-combobox reset-on-changed"})
       = f.association(:curriculum_area, :collection => CurriculumArea.order(:name),
                 :label => t("curriculum.area"), :include_blank => false,
-                :input_html => {:class => "extended-combobox"})
+                :input_html => {:class => "extended-combobox reset-on-changed"})
       = f.input :standard, :as => :string, :input_html => {:class => "valid_number"}
       = f.input :description1, :as => :text, :input_html => {:rows => "2", :class => "description-input"}
       = f.input :description2, :as => :text, :input_html => {:rows => "5", :class => "description-input"}
