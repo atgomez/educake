@@ -27,7 +27,7 @@
     .pull-right
       = f.input :first_name, :input_html => {:class => "name"}
       = f.input :last_name, :input_html => {:class => "name"}
-      = f.input :birthday, :as => :string, :input_html => {:class => "birthday-picker", 
+      = f.input :birthday, :as => :string, :required => true, :input_html => {:class => "birthday-picker", 
                                                 :value => f.object.birthday_string}, :label => t("student.birthday")
       .control-group.string
         = f.label :gender, :class => 'pull-left gender'
