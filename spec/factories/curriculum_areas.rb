@@ -2,6 +2,6 @@
 
 FactoryGirl.define do
   factory :curriculum_area do
-    name "MyString"
+    sequence(:name) { |n| "Area#{n}" }
   end
 end
