@@ -6,7 +6,7 @@
       %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} &times;
       %h4= t("grade.add")
     .modal-body
-      = hidden_field_tag "student_id", student_id
+      
       - if notification = f.error_notification
         .alert.alert-error.fade.in
           %a{:class => "close", 'data-dismiss' => "alert", :href => "#"} &times;
@@ -21,7 +21,12 @@
         .clearfix
         = f.input :time_to_complete, :as => :string, :ampm => true
         = f.input :note, :as => :text, :label => t("grade.note"), :input_html => {:rows =>"5"}
-        = f.hidden_field :user_id, :value => current_user.id
+
+        = hidden_field_tag :user_id, @user.id
+        = hidden_field_tag :student_id, @student.id
+        = hidden_field_tag :admin_id, @admin.id if @admin
+        
+
         .clearfix
     .modal-footer
       %input.btn{:value => t("common.cancel"), :type => "button", "aria-hidden" => "true", 

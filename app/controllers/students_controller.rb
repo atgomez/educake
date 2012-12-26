@@ -54,7 +54,13 @@ class StudentsController < ApplicationController
         if request.xhr?
           render :partial => "shared/students/view_goal", :locals => {:goals => @goals, :students => @students}
         end
-        @invited_users = StudentSharing.unblocked.where(:student_id => @student.id)
+        sponsors = @student.sponsors
+        @invited_users = StudentSharing.unblocked.where("student_id = ? and email NOT IN (?)", @student.id, sponsors.map(&:email))
+        @invited_users += sponsors 
+        @invited_users.delete @user 
+        sharing = StudentSharing.find_by_email(@user.email)
+        @invited_users.delete sharing
+        @invited_users = @invited_users.uniq
       else
         render_page_not_found
       end
@@ -73,8 +79,13 @@ class StudentsController < ApplicationController
       @student = @user.accessible_students.find(params[:id])
       if @student
         @goals = @student.goals.order('is_completed ASC').load_data(filtered_params)
-        @invited_users = StudentSharing.unblocked.where(:student_id => params[:id]) 
-        @invited_users << @student.teacher
+        sponsors = @student.sponsors
+        @invited_users = StudentSharing.unblocked.where("student_id = ? and email NOT IN (?)", @student.id, sponsors.map(&:email))
+        @invited_users += sponsors 
+        sharing = StudentSharing.find_by_email(@user.email)
+        @invited_users.delete sharing
+        @invited_users = @invited_users.uniq
+
         if request.xhr?
           render :partial => "shared/students/view_goal", :locals => {:goals => @goals, :student => @student}
         end
@@ -164,13 +175,17 @@ class StudentsController < ApplicationController
     def find_user
       @current_user = current_user
       @admin = User.unblocked.find_by_id params[:admin_id]
-      @admin = nil if @admin && !@admin.is?(:admin)
-      if (params[:user_id])
-        @user = @admin ? @admin.children.teachers.find_by_id(params[:user_id]) : 
-                         User.unblocked.find_by_id(params[:user_id])
+      if current_user.is_super_admin?
+        @admin = nil if @admin && !@admin.is?(:admin)
+        @user = @admin ? @admin.children.teachers.unblocked.find_by_id(params[:user_id]) : 
+                           User.unblocked.find_by_id(params[:user_id])
+      elsif current_user.is?(:admin) # If current user is admin, deny getting admin from admin_id
+        @admin = current_user
+        @user = @admin.children.teachers.unblocked.find_by_id(params[:user_id])
       else
-        @user = current_user if !current_user.is?(:admin) && !current_user.is_super_admin?
+        @user = current_user
       end
+
       if !@user
         if @is_view_as
           render_page_not_found(I18n.t("user.error_not_found"))

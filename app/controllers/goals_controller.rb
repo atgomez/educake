@@ -1,5 +1,6 @@
 class GoalsController < ApplicationController
   authorize_resource :goal, :grade
+  skip_authorization_check :only => [:new_grade, :add_grade, :update_grade]
   cross_role_action :new_grade, :add_grade, :update_grade, :initial_import_grades, :import_grades,
                     :new, :edit, :create, :update, :destroy, :load_grades
 
@@ -81,53 +82,61 @@ class GoalsController < ApplicationController
   end
   
   def new_grade 
-    @grade = Grade.new
-    @grade.due_date = Date.today
-    student = Student.find_by_id(params[:student_id])
-    if student 
-      @goals = student.goals.incomplete.map{|g| [[g.subject.name, g.curriculum.name].join(" "), g.id]}
-    end 
+    if find_user
+      @grade = Grade.new
+      @grade.due_date = Date.today
+      @student = @user.accessible_students.find_by_id(params[:student_id])
+      if @student 
+        @goals = @student.goals.incomplete.map{|g| [[g.subject.name, g.curriculum.name].join(" "), g.id]}
+      end 
+    end
   end
   
   def add_grade
     result = {}
     status_code = 201
-    student = Student.find_by_id(params[:student_id])
-    if student 
-      @goals = student.goals.incomplete.map{|g| [[g.subject.name, g.curriculum.name].join(" "), g.id]}
-    end 
+    if find_user
+      @student = @user.accessible_students.find_by_id(params[:student_id])
+      if @student 
+        @goals = @student.goals.incomplete.map{|g| [[g.subject.name, g.curriculum.name].join(" "), g.id]}
+      end 
 
-    @goal = Goal.incomplete.find_by_id(params[:grade][:goal_id])
-    if (@goal)
-      # Simple validation
-      valid_grade = Grade.new params[:grade]
-      unless valid_grade.valid?
-        @grade = valid_grade
-        status_code = 400
-        result[:message] = I18n.t('grade.save_failed')
-        result[:html] = render_to_string(:partial => 'goals/form_grade', :locals => {:student_id => params[:student_id]})  
-      else
-        @grade = @goal.build_grade params[:grade]
-        if (@grade)
-          @grade = @goal.update_grade_state(@grade)
-          if @grade.save
-            @goal.update_all_grade
-            status_code = 201
-            result[:message] = I18n.t('grade.created_successfully')
-            flash[:notice] = result[:message]
-          else
-            status_code = 400
-            result[:message] = I18n.t('grade.save_failed')
-            result[:html] = render_to_string(:partial => 'goals/form_grade', :locals => {:student_id => params[:student_id]})
+      @goal = Goal.incomplete.find_by_id(params[:grade][:goal_id])
+      if (@goal)
+        # Simple validation
+        valid_grade = Grade.new params[:grade]
+        unless valid_grade.valid?
+          @grade = valid_grade
+          status_code = 400
+          result[:message] = I18n.t('grade.save_failed')
+          result[:html] = render_to_string(:partial => 'goals/form_grade')  
+        else
+          @grade = @goal.build_grade params[:grade]
+          @grade.user = @user
+          if (@grade)
+            @grade = @goal.update_grade_state(@grade)
+            if @grade.save
+              @goal.update_all_grade
+              status_code = 201
+              result[:message] = I18n.t('grade.created_successfully')
+              flash[:notice] = result[:message]
+            else
+              status_code = 400
+              result[:message] = I18n.t('grade.save_failed')
+              result[:html] = render_to_string(:partial => 'goals/form_grade', :locals => {:student_id => params[:student_id]})
+            end
           end
         end
+      else
+        @grade = Grade.new params[:grade]
+        @grade.errors.add(:goal_id, :not_selected)
+        status_code = 400
+        result[:message] = I18n.t('grade.save_failed')
+        result[:html] = render_to_string(:partial => 'goals/form_grade', :locals => {:student_id => params[:student_id]})
       end
     else
-      @grade = Grade.new params[:grade]
-      @grade.errors.add(:goal_id, :not_selected)
-      status_code = 400
-      result[:message] = I18n.t('grade.save_failed')
-      result[:html] = render_to_string(:partial => 'goals/form_grade', :locals => {:student_id => params[:student_id]})
+      result[:message] = I18n.t("common.error_unauthorized")
+      status_code = 403
     end
 
     render(:json => result, :status => status_code)
@@ -235,6 +244,28 @@ class GoalsController < ApplicationController
   end 
 
   protected
+
+    def find_user
+      @current_user = current_user
+      @admin = User.unblocked.find_by_id params[:admin_id]
+      if current_user.is_super_admin?
+        @admin = nil if @admin && !@admin.is?(:admin)
+        @user = @admin ? @admin.children.teachers.unblocked.find_by_id(params[:user_id]) : 
+                           User.unblocked.find_by_id(params[:user_id])
+      elsif current_user.is?(:admin) # If current user is admin, deny getting admin from admin_id
+        @admin = current_user
+        @user = @admin.children.teachers.unblocked.find_by_id(params[:user_id])
+      else
+        @user = current_user
+      end
+
+      if !(can? :view, @user)
+        render_unauthorized
+        return false
+      end
+      return true
+    end
+
     def show_errors(message, errors)
       html = ""
       msgs = errors.slice(0, 4)
