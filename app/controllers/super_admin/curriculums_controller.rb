@@ -14,10 +14,16 @@ class SuperAdmin::CurriculumsController < SuperAdmin::BaseSuperAdminController
 
   def update
     if find_curriculum
-      if @curriculum.update_attributes(params[:curriculum])
-        flash[:notice] = I18n.t("curriculum.updated_successfully", :name => @curriculum.name)
-        redirect_to :action => 'index'
-      else
+      begin
+        if @curriculum.update_attributes(params[:curriculum])
+          flash[:notice] = I18n.t("curriculum.updated_successfully", :name => @curriculum.name)
+          redirect_to :action => 'index'
+        else
+          render(:action => 'edit')
+        end
+      rescue Exception => exc
+        ::Util.log_error(exc, "SuperAdmin::CurriculumsController#update")
+        flash.now[:alert] = I18n.t('curriculum.updated_failed_without_name')
         render(:action => 'edit')
       end
     end
@@ -71,12 +77,6 @@ class SuperAdmin::CurriculumsController < SuperAdmin::BaseSuperAdminController
     
     def sort_direction
       %w[asc desc].include?(params[:direction]) ?  params[:direction] : "asc"
-    end
-
-    def find_school
-      @school = School.find(params[:id])
-      render_page_not_found if !@school
-      return @school
     end
 
     def sort_criteria
