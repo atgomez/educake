@@ -175,13 +175,17 @@ class StudentsController < ApplicationController
     def find_user
       @current_user = current_user
       @admin = User.unblocked.find_by_id params[:admin_id]
-      @admin = nil if @admin && !@admin.is?(:admin)
-      if (params[:user_id])
-        @user = @admin ? @admin.children.teachers.find_by_id(params[:user_id]) : 
-                         User.unblocked.find_by_id(params[:user_id])
+      if current_user.is_super_admin?
+        @admin = nil if @admin && !@admin.is?(:admin)
+        @user = @admin ? @admin.children.teachers.unblocked.find_by_id(params[:user_id]) : 
+                           User.unblocked.find_by_id(params[:user_id])
+      elsif current_user.is?(:admin) # If current user is admin, deny getting admin from admin_id
+        @admin = current_user
+        @user = @admin.children.teachers.unblocked.find_by_id(params[:user_id])
       else
-        @user = current_user if !current_user.is?(:admin) && !current_user.is_super_admin?
+        @user = current_user
       end
+
       if !@user
         if @is_view_as
           render_page_not_found(I18n.t("user.error_not_found"))

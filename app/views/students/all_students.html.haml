@@ -1,6 +1,14 @@
 - content_for :js do
   = javascript_include_tag('app/students.js')
-  
+.admin.teacher
+  - if @user.is?(:admin) || (@admin)
+    - @teacher = @user
+    .show-student
+      .clearfix.toolbar
+        = link_to "All Teachers", admin_teachers_path(:user_id => @user.parent, :admin_id => @admin), :class => "brown font18"
+        = render 'shared/search_box', :action => "/admin/teachers/search", :placeholder => t("common.search_place_holder")
+      = render('/shared/teachers/teacher_box')
+      
 .teacher
   .clearfix.toolbar
     = link_to(t("student.teacher_home"), students_path(:user_id => @user.id, :admin_id => @admin), 
