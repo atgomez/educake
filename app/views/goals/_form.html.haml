@@ -19,11 +19,11 @@
 
       = f.association :curriculum, :label => t("goal.curriculum")
       = f.association :subject, :label => t("goal.subject")
-      = f.input(:due_date, :as => :string, :input_html => {:class => "date-picker", 
+      = f.input(:due_date, :as => :string, :required => true, :input_html => {:class => "date-picker", 
                 :value => goal.due_date_string, :id => "goal_due_date#{goal.id}"})
       = f.input(:description, :input_html => {:rows => '5'})
       = f.input :accuracy, :as => :string, :label => t("goal.accuracy"), :input_html => {:id => "accuracy-#{goal.id}"}
-      = f.input(:baseline_date, :as => :string, :input_html => {:class => "date-picker", 
+      = f.input(:baseline_date, :as => :string, :required => true, :input_html => {:class => "date-picker", 
                 :value => goal.baseline_date_string, :id => "baseline_date#{goal.id}"})
       = f.input(:baseline, :as => :string, :label => t("goal.baseline"), :input_html => {:id => "baseline-#{goal.id}"})
 

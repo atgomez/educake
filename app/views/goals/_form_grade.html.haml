@@ -15,7 +15,7 @@
         = f.input(:goal_id, :collection => @goals, :prompt => t("common.select_prompt"), 
                   :input_html => {:class => "pull-left"})
         .clearfix
-        = f.input(:due_date, :as => :string, :input_html => {:class => "date-picker pull-left", :value => @grade.due_date_string}, :label => t("common.due_date"))
+        = f.input(:due_date, :as => :string, :required => true, :input_html => {:class => "date-picker pull-left", :value => @grade.due_date_string}, :label => t("common.due_date"))
         .clearfix
         = f.input :accuracy, :label => t("grade.accuracy"), :input_html => {:class => "pull-left", :type => "text"}
         .clearfix
