@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121225085210) do
+ActiveRecord::Schema.define(:version => 20130225065442) do
 
   create_table "curriculum_areas", :force => true do |t|
     t.string   "name",       :null => false
@@ -52,22 +52,18 @@ ActiveRecord::Schema.define(:version => 20121225085210) do
   add_index "curriculums", ["curriculum_core_id", "subject_id", "curriculum_grade_id", "curriculum_area_id", "standard"], :name => "curriculums_unique_index", :unique => true
 
   create_table "goals", :force => true do |t|
-    t.integer  "student_id",                                  :null => false
-    t.integer  "curriculum_id",                               :null => false
-    t.float    "accuracy",                 :default => 0.0,   :null => false
-    t.float    "baseline",                 :default => 0.0,   :null => false
-    t.date     "baseline_date",                               :null => false
-    t.date     "due_date",                                    :null => false
-    t.integer  "trial_days_total",                            :null => false
-    t.integer  "trial_days_actual",                           :null => false
-    t.string   "grades_data_file_name"
-    t.string   "grades_data_content_type"
-    t.integer  "grades_data_file_size"
-    t.datetime "grades_data_updated_at"
+    t.integer  "student_id",                           :null => false
+    t.integer  "curriculum_id",                        :null => false
+    t.float    "accuracy",          :default => 0.0,   :null => false
+    t.float    "baseline",          :default => 0.0,   :null => false
+    t.date     "baseline_date",                        :null => false
+    t.date     "due_date",                             :null => false
+    t.integer  "trial_days_total",                     :null => false
+    t.integer  "trial_days_actual",                    :null => false
     t.text     "description"
-    t.boolean  "is_completed",             :default => false
-    t.datetime "created_at",                                  :null => false
-    t.datetime "updated_at",                                  :null => false
+    t.boolean  "is_completed",      :default => false
+    t.datetime "created_at",                           :null => false
+    t.datetime "updated_at",                           :null => false
   end
 
   add_index "goals", ["baseline_date"], :name => "index_goals_on_baseline_date"

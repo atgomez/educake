@@ -10,7 +10,8 @@
 
 class CurriculumCore < ActiveRecord::Base
   attr_accessible :name
-  has_many :curriculums, :dependent => :restrict
+  # Use inverse_of in order to save the curriculum_core when the curriculum saved.
+  has_many :curriculums, :inverse_of => :curriculum_core, :dependent => :restrict
 
   # VALIDATION
   validates :name, :presence => true, :uniqueness => true

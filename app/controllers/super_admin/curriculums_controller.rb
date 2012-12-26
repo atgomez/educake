@@ -1,6 +1,11 @@
 class SuperAdmin::CurriculumsController < SuperAdmin::BaseSuperAdminController
+  helper_method :sort_column, :sort_direction, :sort_criteria
+
 	def index
-    @curriculums = Curriculum.load_data(filtered_params)
+    load_params = filtered_params.merge({
+      :sort_criteria => sort_criteria
+    })
+    @curriculums = Curriculum.load_data(load_params)
 	end
 
   def edit
@@ -8,7 +13,14 @@ class SuperAdmin::CurriculumsController < SuperAdmin::BaseSuperAdminController
   end
 
   def update
-
+    if find_curriculum
+      if @curriculum.update_attributes(params[:curriculum])
+        flash[:notice] = I18n.t("curriculum.updated_successfully", :name => @curriculum.name)
+        redirect_to :action => 'index'
+      else
+        render(:action => 'edit')
+      end
+    end
   end
 
   def destroy
@@ -42,5 +54,32 @@ class SuperAdmin::CurriculumsController < SuperAdmin::BaseSuperAdminController
       @curriculum = Curriculum.find_by_id(params[:id])
       render_page_not_found(I18n.t("curriculum.not_found")) if !@curriculum
       return @curriculum
+    end
+
+    # To adapt the method #sortable in ApplicationHelper
+    def sort_column
+      if Curriculum::SORTABLE_MAP.keys.include?(params[:sort])
+        params[:sort]
+      else
+        'curriculum_core'
+      end
+    end
+
+    def actual_sort_column
+      Curriculum::SORTABLE_MAP[sort_column]
+    end
+    
+    def sort_direction
+      %w[asc desc].include?(params[:direction]) ?  params[:direction] : "asc"
+    end
+
+    def find_school
+      @school = School.find(params[:id])
+      render_page_not_found if !@school
+      return @school
+    end
+
+    def sort_criteria
+      return "#{actual_sort_column} #{sort_direction}"
     end
 end

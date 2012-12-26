@@ -11,12 +11,12 @@
       %table.table.table-striped.curriculums
         %thead
           %tr
-            %th.core= t("curriculum.core")
-            %th.subject= t("curriculum.subject")
-            %th.grade= t("curriculum.grade")
-            %th.area= t("curriculum.area")
-            %th.standard= t("curriculum.standard")
-            %th.description= t("curriculum.description")
+            %th.core= sortable("curriculum_core", t("curriculum.core"))
+            %th.subject= sortable("subject", t("curriculum.subject"))
+            %th.grade= sortable("grade", t("curriculum.grade"))
+            %th.area= sortable("area", t("curriculum.area"))
+            %th.standard= sortable("standard", t("curriculum.standard"))
+            %th.description= sortable("description", t("curriculum.description"))
             %th.actions
         %tbody
           - @curriculums.each do |cur|

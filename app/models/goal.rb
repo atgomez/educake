@@ -180,9 +180,6 @@ class Goal < ActiveRecord::Base
       grade.value = grade.accuracy
       grade.is_unused = true
     end
-
-
-
     return grade
   end
 
