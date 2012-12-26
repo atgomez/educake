@@ -12,7 +12,6 @@ class Admin::TeachersController < Admin::BaseAdminController
 
         # Options for export select box
         @all_teachers_collection = []
-        @first_teacher = nil
 
         @all_teachers.each do |teacher|
           if series.blank?
