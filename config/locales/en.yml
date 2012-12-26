@@ -280,6 +280,7 @@ en:
               must_eq_less_than_goal_due_date: "must be less than or equal to goal due date"
               must_eq_less_than_goal_today: "must be less than or equal to today"
               invalid_format: "must be in format MM-DD-YYYY"
+              
         progress:
           attributes:
             due_date:

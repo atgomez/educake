@@ -196,22 +196,12 @@ class Goal < ActiveRecord::Base
 
   # Override property setter.
   def due_date=(date)
-    if date.is_a?(String)
-      format_date = ::Util.format_date(date)
-      if format_date
-        date = format_date.to_date
-      end
-    end
+    date = ::Util.try_and_convert_date(date)
     self.send(:write_attribute, :due_date, date)
   end
 
   def baseline_date=(date)
-    if date.is_a?(String)
-      format_date = ::Util.format_date(date)
-      if format_date
-        date = format_date.to_date
-      end
-    end
+    date = ::Util.try_and_convert_date(date)
     self.send(:write_attribute, :baseline_date, date)
   end
 
@@ -368,8 +358,9 @@ class Goal < ActiveRecord::Base
   end
 
   def build_grade(params, is_updatable = false)
+
     #Find progress
-    progress = self.progresses.order('due_date ASC').where('due_date >= ?', due_date).first
+    progress = self.progresses.order('due_date ASC').where('due_date >= ?', params[:due_date]).first
     grade = nil
     if is_updatable
       grade = self.grades.find_or_initialize_by_due_date(params[:due_date])

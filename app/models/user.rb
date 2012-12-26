@@ -505,8 +505,8 @@ class User < ActiveRecord::Base
   def series_json(params={}, context)
     series = []
     if self.is?(:admin)
-      teachers = self.children.teachers.unblocked
-      teachers.map do |teacher|
+      teachers = self.children.teachers.unblocked.order(User::DEFAULT_ORDER)
+      teachers.each do |teacher|
         teacher_status = teacher.teacher_status
         series << {
           :name => teacher.full_name,
@@ -518,7 +518,7 @@ class User < ActiveRecord::Base
       end
     else
       students = self.accessible_students.includes(:goals)
-      students.map do |student|
+      students.each do |student|
         goals_grades = student.goals_grades
         series << {
           :name => student.full_name,
