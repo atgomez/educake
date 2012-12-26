@@ -78,13 +78,7 @@ class Grade < ActiveRecord::Base
 
   # Override property setter.
   def due_date=(date)
-    if date.is_a?(String)
-      format_date = ::Util.format_date(date)      
-      if format_date
-        date = format_date.to_date
-      end
-    end
-    
+    date = ::Util.try_and_convert_date(date)
     self.send(:write_attribute, :due_date, date)
   end
   
@@ -96,7 +90,7 @@ class Grade < ActiveRecord::Base
     end
 
     def validate_due_date
-
+      
       if (self.goal.baseline_date > self.due_date)
         self.errors.add(:due_date, :must_eq_greater_than_goal_baseline)
         return false

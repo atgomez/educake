@@ -14,15 +14,15 @@ describe ChartsController do
                        :student => student)
   }
   let(:progress_1) {
-    FactoryGirl.build(:progress, :due_date => Date.parse('01/02/2013'), :accuracy => 45, :goal => goal)
+    FactoryGirl.build(:progress, :due_date => DateTime.parse('01/02/2013'), :accuracy => 45, :goal => goal)
   }
 
   let(:progress_2) {
-    FactoryGirl.build(:progress, :due_date => Date.parse('01/05/2013'), :accuracy => 70, :goal => goal)
+    FactoryGirl.build(:progress, :due_date => DateTime.parse('01/05/2013'), :accuracy => 70, :goal => goal)
   }
 
   let(:progress_3) {
-    FactoryGirl.build(:progress, :due_date => Date.parse('01/08/2013'), :accuracy => 80, :goal => goal)
+    FactoryGirl.build(:progress, :due_date => DateTime.parse('01/08/2013'), :accuracy => 80, :goal => goal)
   }
   
 

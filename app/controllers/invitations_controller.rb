@@ -27,8 +27,7 @@ class InvitationsController < ApplicationController
       params[:student_sharing][:role_id] = existed_user.role.id
     end 
 
-    if @sharing.update_attributes params[:student_sharing]
-    end 
+    @sharing.update_attributes params[:student_sharing]
   end
   
   def destroy 

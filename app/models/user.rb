@@ -411,10 +411,10 @@ class User < ActiveRecord::Base
   # Get lastest due_date of goals
 
   def due_date
-    students = self.students 
+    students = self.accessible_students  
     return nil if students.length == 0
 
-    date = self.students.first.due_date
+    date = students.first.due_date
     students.find_each do |student|
       if student.due_date 
         if !date || student.due_date > date
@@ -478,7 +478,7 @@ class User < ActiveRecord::Base
                         :style => [left_text_style, nil]
         end
       else
-        students.find_each do |student| 
+        accessible_students.find_each do |student| 
           sheet.add_row [student.full_name, "#{(student.status*100).round / 100.0}%", 
                         student.due_date, 
                         list_on_track_state[student.check_on_track?]],
@@ -505,8 +505,8 @@ class User < ActiveRecord::Base
   def series_json(params={}, context)
     series = []
     if self.is?(:admin)
-      teachers = self.children.teachers.unblocked
-      teachers.map do |teacher|
+      teachers = self.children.teachers.unblocked.order(User::DEFAULT_ORDER)
+      teachers.each do |teacher|
         teacher_status = teacher.teacher_status
         series << {
           :name => teacher.full_name,
@@ -518,7 +518,7 @@ class User < ActiveRecord::Base
       end
     else
       students = self.accessible_students.includes(:goals)
-      students.map do |student|
+      students.each do |student|
         goals_grades = student.goals_grades
         series << {
           :name => student.full_name,

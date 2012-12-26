@@ -172,12 +172,7 @@ class Student < ActiveRecord::Base
 
   # Override property setter.
   def birthday=(date)
-    if date.is_a?(String)
-      format_date = ::Util.format_date(date)
-      if format_date
-        date = format_date.to_date
-      end
-    end
+    date = ::Util.try_and_convert_date(date)
     self.send(:write_attribute, :birthday, date)
   end
   

@@ -27,7 +27,7 @@
       .clearfix
       = f.input(:role_id, :collection => roles(@responder), :prompt => t("common.select_prompt"), 
                 :input_html => {:class => "pull-left"}, :disabled => @sharing.confirmed?)
-      = f.hidden_field :student_id, :value => session[:student_id]
+      = f.hidden_field :student_id, :value => student_id
       = hidden_field_tag :user_id, params[:user_id]
       .clearfix
 

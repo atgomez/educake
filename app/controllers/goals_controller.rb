@@ -4,6 +4,8 @@ class GoalsController < ApplicationController
                     :new, :edit, :create, :update, :destroy, :load_grades
 
   def new
+    @goal ||= Goal.build_goal :trial_days_total => 10, :trial_days_actual => 9, :baseline_date => Date.today
+    @goal.build_progresses
     @student = Student.find_by_id(params[:student_id])
   end
 
@@ -81,7 +83,7 @@ class GoalsController < ApplicationController
   def new_grade 
     @grade = Grade.new
     @grade.due_date = Date.today
-    student = Student.find(session[:student_id])
+    student = Student.find_by_id(params[:student_id])
     if student 
       @goals = student.goals.incomplete.map{|g| [[g.subject.name, g.curriculum.name].join(" "), g.id]}
     end 
@@ -90,7 +92,7 @@ class GoalsController < ApplicationController
   def add_grade
     result = {}
     status_code = 201
-    student = Student.find(session[:student_id])
+    student = Student.find_by_id(params[:student_id])
     if student 
       @goals = student.goals.incomplete.map{|g| [[g.subject.name, g.curriculum.name].join(" "), g.id]}
     end 
@@ -103,7 +105,7 @@ class GoalsController < ApplicationController
         @grade = valid_grade
         status_code = 400
         result[:message] = I18n.t('grade.save_failed')
-        result[:html] = render_to_string(:partial => 'goals/form_grade')  
+        result[:html] = render_to_string(:partial => 'goals/form_grade', :locals => {:student_id => params[:student_id]})  
       else
         @grade = @goal.build_grade params[:grade]
         if (@grade)
@@ -116,14 +118,8 @@ class GoalsController < ApplicationController
           else
             status_code = 400
             result[:message] = I18n.t('grade.save_failed')
-            result[:html] = render_to_string(:partial => 'goals/form_grade')
+            result[:html] = render_to_string(:partial => 'goals/form_grade', :locals => {:student_id => params[:student_id]})
           end
-        else
-          @grade = Grade.new params[:grade]
-          @grade.errors.add(:due_date, :out_of_range)
-          status_code = 400
-          result[:message] = I18n.t('grade.save_failed')
-          result[:html] = render_to_string(:partial => 'goals/form_grade')
         end
       end
     else
@@ -131,15 +127,15 @@ class GoalsController < ApplicationController
       @grade.errors.add(:goal_id, :not_selected)
       status_code = 400
       result[:message] = I18n.t('grade.save_failed')
-      result[:html] = render_to_string(:partial => 'goals/form_grade')
+      result[:html] = render_to_string(:partial => 'goals/form_grade', :locals => {:student_id => params[:student_id]})
     end
 
     render(:json => result, :status => status_code)
   end
 
   def update_grade
-    @goal = Goal.find(params[:id])
-    if @goal.update_attribute(:is_completed, params[:grade])
+    @goal = Goal.find_by_id(params[:id])
+    if @goal && @goal.update_attribute(:is_completed, params[:grade])
       render(:json => {:message => I18n.t('goal.updated_successfully')}, :status => 200)
     else
       render(:json => {:message => I18n.t('goal.save_failed')}, :status => 400)
@@ -148,9 +144,8 @@ class GoalsController < ApplicationController
 
   def initial_import_grades
     @grade = Grade.new
-    @student = Student.find(session[:student_id])
+    @student = Student.find(params[:student_id])
     @goals = []
-    session[:student_id] = @student.id 
     if @student 
       @goals = @student.goals.incomplete.map{|g| [g.name, g.id]}
     end

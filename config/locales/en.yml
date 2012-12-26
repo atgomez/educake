@@ -155,6 +155,7 @@ en:
     teacher_home: "Teacher Home"
     all_students: "All Students"
     all_students_of: "All %{user}'s Students"
+    student_not_found: "Student is not found."
 
   school:
     error_zipcode_too_long: "Zip code with %{count} characters is the maximum allowed"
@@ -177,6 +178,7 @@ en:
     role: "Role"
     user_name: "Name"
     account: "Account"
+    back: "View Schools"
 
   curriculum:
     title: "Curriculum Management"
@@ -300,6 +302,7 @@ en:
               must_eq_less_than_goal_due_date: "must be less than or equal to goal due date"
               must_eq_less_than_goal_today: "must be less than or equal to today"
               invalid_format: "must be in format MM-DD-YYYY"
+              
         progress:
           attributes:
             due_date:

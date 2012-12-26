@@ -7,14 +7,14 @@ class Admin::TeachersController < Admin::BaseAdminController
 
       unless request.xhr?
         # Only run here if not ajax request
-        @all_teachers = @user.children.teachers.unblocked
+        @all_teachers = @user.children.teachers.unblocked.order(User::DEFAULT_ORDER)
         series = []
 
         # Options for export select box
         @all_teachers_collection = []
         @first_teacher = nil
 
-        @all_teachers.find_each do |teacher|
+        @all_teachers.each do |teacher|
           if series.blank?
             # Only need ONE serie to detect the width and height of the chart.
             teacher_status = teacher.teacher_status

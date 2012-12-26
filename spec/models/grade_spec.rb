@@ -43,7 +43,7 @@ describe Grade do
 	}
 
 	let(:grade) { 
-		FactoryGirl.build(:grade, :due_date => Time.now, :goal => goal)
+		FactoryGirl.build(:grade, :due_date => Date.today, :goal => goal)
 	}
 
   context	'with Instance Methods' do
@@ -53,13 +53,38 @@ describe Grade do
 
 		context 'with #due_date=' do
 			it { 
-				grade.due_date = '20/11/2013'
-				grade.due_date.should == ::Util.format_date('20/11/2013')
+				grade.due_date = '11-20-2013'
+				grade.due_date.should == ::Util.format_date('11-20-2013')
 			}
 		end
   end
 
   context 'with Class Methods' do
+  	context 'when #load_data' do
+			before {
+					@goal = goal
+					@grades = []
+					(1..30).each do |i|
+						new_grade = FactoryGirl.build( :grade, 
+																					 :due_date => Date.today - (i +4).days, :goal => @goal)
+					  if !new_grade.save
+					  	puts new_grade.errors.inspect
+					  end
+
+					  @grades << new_grade
+					end
+				}
+			context 'when using default variables' do
+				it { Grade.load_data.length.should eq(15)	}
+			end
+
+			context 'when passing paging params to' do 
+				before {
+					@paginated_goal = Grade.load_data({:page_id => 3, :page_size => 14})
+				}
+				it { @paginated_goal.length.should eq(@grades.count - (14*2))	}
+			end
+		end
   end
 
   context 'when create or edit' do
@@ -69,7 +94,7 @@ describe Grade do
   	context 'with invalid values' do
   		context 'with number' do
   			let(:invalid_number_range) { 
-					grade = FactoryGirl.build(:grade, :due_date => Time.now - 1.days, :goal => goal)
+					grade = FactoryGirl.build(:grade, :due_date => Date.today - 1.days, :goal => goal)
 					grade.accuracy = 101
 					grade
 				}

@@ -48,8 +48,8 @@
   .grade
     #render_add_grade
     - if @goals.size > 0
-      .pull-right= link_to t("grade.add"), new_grade_goals_path, :remote => true, :class => "btn", :id => "add-grade"
-      .pull-right= link_to(t("grade.import.title"), initial_import_grades_goals_path, 
+      .pull-right= link_to t("grade.add"), new_grade_goals_path(:student_id => params[:id]), :remote => true, :class => "btn", :id => "add-grade"
+      .pull-right= link_to(t("grade.import.title"), initial_import_grades_goals_path(:student_id => params[:id]), 
                             :remote => true, :class => "btn", :id => "import-grade")
     .clearfix
     .line
@@ -61,7 +61,7 @@
   .users.student-users
     - if (!@user.is?(:parent))
       .action-container
-        = link_to(" " + t("invitation.new_title"), new_invitation_path(:user_id => @user.id), 
+        = link_to(" " + t("invitation.new_title"), new_invitation_path(:user_id => @user.id, :student_id => params[:id]), 
                   :remote => true, :class => "icon-plus-sign add invite-user")
 
     -# Place holder for invitation form
@@ -70,6 +70,6 @@
     #content-users
       = render( :partial => "shared/students/view_invited_user", 
                 :locals => {:invited_users => @invited_users, 
-                            :read_only => @user.is?(:parent)})
+                            :read_only => @user.is?(:parent), :student_id => params[:id]})
 
   = render "export", :all_students => @all_students

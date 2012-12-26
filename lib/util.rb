@@ -49,9 +49,19 @@ module Util
     def format_date(value, format = nil)
       begin
         format ||= I18n.t("date.formats.default")
-        value = DateTime.strptime(value.to_s, format)
+        value = Date.strptime(value.to_s, format)
       rescue Exception
         nil
+      end
+    end
+
+    # This method will convert string to date, if not, it will keep the value is string
+    def try_and_convert_date(value)
+      if value.is_a?(String)
+        fdate = format_date(value)
+        fdate || value
+      else
+        value
       end
     end
     
@@ -61,6 +71,17 @@ module Util
         date.strftime(format)
       rescue Exception
         ""
+      end
+    end
+
+    # Use to work around date validation problem
+    # 
+
+    def check_date_validation(context, attributes_list, attribute, check_blank)
+      if context[attribute].nil? && attributes_list[attribute.to_s].blank? && check_blank
+        context.errors.add attribute, :blank
+      elsif context[attribute].nil?
+        context.errors.add attribute, :invalid_format
       end
     end
     

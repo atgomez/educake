@@ -6,6 +6,7 @@
       %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} &times;
       %h4= t("grade.add")
     .modal-body
+      = hidden_field_tag "student_id", student_id
       - if notification = f.error_notification
         .alert.alert-error.fade.in
           %a{:class => "close", 'data-dismiss' => "alert", :href => "#"} &times;

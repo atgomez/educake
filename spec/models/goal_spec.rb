@@ -117,15 +117,15 @@ describe Goal do
 
 		context 'with #due_date=' do
 			it { 
-				goal.due_date = '20/11/2013'
-				goal.due_date.should == ::Util.format_date('20/11/2013')
+				goal.due_date = '11-20-2013'
+				goal.due_date.should == ::Util.format_date('11-20-2013')
 			}
 		end
 
 		context 'with #baseline_date=' do
 			it { 
-				goal.baseline_date = '20/11/2011'
-				goal.baseline_date.should == ::Util.format_date('20/11/2011')
+				goal.baseline_date = '11-20-2011'
+				goal.baseline_date.should == ::Util.format_date('11-20-2011')
 			}
 		end
 
@@ -203,7 +203,7 @@ describe Goal do
 					end
 				}
 			context 'when using default variables' do
-				it { Goal.load_data.length.should eq(@goals.count)	}
+				it { Goal.load_data.length.should eq(30)	}
 			end
 
 			context 'when passing paging params to' do 
