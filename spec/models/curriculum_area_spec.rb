@@ -11,5 +11,16 @@
 require 'spec_helper'
 
 describe CurriculumArea do
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe "validates presence of name" do
+    let(:area) {CurriculumArea.new}
+    it { area.should have_at_least(1).error_on(:name) }
+  end
+
+  describe "validates uniqueness of name" do
+    let(:area) {FactoryGirl.create(:curriculum_area)}
+    it "should validate uniqueness of name" do
+      area1 = CurriculumArea.new(:name => area.name)
+      area.should have_at_least(1).error_on(:name)
+    end
+  end
 end

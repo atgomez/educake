@@ -4,13 +4,11 @@ describe ChartsController do
   render_views
   
   let(:curriculum) {FactoryGirl.create(:curriculum)}
-  let(:subject) {FactoryGirl.create(:subject)}
   let(:user) {FactoryGirl.create(:teacher)}
   let(:student) { FactoryGirl.create(:student, :teacher => user)  }
   let(:goal) { 
     goal = FactoryGirl.create(:goal, 
                        :curriculum => curriculum, 
-                       :subject => subject,
                        :student => student)
   }
   let(:progress_1) {

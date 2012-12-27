@@ -11,5 +11,16 @@
 require 'spec_helper'
 
 describe CurriculumCore do
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe "validates presence of name" do
+    let(:record) {CurriculumCore.new}
+    it { record.should have_at_least(1).error_on(:name) }
+  end
+
+  describe "validates uniqueness of name" do
+    let(:record) {FactoryGirl.create(:curriculum_core)}
+    it "should validate uniqueness of name" do
+      record1 = CurriculumCore.new(:name => record.name)
+      record1.should have_at_least(1).error_on(:name)
+    end
+  end
 end

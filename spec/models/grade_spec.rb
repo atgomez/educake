@@ -21,16 +21,10 @@ require 'spec_helper'
 
 describe Grade do
 	let(:curriculum) {
-		curriculum = FactoryGirl.create(:curriculum)
-		curriculum.name = 'CURRICULUM ABC'
-		curriculum.save
-		curriculum
+		FactoryGirl.create(:curriculum)
 	}
 	let(:subject) {
-		subject = FactoryGirl.create(:subject)
-		subject.name = 'SUBJECT ABC'
-		subject.save
-		subject
+		FactoryGirl.create(:subject, :name => 'SUBJECT ABC')
 	}
 	let(:user) {FactoryGirl.create(:teacher)}
 	let(:student) { FactoryGirl.create(:student, :teacher => user) }
@@ -38,7 +32,6 @@ describe Grade do
 	let(:goal) { 
 		FactoryGirl.create(:goal_with_grades, 
 											 :curriculum => curriculum, 
-											 :subject => subject,
 											 :student => student)
 	}
 

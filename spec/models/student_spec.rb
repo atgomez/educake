@@ -110,17 +110,6 @@ describe Student do
     end
   end # Student.search_data
 
-  describe "#goals_grades", :goal_grades => true do
-    before(:each) do
-      2.times { FactoryGirl.create(:goal_with_grades, :student => student) }
-    end
-
-    it "returns correct data" do
-      result = student.goals_grades
-      result.nil?.should be_false
-    end
-  end
-
   describe "#photo_url" do
     context "with photo" do
       it "returns the photo url with no parameter" do
