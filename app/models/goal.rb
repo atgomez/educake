@@ -512,7 +512,7 @@ class Goal < ActiveRecord::Base
 
     # Run all custom validations
     def custom_validations
-      self.validate_baseline && self.validate_trial_days && self.validates_goal_name 
+      self.validate_baseline && validate_baseline_date && self.validate_trial_days && self.validates_goal_name 
     end
 
     def validate_baseline
