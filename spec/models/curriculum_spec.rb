@@ -99,4 +99,26 @@ describe Curriculum do
       end
     end
   end
+
+  describe ".import_data", :import_data => true do    
+    context "with valid CSV file" do
+      let(:csv_file) {fixture_file_upload('/files/curriculums.csv')}
+      let(:fixed_curriculum) {FactoryGirl.create(:fixed_curriculum)}
+      
+      it "imports and update data correctly" do
+        fixed_curriculum
+        errors = Curriculum.import_data(csv_file.path)
+        errors.should be_blank
+      end
+
+      context "with unexpected error" do
+        it "handles and returns the error" do
+          Curriculum.any_instance.stub(:save!).and_raise(Exception.new("Fatal error!"))
+          errors = Curriculum.import_data(csv_file.path)
+          errors.should_not be_blank
+          puts errors.inspect
+        end
+      end
+    end
+  end
 end

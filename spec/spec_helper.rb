@@ -47,7 +47,7 @@ RSpec.configure do |config|
   # Config database_cleaner
   config.before(:suite) do
     SpecUtil.cleanup
-    DatabaseCleaner.strategy = :truncation, {:except => %w[roles]}
+    DatabaseCleaner.strategy = :truncation, {:except => %w[roles curriculum_cores]}
     DatabaseCleaner.clean
     load(Rails.root.join("db", "seeds.rb"))
   end

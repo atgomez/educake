@@ -188,4 +188,74 @@ describe SuperAdmin::CurriculumsController do
       end
     end
   end
+
+  describe "GET 'init_import'", :init_import => true do
+    subject { get :init_import }
+    include_examples "unauthorized"
+
+    context "authorized" do
+      subject { get :init_import, :format => :js }
+
+      before(:each) do
+        sign_in super_admin
+      end
+
+      it "renders the import form" do
+        subject.should render_template('init_import')
+      end
+    end
+  end
+
+  describe "POST 'import'", :import => true do
+    subject { post :import }
+    include_examples "unauthorized"
+
+    context "authorized" do
+      before(:each) do
+        sign_in super_admin
+      end
+
+      context "with valid file" do
+        let(:csv_file) {fixture_file_upload('/files/curriculums.csv')}
+        let(:params) {
+          {
+            :curriculum_import => {
+              :import_file => csv_file
+            }
+          }
+        }
+        subject { post :import, params.merge(:format => :js) }
+
+        it "runs the import and show the notice" do
+          subject.should render_template("import")
+          import_obj = assigns(:import)
+          import_obj.errors.should be_blank
+        end
+
+        context "import failed" do
+          it "shows the errors" do
+            Curriculum.should_receive(:import_data).and_return({:error => "Error"})
+            subject.should render_template("import")
+          end
+        end
+
+        context "with unexpected error" do
+          it "handles and shows the error" do
+            Curriculum.should_receive(:import_data).and_raise(Exception.new("Fatal error!"))
+            subject.should render_template("import")
+          end
+        end
+      end
+
+      context "without file" do
+        subject { post :import, :format => :js }
+
+        it "renders the form and shows errors" do
+          subject.should render_template("import")
+          import_obj = assigns(:import)
+          import_obj.errors.should_not be_blank
+        end
+      end
+    end
+  end
 end
