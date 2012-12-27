@@ -37,13 +37,14 @@ en:
     gender_label: "Gender:"
     born_on_label: "Born on:"
     address: "Address"
+    select_import_file: "Choose file (csv)"
 
     gender:
       male: "Male"
       female: "Female"
       unknown: "Unknown"
     file: 
-      wrong_file_type: "File must be of file type .csv"
+      wrong_csv_file_type: "File type must be .csv"
       require_to_select: "Please select a file."
 
   time:
@@ -202,7 +203,7 @@ en:
     updated_failed_without_name: "Cannot save the curriculum."
     error_delete_in_used: "Cannot delete the curriculum '%{name}' because it is in-used."
     import_line_failed: "Cannot import the line."
-    import_failed: "Cannot import the file."
+    import_failed: "Some error occurred while importing file. Please try again."
     import_successfully: "Importing curriculums is successful"
 
   profile:
