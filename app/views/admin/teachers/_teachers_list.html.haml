@@ -5,7 +5,7 @@
 #pagination-listitem  
   - teachers.each_with_index do |teacher, idx|
     - students = teacher.accessible_students
-    - teacher_home_url = students_path(:user_id => teacher.id, :admin_id => @user.id)
+    - teacher_home_url = students_path(:user_id => teacher.id, :admin_id => @admin.id)
     .teacher-container.hoverable.pull-left.clearfix.link{:href => teacher_home_url}
       .avatar-container.thumbnail
         %a{:href => teacher_home_url, :title => teacher.full_name}

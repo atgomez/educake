@@ -16,7 +16,7 @@
               .checkbox-group.margin-left
                 = radio_button_tag "data", "classroom", false, :class => "export_data_selector"
                 = label_tag :data_classroom, t("export.classroom")
-                = hidden_field_tag "teacher_id", @user.id
+                = hidden_field_tag "user_id", @user.id
         %tr
           %td
             = t("export.student")

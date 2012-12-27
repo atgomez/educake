@@ -3,7 +3,7 @@
   = javascript_include_tag('app/students.js')
   
 .admin.teacher.search
-  %h3.school-name= current_user.school.try(:name)
+  %h3.school-name= @admin.school.try(:name)
   .search-header.clearfix
     %h4.search-title= t("common.search_result_for", :query => params[:query])
     = render 'shared/search_box', :action => "/admin/teachers/search", :placeholder => t("common.search_place_holder")

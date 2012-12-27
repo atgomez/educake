@@ -54,13 +54,13 @@ class StudentsController < ApplicationController
         if request.xhr?
           render :partial => "shared/students/view_goal", :locals => {:goals => @goals, :students => @students}
         end
-        sponsors = @student.sponsors
-        @invited_users = StudentSharing.unblocked.where("student_id = ? and email NOT IN (?)", @student.id, sponsors.map(&:email))
-        @invited_users += sponsors 
-        @invited_users.delete @user 
-        sharing = StudentSharing.find_by_email(@user.email)
-        @invited_users.delete sharing
-        @invited_users = @invited_users.uniq
+
+        @invited_users = StudentSharing.unblocked.where("student_id = ? and email NOT IN (?)", @student.id, @user.email)
+        if (@student.teacher.id != @user.id) # Not an owner
+          @invited_users << @student.teacher
+        end
+
+
       else
         render_page_not_found
       end

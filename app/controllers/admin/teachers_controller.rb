@@ -1,87 +1,83 @@
 class Admin::TeachersController < Admin::BaseAdminController
   cross_role_action :index, :show, :new, :edit, :create, :update, :destroy, :all, :search, :get_students
+  before_filter :find_user
+
   # TODO: improve this method, because it load teachers 2 times.
   def index
-    if find_user
-      @teachers = @user.children.teachers.unblocked.load_data(filtered_params)
+    @teachers = @admin.children.teachers.unblocked.load_data(filtered_params)
 
-      unless request.xhr?
-        # Only run here if not ajax request
-        @all_teachers = @user.children.teachers.unblocked.order(User::DEFAULT_ORDER)
-        series = []
+    unless request.xhr?
+      # Only run here if not ajax request
+      @all_teachers = @admin.children.teachers.unblocked.order(User::DEFAULT_ORDER)
+      series = []
 
-        # Options for export select box
-        @all_teachers_collection = []
+      # Options for export select box
+      @all_teachers_collection = []
 
-        @all_teachers.each do |teacher|
-          if series.blank?
-            # Only need ONE serie to detect the width and height of the chart.
-            teacher_status = teacher.teacher_status
-            series << {
-              :name => teacher.full_name,
-              :data => teacher_status,
-              :yAxis => 2
-            } unless teacher_status.empty?
-          end
-
-          # Prepare options for export popup
-          @all_teachers_collection << [teacher.full_name, teacher.id]
+      @all_teachers.each do |teacher|
+        if series.blank?
+          # Only need ONE serie to detect the width and height of the chart.
+          teacher_status = teacher.teacher_status
+          series << {
+            :name => teacher.full_name,
+            :data => teacher_status,
+            :yAxis => 2
+          } unless teacher_status.empty?
         end
 
-        @all_teachers_count = @all_teachers.length
+        # Prepare options for export popup
+        @all_teachers_collection << [teacher.full_name, teacher.id]
+      end
 
-        if series.empty?
-          @width = "0%"
-          @height = "0"
-        else 
-          @width = "100%"
-          @height = "500"
-        end
+      @all_teachers_count = @all_teachers.length
+
+      if series.empty?
+        @width = "0%"
+        @height = "0"
+      else 
+        @width = "100%"
+        @height = "500"
       end
-      
-      respond_to do |format|
-        format.js
-        format.html
-      end
+    end
+    
+    respond_to do |format|
+      format.js
+      format.html
     end
   end
 
   # GET /admin/teachers/all
   # TODO: should apply endless pagination.
   def all
-    if find_user
-      @teachers = @user.children.teachers.unblocked.order(User::DEFAULT_ORDER)
-    end
+    @teachers = @admin.children.teachers.unblocked.order(User::DEFAULT_ORDER)
   end
 
   def create
-    if find_user
-      result = {}
-      status_code = 201
+    result = {}
+    status_code = 201
 
-      begin
-        @teacher = @user.children.new_with_role_name(:teacher, params[:user])
-        @teacher.school_id = @user.school_id
-        @teacher.skip_password!
-        if @teacher.save
-          status_code = 201
-          message = I18n.t('admin.teacher.created_successfully', :name => @teacher.full_name)
-          result[:message] = message
-          flash[:notice] = result[:message]
-        else
-          status_code = 400
-          result[:message] = I18n.t('admin.teacher.create_failed')
-          result[:html] = render_to_string(:partial => 'admin/teachers/form', 
-                            :locals => {:teacher => @teacher})
-        end
-      rescue Exception => exc
-        ::Util.log_error(exc, "Admin::TeachersController#create")
+    begin
+      @teacher = @admin.children.new_with_role_name(:teacher, params[:user])
+      @teacher.school_id = @admin.school_id
+      @teacher.skip_password!
+      if @teacher.save
+        status_code = 201
+        message = I18n.t('admin.teacher.created_successfully', :name => @teacher.full_name)
+        result[:message] = message
+        flash[:notice] = result[:message]
+      else
         status_code = 400
         result[:message] = I18n.t('admin.teacher.create_failed')
+        result[:html] = render_to_string(:partial => 'admin/teachers/form', 
+                          :locals => {:teacher => @teacher})
       end
-
-      render(:json => result, :status => status_code)
+    rescue Exception => exc
+      ::Util.log_error(exc, "Admin::TeachersController#create")
+      status_code = 400
+      result[:message] = I18n.t('admin.teacher.create_failed')
     end
+
+    render(:json => result, :status => status_code)
   end
 
   def edit
@@ -89,85 +85,66 @@ class Admin::TeachersController < Admin::BaseAdminController
   end
   
   def update
-    if find_user
-      result = {}
-      status_code = 201
+    result = {}
+    status_code = 201
 
-      begin
-        @teacher.skip_password!
-        if @teacher.update_attributes(params[:user])
-          status_code = 201
-          message = I18n.t('admin.teacher.updated_successfully', :name => @teacher.full_name)
-          result[:message] = message
-          flash[:notice] = result[:message]
-        else
-          status_code = 400
-          result[:message] = I18n.t('admin.teacher.updated_failed')
-          result[:html] = render_to_string(:partial => 'admin/teachers/form', 
-                            :locals => {:teacher => @teacher})
-        end
-      rescue Exception => exc
-        ::Util.log_error(exc, "Admin::TeachersController#update")
+    begin
+      @teacher.skip_password!
+      if @teacher.update_attributes(params[:user])
+        status_code = 201
+        message = I18n.t('admin.teacher.updated_successfully', :name => @teacher.full_name)
+        result[:message] = message
+        flash[:notice] = result[:message]
+      else
         status_code = 400
         result[:message] = I18n.t('admin.teacher.updated_failed')
+        result[:html] = render_to_string(:partial => 'admin/teachers/form', 
+                          :locals => {:teacher => @teacher})
       end
-
-      render(:json => result, :status => status_code)
+    rescue Exception => exc
+      ::Util.log_error(exc, "Admin::TeachersController#update")
+      status_code = 400
+      result[:message] = I18n.t('admin.teacher.updated_failed')
     end
+
+    render(:json => result, :status => status_code)
   end 
 
   # GET: /admin/teacher/search?query=<QUERY>
   # TODO: optimize this method
   def search
-    if find_user
-      searcher = @admin ? @admin : @user
-      query = params[:query]
-      if query.blank?
-        redirect_to(:action => 'index')
-      else
-        query.strip!
+    searcher = @admin || @user
+    query = params[:query]
+    if query.blank?
+      redirect_to(:action => 'index', :admin_id => @admin.id)
+    else
+      query.strip!
 
-        case params[:type]
-          when 'student' then
-            @students = Student.students_of_teacher(searcher).search_data(query, filtered_params)
-          when 'teacher' then
-            @teachers = searcher.children.unblocked.search_data(query, filtered_params)
-          else
-            @students = Student.students_of_teacher(searcher).search_data(query, filtered_params)
-            @teachers = searcher.children.unblocked.search_data(query, filtered_params)
-        end
+      case params[:type]
+        when 'student' then
+          @students = Student.students_of_teacher(searcher).search_data(query, filtered_params)
+        when 'teacher' then
+          @teachers = searcher.children.unblocked.search_data(query, filtered_params)
+        else
+          @students = Student.students_of_teacher(searcher).search_data(query, filtered_params)
+          @teachers = searcher.children.unblocked.search_data(query, filtered_params)
       end
     end
   end
 
   def get_students
-    if find_user
-      teacher = @user.children.teachers.unblocked.find_by_id(params[:teacher_id])
-      if teacher.blank?
-        render_page_not_found(I18n.t("user.error_not_found"))
-        return
-      end
-      @students = teacher.accessible_students
-      render :partial => 'admin/teachers/get_students'
-    end
+    @students = @teacher.accessible_students
+    render :partial => 'admin/teachers/get_students'
   end
 
   def destroy
-    if find_user
-      teacher = @user.children.teachers.unblocked.find_by_id(params[:id])
-      if teacher.blank?
-        render_page_not_found(I18n.t("user.error_not_found"))
-        return
-      end
-
-      if teacher.destroy
-        flash[:notice] = I18n.t("user.deleted_successfully", :name => teacher.full_name)
-      else
-        flash[:alert] = I18n.t("user.delete_failed")
-      end
-      
-      redirect_to admin_teachers_path(:user_id => @user.id, :admin_id => @user.id)
+    if @teacher.destroy
+      flash[:notice] = I18n.t("user.deleted_successfully", :name => @teacher.full_name)
+    else
+      flash[:alert] = I18n.t("user.delete_failed")
     end
+    
+    redirect_to admin_teachers_path(:admin_id => @admin.id)
   end
   
   protected
@@ -183,13 +160,14 @@ class Admin::TeachersController < Admin::BaseAdminController
     #   Get user admin via current_user
     # Get teacher from id
     #
-    def find_user(teacher_id = params[:id])
+    def find_user
       parse_params_to_get_users
 
       if !@admin
         render_page_not_found(I18n.t("user.error_not_found"))
         return false
       else
+        teacher_id = params[:id] || params[:user_id]
         @teacher = @admin.children.unblocked.find_by_id(teacher_id)
       end
 

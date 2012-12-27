@@ -1,21 +1,22 @@
 class ExportController < ApplicationController
 	authorize_resource :student, :user
 	cross_role_action :export_student, :export_classroom, :export_school, :relay
+	before_filter :find_and_check_user
 
 	# This is used to redirect to suitable action base on 'data' parameter
 	# GET /export/relay
 	# Params
 	# data
-	# teacher_id
+	# user_id
 	# student_id
 
 	def relay
 		export_data_for = params[:data]
 		case export_data_for
 		when 'individual' 
-			redirect_to export_student_export_index_path(:student_id => params[:student_id])
+			redirect_to export_student_export_index_path(:student_id => params[:student_id], :admin_id => params[:admin_id], :user_id => params[:user_id])
 		when 'classroom'
-			redirect_to export_classroom_export_index_path(:teacher_id => params[:teacher_id])
+			redirect_to export_classroom_export_index_path(:admin_id => params[:admin_id], :user_id => params[:user_id])
 		when 'school'
 			redirect_to export_school_export_index_path(:admin_id => params[:admin_id])
 		else
@@ -30,7 +31,6 @@ class ExportController < ApplicationController
 
 	def export_student
 		xlsx_package = Axlsx::Package.new
-		@student = Student.find_by_id params[:student_id]
 	  if (can?(:view, @student))
 		  in_tmpdir do |tmpdir, path|
 			 	@student.export_excel(xlsx_package, self, tmpdir, path)
@@ -45,12 +45,11 @@ class ExportController < ApplicationController
 
 	# GET /export/export_classroom
 	# Params
-	# teacher_id Teacher ID
+	# user_id Teacher ID
 	# 
 
 	def export_classroom
 		xlsx_package = Axlsx::Package.new
-		@teacher = User.find_by_id params[:teacher_id]
 	  if (can?(:view, @teacher))
 		  in_tmpdir do |tmpdir, path|
 			 	@teacher.export_excel(xlsx_package, self, tmpdir, path)
@@ -70,12 +69,11 @@ class ExportController < ApplicationController
 
 	def export_school
 		xlsx_package = Axlsx::Package.new
-		@user = User.find_by_id params[:admin_id]
-	  if can?(:view, @user)
+	  if can?(:view, @admin)
 		  in_tmpdir do |tmpdir, path|
-			 	@user.export_excel(xlsx_package, self, tmpdir, path)
+			 	@admin.export_excel(xlsx_package, self, tmpdir, path)
 			 	# Send file
-	      send_file path, :filename => "school_export[#{@user.full_name}].xlsx", 
+	      send_file path, :filename => "school_export[#{@admin.full_name}].xlsx", 
 	      					:type => "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
 			end
 		else
@@ -103,4 +101,14 @@ class ExportController < ApplicationController
 		ensure
 		  FileUtils.rm_rf( path ) if File.exists?( path ) # Remove temp folder whatever happening
 		end
+
+		def find_and_check_user
+			parse_params_to_get_users
+
+      @teacher = @user
+      if @teacher
+	  		@student = @teacher.accessible_students.find_by_id(params[:student_id])
+	  	end
+
+  	end
 end

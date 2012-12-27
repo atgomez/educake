@@ -26,7 +26,7 @@
       = f.input :email, :required => true
       = f.input(:classroom, :label => t("admin.teacher.classroom"), :required => false)
       = f.input(:phone, :as => :string, :label => t("admin.teacher.phone"), :required => false)
-      = hidden_field_tag "user_id", @user.id
+      = hidden_field_tag "user_id", @teacher.id if @teacher
       = hidden_field_tag "admin_id", @admin.id
     .modal-footer
       %input.btn{:value => t("common.cancel"), :type => "button", "aria-hidden" => "true", 

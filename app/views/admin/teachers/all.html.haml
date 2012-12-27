@@ -5,8 +5,7 @@
 .admin.teacher
   %h3.school-name= current_user.school.try(:name)
   .clearfix.toolbar
-    = link_to(t("admin.teacher.home"), 
-              admin_teachers_path(:user_id => @user.id, :admin_id => @user.id), 
+    = link_to(t("admin.teacher.home"), admin_teachers_path(:admin_id => @admin.id), 
               :class => "brown font18")
     - unless @teachers.blank?
       = render 'shared/search_box', :action => "/admin/teachers/search", :placeholder => t("common.search_place_holder")
