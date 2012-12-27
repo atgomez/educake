@@ -9,8 +9,7 @@ window.goal =
     return
 
   clickOnGoal: -> 
-    $(".grade a.goal").live 'click', () -> 
-
+    $(".grade a.goal").live 'click', () ->
       id_content = $(this).attr("href")
       id = id_content.split("_")[1]
       current_iframe = $('#chart').attr("src")
@@ -46,6 +45,12 @@ window.goal =
       return
 
   setup_form: ->
+    @setup_wizard()
+
+    $(".goal-form .extended-combobox").livequery(() ->
+      $(this).readonly_combobox()
+    )
+
     $(".goal-form #btn-save-goal").livequery('click', (e) -> 
       e.preventDefault()
       $(this).parent().parent().submit()
@@ -74,6 +79,7 @@ window.goal =
           if res and res.html
             goal_dialog = $(res.html)
             $(parent).html(goal_dialog.html())
+            goal.get_curriculum()
       })
 
       return false
@@ -100,11 +106,71 @@ window.goal =
             res = null
           if res and res.html
             goal_dialog = $(res.html)
-            $(parent).html(goal_dialog.html())
+            $(parent).html(goal_dialog.html())            
       })
 
       return false
     )
+
+  setup_wizard: ->
+    $(".wizard-content .wizard-action").live("click", (e) ->
+       e.preventDefault()
+       tab_nav = $(".wizard-nav").find("a[href='" + $(this).attr("data-target") + "']")
+       tab_nav.tab('show')
+       total_steps = $(".wizard-nav a").length
+       current_step = $(".wizard-nav a").index(tab_nav) + 1
+       step_html = "(" + current_step + "/" + total_steps + ")"
+       $(".wizard-step-indicator").html(step_html)
+    )
+
+    $(".reset-on-changed").live("change", (e) ->
+      # Reset the client-side validation states.
+      goal.get_curriculum()
+    )
+
+  get_curriculum: ->
+    # Collect all curriculum attributes
+    attrs = {}
+    $("#curriculum.tab-pane").find("select[name!='goal[curriculum_attributes]']").each(->
+      attrs[$(this).attr('name')] = $(this).val()
+    )
+
+    # Show the loading
+    loading = $("#curriculum.tab-pane").find(".loading").removeClass("hide")
+
+    $.ajax({
+      url: "/goals/curriculum_info",
+      type: "POST",
+      data: attrs,
+      success: (res) ->
+        curriculum_desc = $("#curriculum.tab-pane .curriculum-description")
+        if(res && res.id)          
+          if res.description1
+            curriculum_desc.find(".description1").html(res.description1)
+          else
+            curriculum_desc.find(".description1").html("")
+          if res.description2
+            curriculum_desc.find(".description2").html(res.description2)
+          else
+            curriculum_desc.find(".description2").html("")
+          curriculum_desc.removeClass("hide")
+          curriculum_desc.find(".error").addClass("hide")
+          curriculum_desc.find(".control-label").removeClass("hide")
+        else if(res && res.error)
+          curriculum_desc.find(".error").removeClass("hide").html(res.error)
+          curriculum_desc.find(".control-label").addClass("hide")
+          curriculum_desc.find(".description1, .description2").html("")
+          curriculum_desc.removeClass("hide")
+        else
+          # Clear the old result
+          curriculum_desc.find(".description1, .description2").html("")
+          curriculum_desc.addClass("hide")
+          curriculum_desc.find(".error").addClass("hide")
+          curriculum_desc.find(".control-label").removeClass("hide")
+          
+        # Hide the loading
+        $(loading).addClass("hide")
+    })
 
   update_grade: ->
     $(".complete-checkbox .goal-complete").live 'click', ->

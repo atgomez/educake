@@ -49,11 +49,17 @@ jquery_ext = {
                             }
                             temp_opt.html(value);
                             temp_opt.val(value);
-                            select.val(value).change();
+                            tmp = select.val();
+                            select.val(value);
+                            if(tmp != select.val())
+                                select.change();
                         }
                         else {
                             // remove invalid value, as it didn't match anything
-                            select.val( "" ).change();
+                            tmp = select.val();
+                            select.val("");
+                            if(tmp != select.val())
+                                select.change();
                             input.data( "autocomplete" ).term = "";
                         }
                         return false;
@@ -150,7 +156,11 @@ jquery_ext = {
                     $(document).mouseup(function (e) {
                         if (input.has(e.target).length === 0)
                         {
-                            input.autocomplete( "close" );
+                            try{
+                                input.autocomplete( "close" );
+                            }
+                            catch(exc){
+                            }
                         }
                     });
                 }
@@ -165,3 +175,18 @@ jquery_ext = {
     })( jQuery );
   }
 };
+
+$(function() {
+    // Init extension methods
+    jquery_ext.extend_combobox_widget({
+      extend_method_name: "combobox",
+      allow_new_value: true
+    });
+
+    jquery_ext.extend_combobox_widget({
+      extend_method_name: "readonly_combobox",
+      editable: false, 
+      allow_new_value: false
+    });
+});
+
