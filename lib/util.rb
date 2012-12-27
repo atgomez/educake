@@ -103,6 +103,9 @@ module Util
       Rails.logger.error "===== ERROR: #{description} ====="
       Rails.logger.error exc.inspect
       Rails.logger.error exc.backtrace.join("\n")
+      if Rails.env.test?
+        self.print_error(exc, description)
+      end
     end
   
     def print_error(exc, description = "")

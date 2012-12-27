@@ -52,19 +52,23 @@ class SuperAdmin::CurriculumsController < SuperAdmin::BaseSuperAdminController
 
   # GET /super_admin/curriculums/init_import
   def init_import
-
+    @import = CurriculumImport.new
   end
 
   # POST /super_admin/curriculums/import
+  # TODO: should use Timeout and DelayedJob
   def import
+    attrs = params[:curriculum_import] || {}
+    @import = CurriculumImport.new(attrs)
+
     begin      
-      data_source = params[:import_file].path
-      errors = Curriculum.import_data(data_source)
-      if errors.blank?
-        flash[:notice] = I18n.t("curriculum.import_successfully")
-      else
-        puts errors.inspect
-        flash[:alert] = I18n.t("curriculum.import_failed")
+      if @import.valid?
+        errors = Curriculum.import_data(@import.import_file_path)
+        if errors.blank?
+          flash[:notice] = I18n.t("curriculum.import_successfully")
+        else
+          flash[:alert] = I18n.t("curriculum.import_failed")
+        end      
       end
     rescue Exception => exc
       ::Util.log_error(exc, "SuperAdmin::CurriculumsController#import")
@@ -72,7 +76,7 @@ class SuperAdmin::CurriculumsController < SuperAdmin::BaseSuperAdminController
     end
 
     respond_to do |format|
-      format.html { redirect_to :action => 'index' }
+      format.js
     end
   end
 	

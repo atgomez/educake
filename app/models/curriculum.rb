@@ -82,25 +82,40 @@ class Curriculum < ActiveRecord::Base
         tmp_data[r.name] = r.id
       end
       subjects = BufferedHash.new(cache_size, tmp_data) do |name|
-        Subject.find_by_name(name).try(:id)
+        # Find and init the record if necessary
+        record = Subject.find_or_initialize_by_name(name)
+        if record.new_record?
+          record.save!
+        end
+        record.id
       end
 
-      # Cache the CurrculumGrade
+      # Cache the CurriculumGrade
       tmp_data = {}
-      CurrculumGrade.limit(cache_size).each do |r|
+      CurriculumGrade.limit(cache_size).each do |r|
         tmp_data[r.name] = r.id
       end
       curriculum_grades = BufferedHash.new(cache_size, tmp_data) do |name|
-        CurrculumGrade.find_by_name(name).try(:id)
+        # Find and init the record if necessary
+        record = CurriculumGrade.find_or_initialize_by_name(name)
+        if record.new_record?
+          record.save!
+        end
+        record.id
       end
 
       # Cache the CurrculumArea
       tmp_data = {}
-      CurrculumArea.limit(cache_size).each do |r|
+      CurriculumArea.limit(cache_size).each do |r|
         tmp_data[r.name] = r.id
       end
       curriculum_areas = BufferedHash.new(cache_size, tmp_data) do |name|
-        CurrculumArea.find_by_name(name).try(:id)
+        # Find and init the record if necessary
+        record = CurriculumArea.find_or_initialize_by_name(name)
+        if record.new_record?
+          record.save!
+        end
+        record.id
       end
 
       Curriculum.transaction do
@@ -126,12 +141,13 @@ class Curriculum < ActiveRecord::Base
             curriculum = Curriculum.where(finder_attrs).first
             if curriculum
               curriculum.update_attributes!(extra_attrs)
+              puts "[Curriculum] Updated: #{curriculum.id}"
             else
               # Create a new curriculum
               curriculum = Curriculum.new(finder_attrs.merge(extra_attrs))
               curriculum.save!
-            end
-            puts "[Curriculum] Imported: #{curriculum.inspect}"
+              puts "[Curriculum] Imported: #{curriculum.id}"
+            end            
           rescue Exception => exc
             ::Util.log_error(exc, "Curriculum.import_data#foreach")
             errors[line_num] = I18n.t("curriculum.import_line_failed")

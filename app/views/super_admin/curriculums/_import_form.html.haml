@@ -1,15 +1,13 @@
-.modal#import-form.hide.fade
-  = form_tag(import_super_admin_curriculums_path, :method => :post, :remote => true, 
-              :multipart => true, :class => "import-form") do
-    .modal-header
-      %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} ×
-      %h4= t("curriculum.import_title")
-    .modal-body
-      .form-inputs
-        .input-margin= file_field_tag "import_file"
-    .modal-footer
-      %input.btn{:value => t("common.cancel"), :type => "button", "aria-hidden" => "true", 
-                "data-dismiss" => "modal", :class => "close-dialog"}
-      = submit_tag t("common.import"), :class => "btn btn-primary", :id => "import"
-
-
+= simple_form_for(@import, :url => import_super_admin_curriculums_path, :remote => true,
+                  :html => { :multipart => true, 
+                             :class => 'import-form form-horizontal' }) do |f|
+  .modal-header
+    %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} &times;
+    %h4= t("curriculum.import_title")
+  .modal-body
+    .form-inputs
+      = f.input :import_file, :as => :file, :required => true, :label => t("common.select_import_file")
+  .modal-footer
+    %input.btn{:value => t("common.cancel"), :type => "button", "aria-hidden" => "true", 
+              "data-dismiss" => "modal", :class => "close-dialog"}
+    = f.submit t("common.import"), :id => "import-submit", :class => "btn btn-primary", :disable_with => t("common.saving")

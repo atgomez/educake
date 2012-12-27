@@ -1,0 +1,5 @@
+- if @import.errors.any?
+  $("#import-container").html("#{escape_javascript render 'import_form'}");
+  $("#import-container").modal('show');
+- else
+  location.reload();

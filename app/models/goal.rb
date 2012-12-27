@@ -39,7 +39,7 @@ class Goal < ActiveRecord::Base
   # VALIDATION
   validates :accuracy, :numericality => true, :inclusion => {:in => 0..100, :message => :out_of_range_100}
   validates :baseline, :numericality => true, :inclusion => {:in => 0..100, :message => :out_of_range_100}
-  validates_presence_of :accuracy, :curriculum_id, :subject_id, 
+  validates_presence_of :accuracy, :curriculum_id, 
                         :baseline, :trial_days_total, :trial_days_actual
   validate :custom_validations
 
