@@ -14,7 +14,7 @@
         .email
           %span= t("user.email_label")
           %span= @teacher.email
-      - if !@teacher.classroom.blank?
+      - if !@teacher.phone.blank?
         .phone
           %span= t("user.phone_label")
           %span= @teacher.phone
