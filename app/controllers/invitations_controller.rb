@@ -15,11 +15,11 @@ class InvitationsController < ApplicationController
   end 
   
   def edit 
-    @sharing = @student.sharings.find_by_user_id params[:id]
+    @sharing = @student.sharings.find_by_id params[:id]
   end 
   
   def update
-    @sharing = @student.sharings.find_by_user_id params[:id]
+    @sharing = @student.sharings.find_by_id params[:id]
 
     # To prevent hacking role
     existed_user = User.unblocked.find_by_email params[:student_sharing][:email]
@@ -55,6 +55,6 @@ class InvitationsController < ApplicationController
       
       return true if @student
       
-      render_page_not_found and return
+      render_page_not_found(I18n.t("student.student_not_found")) and return
     end
 end 

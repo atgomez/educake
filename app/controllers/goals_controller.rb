@@ -1,7 +1,7 @@
 class GoalsController < ApplicationController
   parent_actions = [:new_grade, :add_grade, :update_grade, :initial_import_grades, :import_grades, :load_grades]
-  load_and_authorize_resource :goal, :except => parent_actions
-  load_and_authorize_resource :grade, :only => parent_actions
+  authorize_resource :goal, :except => parent_actions
+  authorize_resource :grade, :only => parent_actions
 
   cross_role_action :new_grade, :add_grade, :update_grade, :initial_import_grades, :import_grades,
                     :new, :edit, :create, :update, :destroy, :load_grades, :curriculum_info
@@ -91,6 +91,8 @@ class GoalsController < ApplicationController
       @student = @user.accessible_students.find_by_id(params[:student_id])
       if @student 
         @goals = @student.goals.incomplete.map{|g| [[g.subject.name, g.curriculum.name].join(" "), g.id]}
+      else
+        render_page_not_found(I18n.t("student.student_not_found"))
       end 
     end
   end

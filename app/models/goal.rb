@@ -24,7 +24,7 @@ class Goal < ActiveRecord::Base
 
   attr_accessible :accuracy, :curriculum_id, :due_date, :progresses_attributes, :curriculum_attributes,
                   :baseline_date, :baseline, :trial_days_total, :trial_days_actual, 
-                  :grades_data, :is_completed, :description
+                  :grades_data, :is_completed, :description, :student_id
 
   # ASSOCIATION
   has_many :progresses, :dependent => :destroy
@@ -35,7 +35,7 @@ class Goal < ActiveRecord::Base
   # VALIDATION
   validates :accuracy, :numericality => true, :inclusion => {:in => 0..100, :message => :out_of_range_100}
   validates :baseline, :numericality => true, :inclusion => {:in => 0..100, :message => :out_of_range_100}
-  validates_presence_of :accuracy, :curriculum_id, 
+  validates_presence_of :accuracy, :curriculum_id, :student_id,
                         :baseline, :trial_days_total, :trial_days_actual
   validate :custom_validations
 

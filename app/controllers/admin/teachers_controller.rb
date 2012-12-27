@@ -81,10 +81,17 @@ class Admin::TeachersController < Admin::BaseAdminController
   end
 
   def edit
-    find_user
+    if @teacher.blank?
+      render_page_not_found(I18n.t("admin.teacher.not_found"))
+    end
   end
   
   def update
+    if @teacher.blank?
+      render_page_not_found(I18n.t("admin.teacher.not_found"))
+      return
+    end
+
     result = {}
     status_code = 201
 
@@ -133,11 +140,21 @@ class Admin::TeachersController < Admin::BaseAdminController
   end
 
   def get_students
+    if @teacher.blank?
+      render_page_not_found(I18n.t("admin.teacher.not_found"))
+      return
+    end
+    
     @students = @teacher.accessible_students
     render :partial => 'admin/teachers/get_students'
   end
 
   def destroy
+    if @teacher.blank?
+      render_page_not_found(I18n.t("admin.teacher.not_found"))
+      return
+    end
+
     if @teacher.destroy
       flash[:notice] = I18n.t("user.deleted_successfully", :name => @teacher.full_name)
     else
