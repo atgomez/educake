@@ -1,6 +1,8 @@
 class GoalsController < ApplicationController
-  authorize_resource :goal, :grade
-  skip_authorization_check :only => [:new_grade, :add_grade, :update_grade]
+  parent_actions = [:new_grade, :add_grade, :update_grade, :initial_import_grades, :import_grades, :load_grades]
+  load_and_authorize_resource :goal, :except => parent_actions
+  load_and_authorize_resource :grade, :only => parent_actions
+
   cross_role_action :new_grade, :add_grade, :update_grade, :initial_import_grades, :import_grades,
                     :new, :edit, :create, :update, :destroy, :load_grades
 
