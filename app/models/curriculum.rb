@@ -19,6 +19,7 @@ require 'buffered_hash'
 
 class Curriculum < ActiveRecord::Base
   include ::SharedMethods::Paging
+  include ::SharedMethods::SerializationConfig  
 
   attr_accessor :curriculum_core_value
 
@@ -56,6 +57,22 @@ class Curriculum < ActiveRecord::Base
   # CLASS METHODS
   #
   class << self
+    # Names of methods will be exposed when serializing object to JSON, XML, etc.
+    def exposed_methods
+      [:name]
+    end
+    
+    # Names of attributes will be exposed when serializing object to JSON, XML, etc.
+    def exposed_attributes
+      [ :id, :curriculum_core_id, :subject_id, :curriculum_grade_id, :curriculum_area_id,
+        :standard, :description1, :description2]
+    end
+    
+    # Names of ActiveRecord associations will be exposed when serializing object to JSON, XML, etc.
+    def exposed_associations
+      []
+    end
+
     def load_data(params = {})
       paging_info = parse_paging_options(params)
       # Paginate with Will_paginate.

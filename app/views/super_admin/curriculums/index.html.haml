@@ -1,3 +1,6 @@
+- content_for :js do
+  = javascript_include_tag('app/super_admin/curriculum.js')
+
 - content_for(:page_title) do
   = t("curriculum.title")
 
@@ -5,7 +8,7 @@
   .toolbar
     =# link_to t("curriculum.add"), new_super_admin_curriculum_path, :class => "btn"
     = link_to t("curriculum.add"), init_import_super_admin_curriculums_path, :class => "btn", :remote => true
-    = link_to t("user.title"), super_admin_schools_path
+    = link_to t("user.title"), super_admin_schools_path, :class => "margin-left"
 
   .table-container
     - unless @curriculums.blank?
@@ -19,6 +22,7 @@
             %th.standard= sortable("standard", t("curriculum.standard"))
             %th.description= sortable("description", t("curriculum.description"))
             %th.actions
+            %th.actions
         %tbody
           - @curriculums.each do |cur|
             %tr.curriculum{:id => "curriculum-#{cur.id}"}
@@ -31,6 +35,7 @@
               %td.actions
                 = link_to("", edit_super_admin_curriculum_path(cur), 
                     :class => "icon-pencil color-pen", :title => t("common.edit"))
+              %td.actions
                 = link_to("", [:super_admin, cur], 
                     :data => { :confirm => t("common.confirm_message") }, 
                     :class => "icon-trash color-pen", :method => :delete, :title => t("common.delete"))

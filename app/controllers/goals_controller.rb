@@ -2,7 +2,7 @@ class GoalsController < ApplicationController
   authorize_resource :goal, :grade
   skip_authorization_check :only => [:new_grade, :add_grade, :update_grade]
   cross_role_action :new_grade, :add_grade, :update_grade, :initial_import_grades, :import_grades,
-                    :new, :edit, :create, :update, :destroy, :load_grades
+                    :new, :edit, :create, :update, :destroy, :load_grades, :curriculum_info
 
   def new
     @goal ||= Goal.build_goal :trial_days_total => 10, :trial_days_actual => 9, :baseline_date => Date.today
@@ -29,6 +29,7 @@ class GoalsController < ApplicationController
       params[:goal].delete :id
       params[:goal].delete :student_id
       @goal = @student.goals.new(params[:goal])
+
       if @goal.save
         status_code = 201
         result[:message] = I18n.t('goal.created_successfully')
@@ -241,7 +242,25 @@ class GoalsController < ApplicationController
     goal = Goal.find_by_id params[:goal_id]
     grades = goal.grades.order('due_date ASC').load_data(filtered_params)
     render :partial => "shared/load_grades", :locals => {:grades => grades}
-  end 
+  end
+
+  # GET /goals/curriculum_info
+  def curriculum_info
+    result = {}
+    begin
+      curriculum = Curriculum.where(params[:goal][:curriculum_attributes]).first
+      if curriculum
+        result = curriculum.to_hash
+      else
+        result = {:error => I18n.t("curriculum.not_found")}
+      end
+    rescue Exception => exc
+      ::Util.log_error(exc, "GoalsController#curriculum_info")
+      result = {:error => I18n.t("curriculum.not_found")}
+    end
+
+    render(:json => result)
+  end
 
   protected
 

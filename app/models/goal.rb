@@ -2,23 +2,19 @@
 #
 # Table name: goals
 #
-#  id                       :integer          not null, primary key
-#  student_id               :integer          not null
-#  curriculum_id            :integer          not null
-#  accuracy                 :float            default(0.0), not null
-#  baseline                 :float            default(0.0), not null
-#  baseline_date            :date             not null
-#  due_date                 :date             not null
-#  trial_days_total         :integer          not null
-#  trial_days_actual        :integer          not null
-#  grades_data_file_name    :string(255)
-#  grades_data_content_type :string(255)
-#  grades_data_file_size    :integer
-#  grades_data_updated_at   :datetime
-#  description              :text
-#  is_completed             :boolean          default(FALSE)
-#  created_at               :datetime         not null
-#  updated_at               :datetime         not null
+#  id                :integer          not null, primary key
+#  student_id        :integer          not null
+#  curriculum_id     :integer          not null
+#  accuracy          :float            default(0.0), not null
+#  baseline          :float            default(0.0), not null
+#  baseline_date     :date             not null
+#  due_date          :date             not null
+#  trial_days_total  :integer          not null
+#  trial_days_actual :integer          not null
+#  description       :text
+#  is_completed      :boolean          default(FALSE)
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
 #
 
 require 'csv'
@@ -26,7 +22,7 @@ require 'csv'
 class Goal < ActiveRecord::Base
   include ::SharedMethods::Paging
 
-  attr_accessible :accuracy, :curriculum_id, :due_date, :progresses_attributes, 
+  attr_accessible :accuracy, :curriculum_id, :due_date, :progresses_attributes, :curriculum_attributes,
                   :baseline_date, :baseline, :trial_days_total, :trial_days_actual, 
                   :grades_data, :is_completed, :description
 
@@ -44,6 +40,7 @@ class Goal < ActiveRecord::Base
   validate :custom_validations
 
   # NESTED ATTRIBUTE
+  accepts_nested_attributes_for :curriculum
   accepts_nested_attributes_for :progresses, :reject_if => lambda { |progress| 
     progress['accuracy'].blank? || progress['due_date'].blank?
   }
@@ -61,7 +58,7 @@ class Goal < ActiveRecord::Base
   attr_accessor :last_grade #For add/update purpose
 
   # CALLBACK
-  before_validation :update_progresses, :valid_date_attribute?
+  before_validation :update_progresses, :valid_date_attribute?, :checK_curriculum
   after_save :update_all_grade  
 
   # CLASS METHODS
@@ -82,6 +79,7 @@ class Goal < ActiveRecord::Base
     def build_goal(attrs = {})
       goal = self.new(attrs)
       goal.build_progresses
+      goal.curriculum = Curriculum.new
       return goal
     end
 
@@ -105,7 +103,7 @@ class Goal < ActiveRecord::Base
 
   # Returns the full name of this goal, including subject, curriculum, etc.
   def name
-    "#{self.subject.name} #{self.curriculum.name}"
+    self.curriculum.name
   end
 
   def update_grade_state(grade)
@@ -428,7 +426,9 @@ class Goal < ActiveRecord::Base
       end
       sheet.add_row [""], :style => left_text_style
       sheet.add_row ["Trial Days", "#{trial_days_actual}/#{trial_days_total}"], :style => [left_text_style, nil]
-      sheet.add_row ["Goal Description", description, ""], :style => [left_text_style, wrap_text, nil]
+      sheet.add_row ["Goal Description", self.curriculum.try(:description1), ""], :style => [left_text_style, wrap_text, nil]
+      sheet.add_row ["", self.curriculum.try(:description2), ""], :style => [left_text_style, wrap_text, nil]
+      sheet.add_row ["", self.description, ""], :style => [left_text_style, wrap_text, nil]
       sheet.column_widths nil, 30, nil
       (1..3).each {sheet.add_row [""], :style => left_text_style}
 
@@ -550,5 +550,23 @@ class Goal < ActiveRecord::Base
     def valid_date_attribute?
       ::Util.check_date_validation(self, @attributes, :baseline_date, true)
       ::Util.check_date_validation(self, @attributes, :due_date, true)
+    end
+
+    def checK_curriculum
+      unless self.curriculum.blank?
+        cur = self.curriculum
+        attrs = {
+          :curriculum_core_id => cur.curriculum_core_id, 
+          :subject_id => cur.subject_id, 
+          :curriculum_grade_id => cur.curriculum_grade_id, 
+          :curriculum_area_id => cur.curriculum_area_id,
+          :standard => cur.standard
+        }
+        self.curriculum = Curriculum.where(attrs).first
+
+        if self.curriculum.blank?
+          self.curriculum = Curriculum.new(attrs)
+        end
+      end
     end
 end
