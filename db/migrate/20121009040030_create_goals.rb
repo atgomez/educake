@@ -9,10 +9,6 @@ class CreateGoals < ActiveRecord::Migration
       t.date :due_date, :null => false
       t.integer :trial_days_total, :null => false
       t.integer :trial_days_actual, :null => false
-      t.string :grades_data_file_name
-      t.string :grades_data_content_type
-      t.integer :grades_data_file_size
-      t.datetime :grades_data_updated_at
       t.text :description
       t.boolean :is_completed, :default => false
 
