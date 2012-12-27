@@ -54,13 +54,13 @@ class StudentsController < ApplicationController
         if request.xhr?
           render :partial => "shared/students/view_goal", :locals => {:goals => @goals, :students => @students}
         end
-        sponsors = @student.sponsors
-        @invited_users = StudentSharing.unblocked.where("student_id = ? and email NOT IN (?)", @student.id, sponsors.map(&:email))
-        @invited_users += sponsors 
-        @invited_users.delete @user 
-        sharing = StudentSharing.find_by_email(@user.email)
-        @invited_users.delete sharing
-        @invited_users = @invited_users.uniq
+
+        @invited_users = StudentSharing.unblocked.where("student_id = ? and email NOT IN (?)", @student.id, @user.email)
+        if (@student.teacher.id != @user.id) # Not an owner
+          @invited_users << @student.teacher
+        end
+
+
       else
         render_page_not_found
       end
@@ -76,7 +76,7 @@ class StudentsController < ApplicationController
   
   def edit
     if find_user
-      @student = @user.accessible_students.find(params[:id])
+      @student = @user.accessible_students.find_by_id(params[:id])
       if @student
         @goals = @student.goals.order('is_completed ASC').load_data(filtered_params)
         sponsors = @student.sponsors
@@ -113,7 +113,7 @@ class StudentsController < ApplicationController
 
   def update
     if find_user
-      @student = @user.accessible_students.find(params[:id])
+      @student = @user.accessible_students.find_by_id(params[:id])
       if @student
         if @student.update_attributes(params[:student])
           message = I18n.t('student.updated_successfully', :name => @student.full_name)
@@ -173,24 +173,13 @@ class StudentsController < ApplicationController
   protected
 
     def find_user
-      @current_user = current_user
-      @admin = User.unblocked.find_by_id params[:admin_id]
-      if current_user.is_super_admin?
-        @admin = nil if @admin && !@admin.is?(:admin)
-        @user = @admin ? @admin.children.teachers.unblocked.find_by_id(params[:user_id]) : 
-                           User.unblocked.find_by_id(params[:user_id])
-      elsif current_user.is?(:admin) # If current user is admin, deny getting admin from admin_id
-        @admin = current_user
-        @user = @admin.children.teachers.unblocked.find_by_id(params[:user_id])
-      else
-        @user = current_user
-      end
+      parse_params_to_get_users
 
       if !@user
         if @is_view_as
-          render_page_not_found(I18n.t("user.error_not_found"))
+          render_page_not_found(I18n.t("user.error_not_found")) and return
         else
-          render_page_not_found
+          render_page_not_found and return
         end
         return false
       end

@@ -20,12 +20,12 @@
             .checkbox-group
               = radio_button_tag "data", "school", false, :class => "export_data_selector"
               = label_tag :data_school, t("export.school")
-              = hidden_field_tag "admin_id", @user.id
+              = hidden_field_tag "admin_id", @admin.id
         %tr
           %td
             Teacher
           %td
-            = select_tag("teacher_selection", options_for_select(@all_teachers_collection), {'data-url' => get_students_admin_teachers_path(:user_id => @user.id), :name => :teacher_id})
+            = select_tag("teacher_selection", options_for_select(@all_teachers_collection), {'data-url' => get_students_admin_teachers_path(:admin_id => @admin.id), :name => :user_id})
         %tr
           %td
             Student

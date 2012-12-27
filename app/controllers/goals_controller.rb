@@ -1,6 +1,8 @@
 class GoalsController < ApplicationController
-  authorize_resource :goal, :grade
-  skip_authorization_check :only => [:new_grade, :add_grade, :update_grade]
+  parent_actions = [:new_grade, :add_grade, :update_grade, :initial_import_grades, :import_grades, :load_grades]
+  load_and_authorize_resource :goal, :except => parent_actions
+  load_and_authorize_resource :grade, :only => parent_actions
+
   cross_role_action :new_grade, :add_grade, :update_grade, :initial_import_grades, :import_grades,
                     :new, :edit, :create, :update, :destroy, :load_grades, :curriculum_info
 
@@ -265,18 +267,7 @@ class GoalsController < ApplicationController
   protected
 
     def find_user
-      @current_user = current_user
-      @admin = User.unblocked.find_by_id params[:admin_id]
-      if current_user.is_super_admin?
-        @admin = nil if @admin && !@admin.is?(:admin)
-        @user = @admin ? @admin.children.teachers.unblocked.find_by_id(params[:user_id]) : 
-                           User.unblocked.find_by_id(params[:user_id])
-      elsif current_user.is?(:admin) # If current user is admin, deny getting admin from admin_id
-        @admin = current_user
-        @user = @admin.children.teachers.unblocked.find_by_id(params[:user_id])
-      else
-        @user = current_user
-      end
+      parse_params_to_get_users
 
       if !(can? :view, @user)
         render_unauthorized

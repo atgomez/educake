@@ -96,7 +96,7 @@ class SuperAdmin::UsersController < SuperAdmin::BaseSuperAdminController
   def view_as
     if find_user
       if @user.is?(:admin)
-        path = admin_teachers_path(:user_id => params[:id]) 
+        path = admin_teachers_path(:admin_id => params[:id]) 
       else
         path = students_path(:user_id => params[:id])
       end

@@ -27,7 +27,7 @@ window.schoolObject =
       key = (if event.charCode then event.charCode else (if event.keyCode then event.keyCode else 0))
       
       if $(this).val().length > 4
-        if !(key == 8 || key == 9 || key == 13 || key == 35 || key == 36|| key == 37 || key == 39 || key == 46) 
+        if !(key == 8 || key == 9 || key == 35 || key == 36|| key == 37 || key == 39 || key == 46) 
           event.preventDefault()
     return
 

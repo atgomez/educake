@@ -20,7 +20,7 @@
           %span= @teacher.phone
   
   .pull-right
-    = link_to("", edit_admin_teacher_path(:id => @teacher, :user_id => @admin), 
+    = link_to("", edit_admin_teacher_path(:id => @teacher, :user_id => @teacher, :admin_id => @admin), 
               :class => "icon-pencil color-pen", :title => t("common.edit"), 
               :style => "display:inline-block", :remote => true)
     = link_to("", { :action => 'destroy', :controller => 'admin/teachers', 

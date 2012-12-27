@@ -45,7 +45,7 @@ class ApplicationController < ActionController::Base
 
   def check_view_as_state
     if (current_user)
-      @is_view_as = current_user.is_super_admin? && params[:user_id]
+      @is_view_as = current_user.is_super_admin? && (params[:user_id] || params[:admin_id])
       if (@is_view_as)
         if (params[:admin_id])
           @viewing_user = User.find_by_id(params[:admin_id])
@@ -55,6 +55,24 @@ class ApplicationController < ActionController::Base
       end
 
       @is_view_as = false if !@viewing_user
+    end
+  end
+
+  # To avoid DRY in all controllers.
+  # 
+  
+  def parse_params_to_get_users
+    @current_user = current_user
+    @admin = User.unblocked.find_by_id params[:admin_id]
+    if current_user.is_super_admin?
+      @admin = nil if @admin && !@admin.is?(:admin)
+      @user = @admin ? @admin.children.teachers.unblocked.find_by_id(params[:user_id]) : 
+                         User.unblocked.find_by_id(params[:user_id])
+    elsif current_user.is?(:admin) # If current user is admin, deny getting admin from admin_id
+      @admin = current_user
+      @user = @admin.children.unblocked.find_by_id(params[:user_id])
+    else
+      @user = current_user
     end
   end
 

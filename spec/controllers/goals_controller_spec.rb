@@ -176,15 +176,22 @@ describe GoalsController do
       response.should be_success
     end
   end 
-
-  # describe "PUT import grades" do 
-  #   it "successfully" do 
-  #     put :import_grades, :student_id => student.id, :goal => {:id => goal.id,
-  #      :grades => File.new(Rails.root+"app/assets/images/files/CSV 1-Table 1.csv")}
-
-  #     response.should be_success
-  #   end
-  # end 
+  # Need to refactor code to test all case
+  # Now check fail case on client side
+  describe "PUT import grades" do 
+    it "successfully" do 
+      put :import_grades, :student_id => student.id, :goal => {:id => goal.id,
+       :grades => fixture_file_upload("/files/CSV 1-Table 1.csv", "text/csv")}, :format => :js
+      response.should be_success
+    end
+    context "unsuccessfully" do 
+      it "for wrong format file" do 
+        put :import_grades, :student_id => student.id, :goal => {:id => goal.id,
+         :grades => fixture_file_upload("/files/data.txt", "text/csv")}, :format => :js
+        response.should be_success
+      end
+    end
+  end 
 
   describe "Delete destroy" do
     context "successfully" do 

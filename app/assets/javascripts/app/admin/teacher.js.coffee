@@ -16,7 +16,7 @@ window.teacher =
   change_list_teacher: ->    
     $("#teacher_selection").live('change', ->
       data = @value
-      url = $(this).attr('data-url') + "&teacher_id=" + data
+      url = $(this).attr('data-url') + "&user_id=" + data
 
       $.ajax({
         url: url,

@@ -6,11 +6,11 @@
       = pluralize(student_count, 'Student')
     .teacher-student.hide.clearfix{:id => "teacher-students-#{teacher.id}"}
       - students.take(showed_student_num).each do |student|
-        = link_to student_path(student, :related => true, :user_id => teacher.id, :admin_id => @user), :title => student.full_name, :rel => "tooltip", :class => "student-link" do 
+        = link_to student_path(student, :related => true, :user_id => teacher.id, :admin_id => @admin), :title => student.full_name, :rel => "tooltip", :class => "student-link" do 
           = image_tag(student.photo_url, 
               :alt => student.full_name,
               :class => "student-avatar", 
               :id => "teacher-student-#{teacher.id}-#{student.id}")
       - if student_count > showed_student_num
         .clearfix
-        = link_to(t("common.more"), all_students_students_path(:user_id => teacher.id, :admin_id => @user))
+        = link_to(t("common.more"), all_students_students_path(:user_id => teacher.id, :admin_id => @admin))
