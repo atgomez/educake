@@ -85,12 +85,7 @@ class Admin::TeachersController < Admin::BaseAdminController
   end
 
   def edit
-    if find_user
-      @teacher = @user.children.teachers.unblocked.find_by_id(params[:id])
-      if @teacher.blank?
-        render_page_not_found(I18n.t("user.error_not_found"))
-      end
-    end
+    find_user
   end
   
   def update
@@ -99,11 +94,6 @@ class Admin::TeachersController < Admin::BaseAdminController
       status_code = 201
 
       begin
-        @teacher = @user.children.teachers.unblocked.find_by_id(params[:id])
-        if @teacher.blank?
-          render_page_not_found(I18n.t("user.error_not_found"))
-          return
-        end
         @teacher.skip_password!
         if @teacher.update_attributes(params[:user])
           status_code = 201
@@ -194,20 +184,13 @@ class Admin::TeachersController < Admin::BaseAdminController
     # Get teacher from id
     #
     def find_user(teacher_id = params[:id])
-      @admin = User.unblocked.find_by_id params[:admin_id]
-      @admin = nil if @admin && !@admin.is?(:admin)
-      if current_user.is_super_admin?
-        @user = User.unblocked.find_by_id params[:user_id]
-      else
-        @user = current_user
-      end
-      @current_user = current_user
+      parse_params_to_get_users
 
-      if !@user
+      if !@admin
         render_page_not_found(I18n.t("user.error_not_found"))
         return false
       else
-        @teacher = @user.children.teachers.unblocked.find_by_id(teacher_id)
+        @teacher = @admin.children.unblocked.find_by_id(teacher_id)
       end
 
       return true
