@@ -10,7 +10,7 @@
 
 class Subject < ActiveRecord::Base
   attr_accessible :name
-  has_many :goals, :dependent => :restrict
+  has_many :curriculums, :dependent => :restrict
 
   # VALIDATION
   validates :name, :presence => true, :uniqueness => true

@@ -33,7 +33,8 @@
       = f.association(:school, :collection => School.order(:name),
                 :selected => @school ? @school.id : @school_id,
                 :label_method => :short_name,
-                :label => "School Name", :prompt => "Select One", :disabled => @user.is?(:admin))
+                :label => t("school.name"), :prompt => t("common.select_prompt"), 
+                :disabled => @user.is?(:admin))
     .title= title_user
     .school-info
       = f.input :first_name, :input_html => {:class => "valid_name"}

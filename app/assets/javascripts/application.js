@@ -21,6 +21,7 @@
 //= require lib/Placeholders.min
 //= require lib/jquery.ba-resize.min
 //= require lib/jquery.livequery.js
+//= require jquery_ext
 //= require goal
 //= require helper
 //= require schools

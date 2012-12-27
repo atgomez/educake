@@ -2,51 +2,34 @@
 #
 # Table name: goals
 #
-#  id                       :integer          not null, primary key
-#  student_id               :integer          not null
-#  subject_id               :integer          not null
-#  curriculum_id            :integer          not null
-#  accuracy                 :float            default(0.0), not null
-#  baseline                 :float            default(0.0), not null
-#  baseline_date            :date             not null
-#  due_date                 :date             not null
-#  trial_days_total         :integer          not null
-#  trial_days_actual        :integer          not null
-#  grades_data_file_name    :string(255)
-#  grades_data_content_type :string(255)
-#  grades_data_file_size    :integer
-#  grades_data_updated_at   :datetime
-#  description              :text
-#  is_completed             :boolean          default(FALSE)
-#  created_at               :datetime         not null
-#  updated_at               :datetime         not null
+#  id                :integer          not null, primary key
+#  student_id        :integer          not null
+#  curriculum_id     :integer          not null
+#  accuracy          :float            default(0.0), not null
+#  baseline          :float            default(0.0), not null
+#  baseline_date     :date             not null
+#  due_date          :date             not null
+#  trial_days_total  :integer          not null
+#  trial_days_actual :integer          not null
+#  description       :text
+#  is_completed      :boolean          default(FALSE)
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
 #
 
 require 'spec_helper'
 
-
-
 describe Goal do
 
 	let(:curriculum) {
-		curriculum = FactoryGirl.create(:curriculum)
-		curriculum.name = 'CURRICULUM ABC'
-		curriculum.save
-		curriculum
-	}
-	let(:subject) {
-		subject = FactoryGirl.create(:subject)
-		subject.name = 'SUBJECT ABC'
-		subject.save
-		subject
+		FactoryGirl.create(:curriculum)
 	}
 	let(:user) {FactoryGirl.create(:teacher)}
 	let(:student) { FactoryGirl.create(:student, :teacher => user) }
 
 	let(:goal) { 
 		FactoryGirl.build(:goal, 
-											 :curriculum => curriculum, 
-											 :subject => subject,
+											 :curriculum => curriculum,
 											 :student => student)
 	}
 
@@ -93,7 +76,7 @@ describe Goal do
 			}
 
 		context 'with #name' do
-			it {goal.name.should == "SUBJECT ABC CURRICULUM ABC"}
+			it {goal.name.should == goal.curriculum.name}
 		end
 
 		context 'with #update_grade_state' do
@@ -112,7 +95,7 @@ describe Goal do
 			it { goal.due_date_string.should == ::Util.date_to_string(goal.due_date)}
 		end
 
-		context 'with #baseline_date_string' do 
+		context 'with #baseline_date_string', :current => true do 
 			it { goal.baseline_date_string.should == ::Util.date_to_string(goal.baseline_date)}
 		end
 
@@ -196,7 +179,6 @@ describe Goal do
 						new_goal = FactoryGirl.build( :goal, 
 																					:student => student, 
 																					:curriculum => curriculum, 
-																					:subject => subject,
 																					:due_date => Date.today + 1.years + i.days)
 					  new_goal.is_completed = (i % 2 == 0)
 					  new_goal.save
@@ -244,10 +226,11 @@ describe Goal do
 					goal = Goal.new 
 					goal.accuracy = nil
 					goal.baseline = nil
+					goal.valid?
 					goal
 				}
 
-				[:curriculum_id, :subject_id, :baseline, :baseline_date, :due_date, :accuracy, :trial_days_total, :trial_days_actual ].each do |attr|
+				[:curriculum_id, :baseline, :baseline_date, :due_date, :accuracy, :trial_days_total, :trial_days_actual ].each do |attr|
 					it {goal.should have_at_least(1).error_on(attr)}
 				end
 			end
@@ -329,7 +312,6 @@ describe Goal do
 					@duplicated_goal.save
 				}
 				it{	@duplicated_goal.errors.should have_at_least(1).error_on(:due_date)	}
-				it{	@duplicated_goal.errors.should have_at_least(1).error_on(:subject_id)	}
 				it{	@duplicated_goal.errors.should have_at_least(1).error_on(:curriculum_id)	}
 			end
 	 	end

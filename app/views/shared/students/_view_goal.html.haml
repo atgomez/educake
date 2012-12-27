@@ -6,7 +6,7 @@
     .cont.goal-container{:id => "goal-container-#{goal.id}"}
       .width-subject.pull-left
         %a{:href=>"#goal_#{goal.id}", "data-toggle" =>"tab", "data-dismiss"=>"div", :class => "icon-plus goal", :id => "goal#{goal.id}"}
-          = " " + goal.full_name
+          = " " + goal.name
       
       .pull-right
         .width-grade.pull-left.accuracy.bold
@@ -43,7 +43,10 @@
         .details_goal.tab-pane{:id => "goal_#{goal.id}"}
           .clearfix
           .introduce.wordwrap.pull-left{:class => (on_edit_mode ? 'small' : '')}
-            = h goal.description
+            %p
+              %strong.description1= h goal.curriculum.try(:description1)
+            %p.description2= h goal.curriculum.try(:description2)
+            %em.goal-description= h goal.description
           .goal-progress.pull-right{:class => (on_edit_mode ? 'large' : '')}
             - goal.progresses.order('due_date ASC').each do |grade|
               .width-grade= ::Util.round_f(grade.accuracy).to_s + "% by " + grade.due_date.strftime("%m/%Y")

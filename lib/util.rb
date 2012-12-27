@@ -103,6 +103,9 @@ module Util
       Rails.logger.error "===== ERROR: #{description} ====="
       Rails.logger.error exc.inspect
       Rails.logger.error exc.backtrace.join("\n")
+      if Rails.env.test?
+        self.print_error(exc, description)
+      end
     end
   
     def print_error(exc, description = "")
@@ -143,7 +146,7 @@ module Util
     # 
 
     def check_date_validation(context, attributes_list, attribute, check_blank)
-      if context[attribute].nil? && attributes_list[attribute.to_s].empty? && check_blank
+      if context[attribute].nil? && attributes_list[attribute.to_s].blank? && check_blank
         context.errors.add attribute, :blank
       elsif context[attribute].nil?
         context.errors.add attribute, :invalid_format

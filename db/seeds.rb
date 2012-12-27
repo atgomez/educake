@@ -22,13 +22,26 @@ super_admin.is_admin = true
 super_admin.skip_confirmation!
 super_admin.save!
 
-# TODO: move curriculum and subject to sample_data
-# Create seed Curriculums
-["SEACO FPI 5.1", "SEACO FPI 5.2"].each do |curriculum|
-  Curriculum.create!(:name => curriculum)  
+CurriculumCore.destroy_all
+# CurriculumCore
+["Common Core"].each do |name|
+  CurriculumCore.create!(:name => name)
 end
 
+Subject.destroy_all
 # Create seed Subjects
-["Math", "French"].each do |subject|
-  Subject.create!(:name => subject)  
+["MATH", "ELA"].each do |name|
+  Subject.create!(:name => name)
+end
+
+CurriculumGrade.destroy_all
+# CurriculumGrade
+["2"].each do |name|
+  CurriculumGrade.create!(:name => name)
+end
+
+# CurriculumArea
+CurriculumArea.destroy_all
+["OA", "NBT", "W", "L"].each do |name|
+  CurriculumArea.create!(:name => name)
 end

@@ -121,6 +121,14 @@ form#student-form {
   select{
     width: 216px;
   }
+
+  .modal-body{
+    max-height:300px;
+  }
+
+  #curriculum .help-inline{
+    margin-left: 30px;
+  }
 }
 
 .student-users{

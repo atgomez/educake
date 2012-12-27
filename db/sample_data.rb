@@ -1,8 +1,68 @@
 # This file should contain dummy records creation needed to demonstrate the app or to test.
 # The data can then be loaded with the rake db:sample_data.
 
+# ===================================================================================
+# Create sample Curriculums
+# ===================================================================================
+
+cores = {}
+CurriculumCore.all.each do |item|
+  cores[item.name] = item.id
+end
+
+subjects = {}
+Subject.all.each do |item|
+  subjects[item.name] = item.id
+end
+
+grades = {}
+CurriculumGrade.all.each do |item|
+  grades[item.name] = item.id
+end
+
+areas = {}
+CurriculumArea.all.each do |item|
+  areas[item.name] = item.id
+end
+
+# Curriculum
+[
+  {
+    :curriculum_core => "Common Core",
+    :subject => "MATH",
+    :curriculum_grade => "2",
+    :curriculum_area => "OA",
+    :standard => "2",
+    :description1 => "Represent and solve problems involving addition and subtraction",
+    :description2 => "Use addition and subtraction within 100 to solve one- and two-step word problems involving situations of adding to, taking from, putting together, taking apart, and comparing, with unknowns in all positions, e.g., by using drawings and equations with a symbol for the unknown number to represent the problem."
+  },
+
+  {
+    :curriculum_core => "Common Core",
+    :subject => "ELA",
+    :curriculum_grade => "2",
+    :curriculum_area => "W",
+    :standard => "1",
+    :description1 => "Text Types and Purposes",
+    :description2 => "Write opinion pieces in which they introduce the topic or book they are writing about, state an opinion, supply reasons that support the opinion, use linking words (e.g., because, and, also) to connect opinion and reasons, and provide a concluding statement or section."
+  }
+].each do |data|
+  Curriculum.create!(
+    :curriculum_core_id => cores[data[:curriculum_core]],
+    :subject_id => subjects[data[:subject]],
+    :curriculum_grade_id => grades[data[:curriculum_grade]],
+    :curriculum_area_id => areas[data[:curriculum_area]],
+    :standard => data[:standard],
+    :description1 => data[:description1],
+    :description2 => data[:description2]
+  )
+end
+
+# ===================================================================================
+# Create sample School, Admin, Teachers, Students, Goals and Grades
+# ===================================================================================
+
 @curriculums = Curriculum.all
-@subjects = Subject.all
 
 def create_sample_students(teacher)
   Goal.transaction do
@@ -13,7 +73,7 @@ def create_sample_students(teacher)
       student = teacher.students.create!({
         :first_name => first_name,
         :last_name => last_name,
-        :birthday => Time.now - 16.years
+        :birthday => (Time.now - 16.years).to_date
       })
 
       # Create goals
@@ -23,9 +83,8 @@ def create_sample_students(teacher)
 
         goal = student.goals.create(
           :curriculum_id => @curriculums[t].id, 
-          :subject_id => @subjects[t].id,
-          :baseline_date => Time.now - 6.months,
-          :due_date => Time.now + 6.months,
+          :baseline_date => (Time.now - 6.months).to_date,
+          :due_date => (Time.now + 6.months).to_date,
           :description => Faker::Lorem.sentence(10),
           :baseline => baseline,
           :accuracy => accuracy,          
@@ -41,7 +100,7 @@ def create_sample_students(teacher)
           end
 
           goal.grades.create(
-            :due_date => goal.baseline_date + (rand(5)*grade_t).days,
+            :due_date => (goal.baseline_date + (rand(5)*grade_t).days).to_date,
             :accuracy => accuracy,
             :user_id => teacher.id,
             :time_to_complete => "0#{rand(5)}:00",

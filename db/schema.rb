@@ -11,41 +11,65 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121212114203) do
+ActiveRecord::Schema.define(:version => 20121225085210) do
 
-  create_table "curriculums", :force => true do |t|
+  create_table "curriculum_areas", :force => true do |t|
     t.string   "name",       :null => false
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
 
-  add_index "curriculums", ["name"], :name => "index_curriculums_on_name", :unique => true
+  add_index "curriculum_areas", ["name"], :name => "index_curriculum_areas_on_name", :unique => true
+
+  create_table "curriculum_cores", :force => true do |t|
+    t.string   "name",       :null => false
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "curriculum_cores", ["name"], :name => "index_curriculum_cores_on_name", :unique => true
+
+  create_table "curriculum_grades", :force => true do |t|
+    t.string   "name",       :null => false
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "curriculum_grades", ["name"], :name => "index_curriculum_grades_on_name", :unique => true
+
+  create_table "curriculums", :force => true do |t|
+    t.integer  "curriculum_core_id",  :null => false
+    t.integer  "subject_id",          :null => false
+    t.integer  "curriculum_grade_id", :null => false
+    t.integer  "curriculum_area_id",  :null => false
+    t.integer  "standard",            :null => false
+    t.string   "description1",        :null => false
+    t.text     "description2",        :null => false
+    t.datetime "created_at",          :null => false
+    t.datetime "updated_at",          :null => false
+  end
+
+  add_index "curriculums", ["curriculum_core_id", "subject_id", "curriculum_grade_id", "curriculum_area_id", "standard"], :name => "curriculums_unique_index", :unique => true
 
   create_table "goals", :force => true do |t|
-    t.integer  "student_id",                                  :null => false
-    t.integer  "subject_id",                                  :null => false
-    t.integer  "curriculum_id",                               :null => false
-    t.float    "accuracy",                 :default => 0.0,   :null => false
-    t.float    "baseline",                 :default => 0.0,   :null => false
-    t.date     "baseline_date",                               :null => false
-    t.date     "due_date",                                    :null => false
-    t.integer  "trial_days_total",                            :null => false
-    t.integer  "trial_days_actual",                           :null => false
-    t.string   "grades_data_file_name"
-    t.string   "grades_data_content_type"
-    t.integer  "grades_data_file_size"
-    t.datetime "grades_data_updated_at"
+    t.integer  "student_id",                           :null => false
+    t.integer  "curriculum_id",                        :null => false
+    t.float    "accuracy",          :default => 0.0,   :null => false
+    t.float    "baseline",          :default => 0.0,   :null => false
+    t.date     "baseline_date",                        :null => false
+    t.date     "due_date",                             :null => false
+    t.integer  "trial_days_total",                     :null => false
+    t.integer  "trial_days_actual",                    :null => false
     t.text     "description"
-    t.boolean  "is_completed",             :default => false
-    t.datetime "created_at",                                  :null => false
-    t.datetime "updated_at",                                  :null => false
+    t.boolean  "is_completed",      :default => false
+    t.datetime "created_at",                           :null => false
+    t.datetime "updated_at",                           :null => false
   end
 
   add_index "goals", ["baseline_date"], :name => "index_goals_on_baseline_date"
   add_index "goals", ["curriculum_id"], :name => "index_goals_on_curriculum_id"
   add_index "goals", ["due_date"], :name => "index_goals_on_due_date"
   add_index "goals", ["student_id"], :name => "index_goals_on_student_id"
-  add_index "goals", ["subject_id"], :name => "index_goals_on_subject_id"
 
   create_table "grades", :force => true do |t|
     t.integer  "goal_id",                             :null => false
@@ -109,9 +133,9 @@ ActiveRecord::Schema.define(:version => 20121212114203) do
     t.integer  "user_id"
     t.integer  "role_id",                          :null => false
     t.string   "confirm_token"
+    t.boolean  "is_blocked",    :default => false
     t.datetime "created_at",                       :null => false
     t.datetime "updated_at",                       :null => false
-    t.boolean  "is_blocked",    :default => false
   end
 
   add_index "student_sharings", ["confirm_token"], :name => "index_student_sharings_on_confirm_token"

@@ -255,7 +255,7 @@ describe Admin::TeachersController do
         subject { get :search }
 
         it "redirects to index page" do
-          subject.should redirect_to(:action => 'index')
+          subject.response_code.should == 302
         end
       end
     end
@@ -272,7 +272,7 @@ describe Admin::TeachersController do
 
       context "with valid teacher" do
         let(:teacher) {FactoryGirl.create(:teacher, :parent => admin)}
-        subject { get :get_students, :teacher_id => teacher.id }
+        subject { get :get_students, :user_id => teacher.id, :admin_id => admin.id }
 
         it "returns the result" do
           subject.should be_success
@@ -281,7 +281,7 @@ describe Admin::TeachersController do
       end
 
       context "with invalid teacher" do
-        subject { get :get_students, :teacher_id => "abc" }
+        subject { get :get_students, :user_id => "abc" }
 
          it "renders 'page_not_found'" do
           subject.response_code.should == 404

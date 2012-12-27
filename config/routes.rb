@@ -51,6 +51,7 @@ TeacherMgnt::Application.routes.draw do
       get :initial_import_grades
       put :import_grades
       get :load_grades
+      post :curriculum_info
     end
 
     member do
@@ -89,7 +90,14 @@ TeacherMgnt::Application.routes.draw do
   end
   
   namespace :super_admin do 
-    resources :schools  
+    resources :schools
+    resources :curriculums do
+      collection do
+        get :init_import
+        post :import
+      end
+    end
+
     resources :users do 
       member do 
         put :blocked_account
@@ -101,6 +109,4 @@ TeacherMgnt::Application.routes.draw do
       end 
     end
   end 
-
-  resources :curriculums
 end

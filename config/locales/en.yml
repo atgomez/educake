@@ -14,6 +14,7 @@ en:
     saving: "Saving..."
     cancel: "Cancel"
     back: "Back"
+    next: "Next"
     more: "More..."
     send: "Send"
     update: "Update"
@@ -37,13 +38,14 @@ en:
     gender_label: "Gender:"
     born_on_label: "Born on:"
     address: "Address"
+    select_import_file: "Choose file (csv)"
 
     gender:
       male: "Male"
       female: "Female"
       unknown: "Unknown"
     file: 
-      wrong_file_type: "File must be of file type .csv"
+      wrong_csv_file_type: "File type must be .csv"
       require_to_select: "Please select a file."
 
   time:
@@ -82,6 +84,7 @@ en:
     progress_with_id: "Progress Report %{id}"
     progress_accuracy: "% Accuracy"
     mark_completed: "Mark as complete"
+    trial_days: "Trial days"
 
   grade:
     created_successfully: "Created grade successfully"
@@ -126,6 +129,7 @@ en:
       block_account_description: "User will be locked out of their account until reinstated."
 
   user:
+    title: "User Management"
     created_successfully: "User %{name} was created successfully."
     updated_successfully: "User %{name} was updated successfully."
     deleted_successfully: "User %{name} was removed successfully."
@@ -178,6 +182,31 @@ en:
     user_name: "Name"
     account: "Account"
     back: "View Schools"
+
+  curriculum:
+    title: "Curriculum Management"
+    add: "Add Curriculum"
+    edit: "Edit Curriculum"
+    all_curriculums: "All Curriculums"
+    import_title: "Import Curriculum"
+    core: "Core"
+    subject: "Subject"
+    grade: "Grade"
+    area: "Area"
+    standard: "Standard"
+    description: "Description"
+    description1: "Description1"
+    description2: "Description2"
+    not_found: "Cannot find the curriculum."
+    updated_successfully: "The curriculum %{name} was updated successfully."
+    deleted_successfully: "The curriculum '%{name}' was deleted successfully."
+    delete_failed: "Cannot delete the curriculum '%{name}'."
+    delete_failed_without_name: "Cannot delete the curriculum."
+    updated_failed_without_name: "Cannot save the curriculum."
+    error_delete_in_used: "Cannot delete the curriculum '%{name}' because it is in-used."
+    import_line_failed: "Cannot import the line."
+    import_failed: "Some error occurred while importing file. Please try again."
+    import_successfully: "Import curriculums is successfully."
 
   profile:
     title: "Account Settings"

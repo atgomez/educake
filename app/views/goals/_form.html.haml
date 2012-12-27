@@ -1,79 +1,141 @@
 - id ||= 'goal-dialog'
+-# To detect the current active step
+- curriculum_class = "active"
+- goal_class = ""
+- if goal.errors[:curriculum_id].blank? && !goal.errors.blank?
+  - curriculum_class = ""
+  - goal_class = "active"
+
 .modal.hide.fade{:tabindex => "-1", :id => id, "data-backdrop" => "static"}
   = simple_form_for(goal, :html => { :id => "goal-form#{goal.id}", 
-                    :class => 'goal-form form-horizontal goal-form' }) do |f|
+                    :class => 'goal-form form-horizontal goal-form' }) do |f|    
     .modal-header
       %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} &times;
       - if goal.new_record?
-        %h4= t("goal.add")
+        %h4
+          %span= t("goal.add")
+          %span.wizard-step-indicator
+            (1/2)
       - else
         %h4= t("goal.edit")
       - unless goal.new_record?
         - if goal.is_completed == true
           %div{:style=>"font-style:italic;"}= t("goal.completed_warning")
-    .modal-body{:style => "max-height:250px"}
-      - if notification = f.error_notification
-        .alert.alert-error.fade.in
-          %a{:class => "close", 'data-dismiss' => "alert", :href => "#"} &times;
-          = notification
-
-      = f.association :curriculum, :label => t("goal.curriculum")
-      = f.association :subject, :label => t("goal.subject")
-      = f.input(:due_date, :as => :string, :required => true, :input_html => {:class => "date-picker", 
-                :value => goal.due_date_string, :id => "goal_due_date#{goal.id}"})
-      = f.input(:description, :input_html => {:rows => '5'})
-      = f.input :accuracy, :as => :string, :label => t("goal.accuracy"), :input_html => {:id => "accuracy-#{goal.id}"}
-      = f.input(:baseline_date, :as => :string, :required => true, :input_html => {:class => "date-picker", 
-                :value => goal.baseline_date_string, :id => "baseline_date#{goal.id}"})
-      = f.input(:baseline, :as => :string, :label => t("goal.baseline"), :input_html => {:id => "baseline-#{goal.id}"})
-
-      .control-group.date.required{:class => (goal.errors[:trial_days_actual].blank? ? "" : "error")}
-        %label.date.required.control-label{:for => "goal_baseline_date_1i"}
-          %abbr{:title => "required"} *
-          Trial days
-        .controls
-          .trial-day
-            = f.input_field(:trial_days_actual, :length => 5, :style => "width:50px")
-            \/
-            = f.input_field(:trial_days_total, :length => 5, :style => "width:50px")
-          = f.error :trial_days_actual
       
-      = f.hidden_field(:student_id, :value => student.id)
-      
-      .horizontal-bar
-      
-      .progress-report-container
-        - goal.progresses.each_with_index do |progress, idx|
-          = f.simple_fields_for(:progresses, progress) do |f_progress|
-            %label.grade-name= t("goal.progress_with_id", :id => idx + 1)
-            = f_progress.input( :due_date, :as => :string, :required => false, 
-                                :input_html => {:class => "date-picker", 
-                                    :value => progress.due_date_string, 
-                                    :id => "goal_#{goal.id}_#{progress.object_id}"}, 
-                                :label => t("common.due_date"))
-            = f_progress.input :accuracy, :as => :string, :required => false, :label => t("goal.progress_accuracy")
+      %ul.nav.nav-tabs.hide.wizard-nav
+        %li
+          %a{:href => "#curriculum"}
+        %li
+          %a{:href => "#goal"}
 
-    .modal-footer
-      .submit-indicator.loading.hide
+    .tab-content.wizard-content
+      .tab-pane#curriculum{:class => curriculum_class}
+        -#============== Curriculum ==============
+        .modal-body
+          = f.simple_fields_for(:curriculum, goal.curriculum) do |f_cur|
+            = f_cur.association(:curriculum_core, :collection => CurriculumCore.order(:name),
+                  :label => t("curriculum.core"), :include_blank => false,
+                  :input_html => {:class => "extended-combobox reset-on-changed"})
+            = f_cur.association(:subject, :collection => Subject.order(:name),
+                  :label => t("curriculum.subject"), :include_blank => false,
+                  :input_html => {:class => "extended-combobox reset-on-changed"})
+            = f_cur.association(:curriculum_grade, :collection => CurriculumGrade.order(:name),
+                  :label => t("curriculum.grade"), :include_blank => false,
+                  :input_html => {:class => "extended-combobox reset-on-changed"})
+            = f_cur.association(:curriculum_area, :collection => CurriculumArea.order(:name),
+                  :label => t("curriculum.area"), :include_blank => false,
+                  :input_html => {:class => "extended-combobox reset-on-changed"})
+            = f_cur.input(:standard, :as => :select, :collection => curriculum_standards_collection,
+                  :label => t("curriculum.standard"), :include_blank => false,
+                  :input_html => {:class => "extended-combobox reset-on-changed"})
+            .control-group.curriculum-description.virtual.hide
+              = label_tag(t("curriculum.description"), nil, :class => "control-label")
+              .controls
+                .label-value.description1
+                .label-value.description2
+                .label-value.error
+        .modal-footer
+          .submit-indicator.loading.hide
+          %input.btn{:value => t("common.cancel"), :type => "button", "aria-hidden" => "true", 
+                      "data-dismiss" => "modal", :class => "close-dialog"}
+          %input.btn.wizard-action{:value => t("common.next"), :type => "button", 
+                                    "data-target" => "#goal", "aria-hidden" => "true"}
 
-      - unless goal.new_record?
-        = f.input(:is_completed, :label => t("goal.mark_completed"), :wrapper_html => {:class => "archived-input"})
-        
-      %input.btn{:value => t("common.cancel"), :type => "button", "aria-hidden" => "true", 
-                  "data-dismiss" => "modal", :class => "close-dialog"} 
-      = f.submit t("common.save"), :class => "btn btn-primary", :disable_with => t("common.saving")
+        -#============== End Curriculum. ==============
+      
+      .tab-pane#goal{:class => goal_class}
+        -#============== Goal ==============
+        .modal-body
+          - goal.errors.delete(:curriculum_id)
+          - if (notification = f.error_notification) && !goal.errors.blank?
+            .alert.alert-error.fade.in
+              %a{:class => "close", 'data-dismiss' => "alert", :href => "#"} &times;
+              = notification
+          
+          = f.input(:due_date, :as => :string, :required => true, 
+                    :input_html => {:class => "date-picker", 
+                    :value => goal.due_date_string, :id => "goal_due_date#{goal.id}"})
+          = f.input(:description, :input_html => {:rows => '5'})
+          = f.input :accuracy, :as => :string, :label => t("goal.accuracy"), 
+                    :input_html => {:id => "accuracy-#{goal.id}"}
+          = f.input(:baseline_date, :as => :string, :required => true, 
+                    :input_html => {:class => "date-picker", 
+                    :value => goal.baseline_date_string, :id => "baseline_date#{goal.id}"})
+          = f.input(:baseline, :as => :string, :label => t("goal.baseline"), 
+                    :input_html => {:id => "baseline-#{goal.id}"})
+
+          .control-group.date.required{:class => (goal.errors[:trial_days_actual].blank? ? "" : "error")}
+            %label.date.required.control-label{:for => "goal_baseline_date_1i"}
+              %abbr{:title => "required"} *
+              = t("goal.trial_days")
+            .controls
+              .trial-day
+                = f.input_field(:trial_days_actual, :length => 5, :style => "width:50px")
+                \/
+                = f.input_field(:trial_days_total, :length => 5, :style => "width:50px")
+              = f.error :trial_days_actual
+          
+          = f.hidden_field(:student_id, :value => student.id)
+      
+          .horizontal-bar
+          
+          .progress-report-container
+            - goal.progresses.each_with_index do |progress, idx|
+              = f.simple_fields_for(:progresses, progress) do |f_progress|
+                %label.grade-name= t("goal.progress_with_id", :id => idx + 1)
+                = f_progress.input( :due_date, :as => :string, :required => false, 
+                                    :input_html => {:class => "date-picker", 
+                                        :value => progress.due_date_string, 
+                                        :id => "goal_#{goal.id}_#{progress.object_id}"}, 
+                                    :label => t("common.due_date"))
+                = f_progress.input :accuracy, :as => :string, :required => false, 
+                                   :label => t("goal.progress_accuracy")
+
+        .modal-footer
+          .submit-indicator.loading.hide
+          - unless goal.new_record?
+            = f.input(:is_completed, :label => t("goal.mark_completed"), 
+                      :wrapper_html => {:class => "archived-input"})
+            
+          %input.btn{:value => t("common.cancel"), :type => "button", "aria-hidden" => "true", 
+                      "data-dismiss" => "modal", :class => "close-dialog"}
+          %input.btn.wizard-action{:value => t("common.back"), :type => "button", 
+                                    "data-target" => "#curriculum", "aria-hidden" => "true"} 
+          = f.submit t("common.save"), :class => "btn btn-primary", :disable_with => t("common.saving")
+        -#============== End Goal. ==============
 
 :javascript
-  /*
-   $("##{id}").on('show', function(){
-    var win_height = $(window).height();
-    //if(win_height <= $(this).height()){
+  $("##{id}").on('show', function(){
+    /* var win_height = $(window).height();
+    if(win_height <= $(this).height()){
     var form_max_height = win_height - 400;
     if(form_max_height <= 0)
       form_max_height = 100;
       
     $(this).find(".modal-body").css({
       "max-height": form_max_height + "px"
-    });
-  });*/
+    }); */
+
+    goal.get_curriculum();
+  });
   

@@ -15,9 +15,8 @@
         = f.button :submit, :value => t("school.create")
       - else
         = f.button :submit, :value => t("common.save")
-  - rand_pass = rand(1234567)
   .form-inputs
-    .title School Info
+    .title= t("school.school_info")
     .school-info
       = f.input :name, :label => t("school.name"), :input_html => {:class => "valid_name"}
       = f.input :address1, :label => t("school.address")

@@ -10,6 +10,7 @@
 #  user_id       :integer
 #  role_id       :integer          not null
 #  confirm_token :string(255)
+#  is_blocked    :boolean          default(FALSE)
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #

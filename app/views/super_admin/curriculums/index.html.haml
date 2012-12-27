@@ -1,0 +1,44 @@
+- content_for :js do
+  = javascript_include_tag('app/super_admin/curriculum.js')
+
+- content_for(:page_title) do
+  = t("curriculum.title")
+
+.super-admin.curriculum
+  .toolbar
+    =# link_to t("curriculum.add"), new_super_admin_curriculum_path, :class => "btn"
+    = link_to t("curriculum.add"), init_import_super_admin_curriculums_path, :class => "btn", :remote => true
+    = link_to t("user.title"), super_admin_schools_path, :class => "margin-left"
+
+  .table-container
+    - unless @curriculums.blank?
+      %table.table.table-striped.curriculums
+        %thead
+          %tr
+            %th.core= sortable("curriculum_core", t("curriculum.core"))
+            %th.subject= sortable("subject", t("curriculum.subject"))
+            %th.grade= sortable("grade", t("curriculum.grade"))
+            %th.area= sortable("area", t("curriculum.area"))
+            %th.standard= sortable("standard", t("curriculum.standard"))
+            %th.description= sortable("description", t("curriculum.description"))
+            %th.actions
+            %th.actions
+        %tbody
+          - @curriculums.each do |cur|
+            %tr.curriculum{:id => "curriculum-#{cur.id}"}
+              %td.core= cur.curriculum_core.name
+              %td.subject= cur.subject.name
+              %td.grade= cur.curriculum_grade.name
+              %td.area= cur.curriculum_area.name
+              %td.standard= cur.standard
+              %td.description= cur.description1
+              %td.actions
+                = link_to("", edit_super_admin_curriculum_path(cur), 
+                    :class => "icon-pencil color-pen", :title => t("common.edit"))
+              %td.actions
+                = link_to("", [:super_admin, cur], 
+                    :data => { :confirm => t("common.confirm_message") }, 
+                    :class => "icon-trash color-pen", :method => :delete, :title => t("common.delete"))
+    = render_pagination @curriculums
+
+  #import-container.modal.hide.fade{"data-backdrop" => "static"}

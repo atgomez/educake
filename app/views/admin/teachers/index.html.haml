@@ -6,7 +6,7 @@
   %h3.school-name= @admin.school.try(:name)
   .clearfix.toolbar
     - if @all_teachers_count > @teachers.length
-      = link_to("All teachers", all_admin_teachers_path(:admin_id => @admin.id), 
+      = link_to(t("admin.teacher.all_teachers"), all_admin_teachers_path(:admin_id => @admin.id), 
                 :class => "brown font18")
     - unless @teachers.blank?
       = render 'shared/search_box', :action => "/admin/teachers/search", :placeholder => t("common.search_place_holder")

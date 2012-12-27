@@ -24,12 +24,12 @@ class SuperAdmin::UsersController < SuperAdmin::BaseSuperAdminController
         redirect_to super_admin_school_path(@user.school)
       else
         load_roles
-        render action: "new" 
+        render(:action => "new")
       end
     else
       flash[:alert] = I18n.t('school.not_available')
       load_roles
-      render action: "new" 
+      render(:action => "edit")
     end
   end
   
@@ -58,7 +58,7 @@ class SuperAdmin::UsersController < SuperAdmin::BaseSuperAdminController
         redirect_to super_admin_school_path(@user.school)
       else
         load_roles
-        render action: "edit" 
+        render(:action => "edit") 
       end
     end
   end

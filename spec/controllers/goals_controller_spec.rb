@@ -2,19 +2,13 @@ require 'spec_helper'
 
 describe GoalsController do
   render_views
-  let(:user) {FactoryGirl.create(:teacher)}
-  before(:each) do
-    sign_in user
-  end
-  let(:student) { FactoryGirl.create(:student)}
+  let(:user) {FactoryGirl.create(:teacher)}  
+  let(:student) { FactoryGirl.create(:student, :teacher => user)}
   let(:curriculum) {FactoryGirl.create(:curriculum)}
-  let(:subject) {FactoryGirl.create(:subject)}
   let(:curriculum1) {FactoryGirl.create(:curriculum)}
-  let(:subject1) {FactoryGirl.create(:subject)}
   let(:goal) { 
     goal = FactoryGirl.create(:goal, 
                        :curriculum => curriculum, 
-                       :subject => subject,
                        :student => student)
   }
   let(:build_goal) { 
@@ -22,10 +16,13 @@ describe GoalsController do
     									 :baseline_date =>  "03-01-2012",
     									 :due_date  => "03-01-2013",
                        :curriculum => curriculum1, 
-                       :subject => subject1,
                        :student => student)
   }
   
+  before(:each) do
+    sign_in user
+  end
+
   describe "Get New" do
   	it "return new goal" do
   		get 'new', :student_id => student.id, :format => :js
@@ -49,9 +46,7 @@ describe GoalsController do
   	end
 
   	it "when creating successfully" do
-  		attrs = build_goal.attributes.except("created_at", "updated_at", 
-  			"grades_data_file_name", "grades_data_content_type", 
-  			"grades_data_file_size", "grades_data_updated_at")
+  		attrs = build_goal.attributes.except("created_at", "updated_at")
   		attrs['baseline_date'] = build_goal.baseline_date_string
   		attrs['due_date'] = build_goal.due_date_string
   		post  :create, :goal => attrs
@@ -62,6 +57,7 @@ describe GoalsController do
 
   	it "when creating unsuccessfully" do
   		attrs = build_goal.attributes.except("created_at", "updated_at")
+      attrs['baseline_date'] = nil
   		post  :create, :goal => attrs
   		response.should_not be_success 
   		body = JSON.parse(response.body)
@@ -89,7 +85,7 @@ describe GoalsController do
       body.should include("message" => I18n.t("goal.save_failed"))
   	end
 
-    it "when goal not found" do
+    it "when goal not found", :current => true do
       put :update, :id => 0, :goal => {:student_id => goal.student.id}
       response.should_not be_success
       body = JSON.parse(response.body) 
@@ -104,7 +100,7 @@ describe GoalsController do
   	end
     it "when unexisted student" do 
       get :new_grade, :student_id => 0, :format => :js 
-      response.should be_success 
+      response.should_not be_success
     end 
   end 
 
