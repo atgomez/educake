@@ -47,6 +47,9 @@ $(document).ready(function() {
     $.each($("a[data-remote=true]"), function(index, value){ $(value).attr("url_tmp",$(value).attr("href")) })
     $.each($("a[data-remote=true]"), function(index, value){ $(value).attr("href", "#") })
 
+    $.each($("a[data-confirm]"), function(index, value){ $(value).attr("url_tmp",$(value).attr("href")) })
+    $.each($("a[data-confirm]"), function(index, value){ $(value).attr("href", "#") })
+
     // Handle ajax event to get right
     $("a[data-remote=true]").live("ajax:before", function(event) {
       $(this).attr("href", $(this).attr("url_tmp"));
@@ -54,6 +57,11 @@ $(document).ready(function() {
 
     $("a[data-remote=true]").live("ajax:complete", function(event) {
       $(this).attr("href", "#");
+    });
+
+    $("a[data-confirm]").live("confirm:complete", function(event, answer) {
+      if (answer)
+        $(this).attr("href", $(this).attr("url_tmp"));
     });
 
 
