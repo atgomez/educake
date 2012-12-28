@@ -26,5 +26,7 @@
                 :label => t("curriculum.area"), :include_blank => false,
                 :input_html => {:class => "extended-combobox reset-on-changed"})
       = f.input :standard, :as => :string, :input_html => {:class => "valid_number"}
-      = f.input :description1, :as => :text, :input_html => {:rows => "2", :class => "description-input"}
-      = f.input :description2, :as => :text, :input_html => {:rows => "5", :class => "description-input"}
+      = f.input :description1, :as => :text, :label => t("curriculum.description1"),
+                :input_html => {:rows => "2", :class => "description-input"}
+      = f.input :description2, :as => :text, :label => t("curriculum.description2"),
+                :input_html => {:rows => "5", :class => "description-input"}
