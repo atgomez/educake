@@ -207,6 +207,10 @@ en:
     import_line_failed: "Cannot import the line."
     import_failed: "Some error occurred while importing file. Please try again."
     import_successfully: "Import curriculums is successfully."
+    import_successfully_with_one_line: "There is one curriculum is imported."
+    import_successfully_with_lines: "There are %{num} curriculums are imported."
+    import_failed_with_error: "Some error occurred while importing file. Please see the errors below:"
+    import_line_error: "Line %{num}: %{message}"
 
   profile:
     title: "Account Settings"

@@ -86,6 +86,7 @@ class Curriculum < ActiveRecord::Base
 
     def import_data(data_source, options = {})
       errors = {}
+      imported_num = 0
 
       # Size of each cache
       cache_size = 10
@@ -157,13 +158,23 @@ class Curriculum < ActiveRecord::Base
 
             curriculum = Curriculum.where(finder_attrs).first
             if curriculum
-              curriculum.update_attributes!(extra_attrs)
-              puts "[Curriculum] Updated: #{curriculum.id}"
+              if curriculum.update_attributes(extra_attrs)
+                imported_num += 1
+                puts "[Curriculum] Updated: #{curriculum.id}"
+              else
+                # Get only one error message is enough.
+                errors[line_num] = curriculum.errors.full_messages.first
+              end              
             else
               # Create a new curriculum
               curriculum = Curriculum.new(finder_attrs.merge(extra_attrs))
-              curriculum.save!
-              puts "[Curriculum] Imported: #{curriculum.id}"
+              if curriculum.save
+                imported_num += 1
+                puts "[Curriculum] Imported: #{curriculum.id}"
+              else
+                # Get only one error message is enough.
+                errors[line_num] = curriculum.errors.full_messages.first
+              end
             end            
           rescue Exception => exc
             ::Util.log_error(exc, "Curriculum.import_data#foreach")
@@ -172,7 +183,13 @@ class Curriculum < ActiveRecord::Base
         end
       end
 
-      return errors
+      result = {
+        :imported_num => imported_num
+      }
+      unless errors.blank?
+        result[:errors] = errors
+      end
+      return result
     end
 
     protected

@@ -233,9 +233,24 @@ describe SuperAdmin::CurriculumsController do
         end
 
         context "import failed" do
-          it "shows the errors" do
-            Curriculum.should_receive(:import_data).and_return({:error => "Error"})
-            subject.should render_template("import")
+          context "with only one curriculum is impored and some errors" do
+            let(:result) do
+              {:imported_num => 1, :errors => {1=>"Cannot import the line.", 2=>"Cannot import the line."}}
+            end
+            it "shows the errors" do
+              Curriculum.should_receive(:import_data).and_return(result)
+              subject.should render_template("import")
+            end
+          end
+
+          context "with only many curriculums are impored and some errors" do
+            let(:result) do
+              {:imported_num => 2, :errors => {1=>"Cannot import the line.", 2=>"Cannot import the line."}}
+            end
+            it "shows the errors" do
+              Curriculum.should_receive(:import_data).and_return(result)
+              subject.should render_template("import")
+            end
           end
         end
 

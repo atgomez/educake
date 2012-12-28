@@ -107,18 +107,41 @@ describe Curriculum do
       
       it "imports and update data correctly" do
         fixed_curriculum
-        errors = Curriculum.import_data(csv_file.path)
-        errors.should be_blank
+        result = Curriculum.import_data(csv_file.path)
+        result[:errors].should be_blank
+      end
+
+      context "with importing new records failure" do
+        it "handles and returns the error" do
+          Curriculum.any_instance.stub(:save).and_return(false)
+          result = Curriculum.import_data(csv_file.path)
+          result[:errors].should_not be_blank
+        end
+      end
+
+      context "with updating available records failure", :current => true do
+        it "handles and returns the error" do
+          fixed_curriculum
+          Curriculum.any_instance.stub(:update_attributes).and_return(false)
+          result = Curriculum.import_data(csv_file.path)
+          result[:errors].should_not be_blank
+        end
       end
 
       context "with unexpected error" do
         it "handles and returns the error" do
-          Curriculum.any_instance.stub(:save!).and_raise(Exception.new("Fatal error!"))
-          errors = Curriculum.import_data(csv_file.path)
-          errors.should_not be_blank
-          puts errors.inspect
+          Curriculum.any_instance.stub(:save).and_raise(Exception.new("Fatal error!"))
+          result = Curriculum.import_data(csv_file.path)
+          result[:errors].should_not be_blank
+          puts result[:errors].inspect
         end
       end
+    end
+  end
+
+  describe "serialization" do
+    it "returns object as Hash" do
+      curriculum.to_hash.should be_kind_of(Hash)
     end
   end
 end

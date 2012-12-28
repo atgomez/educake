@@ -281,9 +281,9 @@ class GoalsController < ApplicationController
     def show_errors(message, errors)
       html = ""
       msgs = errors.slice(0, 4)
-      html += "<div>"+message+"</div>"
+      html << "<div>"+message+"</div>"
       msgs.map do |msg|
-        html += "<div>"+msg+"</div>"
+        html << "<div>"+msg+"</div>"
       end
       return html.html_safe
     end 

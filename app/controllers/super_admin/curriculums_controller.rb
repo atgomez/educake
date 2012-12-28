@@ -1,12 +1,12 @@
 class SuperAdmin::CurriculumsController < SuperAdmin::BaseSuperAdminController
   helper_method :sort_column, :sort_direction, :sort_criteria
 
-	def index
+  def index
     load_params = filtered_params.merge({
       :sort_criteria => sort_criteria
     })
     @curriculums = Curriculum.load_data(load_params)
-	end
+  end
 
   def edit
     find_curriculum
@@ -63,11 +63,11 @@ class SuperAdmin::CurriculumsController < SuperAdmin::BaseSuperAdminController
 
     begin      
       if @import.valid?
-        errors = Curriculum.import_data(@import.import_file_path)
-        if errors.blank?
+        result = Curriculum.import_data(@import.import_file_path)
+        if result[:errors].blank?
           flash[:notice] = I18n.t("curriculum.import_successfully")
-        else
-          flash[:alert] = I18n.t("curriculum.import_failed")
+        else          
+          flash[:alert] = generate_import_errors(result)
         end      
       end
     rescue Exception => exc
@@ -79,8 +79,8 @@ class SuperAdmin::CurriculumsController < SuperAdmin::BaseSuperAdminController
       format.js
     end
   end
-	
-	protected
+  
+  protected
 
     def set_current_tab
       @current_tab = 'curriculum'
@@ -112,4 +112,29 @@ class SuperAdmin::CurriculumsController < SuperAdmin::BaseSuperAdminController
     def sort_criteria
       return "#{actual_sort_column} #{sort_direction}"
     end
+
+    # Generate human friendly error message for import result.
+    def generate_import_errors(import_result)
+      return nil if import_result.blank?
+      html = ""
+      imported_num = import_result[:imported_num].to_i
+      if imported_num == 1
+        html << "<p>#{I18n.t("curriculum.import_successfully_with_one_line")}</p>"
+      elsif imported_num > 1
+        html << "<p>#{I18n.t("curriculum.import_successfully_with_lines", :num => imported_num)}</p>"
+      end
+      errors = import_result[:errors]
+      unless errors.blank?
+        html << I18n.t("curriculum.import_failed_with_error")
+        html << "<ul>"
+        count = 0
+        errors.each do |line_num, message|
+          break if count >= 5 # Only show 5 error messages
+          html << "<li>#{I18n.t("curriculum.import_line_error", :num => line_num, :message => message)}</li>"
+          count += 1
+        end
+        html << "</ul>"
+      end
+      return html.html_safe
+    end 
 end
