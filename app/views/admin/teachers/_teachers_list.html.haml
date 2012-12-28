@@ -37,7 +37,7 @@
         .clearfix
 - if with_pagination
   .clearfix
-  .pagination-container.ajax
+  .pagination-container
     - pagination_params ||= {}
     = render_pagination(teachers, {:type => 'teacher', :current_page => @current_page}, pagination_params)
     .loading.hide
