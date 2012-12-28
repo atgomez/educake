@@ -140,7 +140,8 @@ en:
     phone_label: "Phone:"
     view_as_title: "Now viewing as"
     back_to_super_admin: "Back to viewing as SuperAdmin."
-    welcome_label: "Welcome,"    
+    welcome_label: "Welcome,"
+    all_teachers: "All Teachers"    
 
   student:
     created_successfully: "Student %{name} was created successfully."
@@ -155,7 +156,6 @@ en:
     birthday: "DOB"
     edit_goal: "Edit Goal"
     invitation_anchor: "Users"
-    teacher_home: "Teacher Home"
     all_students: "All Students"
     all_students_of: "All %{user}'s Students"
     student_not_found: "Student is not found."
