@@ -58,7 +58,7 @@ class User < ActiveRecord::Base
   
   # ASSOCIATIONS
   has_many :children, :class_name => "User", :foreign_key => 'parent_id' 
-  belongs_to :parent, :class_name => "User", :foreign_key => 'parent_id'  
+  belongs_to :parent, :class_name => "User", :foreign_key => 'parent_id'
 
   # All students belong to the current users and students are shared to the current user.
   # TODO: this association does not work probably when calling like this: user.accessible_students.order("first_name")
@@ -76,10 +76,8 @@ class User < ActiveRecord::Base
   has_many :shared_students, :through => :student_sharings, :source => :student
   has_many :students, :foreign_key => "teacher_id", :dependent => :destroy
 
-
   belongs_to :role
   belongs_to :school
-
 
   has_attached_file :photo, :styles => { :small => "200x200>", :medium => "300x300>" }, 
                    :storage => :s3,

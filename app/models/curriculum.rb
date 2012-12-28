@@ -52,7 +52,10 @@ class Curriculum < ActiveRecord::Base
   validates :description1, :length => { :maximum => 255, :too_long => :name_too_long }
   validates :standard, :uniqueness => { :scope => [ :curriculum_core_id, :subject_id, 
                                                     :curriculum_grade_id, :curriculum_area_id]}
+  
+  # CALLBACK                                      
   before_validation :init_curriculum_core
+  after_destroy :destroy_curriculum_core
 
   #                                                    
   # CLASS METHODS
@@ -266,5 +269,13 @@ class Curriculum < ActiveRecord::Base
       else
         self.curriculum_core_id = self.curriculum_core_value
       end
+    end
+
+    def destroy_curriculum_core
+      unless self.curriculum_core.curriculums.any?
+        # Delete the curriculum_core
+        self.curriculum_core.destroy
+      end
+    rescue Exception
     end
 end
