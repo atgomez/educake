@@ -30,6 +30,7 @@ class GoalsController < ApplicationController
       #Remove id and student_id 
       params[:goal].delete :id
       params[:goal].delete :student_id
+
       @goal = @student.goals.new(params[:goal])
 
       if @goal.save

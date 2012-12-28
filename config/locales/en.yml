@@ -76,6 +76,7 @@ en:
     require_to_select: "Please select a goal."
     add: "Add a Goal"
     edit: "Edit Goal"
+    note: "Note"
     completed_warning: "Editing this goal will mark it as incomplete. You may mark it as complete below."
     curriculum: "Curriculum Core"
     subject: "Subject"

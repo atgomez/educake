@@ -144,6 +144,8 @@ window.goal =
       data: attrs,
       success: (res) ->
         curriculum_desc = $("#curriculum.tab-pane .curriculum-description")
+        curriculum_name = $("#goal.tab-pane .curriculum-name-place-holder")
+
         if(res && res.id)          
           if res.description1
             curriculum_desc.find(".description1").html(res.description1)
@@ -156,17 +158,23 @@ window.goal =
           curriculum_desc.removeClass("hide")
           curriculum_desc.find(".error").addClass("hide")
           curriculum_desc.find(".control-label").removeClass("hide")
+          # Change curriculum name
+          $(curriculum_name).html(res.full_name)
         else if(res && res.error)
           curriculum_desc.find(".error").removeClass("hide").html(res.error)
           curriculum_desc.find(".control-label").addClass("hide")
           curriculum_desc.find(".description1, .description2").html("")
           curriculum_desc.removeClass("hide")
+          # Change curriculum name
+          $(curriculum_name).html("")
         else
           # Clear the old result
           curriculum_desc.find(".description1, .description2").html("")
           curriculum_desc.addClass("hide")
           curriculum_desc.find(".error").addClass("hide")
           curriculum_desc.find(".control-label").removeClass("hide")
+          # Change curriculum name
+          $(curriculum_name).html("")
           
         # Hide the loading
         $(loading).addClass("hide")

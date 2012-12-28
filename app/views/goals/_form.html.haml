@@ -2,7 +2,8 @@
 -# To detect the current active step
 - curriculum_class = "active"
 - goal_class = ""
-- if goal.errors[:curriculum_id].blank? && !goal.errors.blank?
+- error_on_curriculum = are_all_errors_on_curriculum?(goal)
+- if !error_on_curriculum && !goal.errors.blank?
   - curriculum_class = ""
   - goal_class = "active"
 
@@ -34,7 +35,7 @@
         .modal-body
           = f.simple_fields_for(:curriculum, goal.curriculum) do |f_cur|
             = f_cur.association(:curriculum_core, :collection => CurriculumCore.order(:name),
-                  :label => t("curriculum.core"), :include_blank => false,
+                  :label => t("goal.curriculum"), :include_blank => false,
                   :input_html => {:class => "extended-combobox reset-on-changed"})
             = f_cur.association(:subject, :collection => Subject.order(:name),
                   :label => t("curriculum.subject"), :include_blank => false,
@@ -51,7 +52,7 @@
             .control-group.curriculum-description.virtual.hide
               = label_tag(t("curriculum.description"), nil, :class => "control-label")
               .controls
-                .label-value.description1
+                .label-value.description1.bold
                 .label-value.description2
                 .label-value.error
         .modal-footer
@@ -66,16 +67,18 @@
       .tab-pane#goal{:class => goal_class}
         -#============== Goal ==============
         .modal-body
-          - goal.errors.delete(:curriculum_id)
-          - if (notification = f.error_notification) && !goal.errors.blank?
+          - if (notification = f.error_notification) && !error_on_curriculum
             .alert.alert-error.fade.in
               %a{:class => "close", 'data-dismiss' => "alert", :href => "#"} &times;
               = notification
           
+          %center
+            .curriculum-name-place-holder.bold
+
           = f.input(:due_date, :as => :string, :required => true, 
                     :input_html => {:class => "date-picker", 
                     :value => goal.due_date_string, :id => "goal_due_date#{goal.id}"})
-          = f.input(:description, :input_html => {:rows => '5'})
+          = f.input(:description, :input_html => {:rows => '5'}, :label => t("goal.note"))
           = f.input :accuracy, :as => :string, :label => t("goal.accuracy"), 
                     :input_html => {:id => "accuracy-#{goal.id}"}
           = f.input(:baseline_date, :as => :string, :required => true, 

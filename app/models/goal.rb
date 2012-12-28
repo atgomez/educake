@@ -59,6 +59,7 @@ class Goal < ActiveRecord::Base
 
   # CALLBACK
   before_validation :update_progresses, :valid_date_attribute?, :checK_curriculum
+  after_validation :reset_curriculum
   after_save :update_all_grade  
 
   # CLASS METHODS
@@ -79,7 +80,8 @@ class Goal < ActiveRecord::Base
     def build_goal(attrs = {})
       goal = self.new(attrs)
       goal.build_progresses
-      goal.curriculum = Curriculum.new
+      # Build the sample Curriculum
+      goal.curriculum = Curriculum.build_curriculum
       return goal
     end
 
@@ -94,7 +96,7 @@ class Goal < ActiveRecord::Base
           }
         end
         paging_options(options, default_opts)
-      end
+      end      
   end # End class method.
 
   #
@@ -567,6 +569,12 @@ class Goal < ActiveRecord::Base
         if self.curriculum.blank?
           self.curriculum = Curriculum.new(attrs)
         end
+      end
+    end
+
+    def reset_curriculum
+      unless self.errors.blank?
+        self.curriculum = Curriculum.build_curriculum(self.curriculum)
       end
     end
 end

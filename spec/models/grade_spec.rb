@@ -58,8 +58,7 @@ describe Grade do
 					@goal = goal
 					@grades = []
 					(1..30).each do |i|
-						new_grade = FactoryGirl.build( :grade, 
-																					 :due_date => Date.today - (i +4).days, :goal => @goal)
+						new_grade = FactoryGirl.build(:grade, :due_date => Date.today - (i + 4).days, :goal => @goal)
 					  if !new_grade.save
 					  	puts new_grade.errors.inspect
 					  end

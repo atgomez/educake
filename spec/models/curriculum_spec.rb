@@ -30,9 +30,34 @@ describe Curriculum do
   end # .load_data
 
   describe "#name" do
-    it "returns the correct name" do
-      curriculum.name.should == 
-        "#{curriculum.subject.name} #{curriculum.curriculum_grade.name}.#{curriculum.curriculum_area.name}.#{curriculum.standard}"
+    context "with available record" do
+      it "returns the correct name" do
+        curriculum.name.should == 
+          "#{curriculum.subject.name} #{curriculum.curriculum_grade.name}.#{curriculum.curriculum_area.name}.#{curriculum.standard}"
+      end
+    end
+
+    context "with new record" do
+      it "returns the name normally and not crash" do
+        cur = Curriculum.new
+        cur.name.should be_kind_of(String)
+      end
+    end
+  end
+
+  describe "#full_name" do
+    context "with available record" do
+      it "returns the correct full name" do
+        curriculum.full_name.should == 
+          "#{curriculum.curriculum_core.name}, #{curriculum.name}"
+      end
+    end
+
+    context "with new record" do
+      it "returns the full name normally and not crash" do
+        cur = Curriculum.new
+        cur.full_name.should be_kind_of(String)
+      end
     end
   end
 
@@ -96,6 +121,29 @@ describe Curriculum do
         curriculum.save!
         curriculum.reload
         curriculum.curriculum_core.name.should eq(curriculum_core.name)
+      end
+    end
+  end
+
+  describe ".build_curriculum", :build_curriculum => true do
+    context "with an available curriculum" do
+      it "builds a new curriculum with the same attributes as sample one" do
+        cur = Curriculum.build_curriculum(curriculum)
+        Curriculum.accessible_attributes.each do |k|
+          next if k == "id"
+          cur[k].should == curriculum[k]
+        end
+      end
+    end
+
+    context "without sample curriculum" do
+      it "builds an empty curriculum object" do
+        curriculum.destroy
+        cur = Curriculum.build_curriculum
+        Curriculum.accessible_attributes.each do |k|
+          next if k == "id"
+          cur[k].should be_blank
+        end
       end
     end
   end

@@ -59,7 +59,7 @@ class Curriculum < ActiveRecord::Base
   class << self
     # Names of methods will be exposed when serializing object to JSON, XML, etc.
     def exposed_methods
-      [:name]
+      [:name, :full_name]
     end
     
     # Names of attributes will be exposed when serializing object to JSON, XML, etc.
@@ -192,6 +192,19 @@ class Curriculum < ActiveRecord::Base
       return result
     end
 
+    # Build a sample curriculum
+    def build_curriculum(sample_curriculum = nil)
+      sample_curriculum ||= Curriculum.first
+      attrs = {}
+      unless sample_curriculum.blank?
+        # Get all accessible attributes except :id
+        attrs = sample_curriculum.attributes.select{ |k,v| 
+          Curriculum.accessible_attributes.include?(k) && k != "id"
+        }
+      end
+      return Curriculum.new(attrs)
+    end
+    
     protected
 
       # Parse params to PagingInfo object.
@@ -212,7 +225,12 @@ class Curriculum < ActiveRecord::Base
 
   # Curriculum name
   def name
-    "#{self.subject.name} #{self.curriculum_grade.name}.#{self.curriculum_area.name}.#{self.standard}"
+    "#{self.subject.try(:name)} #{self.curriculum_grade.try(:name)}.#{self.curriculum_area.try(:name)}.#{self.standard}"
+  end
+
+  # Curriculum name with CurriculumCore
+  def full_name
+    "#{self.curriculum_core.try(:name)}, #{self.name}"
   end
 
   def curriculum_core_id=(value)
