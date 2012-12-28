@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :user, :class => User do
+  factory :user, :class => "User" do
     sequence(:email) { |n| "sample-user#{n}@teacher.com" }
     first_name { Faker::Name.first_name }
     last_name { Faker::Name.last_name }
@@ -8,7 +8,7 @@ FactoryGirl.define do
     confirmed_at Time.now
   end
 
-  factory :super_admin, :class => User do |u|
+  factory :super_admin, :class => "User" do |u|
     u.sequence(:email) { |n| "super-admin#{n}@teacher.com" }
     u.first_name { Faker::Name.first_name }
     u.last_name { Faker::Name.last_name }
@@ -22,7 +22,7 @@ FactoryGirl.define do
     #end
   end
 
-  factory :admin, :class => User do |u|
+  factory :admin, :class => "User" do |u|
     u.sequence(:email) { |n| "admin#{n}@teacher.com" }
     u.first_name { Faker::Name.first_name }
     u.last_name { Faker::Name.last_name }
@@ -33,7 +33,7 @@ FactoryGirl.define do
     u.association :school
   end
 
-  factory :teacher, :class => User do |u|
+  factory :teacher, :class => "User" do |u|
     u.sequence(:email) { |n| "teacher#{n}@teacher.com" }
     u.first_name { Faker::Name.first_name }
     u.last_name { Faker::Name.last_name }
@@ -45,7 +45,7 @@ FactoryGirl.define do
     u.association :school
   end
 
-  factory :parent, :class => User do |u|
+  factory :parent, :class => "User" do |u|
     u.sequence(:email) { |n| "parent#{n}@teacher.com" }
     u.first_name { Faker::Name.first_name }
     u.last_name { Faker::Name.last_name }

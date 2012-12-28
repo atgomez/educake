@@ -9,7 +9,7 @@ FactoryGirl.define do
     description2 {Faker::Lorem.paragraph(2)}
   end
 
-  factory :fixed_curriculum, :class => Curriculum do    
+  factory :fixed_curriculum, :class => "Curriculum" do    
     standard "2"
     description1 {Faker::Lorem.sentence(10)}
     description2 {Faker::Lorem.paragraph(2)}

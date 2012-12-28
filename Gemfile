@@ -69,4 +69,5 @@ group :development, :test do
   gem "simplecov", :require => false
   gem "simplecov-rcov", :require => false
   gem "shoulda-matchers"
+  gem "spork-rails", "~> 3.2.1"
 end

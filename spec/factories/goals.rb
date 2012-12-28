@@ -13,7 +13,7 @@ FactoryGirl.define do
     curriculum
     student
 
-    factory :valid_goal, :class => Goal do
+    factory :valid_goal, :class => "Goal" do
       curriculum
       student
     end

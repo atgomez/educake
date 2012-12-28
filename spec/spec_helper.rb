@@ -1,69 +1,17 @@
-# This file is copied to spec/ when you run 'rails generate rspec:install'
+# This is an approach to not have to run Spork everytime.
+# See: http://stackoverflow.com/questions/8192636/rails-project-using-spork-always-have-to-use-spork
+
 ENV["RAILS_ENV"] ||= 'test'
 
 require 'rubygems'
-require 'simplecov'
-require 'simplecov-rcov'
-SimpleCov.formatter = SimpleCov::Formatter::RcovFormatter
-SimpleCov.start 'rails'
-
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
-require 'rspec/autorun'
-include ActionDispatch::TestProcess
 
-# Requires supporting ruby files with custom matchers and macros, etc,
-# in spec/support/ and its subdirectories.
-Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
-
-RSpec.configure do |config|
-  # ## Mock Framework
-  #
-  # If you prefer to use mocha, flexmock or RR, uncomment the appropriate line:
-  #
-  # config.mock_with :mocha
-  # config.mock_with :flexmock
-  # config.mock_with :rr
-
-  # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
-  config.fixture_path = "#{::Rails.root}/spec/fixtures"
-
-  # If you're not using ActiveRecord, or you'd prefer not to run each of your
-  # examples within a transaction, remove the following line or assign false
-  # instead of true.
-  config.use_transactional_fixtures = true
-
-  # If true, the base class of anonymous controllers will be inferred
-  # automatically. This will be the default behavior in future versions of
-  # rspec-rails.
-  config.infer_base_class_for_anonymous_controllers = false
-
-  # Run specs in random order to surface order dependencies. If you find an
-  # order dependency and want to debug it, you can fix the order by providing
-  # the seed, which is printed after each run.
-  #     --seed 1234
-  config.order = "random"
-
-  # Config database_cleaner
-  config.before(:suite) do
-    SpecUtil.cleanup
-    DatabaseCleaner.strategy = :truncation, {:except => %w[roles curriculum_cores]}
-    DatabaseCleaner.clean
-    load(Rails.root.join("db", "seeds.rb"))
-  end
-
-  config.before(:each) do
-    DatabaseCleaner.start
-  end
-
-  config.after(:each) do
-    DatabaseCleaner.clean
-  end
-end
-
-module SpecUtil
-  def self.cleanup
-    puts "[SpecUtil] Begin cleaning up..."
-    FileUtils.rm_rf("tmp/*")
-  end
+# Conditional Spork.prefork (this comment is needed to fool Spork's `bootstrapped?` check)
+if /spork/i =~ $0 || RSpec.configuration.drb?
+  puts "Loading spec_helper_spork ..."
+  require File.expand_path("../spec_helper_spork", __FILE__)
+else
+  puts "Loading spec_helper_base ..."
+  require File.expand_path("../spec_helper_base", __FILE__)
 end
