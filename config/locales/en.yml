@@ -90,7 +90,7 @@ en:
   grade:
     created_successfully: "Created grade successfully"
     import_successfully: "Imported .csv file for grades successfully"
-    save_failed: "There are some first invalid grades on:"
+    save_failed: "There are some invalid grades on:"
     add: "Add Grade"
     accuracy: "% Accuracy"
     note: "Notes"
