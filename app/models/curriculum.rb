@@ -48,7 +48,8 @@ class Curriculum < ActiveRecord::Base
 
   # VALIDATION
   validates :curriculum_core, :subject, :curriculum_grade, :curriculum_area, 
-            :standard, :description1, :description2, :presence => true  
+            :standard, :description1, :description2, :presence => true
+  validates :description1, :length => { :maximum => 255, :too_long => :name_too_long }
   validates :standard, :uniqueness => { :scope => [ :curriculum_core_id, :subject_id, 
                                                     :curriculum_grade_id, :curriculum_area_id]}
   before_validation :init_curriculum_core
@@ -204,7 +205,7 @@ class Curriculum < ActiveRecord::Base
       end
       return Curriculum.new(attrs)
     end
-    
+
     protected
 
       # Parse params to PagingInfo object.
