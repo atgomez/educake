@@ -15,6 +15,7 @@ class GoalsController < ApplicationController
   def edit
     @student = Student.find_by_id(params[:student_id])
     @goal = Goal.find_by_id(params[:id])
+    @goal.build_progresses
   end
 
   def create
@@ -38,6 +39,7 @@ class GoalsController < ApplicationController
         result[:message] = I18n.t('goal.created_successfully')
         flash[:notice] = result[:message]
       else
+        @goal.build_progresses
         status_code = 400
         result[:message] = I18n.t('goal.save_failed')
         result[:html] = render_to_string(:partial => 'goals/form', 
@@ -71,6 +73,7 @@ class GoalsController < ApplicationController
           result[:message] = I18n.t('goal.updated_successfully')
           flash[:notice] = result[:message]
         else
+          @goal.build_progresses
           status_code = 400
           result[:message] = I18n.t('goal.save_failed')
           result[:html] = render_to_string(:partial => 'goals/form', 
@@ -78,7 +81,7 @@ class GoalsController < ApplicationController
         end
       else
         result[:message] = I18n.t('goal.not_found')
-        status_code = 400
+        status_code = 404
       end
     end
   
