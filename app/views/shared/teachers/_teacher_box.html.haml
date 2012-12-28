@@ -9,7 +9,7 @@
       - if !@teacher.classroom.blank?
         .classroom
           %span= t("user.classroom_label")
-          %span= @teacher.classroom
+          %span= @teacher.short_classroom(40)
       - if !@teacher.email.blank?
         .email
           %span= t("user.email_label")

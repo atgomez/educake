@@ -15,7 +15,7 @@
         %strong.name
           = link_to(teacher.full_name, teacher_home_url)
 
-        .classroom= teacher.classroom
+        .classroom= teacher.short_classroom
         - unless big_teacher_cell
           = render("students_container", :students => students, :teacher => teacher)
       - if big_teacher_cell # In case of search template

@@ -93,6 +93,7 @@ class User < ActiveRecord::Base
   validates_presence_of :school_id, :if => :is_not_admin?
   validates_length_of :first_name, :maximum => 15
   validates_length_of :last_name, :maximum => 15
+  validates_length_of :classroom, :maximum => 255
   validates_format_of :first_name, :with => /^[^0-9!@#\$%\^&*+_=]+$/
   validates_format_of :last_name, :with => /^[^0-9!@#\$%\^&*+_=]+$/
   
@@ -424,6 +425,11 @@ class User < ActiveRecord::Base
     end
 
     date
+  end
+
+  # Returns the truncated school name
+  def short_classroom(length = 25)
+    ::Util.truncate(self.classroom, :length => length)
   end
   
   # EXPORTING

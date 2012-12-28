@@ -157,5 +157,20 @@ describe User do
       rs = User.unblocked
       rs.should be_empty
     end 
-  end  
+  end
+
+  describe "#short_classroom" do
+    let(:user) {FactoryGirl.create(:teacher, :classroom => Faker::Lorem.sentence(10))}
+    context "without parameter" do
+      it "return the short classroom name" do
+        user.short_classroom.length.should <= user.classroom.length
+      end
+    end
+
+    context "with parameter" do
+      it "return the short classroom name with the given length" do
+        user.short_classroom(5).length.should == 5
+      end
+    end
+  end
 end
