@@ -401,7 +401,7 @@ class Goal < ActiveRecord::Base
   def export_xml(package, context, tmpdir, sheet_index)
 
     # Create Header Info
-    package.workbook.add_worksheet(:name => "#{self.name} #{sheet_index}") do |sheet|
+    package.workbook.add_worksheet(:name => "#{self.name[0...25]} #{sheet_index}") do |sheet|
       # Student Header
       yield(sheet) if block_given?
 
