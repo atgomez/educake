@@ -14,9 +14,11 @@
           -# if !read_only
           - if !invited_user.is_a?(User) 
             =# link_to("", edit_invitation_path(user, :user_id => @user, :admin_id => @admin, :student_id => student_id), :class => "icon-pencil color-pen", :method => :get, :remote => true, :title => t("common.edit"))
-            = link_to("", invitation_path(invited_user, :user_id => @user, :admin_id => @admin, :student_id => @student), 
-                    :data => { :confirm => t("common.confirm_message") }, 
-                    :class => "icon-trash color-pen", :method => :delete, 
-                      :remote => true, :title => t("common.delete"))
+            = link_to("", 
+                invitation_path(invited_user, :user_id => @user, :admin_id => @admin, :student_id => @student), 
+                :data => { :confirm => t("common.confirm_message") }, 
+                :class => "icon-trash color-pen", :method => :delete, 
+                :remote => true,
+                :title => t("common.delete"))
           - else
             (Main Teacher)
