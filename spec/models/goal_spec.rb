@@ -138,14 +138,43 @@ describe Goal do
 
 			context 'out of range date' do 
 				it {
-					ideal_value = @goal.graph_ideal_value_for_date(Date.parse('12/11/2014'))
+					ideal_value = @goal.graph_ideal_value_for_date(@goal.due_date)
 					ideal_value.should == @goal.accuracy
 				}
 
 				it {
-					ideal_value = @goal.graph_ideal_value_for_date(Date.parse('12/11/2010'))
+					ideal_value = @goal.graph_ideal_value_for_date(@goal.baseline_date)
 					ideal_value.should == @goal.baseline
 				}
+			end
+
+			context "without association :progresses preloaded" do
+				before(:each) do
+					@goal.reload # Refresh the record and clear all cache.
+				end
+
+				it "runs and returns the value" do
+					ideal_value = @goal.graph_ideal_value_for_date(Date.parse('12/11/2012'))
+					(ideal_value - 22.99).abs.should <= 0.01
+				end
+
+				context "with exact progress date as input" do
+					it "returns the correct progress accuracy" do
+						progress = @goal.progresses.first
+						ideal_value = @goal.graph_ideal_value_for_date(progress.due_date)
+						ideal_value.should == progress.accuracy
+					end
+				end
+
+				context "with date between two progresses" do
+					it "automatically detects the begin and end values" do
+						ideal_value = @goal.graph_ideal_value_for_date(progress_2.due_date + 1.days)
+						ideal_value.should > 0
+
+						ideal_value = @goal.graph_ideal_value_for_date(progress_3.due_date + 1.days)
+						ideal_value.should > 0
+					end
+				end
 			end
 		end
 
@@ -317,6 +346,40 @@ describe Goal do
 	 	end
 	end
 
-	
+	context "with progresses attributes", :progresses_attributes => true do
+		let(:attrs) {
+			g_attrs = {}
+			Goal.accessible_attributes.each do |a|
+				g_attrs[a] = goal[a] if(!a.blank? && goal.attributes.keys.include?(a))
+			end
+			g_attrs['progresses_attributes'] = {}
+			g_attrs
+		}
 
+		context "with valid progresses attributes" do
+			it "also saves the progresses" do				
+				attrs['progresses_attributes'][0] = {
+					:due_date => attrs['baseline_date'] + 1.days,
+					:accuracy => 10
+				}
+
+				new_goal = Goal.new(attrs)
+				new_goal.save.should be_true
+				new_goal.progresses.length.should == 1
+			end
+		end
+
+		context "with invalid progresses attributes" do
+			it "rejects the progresses" do
+				attrs['progresses_attributes'][0] = {
+					:due_date => nil,
+					:accuracy => 10
+				}
+
+				new_goal = Goal.new(attrs)
+				new_goal.save.should be_true
+				new_goal.progresses.length.should == 0
+			end
+		end
+	end
 end

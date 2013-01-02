@@ -346,4 +346,59 @@ describe Student do
       JSON.parse(result).should be_a_kind_of(Array)
     end
   end
+
+  describe "#status" do
+    context "with goals" do
+      before(:each) do
+        goal = FactoryGirl.create(:goal_with_grades, :student => student)
+      end
+
+      it "returns the value" do
+        student.status.should_not == 0
+      end
+    end
+
+    context "without goals" do
+      it "returns the zero" do
+        student.status.should == 0
+      end
+    end
+  end
+
+  describe "#due_date" do
+    context "with goals" do
+      before(:each) do
+        goal1 = FactoryGirl.create(:goal, :student => student)
+        goal2 = FactoryGirl.create(:goal, :student => student, :due_date => goal1.due_date + 1.weeks)
+      end
+
+      it "returns the value" do
+        student.due_date.should_not be_nil
+      end
+    end
+
+    context "without goals" do
+      it "returns nil" do
+        student.due_date.should be_nil
+      end
+    end
+  end
+
+  describe "#goals_progress" do
+    context "with goals" do
+      before(:each) do
+        goal = FactoryGirl.create(:goal_with_grades, :student => student)
+      end
+
+      it "returns the value" do
+        student.goals_progress.should_not be_blank
+      end
+    end
+
+    context "without goals" do
+      it "returns the empty value" do
+        student.goals_progress.should be_blank
+      end
+    end
+  end
 end

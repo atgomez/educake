@@ -76,6 +76,34 @@ describe Curriculum do
     end
   end
 
+  describe "#destroy" do
+    subject {curriculum.destroy}
+    context "without deleting CurriculumCore" do
+      let(:curriculum1) {FactoryGirl.create(:curriculum, :curriculum_core => curriculum.curriculum_core)}
+      it "delete only the Curriculum record" do
+        curriculum1
+        subject.should_not be_blank
+        curriculum1.curriculum_core.should_not be_blank
+      end
+    end
+
+    context "with deleting CurriculumCore" do
+      it "also deletes the CurriculumCore record" do
+        curriculum_core_id = curriculum.curriculum_core_id
+        subject.should_not be_blank
+        CurriculumCore.find_by_id(curriculum_core_id).should be_blank
+      end
+    end
+
+    context "with goals" do
+      let(:goal) {FactoryGirl.create(:goal, :curriculum => curriculum)}
+      it "raises ActiveRecord::DeleteRestrictionError" do
+        goal
+        expect {curriculum.destroy}.to raise_error(ActiveRecord::DeleteRestrictionError)
+      end
+    end
+  end
+
   describe "Automatically create new CurriculumCore" do
     let(:curriculum_core) {FactoryGirl.create(:curriculum_core)}
 

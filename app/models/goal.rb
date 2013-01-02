@@ -332,7 +332,7 @@ class Goal < ActiveRecord::Base
       end_date = end_progress.due_date
       end_value = end_progress.accuracy
     else
-      # Use baseline
+      # Use the deadline
       end_date = self.due_date
       end_value = self.accuracy
     end
