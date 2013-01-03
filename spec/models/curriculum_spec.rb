@@ -61,6 +61,21 @@ describe Curriculum do
     end
   end
 
+  describe "#html_description2", :html_description2 => true do
+    context "with available record" do
+      it "returns the string" do
+        curriculum.html_description2.should be_kind_of(String)
+      end
+    end
+
+    context "with new record" do
+      it "returns the string normally and not crash" do
+        cur = Curriculum.new
+        cur.html_description2.should be_kind_of(String)
+      end
+    end
+  end
+
   describe "#curriculum_core_value" do
     context "without initialization" do
       it "returns the value equal with curriculum_core_id" do

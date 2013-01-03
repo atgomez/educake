@@ -1,10 +1,28 @@
 # Utility methods for model classes.
 module Util
+  # Delegate class to call methods in ActionView::Helpers::SanitizeHelper module.
+  class SanitizeHelperDelegate
+    include Singleton
+    include ActionView::Helpers::SanitizeHelper
+    extend ActionView::Helpers::SanitizeHelper::ClassMethods
+
+    def self.sanitize_helper_instance_methods
+      ActionView::Helpers::SanitizeHelper.instance_methods
+    end
+  end
+
   class << self
     include ActionView::Helpers::NumberHelper
     include ActionView::Helpers::TextHelper
     include ActionView::Helpers::DateHelper
-    
+
+    # Workaround to call methods in ActionView::Helpers::SanitizeHelper without raising error.
+    # It's because instance methods in ActionView::Helpers::SanitizeHelper need to call class methods.
+    # See: actionpack/lib/action_view/helpers/sanitize_helper.rb
+    SanitizeHelperDelegate.sanitize_helper_instance_methods.each do |method_name|
+      delegate method_name, :to => :"::Util::SanitizeHelperDelegate.instance"
+    end
+
     def format_money(number, options = {})
       options.symbolize_keys!
       options[:unit_included] = false unless options.keys.include?(:unit_included)

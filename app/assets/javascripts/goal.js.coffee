@@ -151,8 +151,8 @@ window.goal =
             curriculum_desc.find(".description1").html(res.description1)
           else
             curriculum_desc.find(".description1").html("")
-          if res.description2
-            curriculum_desc.find(".description2").html(res.description2)
+          if res.html_description2
+            curriculum_desc.find(".description2").html(res.html_description2)
           else
             curriculum_desc.find(".description2").html("")
           curriculum_desc.removeClass("hide")

@@ -63,7 +63,7 @@ class Curriculum < ActiveRecord::Base
   class << self
     # Names of methods will be exposed when serializing object to JSON, XML, etc.
     def exposed_methods
-      [:name, :full_name]
+      [:name, :full_name, :html_description2]
     end
     
     # Names of attributes will be exposed when serializing object to JSON, XML, etc.
@@ -248,6 +248,11 @@ class Curriculum < ActiveRecord::Base
 
   def curriculum_core_value=(value)
     @curriculum_core_value = value
+  end
+
+  # Return the description2 in HTML format
+  def html_description2
+    ::Util.simple_format(self.description2)
   end
 
   protected
