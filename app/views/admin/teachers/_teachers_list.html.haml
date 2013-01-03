@@ -2,6 +2,8 @@
 - with_pagination = ((with_pagination.nil? ? true : with_pagination) rescue true)
 - big_teacher_cell = ((big_teacher_cell.nil? ? false : big_teacher_cell) rescue false)
 - row_size ||= 1
+- on_search = (params[:action] == "search")
+
 #pagination-listitem  
   - teachers.each_with_index do |teacher, idx|
     - students = teacher.accessible_students
@@ -21,7 +23,7 @@
       - if big_teacher_cell # In case of search template
         = render("students_container", :students => students, :teacher => teacher)
                          
-      - unless params[:query]
+      - unless on_search
         .track-indicator-container
           - is_track = teacher.check_on_track?
           - if is_track == 1
@@ -29,7 +31,7 @@
           - elsif is_track == 2
             .track-indicator{:title => t("common.not_on_track")}
       .clearfix
-    - unless params[:query]
+    - unless on_search
       - if (idx + 1) % 4 == 0
         .clearfix
     - else 

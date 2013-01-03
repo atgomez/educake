@@ -17,7 +17,7 @@
       %span= t("student.no_goal")
     - else
       %span= student.goals.length
-- unless params[:query]
+- if params[:action] != "search"
   .track-indicator-container
     - status = student.check_on_track? 
     - if status == 1

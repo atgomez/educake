@@ -136,7 +136,7 @@ $color-font: #E17C25;
     }
     .track-indicator-container{
       position: absolute;
-      right: 10px;
+      right: 6px;
       top: 60px;
     }
     .info-teacher{
@@ -349,9 +349,7 @@ $color-font: #E17C25;
         .student-avatar, .teacher-avatar{
           display: inline-block;
           width: 28px;
-          height: 28px;
-          margin-bottom: 8px;
-          margin-right: 8px;
+          height: 28px;          
           float: left;
           padding: 0;
         }
@@ -359,6 +357,10 @@ $color-font: #E17C25;
         .student-link, .teacher-link{
           display: inline-block;
           float: left;
+          width: 28px;
+          margin-bottom: 8px;
+          margin-right: 8px;
+          padding: 0;
         }
       }
 
