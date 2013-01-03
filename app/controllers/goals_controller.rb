@@ -94,7 +94,7 @@ class GoalsController < ApplicationController
       @grade.due_date = Date.today
       @student = @user.accessible_students.find_by_id(params[:student_id])
       if @student 
-        @goals = @student.goals.incomplete.map{|g| [[g.subject.name, g.curriculum.name].join(" "), g.id]}
+        @goals = @student.goals.incomplete.map{|g| [g.name, g.id]}
       else
         render_page_not_found(I18n.t("student.student_not_found"))
       end 
@@ -107,7 +107,7 @@ class GoalsController < ApplicationController
     if find_user
       @student = @user.accessible_students.find_by_id(params[:student_id])
       if @student 
-        @goals = @student.goals.incomplete.map{|g| [[g.subject.name, g.curriculum.name].join(" "), g.id]}
+        @goals = @student.goals.incomplete.map{|g| [g.name, g.id]}
       end 
 
       @goal = Goal.incomplete.find_by_id(params[:grade][:goal_id])
