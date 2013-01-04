@@ -23,11 +23,6 @@
     = link_to("", edit_admin_teacher_path(:id => @teacher, :user_id => @teacher, :admin_id => @admin), 
               :class => "icon-pencil color-pen", :title => t("common.edit"), 
               :style => "display:inline-block", :remote => true)
-    = link_to("", { :action => 'destroy', :controller => 'admin/teachers', 
-                    :id => @teacher, :user_id => @admin, :admin_id => @admin }, 
-                  :data => { :confirm => t('admin.teacher.confirm_delete') }, 
-                  :class => "icon-trash color-pen", :title => t("common.delete"), 
-                  :style => "display:inline-block", :method => :delete )
 
 -# Place holder for teacher form dialog
 #new-form-teacher

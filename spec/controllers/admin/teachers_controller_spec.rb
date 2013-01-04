@@ -290,48 +290,6 @@ describe Admin::TeachersController do
     end
   end
 
-  describe "DELETE 'destroy'", :destroy => true do
-    subject { delete :destroy, :id => "abc" }
-    include_examples "unauthorized"
-
-    context "authorized" do
-      before(:each) do
-        sign_in admin
-      end
-      let(:teacher) {FactoryGirl.create(:teacher, :parent => admin)}
-
-      context "with valid teacher" do        
-        subject { delete :destroy, :id => teacher.id }
-
-        it "deletes the teacher and redirect to index" do
-          id = teacher.id
-          subject.response_code.should == 302
-          _teacher = User.find_by_id(id)
-          _teacher.should be_nil
-        end
-      end
-
-      context "with invalid teacher" do
-        subject { delete :destroy, :id => "abc" }
-
-         it "renders 'page_not_found'" do
-          subject.response_code.should == 404
-        end
-      end
-
-      context "destroy failed" do
-        subject { delete :destroy, :id => teacher.id }
-
-        it "returns the error" do
-          User.any_instance.stub(:destroy).and_return(false)
-          subject.response_code.should == 302
-          get :index
-          response.body.should =~ /#{I18n.t("user.delete_failed")}/m
-        end
-      end
-    end
-  end
-
   context "viewed by super admin", :current => true do
     let(:super_admin) {FactoryGirl.create(:super_admin)}    
     before(:each) do

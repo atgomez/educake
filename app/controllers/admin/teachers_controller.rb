@@ -4,11 +4,11 @@ class Admin::TeachersController < Admin::BaseAdminController
 
   # TODO: improve this method, because it load teachers 2 times.
   def index
-    @teachers = @admin.children.teachers.unblocked.load_data(filtered_params)
+    @teachers = @admin.children.unblocked.load_data(filtered_params)
 
     unless request.xhr?
       # Only run here if not ajax request
-      @all_teachers = @admin.children.teachers.unblocked.order(User::DEFAULT_ORDER)
+      @all_teachers = @admin.children.unblocked.order(User::DEFAULT_ORDER)
       series = []
 
       # Options for export select box
@@ -49,7 +49,7 @@ class Admin::TeachersController < Admin::BaseAdminController
   # GET /admin/teachers/all
   # TODO: should apply endless pagination.
   def all
-    @teachers = @admin.children.teachers.unblocked.order(User::DEFAULT_ORDER)
+    @teachers = @admin.children.unblocked.order(User::DEFAULT_ORDER)
   end
 
   def create
@@ -149,21 +149,6 @@ class Admin::TeachersController < Admin::BaseAdminController
     render :partial => 'admin/teachers/get_students'
   end
 
-  def destroy
-    if @teacher.blank?
-      render_page_not_found(I18n.t("admin.teacher.not_found"))
-      return
-    end
-
-    if @teacher.destroy
-      flash[:notice] = I18n.t("user.deleted_successfully", :name => @teacher.full_name)
-    else
-      flash[:alert] = I18n.t("user.delete_failed")
-    end
-    
-    redirect_to admin_teachers_path(:admin_id => @admin.id)
-  end
-  
   protected
 
     def set_current_tab
