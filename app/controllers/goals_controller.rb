@@ -200,7 +200,7 @@ class GoalsController < ApplicationController
                   key_errors = build_grade.errors.messages.keys
                   error = ""
                   key_errors.each do |key|
-                    error = build_grade[key].to_s + " " + build_grade.errors.messages[key].first
+                    error = build_grade[key].to_s 
                   end
                   errors << error
                 end
@@ -286,9 +286,11 @@ class GoalsController < ApplicationController
       html = ""
       msgs = errors.slice(0, 4)
       html << "<div>"+message+"</div>"
+      html << "<div>"+I18n.t("grade.msg_failed")+"</div>"
       msgs.map do |msg|
         html << "<div>"+msg+"</div>"
       end
+      html << "<div>"+I18n.t("grade.msg_failed1")+"</div>"
       return html.html_safe
     end 
   

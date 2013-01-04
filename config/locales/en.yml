@@ -91,6 +91,8 @@ en:
     created_successfully: "Created grade successfully"
     import_successfully: "Imported .csv file for grades successfully"
     save_failed: "There are some invalid grades on:"
+    msg_failed: "Grade's cannot be submitted for future dates."
+    msg_failed1: "were not included."
     add: "Add Grade"
     accuracy: "% Accuracy"
     note: "Notes"
