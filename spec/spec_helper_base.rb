@@ -62,6 +62,6 @@ end
 module SpecUtil
   def self.cleanup
     puts "[SpecUtil] Begin cleaning up..."
-    FileUtils.rm_rf("tmp/*")
+    FileUtils.rm_rf(Rails.root.join("tmp/."))
   end
 end
