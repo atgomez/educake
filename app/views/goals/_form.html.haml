@@ -34,19 +34,20 @@
         -#============== Curriculum ==============
         .modal-body
           = f.simple_fields_for(:curriculum, goal.curriculum) do |f_cur|
-            = f_cur.association(:curriculum_core, :collection => CurriculumCore.order(:name),
+            - data = curriculum_associtions_for_goal(goal)
+            = f_cur.association(:curriculum_core, :collection => data[:curriculum_cores],
                   :label => t("goal.curriculum"), :include_blank => false,
                   :input_html => {:class => "extended-combobox reset-on-changed"})
-            = f_cur.association(:subject, :collection => Subject.order(:name),
+            = f_cur.association(:subject, :collection => data[:subjects],
                   :label => t("curriculum.subject"), :include_blank => false,
                   :input_html => {:class => "extended-combobox reset-on-changed"})
-            = f_cur.association(:curriculum_grade, :collection => CurriculumGrade.order(:name),
+            = f_cur.association(:curriculum_grade, :collection => data[:curriculum_grades],
                   :label => t("curriculum.grade"), :include_blank => false,
                   :input_html => {:class => "extended-combobox reset-on-changed"})
-            = f_cur.association(:curriculum_area, :collection => CurriculumArea.order(:name),
+            = f_cur.association(:curriculum_area, :collection => data[:curriculum_areas],
                   :label => t("curriculum.area"), :include_blank => false,
                   :input_html => {:class => "extended-combobox reset-on-changed"})
-            = f_cur.input(:standard, :as => :select, :collection => curriculum_standards_collection,
+            = f_cur.input(:standard, :as => :select, :collection => data[:standards],
                   :label => t("curriculum.standard"), :include_blank => false,
                   :input_html => {:class => "extended-combobox reset-on-changed"})
             .control-group.curriculum-description.virtual.hide

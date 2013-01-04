@@ -10,8 +10,8 @@ curriculum = {
   },
 
   setup_comboboxes: function(){
-    $(".editable-combobox").combobox();   
-    $(".extended-combobox").readonly_combobox();
+    $(".editable-combobox").editable_combobox();   
+    $(".extended-combobox").combobox();
   },
 
   setup_validations: function(){

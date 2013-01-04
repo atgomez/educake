@@ -191,6 +191,123 @@ describe Curriculum do
     end
   end
 
+  describe ".get_associations_by_field", :get_associations_by_field => true do
+    context "with curriculum_core_id" do
+      let(:curriculum1) {FactoryGirl.create(:curriculum, :curriculum_core => curriculum.curriculum_core)}
+      let(:curriculum2) {FactoryGirl.create(:curriculum, :curriculum_core => curriculum.curriculum_core)}
+
+      it "returns the data" do
+        curriculum1
+        curriculum2
+
+        result = Curriculum.get_associations_by_field('curriculum_core_id', curriculum.curriculum_core_id)
+        result.should_not be_blank
+        result.should be_kind_of(Hash)
+
+        result[:curriculum_cores].length.should == 1
+        [:subjects, :curriculum_grades, :curriculum_areas, :standards].each do |k|
+          result[k].length.should == 3
+        end
+      end
+    end
+
+    context "with subject_id" do
+      let(:curriculum1) {FactoryGirl.create(:curriculum, :subject => curriculum.subject)}
+      let(:curriculum2) {FactoryGirl.create(:curriculum, :subject => curriculum.subject)}
+
+      it "returns the data" do
+        curriculum1
+        curriculum2
+
+        result = Curriculum.get_associations_by_field('subject_id', curriculum.subject_id)
+        result.should_not be_blank
+        result.should be_kind_of(Hash)
+
+        result[:subjects].length.should == 1
+        [:curriculum_cores, :curriculum_grades, :curriculum_areas, :standards].each do |k|
+          result[k].length.should == 3
+        end
+      end
+    end
+
+    context "with curriculum_grade_id" do
+      let(:curriculum1) {FactoryGirl.create(:curriculum, :curriculum_grade => curriculum.curriculum_grade)}
+      let(:curriculum2) {FactoryGirl.create(:curriculum, :curriculum_grade => curriculum.curriculum_grade)}
+
+      it "returns the data" do
+        curriculum1
+        curriculum2
+
+        result = Curriculum.get_associations_by_field('curriculum_grade_id', curriculum.curriculum_grade_id)
+        result.should_not be_blank
+        result.should be_kind_of(Hash)
+
+        result[:curriculum_grades].length.should == 1
+        [:curriculum_cores, :subjects, :curriculum_areas, :standards].each do |k|
+          result[k].length.should == 3
+        end
+      end
+    end
+
+    context "with curriculum_area_id" do
+      let(:curriculum1) {FactoryGirl.create(:curriculum, :curriculum_area => curriculum.curriculum_area)}
+      let(:curriculum2) {FactoryGirl.create(:curriculum, :curriculum_area => curriculum.curriculum_area)}
+
+      it "returns the data" do
+        curriculum1
+        curriculum2
+
+        result = Curriculum.get_associations_by_field('curriculum_area_id', curriculum.curriculum_area_id)
+        result.should_not be_blank
+        result.should be_kind_of(Hash)
+
+        result[:curriculum_areas].length.should == 1
+        [:curriculum_cores, :subjects, :curriculum_grades, :standards].each do |k|
+          result[k].length.should == 3
+        end
+      end
+    end
+
+    context "with standard" do
+      let(:curriculum1) {FactoryGirl.create(:curriculum, :standard => curriculum.standard)}
+      let(:curriculum2) {FactoryGirl.create(:curriculum, :standard => curriculum.standard)}
+
+      it "returns the data" do
+        curriculum1
+        curriculum2
+
+        result = Curriculum.get_associations_by_field('standard', curriculum.standard)
+        result.should_not be_blank
+        result.should be_kind_of(Hash)
+
+        result[:standards].length.should == 1
+        [:curriculum_cores, :subjects, :curriculum_grades].each do |k|
+          result[k].length.should == 3
+        end
+      end
+    end
+
+    context "with invalid field name" do
+      context "with nil field name" do
+        it "return an empty result" do
+          result = Curriculum.get_associations_by_field(nil, 1)
+          result.should be_blank
+        end
+      end
+
+      context "with unavailable field name" do
+        it "return an empty result" do
+          # There something wrong with the :get_associations_by_field that make the rspec fail.
+          # We must simulate the scenario.
+          Curriculum.should_receive(:where).with({'abc' => 1}).and_raise(Exception.new("Fatal error!"))
+          
+          result = Curriculum.get_associations_by_field('abc', 1)                    
+          result.should be_blank
+        end
+      end
+    end
+  end
+
   describe ".import_data", :import_data => true do    
     context "with valid CSV file" do
       let(:csv_file) {fixture_file_upload('/files/curriculums.csv')}

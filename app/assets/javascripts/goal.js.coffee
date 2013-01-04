@@ -48,7 +48,7 @@ window.goal =
     @setup_wizard()
 
     $(".goal-form .extended-combobox").livequery(() ->
-      $(this).readonly_combobox()
+      $(this).combobox()
     )
 
     $(".goal-form #btn-save-goal").livequery('click', (e) -> 
@@ -106,7 +106,7 @@ window.goal =
             res = null
           if res and res.html
             goal_dialog = $(res.html)
-            $(parent).html(goal_dialog.html())            
+            $(parent).html(goal_dialog.html())
       })
 
       return false
@@ -114,24 +114,33 @@ window.goal =
 
   setup_wizard: ->
     $(".wizard-content .wizard-action").live("click", (e) ->
-       e.preventDefault()
-       tab_nav = $(".wizard-nav").find("a[href='" + $(this).attr("data-target") + "']")
-       tab_nav.tab('show')
-       total_steps = $(".wizard-nav a").length
-       current_step = $(".wizard-nav a").index(tab_nav) + 1
-       step_html = "(" + current_step + "/" + total_steps + ")"
-       $(".wizard-step-indicator").html(step_html)
+      e.preventDefault()
+      tab_nav = $(".wizard-nav").find("a[href='" + $(this).attr("data-target") + "']")
+      tab_nav.tab('show')
+      total_steps = $(".wizard-nav a").length
+      current_step = $(".wizard-nav a").index(tab_nav) + 1
+      step_html = "(" + current_step + "/" + total_steps + ")"
+      $(".wizard-step-indicator").html(step_html)
     )
 
     $(".reset-on-changed").live("change", (e) ->
       # Reset the client-side validation states.
-      goal.get_curriculum()
+      goal.get_curriculum($(this).attr('name'))
     )
 
-  get_curriculum: ->
+  get_curriculum: (current_param_name) ->
     # Collect all curriculum attributes
     attrs = {}
-    $("#curriculum.tab-pane").find("select[name!='goal[curriculum_attributes]']").each(->
+    container = $("#curriculum.tab-pane")
+    if current_param_name
+      # Workaround to get the attribute name
+      param_name = current_param_name.replace("goal[curriculum_attributes]", "")
+      param_name = param_name.replace("[", "")
+      param_name = param_name.replace("]", "")
+      attrs['current_param_name'] = param_name
+
+    container.find("select[name!='goal[curriculum_attributes]']").each( ->
+      name = $(this).attr('name')
       attrs[$(this).attr('name')] = $(this).val()
     )
 
@@ -145,21 +154,55 @@ window.goal =
       success: (res) ->
         curriculum_desc = $("#curriculum.tab-pane .curriculum-description")
         curriculum_name = $("#goal.tab-pane .curriculum-name-place-holder")
+        keys_map = {
+          'curriculum_core_id'  : "curriculum_cores",
+          'subject_id'          : "subjects",
+          'curriculum_grade_id' : "curriculum_grades",
+          'curriculum_area_id'  : "curriculum_areas",
+          'standard'            : "standards"
+        }
 
-        if(res && res.id)          
-          if res.description1
-            curriculum_desc.find(".description1").html(res.description1)
+        # Dynamic change the select box
+        if(res && res.extra_info)
+          extra_info = res.extra_info          
+
+          $.each(keys_map, (k, v) ->
+            select_name = "goal[curriculum_attributes][" + k + "]"
+            
+            if select_name == current_param_name
+              return # Skip the current select box
+
+            options = extra_info[v]
+            new_options_html = ""
+            $.each(options, (idx, data) ->
+              name = data[0]
+              value = data[1]
+              new_options_html += '<option value="' + value + '">' + name + '</option>'
+            )
+            select = container.find("select[name='" + select_name + "']")
+            select.html(new_options_html)
+
+            if res.curriculum
+              # Reset the value of dropdown box
+              goal.change_extended_select_value(select, res.curriculum[k])
+          )
+
+        # Show the current select curriculum
+        if(res && res.curriculum)
+          curriculum = res.curriculum
+          if curriculum.description1
+            curriculum_desc.find(".description1").html(curriculum.description1)
           else
             curriculum_desc.find(".description1").html("")
-          if res.html_description2
-            curriculum_desc.find(".description2").html(res.html_description2)
+          if curriculum.html_description2
+            curriculum_desc.find(".description2").html(curriculum.html_description2)
           else
             curriculum_desc.find(".description2").html("")
           curriculum_desc.removeClass("hide")
           curriculum_desc.find(".error").addClass("hide")
           curriculum_desc.find(".control-label").removeClass("hide")
           # Change curriculum name
-          $(curriculum_name).html(res.full_name)
+          $(curriculum_name).html(curriculum.full_name)
         else if(res && res.error)
           curriculum_desc.find(".error").removeClass("hide").html(res.error)
           curriculum_desc.find(".control-label").addClass("hide")
@@ -174,11 +217,19 @@ window.goal =
           curriculum_desc.find(".error").addClass("hide")
           curriculum_desc.find(".control-label").removeClass("hide")
           # Change curriculum name
-          $(curriculum_name).html("")
-          
+          $(curriculum_name).html("")        
+        
         # Hide the loading
         $(loading).addClass("hide")
     })
+
+  # Change the value of the extended select box
+  change_extended_select_value: (select, value) ->
+    widget = $(select).data("combobox")
+    $(select).val(value)
+    opt_name = $(select).find("option:selected").text()
+    if widget
+      $(widget.wrapper).find(".ui-combobox-input").html(opt_name)    
 
   update_grade: ->
     $(".complete-checkbox .goal-complete").live 'click', ->

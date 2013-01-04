@@ -77,9 +77,5 @@ module ApplicationHelper
 
   def genders_collection_for_select
     [[true, t("common.gender.male")], [false, t("common.gender.female")]]
-  end
-
-  def curriculum_standards_collection
-    Curriculum.order(:standard).select("DISTINCT standard").collect{|c| [c.standard, c.standard]}
-  end
+  end  
 end

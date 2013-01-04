@@ -209,6 +209,61 @@ class Curriculum < ActiveRecord::Base
       return Curriculum.new(attrs)
     end
 
+    # Get associations curriculum_cores, subjects, curriculum_grades, 
+    # curriculum_areas and standards by a weight field
+    #
+    # === Parameters
+    #
+    #     * field_name (String): name of the base column
+    #     * field_value (String): value of the base column
+    #
+    # === Returns
+    #
+    # {
+    #   :curriculum_cores=>[["CCore1", 2]], 
+    #   :subjects=>[["Subject 1", 3], ["Subject 2", 4]], 
+    #   :curriculum_grades=>[["Grade1", 2], ["Grade2", 3], 
+    #   :curriculum_areas=>[["Area1", 5], ["Area2", 6]], 
+    #   :standards=>[1, 2, 3]
+    # }
+    #
+    def get_associations_by_field(field_name, field_value)
+      data = Curriculum.where(field_name => field_value).includes(
+        :curriculum_core, :subject, 
+        :curriculum_grade, :curriculum_area
+      )
+
+      result = {}
+      data.each do |item|
+        result[:curriculum_cores] ||= []
+        result[:curriculum_cores] << [item.curriculum_core.name, item.curriculum_core.id]
+
+        result[:subjects] ||= []
+        result[:subjects] << [item.subject.name, item.subject.id]
+
+        result[:curriculum_grades] ||= []
+        result[:curriculum_grades] << [item.curriculum_grade.name, item.curriculum_grade.id]
+
+        result[:curriculum_areas] ||= []
+        result[:curriculum_areas] << [item.curriculum_area.name, item.curriculum_area.id]
+
+        result[:standards] ||= []
+        result[:standards] << [item.standard, item.standard]
+      end
+
+      result.keys.each do |k|
+        result[k].uniq!
+      end
+
+      # Get the first curriculum
+      result[:curriculum] = data.first
+
+      return result
+    rescue Exception => exc
+      ::Util.log_error(exc, "Curriculum.get_associations_by_field")
+      return {}
+    end
+
     protected
 
       # Parse params to PagingInfo object.

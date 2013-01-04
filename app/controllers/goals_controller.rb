@@ -256,9 +256,21 @@ class GoalsController < ApplicationController
   def curriculum_info
     result = {}
     begin
+      unless params[:current_param_name].blank?
+        # Find other association info
+        field_name = params[:current_param_name]
+        field_value = params[:goal][:curriculum_attributes][field_name]
+        result[:extra_info] = Curriculum.get_associations_by_field(field_name, field_value)
+      end
+
       curriculum = Curriculum.where(params[:goal][:curriculum_attributes]).first
+      if curriculum.blank? && !result[:extra_info].blank?
+        # Get the curriculum from the extra info
+        curriculum = result[:extra_info].delete(:curriculum)
+      end
+
       if curriculum
-        result = curriculum.to_hash
+        result[:curriculum] = curriculum       
       else
         result = {:error => I18n.t("curriculum.not_found")}
       end

@@ -6,7 +6,7 @@ jquery_ext = {
   extend_combobox_widget: function(options){
     var default_options = {
       extend_method_name: "combobox", // The method name will be called to use this extension
-      editable: true, // Allow user to input
+      editable: false, // Allow user to input
       allow_new_value: false // Allow new value input by the user not included in the selection set.
     };
     
@@ -104,7 +104,7 @@ jquery_ext = {
 
                             select.change();
                         },
-                        change: function( event, ui ) {
+                        change: function( event, ui ) {                            
                             if ( !ui.item )
                                 return removeIfInvalid( this );
                         }
@@ -178,15 +178,12 @@ jquery_ext = {
 
 $(function() {
     // Init extension methods
-    jquery_ext.extend_combobox_widget({
-      extend_method_name: "combobox",
-      allow_new_value: true
-    });
+    jquery_ext.extend_combobox_widget();
 
     jquery_ext.extend_combobox_widget({
-      extend_method_name: "readonly_combobox",
-      editable: false, 
-      allow_new_value: false
+      extend_method_name: "editable_combobox",
+      editable: true, 
+      allow_new_value: true
     });
 });
 
