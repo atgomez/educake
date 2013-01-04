@@ -66,7 +66,7 @@ class ApplicationController < ActionController::Base
     @admin = User.unblocked.find_by_id params[:admin_id]
     if current_user.is_super_admin?
       @admin = nil if @admin && !@admin.is?(:admin)
-      @user = @admin ? @admin.children.teachers.unblocked.find_by_id(params[:user_id]) : 
+      @user = @admin ? @admin.children.unblocked.find_by_id(params[:user_id]) : 
                          User.unblocked.find_by_id(params[:user_id])
     elsif current_user.is?(:admin) # If current user is admin, deny getting admin from admin_id
       @admin = current_user
