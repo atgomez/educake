@@ -3,7 +3,7 @@
 - curriculum_class = "active"
 - goal_class = ""
 - error_on_curriculum = are_all_errors_on_curriculum?(goal)
-- if !error_on_curriculum && !goal.errors.blank?
+- if !goal.new_record? || (!error_on_curriculum && !goal.errors.blank?)
   - curriculum_class = ""
   - goal_class = "active"
 
