@@ -36,11 +36,11 @@ TeacherMgnt::Application.routes.draw do
     member do 
       get :load_users
       get :load_grade
-      get :search_user
     end
     collection do 
       get :load_grades
       get :all_students
+      get :search_user
     end 
   end
 

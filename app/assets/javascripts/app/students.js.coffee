@@ -114,10 +114,9 @@ window.studentObject =
     search_email = ""
     $("#render_invite_user").delegate "#search-email", "click", () ->
       email = $("#student_sharing_email").val()
-      student_id = $("#student_sharing_student_id").val()
       $.ajax
         type: "GET"
-        url: "/students/"+student_id+"/search_user"
+        url: "/students/search_user"
         data: {email: email}
         success: (data)->
           search_email = data["email"]

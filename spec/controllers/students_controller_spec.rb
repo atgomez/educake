@@ -65,52 +65,51 @@ describe StudentsController do
   	end 
   end
 
-  # describe "Post create" do 
-  # 	it "successfully" do 
-  # 		attrs = {:first_name => "aaaa", :last_name => "bbbb", :birthday => '01-02-2012'}
-  # 		post :create, :student => attrs, :user_id => user.id,
-  #          :back_link => students_path(:id => student, :user_id => user, :admin_id => admin),
-  #          :format => :html
-  # 		#response.should be_success
-  #     st = Student.create attrs 
-  #     response.should redirect_to(:action => 'edit', :id => st, :user_id => user, :admin_id => admin)
-  # 	end 
+  describe "Post create" do 
+  	it "successfully" do 
+  		attrs = {:first_name => "aaaa", :last_name => "bbbb", :birthday => '01-02-2012'}
+      back_link = students_path(:user_id => user, :admin_id => admin)
+  		post :create, :student => attrs, :user_id => user.id,
+           :back_link => back_link,
+           :format => :html
+      response.should redirect_to(:action => 'edit', :id => Student.last, :user_id => user)
+  	end 
 
-  # 	it "unsuccessfully" do   
-  # 		attrs = {:first_name => "", :last_name => "", :birthday => ""}
-  # 		post :create, :student => attrs, :back_link => students_path
-  # 		response.should_not be_success 
-  # 	end 
-  # end
+  	it "unsuccessfully" do   
+  		attrs = {:first_name => "", :last_name => "", :birthday => ""}
+  		post :create, :student => attrs, :back_link => students_path
+  		response.should render_template("new")
+  	end 
+  end
 
-  # describe "Put update" do
-  # 	it "successfully" do 
-  # 		attrs = {:first_name => "test", :last_name => "name", :birthday => '01-02-2012'}
-  # 	  put :update, :id => student.id, :student => attrs
-  # 		response.should be_success
-  #   end
+  describe "Put update" do
+  	it "successfully" do 
+  		attrs = {:first_name => "test", :last_name => "name", :birthday => '01-02-2012'}
+  	  put :update, :id => student.id, :student => attrs
+      message = I18n.t('student.updated_successfully', :name => student.full_name)
+  		response.should redirect_to student_path(student, :user_id => user.id)
+    end
 
-  #   context "unsuccessfully" do 
-  #   	it "when update empty name" do
-  #   		attrs = {:first_name => "", :last_name => ""}
-  # 	  	put :update, :id => student.id, :student => attrs
-  # 			response.should_not be_success
-  #   	end 
-  #   	it "when student does not found" do 
-  #   		attrs = {:first_name => "adsafd", :last_name => "fdafd", :birthday => "01-02-2012"}
-  # 	  	put :update, :id => student_2.id, :student => attrs
-  # 			response.should_not be_success
-  #   	end 
-  #   end 
-  # end 
+    context "unsuccessfully" do 
+    	it "when update empty name" do
+    		attrs = {:first_name => "", :last_name => ""}
+  	  	put :update, :id => student.id, :student => attrs
+  			response.should render_template("edit")
+    	end 
+    	it "when student does not found" do 
+    		attrs = {:first_name => "adsafd", :last_name => "fdafd", :birthday => "01-02-2012"}
+  	  	put :update, :id => student_2.id, :student => attrs
+  			#response.should render_template(render_page_not_found)
+    	end 
+    end 
+  end 
 
-  # describe "Delete destroy" do 
-  #   it "successfully" do 
-  #     delete :desstroy, :id => student.id 
-  #     response.should be_success 
-  #     response.should redirect_to(student_url)
-  #   end
-  # end
+  describe "Delete destroy" do 
+    it "successfully" do 
+      delete :destroy, :id => student.id 
+      response.should redirect_to(students_url)
+    end
+  end
 
   describe "Get load grade" do 
     it "successfully" do 
@@ -125,21 +124,22 @@ describe StudentsController do
       response.should be_success
     end
   end
-  # describe "Get search user" do 
-  # 	it "was found out in users table" do 
-  # 		get :search_user, :email => user.email, :format => :json
-  # 		response.should be_success 
-  # 	end
+  
+  describe "Get search user" do 
+  	it "was found out in users table" do 
+  		get :search_user, :email => user.email
+      response.should be_success
+  	end
 
-  # 	it "was found out in sharing table" do 
-  # 		get :search_user, :email => sharing.email, :format => :json
-  # 		response.should be_success 
-  # 	end 
-  #   it "was unxisted" do 
-  #     get :search_user, :email => "test@gmail.com", :format => :json 
-  #     response.should be_success
-  #   end
-  # end 
+  	it "was found out in sharing table" do 
+  		get :search_user, :email => sharing.email
+      response.should be_success
+  	end 
+    it "was unxisted" do 
+      get :search_user, :email => "test@gmail.com"
+      response.should be_success
+    end
+  end 
 
   describe "Get all students" do         
   	it "successfully" do 

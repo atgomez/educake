@@ -117,7 +117,8 @@ class StudentsController < ApplicationController
       if @student
         if @student.update_attributes(params[:student])
           message = I18n.t('student.updated_successfully', :name => @student.full_name)
-          redirect_to student_path(@student, :user_id => @user.id, :admin_id => @admin), :notice => message
+          flash[:notice] = message
+          redirect_to student_path(@student, :user_id => @user.id, :admin_id => @admin)
         else
           render :action => :edit
         end
