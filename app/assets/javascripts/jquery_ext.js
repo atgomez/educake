@@ -112,8 +112,8 @@ jquery_ext = {
                             // Workaround the set the width of the UI menu.
                             var width = input.outerWidth();
                             width += input.siblings(".ui-combobox-toggle").outerWidth() - 3;
-                            var autocomplete = input.data( "autocomplete" );
-                            $(autocomplete.menu.activeMenu).width(width);
+                            var menu = input.data( "autocomplete" ).menu.activeMenu;
+                            $(menu).width(width);
                         }
                     });
 
@@ -158,21 +158,29 @@ jquery_ext = {
                       $(hanlder).click();
                   });
 
-                // Work-around to fix bug when the 'editable' is false
-                if(!options.editable){
-                    $(document).mouseup(function (e) {
-                        var menu = input.data( "autocomplete" ).menu.activeMenu;
-                        if (input.has(e.target).length === 0 || 
+                var _click_handler = function (e) {
+                    try {
+                        if($(document).has(input).length === 0){
+                            // Unbind the event
+                            $(document).unbind("mouseup", _click_handler);
+                            return;
+                        }
+                        var menu = $(input).data( "autocomplete" ).menu.activeMenu;
+                        if (input.has(e.target).length === 0 ||
                             $(menu).has(e.target).length === 0)
                         {
-                            try{
-                                if(!$(e.target).hasClass('ui-autocomplete'))
-                                    input.autocomplete( "close" );
-                            }
-                            catch(exc){
-                            }
+                            if(!$(e.target).hasClass('ui-autocomplete'))
+                                input.autocomplete( "close" );
+                            
                         }
-                    });
+                    }
+                    catch(e){
+                    }
+                };
+
+                // Work-around to fix bug when the 'editable' is false
+                if(!options.editable){
+                    $(document).mouseup(_click_handler);
                 }
             },
 
@@ -192,8 +200,7 @@ $(function() {
 
     jquery_ext.extend_combobox_widget({
       extend_method_name: "editable_combobox",
-      editable: true, 
+      editable: true,
       allow_new_value: true
     });
 });
-

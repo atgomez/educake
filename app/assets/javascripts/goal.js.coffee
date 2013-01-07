@@ -155,7 +155,6 @@ window.goal =
         curriculum_desc = $("#curriculum.tab-pane .curriculum-description")
         curriculum_name = $("#goal.tab-pane .curriculum-name-place-holder")
         keys_map = {
-          'curriculum_core_id'  : "curriculum_cores",
           'subject_id'          : "subjects",
           'curriculum_grade_id' : "curriculum_grades",
           'curriculum_area_id'  : "curriculum_areas",

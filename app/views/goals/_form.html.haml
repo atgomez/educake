@@ -35,7 +35,7 @@
         .modal-body
           = f.simple_fields_for(:curriculum, goal.curriculum) do |f_cur|
             - data = curriculum_associtions_for_goal(goal)
-            = f_cur.association(:curriculum_core, :collection => data[:curriculum_cores],
+            = f_cur.association(:curriculum_core, :collection => CurriculumCore.order(:name),
                   :label => t("goal.curriculum"), :include_blank => false,
                   :input_html => {:class => "extended-combobox reset-on-changed"})
             = f_cur.association(:subject, :collection => data[:subjects],
@@ -74,7 +74,7 @@
               = notification
           
           %center
-            .curriculum-name-place-holder.bold
+            .curriculum-name-place-holder.bold= goal.curriculum.try(:full_name)
 
           = f.input(:due_date, :as => :string, :required => true, 
                     :input_html => {:class => "date-picker", 
@@ -104,7 +104,7 @@
           .horizontal-bar
           
           .progress-report-container
-            - goal.progresses.each_with_index do |progress, idx|
+            - goal.progresses.sort_by(&:id).each_with_index do |progress, idx|
               = f.simple_fields_for(:progresses, progress) do |f_progress|
                 %label.grade-name= t("goal.progress_with_id", :id => idx + 1)
                 = f_progress.input( :due_date, :as => :string, :required => false, 
