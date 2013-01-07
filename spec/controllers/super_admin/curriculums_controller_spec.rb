@@ -29,6 +29,95 @@ describe SuperAdmin::CurriculumsController do
     end
   end
 
+  describe "GET 'new'" do
+    subject { get :new }
+    include_examples "unauthorized"
+
+    context "authorized" do
+      before(:each) do
+        sign_in super_admin
+      end
+
+      it "renders the page" do
+        subject.should render_template('new')
+      end
+    end
+  end
+
+  describe "POST 'create'", :create => true do
+    subject { post :create }
+    include_examples "unauthorized"
+
+    context "authorized" do
+      before(:each) do
+        sign_in super_admin
+      end
+
+      context "with valid curriculum" do
+        let(:curriculum_subject) {FactoryGirl.create(:subject)}
+        let(:curriculum_grade) {FactoryGirl.create(:curriculum_grade)}
+        let(:area) {FactoryGirl.create(:curriculum_area)}
+
+        let(:params) {
+          {
+            :curriculum => {
+              :curriculum_core_value => "New Core",
+              :subject_id => curriculum_subject.id,
+              :curriculum_grade_id => curriculum_grade.id,
+              :curriculum_area_id => area.id,
+              :standard => 3,
+              :description1 => Faker::Lorem.sentence(10),
+              :description2 => Faker::Lorem.paragraph(2)
+            }
+          }
+        }
+
+        subject { post :create, params }
+
+        it "creates the curriculum" do
+          subject.should redirect_to(:action => 'index')
+          cur = assigns(:curriculum)
+          params[:curriculum].each do |k, v|
+            next if k == :curriculum_core_value
+            cur[k].should == v
+          end
+
+          cur.curriculum_core.name.should eq(params[:curriculum][:curriculum_core_value])
+        end
+      end
+
+      context "with invalid curriculum" do
+        context "when saving failed" do
+          subject { post :create, :curriculum => {:subject_id => 1} }
+
+          it "returns the error" do
+            Curriculum.any_instance.stub(:save).and_return(false)
+            subject.should render_template('new')
+          end
+        end
+
+        context "with unexpected error" do
+          context "when creating the object" do
+            subject { post :create, :curriculum => {:invalid_attrib => 1} }
+            it "returns the error" do
+              subject.should render_template('new')
+              assigns(:curriculum).should_not be_blank
+            end
+          end
+
+          context "when saving the object" do
+            subject { post :create, :curriculum => {:subject_id => 1} }
+            it "returns the error" do
+              Curriculum.any_instance.stub(:save).and_raise(Exception.new("Fatal error!"))
+              subject.should render_template('new')
+              assigns(:curriculum).should_not be_blank
+            end
+          end
+        end
+      end
+    end
+  end
+
   describe "GET 'edit'" do
     subject { get :edit, :id => "abc" }
     include_examples "unauthorized"

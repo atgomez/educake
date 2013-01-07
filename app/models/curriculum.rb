@@ -88,6 +88,11 @@ class Curriculum < ActiveRecord::Base
       })
     end
 
+    # Init curriculum with a curriculum core.
+    def init_curriculum
+      Curriculum.new(:curriculum_core_id => CurriculumCore.first.try(:id))
+    end
+
     def import_data(data_source, options = {})
       errors = {}
       imported_num = 0
@@ -96,7 +101,19 @@ class Curriculum < ActiveRecord::Base
       cache_size = 10
 
       # CurriculumCore
-      curriculum_core_id = CurriculumCore.first.try(:id)
+      curriculum_core_id = nil
+      unless options[:curriculum_core_name].blank?
+        curriculum_core = CurriculumCore.find_or_initialize_by_name(options[:curriculum_core_name])
+        if curriculum_core.new_record?
+          curriculum_core.save
+        end
+
+        curriculum_core_id = curriculum_core.id
+      end
+
+      if curriculum_core_id.blank?
+        curriculum_core_id = CurriculumCore.first.try(:id)
+      end
 
       # Cache the Subject
       tmp_data = {}

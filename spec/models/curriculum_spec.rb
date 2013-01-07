@@ -327,6 +327,28 @@ describe Curriculum do
         end
       end
 
+      context "with curriculum_core_name" do
+        context "with new name" do
+          it "auto creates the curriculum core" do
+            new_name = "New Core Name"
+            result = Curriculum.import_data(csv_file.path, :curriculum_core_name => new_name)
+            result[:errors].should be_blank
+            CurriculumCore.find_by_name(new_name).should_not be_blank
+          end
+        end
+
+        context "with available name" do
+          it "auto creates the curriculum core" do
+            result = Curriculum.import_data(csv_file.path, :curriculum_core_name => curriculum.name)
+            result[:errors].should be_blank
+          end
+        end
+      end
+
+      context "without curriculum_core_name" do
+
+      end
+
       context "with updating available records failure", :current => true do
         it "handles and returns the error" do
           fixed_curriculum
@@ -344,6 +366,14 @@ describe Curriculum do
           puts result[:errors].inspect
         end
       end
+    end
+  end
+
+  describe ".init_curriculum" do
+    it "returns the new curriculum with a default CurriculumCore" do
+      cur = Curriculum.init_curriculum
+      cur.should_not be_blank
+      cur.curriculum_core.should_not be_blank
     end
   end
 

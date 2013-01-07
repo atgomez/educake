@@ -8,6 +8,29 @@ class SuperAdmin::CurriculumsController < SuperAdmin::BaseSuperAdminController
     @curriculums = Curriculum.load_data(load_params)
   end
 
+  def new
+    @curriculum = Curriculum.init_curriculum
+  end
+
+  def create
+    begin
+      @curriculum = Curriculum.new(params[:curriculum])
+      if @curriculum.save
+        flash[:notice] = I18n.t("curriculum.created_successfully", :name => @curriculum.name)
+        redirect_to :action => 'index'
+      else
+        render(:action => 'new')
+      end
+    rescue Exception => exc
+      ::Util.log_error(exc, "SuperAdmin::CurriculumsController#create")
+      flash.now[:alert] = I18n.t('curriculum.updated_failed_without_name')
+      if @curriculum.blank?
+        @curriculum = Curriculum.init_curriculum
+      end
+      render(:action => 'new')
+    end
+  end
+
   def edit
     find_curriculum
   end
@@ -52,7 +75,7 @@ class SuperAdmin::CurriculumsController < SuperAdmin::BaseSuperAdminController
 
   # GET /super_admin/curriculums/init_import
   def init_import
-    @import = CurriculumImport.new
+    @import = CurriculumImport.init_import
   end
 
   # POST /super_admin/curriculums/import
@@ -63,7 +86,8 @@ class SuperAdmin::CurriculumsController < SuperAdmin::BaseSuperAdminController
 
     begin      
       if @import.valid?
-        result = Curriculum.import_data(@import.import_file_path)
+        result = Curriculum.import_data(@import.import_file_path, 
+                              :curriculum_core_name => @import.curriculum_core_name)
         if result[:errors].blank?
           flash[:notice] = I18n.t("curriculum.import_successfully")
         else          

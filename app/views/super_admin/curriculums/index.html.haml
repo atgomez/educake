@@ -7,7 +7,8 @@
 .super-admin.curriculum
   .toolbar
     =# link_to t("curriculum.add"), new_super_admin_curriculum_path, :class => "btn"
-    = link_to t("curriculum.add"), init_import_super_admin_curriculums_path, :class => "btn", :remote => true
+    = link_to t("curriculum.add"), new_super_admin_curriculum_path, :class => "btn"
+    = link_to t("curriculum.import_title"), init_import_super_admin_curriculums_path, :class => "btn", :remote => true
     = link_to t("user.title"), super_admin_schools_path, :class => "margin-left"
 
   .table-container

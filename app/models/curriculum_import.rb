@@ -4,7 +4,7 @@ class CurriculumImport
   include ActiveModel::Serialization
   extend ActiveModel::Naming
 
-  attr_accessor :import_file
+  attr_accessor :import_file, :curriculum_core_name
 
   # VALIDATION
   validates_presence_of :import_file
@@ -28,6 +28,13 @@ class CurriculumImport
 
   def persisted?
     false
+  end
+
+  # Init CurriculumImport with a default core name.
+  def self.init_import
+    obj = CurriculumImport.new
+    obj.curriculum_core_name = CurriculumCore.first.try(:name)
+    return obj
   end
 
   protected

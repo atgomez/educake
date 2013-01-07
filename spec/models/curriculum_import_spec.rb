@@ -53,4 +53,13 @@ describe CurriculumImport do
       import_obj.persisted?.should be_false
     end
   end
+
+  describe ".init_import" do
+    it "returns the object" do
+      FactoryGirl.create(:curriculum_core)
+      obj = CurriculumImport.init_import
+      obj.should be_kind_of(CurriculumImport)
+      obj.curriculum_core_name.should_not be_blank
+    end
+  end
 end
