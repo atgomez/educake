@@ -175,3 +175,8 @@ window.helper =
         return
     })
     return
+
+  rand_num: () ->
+    str_num = Math.random().toString()
+    str_num = str_num.replace("0.", "")
+    return parseInt(str_num)

@@ -104,11 +104,18 @@ jquery_ext = {
 
                             select.change();
                         },
-                        change: function( event, ui ) {                            
+                        change: function( event, ui ) {
                             if ( !ui.item )
                                 return removeIfInvalid( this );
+                        },
+                        open: function( event, ui ) {
+                            // Workaround the set the width of the UI menu.
+                            var width = input.outerWidth();
+                            width += input.siblings(".ui-combobox-toggle").outerWidth() - 3;
+                            var autocomplete = input.data( "autocomplete" );
+                            $(autocomplete.menu.activeMenu).width(width);
                         }
-                    });               
+                    });
 
                 input.data( "autocomplete" )._renderItem = function( ul, item ) {
                     return $( "<li>" )
@@ -154,10 +161,13 @@ jquery_ext = {
                 // Work-around to fix bug when the 'editable' is false
                 if(!options.editable){
                     $(document).mouseup(function (e) {
-                        if (input.has(e.target).length === 0)
+                        var menu = input.data( "autocomplete" ).menu.activeMenu;
+                        if (input.has(e.target).length === 0 || 
+                            $(menu).has(e.target).length === 0)
                         {
                             try{
-                                input.autocomplete( "close" );
+                                if(!$(e.target).hasClass('ui-autocomplete'))
+                                    input.autocomplete( "close" );
                             }
                             catch(exc){
                             }
