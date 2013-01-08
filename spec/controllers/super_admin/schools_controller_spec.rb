@@ -2,7 +2,7 @@ require 'spec_helper'
 describe SuperAdmin::SchoolsController do
   render_views
   let(:super_admin) {FactoryGirl.create(:super_admin)}
-  let(:school) {FactoryGirl.create(:school)}
+  let(:school) {FactoryGirl.create(:school_with_admin)}
   before(:each) do
     sign_in super_admin
   end
