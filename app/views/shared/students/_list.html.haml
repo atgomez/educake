@@ -8,22 +8,8 @@
     - else
       - student_home_url = student_path(student, :user_id => student.teacher.id, :admin_id => @admin)
     .student-container.hoverable.clearfix.link{:href => student_home_url, :class => params[:query] ? "" : "pull-left"}
-      = render "shared/students/cell", :student => student, :url => student_home_url 
-    
-      - if on_search
-        .clearfix
-        .teachers-container
-          %a{:href => "#student-teachers-#{student.id}", :class => "icon-plus student-teacher-handler"}
-            = t("common.teachers")
-          .teacher-student.hide.clearfix{:id => "student-teachers-#{student.id}"}
-            - teachers = student.sponsoring_teachers.unblocked
-            - teachers.each do |teacher|
-              - teacher_url = students_path(:user_id => teacher.id, :admin_id => @admin.id)
-              = link_to teacher_url, :title => teacher.full_name, :rel => "tooltip", :class => "teacher-link thumbnail" do 
-                = image_tag(teacher.photo_url, 
-                    :alt => teacher.full_name,
-                    :class => "teacher-avatar", 
-                    :id => "student-teacher-#{student.id}-#{teacher.id}")
+      = render "shared/students/cell", :student => student, :url => student_home_url    
+      
     - unless on_search
       - if (idx + 1) % 4 == 0
         .clearfix

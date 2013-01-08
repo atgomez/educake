@@ -1,6 +1,5 @@
 - teachers ||= []
 - with_pagination = ((with_pagination.nil? ? true : with_pagination) rescue true)
-- big_teacher_cell = ((big_teacher_cell.nil? ? false : big_teacher_cell) rescue false)
 - row_size ||= 1
 - on_search = (params[:action] == "search")
 
@@ -18,9 +17,6 @@
           = link_to(teacher.full_name, teacher_home_url)
 
         .classroom= teacher.short_classroom
-        - unless big_teacher_cell
-          = render("students_container", :students => students, :teacher => teacher)
-      - if big_teacher_cell # In case of search template
         = render("students_container", :students => students, :teacher => teacher)
                          
       - unless on_search

@@ -1,3 +1,5 @@
+- on_search = (params[:action] == "search")
+
 .avatar-container.thumbnail
   %a{:href => url}
     = image_tag(student.photo_url, :class => "student-avatar")
@@ -17,6 +19,22 @@
       %span= t("student.no_goal")
     - else
       %span= student.goals.length
+
+  - if on_search
+    .clearfix
+    .teachers-container
+      %a{:href => "#student-teachers-#{student.id}", :class => "icon-plus student-teacher-handler"}
+        = t("common.teachers")
+      .teacher-student.hide.clearfix{:id => "student-teachers-#{student.id}"}
+        - teachers = student.sponsoring_teachers.unblocked
+        - teachers.each do |teacher|
+          - teacher_url = students_path(:user_id => teacher.id, :admin_id => @admin.id)
+          = link_to teacher_url, :title => teacher.full_name, :rel => "tooltip", :class => "teacher-link thumbnail" do 
+            = image_tag(teacher.photo_url, 
+                :alt => teacher.full_name,
+                :class => "teacher-avatar", 
+                :id => "student-teacher-#{student.id}-#{teacher.id}")
+
 - if params[:action] != "search"
   .track-indicator-container
     - status = student.check_on_track? 

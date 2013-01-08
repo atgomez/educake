@@ -3,5 +3,5 @@
     = render('shared/students/list', :students => @students, 
               :pagination_params => {:inner_window  => 1, :outer_window => 1})
   - when 'teacher' then
-    = render('teachers_list', :teachers => @teachers, :big_teacher_cell => true,
+    = render('teachers_list', :teachers => @teachers,
               :pagination_params => {:inner_window  => 1, :outer_window => 1})

@@ -161,6 +161,11 @@ $color-font: #E17C25;
     
   }
 
+  &.search {
+    .student-container, .teacher-container{
+      padding-bottom: 50px;
+    }
+  }
   .tabbable, .invited-user, .goal-section {
     margin-top: 20px;
     width: 100%;
@@ -245,8 +250,7 @@ $color-font: #E17C25;
         .width-action { 
           width:50px;
         }
-      }
-      
+      }      
     }
   }
 }
