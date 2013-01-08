@@ -42,7 +42,15 @@ class Goal < ActiveRecord::Base
   # NESTED ATTRIBUTE
   accepts_nested_attributes_for :curriculum
   accepts_nested_attributes_for :progresses, :reject_if => lambda { |progress| 
-    progress['accuracy'].blank? || progress['due_date'].blank?
+    if progress['id'].blank?
+      (progress['accuracy'].blank? || progress['due_date'].blank?)
+    else
+      if progress['accuracy'].blank? && progress['due_date'].blank?
+        false # Not rejected => allow to be removed
+      else
+        true  # Rejected
+      end
+    end
   }
 
   # PAPERCLIP ATTACHMENT
@@ -58,7 +66,8 @@ class Goal < ActiveRecord::Base
   attr_accessor :last_grade #For add/update purpose
 
   # CALLBACK
-  before_validation :update_progresses, :valid_date_attribute?, :checK_curriculum
+  before_validation :update_progresses, :valid_date_attribute?, :checK_curriculum, 
+                    :mark_progresses_for_removal
   after_validation :reset_curriculum
   after_save :update_all_grade  
 
@@ -575,6 +584,13 @@ class Goal < ActiveRecord::Base
     def reset_curriculum
       unless self.errors.blank?
         self.curriculum = Curriculum.build_curriculum(self.curriculum)
+      end
+    end
+
+    # Mark progresses as beign removed
+    def mark_progresses_for_removal
+      self.progresses.each do |p|
+        p.mark_for_destruction if !p.valid?
       end
     end
 end

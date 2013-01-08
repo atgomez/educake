@@ -2,7 +2,7 @@ class StudentsController < ApplicationController
   authorize_resource :student
   before_filter :except => [:show, :destroy]
   cross_role_action :new, :search_user, :index, :destroy, :show, :create, :edit, 
-                    :update, :all_students, :load_users, :search_user
+                    :update, :all_students, :search_user
 
   def index
     if find_user
@@ -141,11 +141,6 @@ class StudentsController < ApplicationController
       @goals_grades[goal.id] = goal.grades.order('due_date ASC').load_data(filtered_params)
     end 
     render :partial => "shared/students/view_goal", :locals => {:goals => goals, :grades => @goals_grades}
-  end
-
-  def load_users 
-    users = StudentSharing.where(:student_id => params[:id])
-    render :partial => "shared/students/view_invited_user", :locals => {:invited_users => users}
   end
   
   def search_user

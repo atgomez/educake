@@ -8,7 +8,7 @@ class Ability
       # Super admin
       can :manage, :all 
     elsif !user.new_record?
-      alias_action  :show, :index, :search, :load_users, :load_grade, :curriculum_info,
+      alias_action  :show, :index, :search, :load_grade, :curriculum_info,
                     :user_chart, :student_chart, :goal_chart, :all, :get_students,
                     :initial_import_grades, :load_grades, :search_user, :all_students, :to => :read
       alias_action  :new_grade, :add_grade, :import_grades, :to => :create

@@ -85,7 +85,7 @@ $color-font: #E17C25;
 
   .student-container, .teacher-container{
     padding-top: 7px;
-    padding-bottom: 25px;
+    padding-bottom: 32px;
     padding-left: 10px;
     border-bottom: 1px solid #ddd;
     position: relative;
@@ -95,9 +95,7 @@ $color-font: #E17C25;
       background-color: transparent;
       box-shadow: none;
       padding: 10px
-    }
-
-    
+    }  
 
     .avatar-container, .teacher-avatar, .student-avatar, .default-avatar {
       display: inline-block;

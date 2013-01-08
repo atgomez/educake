@@ -12,15 +12,18 @@
 
 class Progress < ActiveRecord::Base
   attr_accessible :accuracy, :due_date
+  attr_accessor :baseline_date, :goal_date
+
   belongs_to :goal
-  has_many :grades, :dependent => :destroy
+  has_many :grades
 
   # VALIDATION
   validates :accuracy, :numericality => true, :inclusion => {:in => 0..100, :message => :out_of_range_100}
   validates_presence_of :accuracy, :due_date
-	validate :validate_due_date
+	validate :validate_due_date	
 
-	attr_accessor :baseline_date, :goal_date
+  # CALLBACK
+  after_destroy :after_destroy_clear_grades_progress_id
 
   def due_date_string
     ::Util.date_to_string(self.due_date)
@@ -46,5 +49,9 @@ class Progress < ActiveRecord::Base
         self.errors.add(:due_date, :must_eq_less_than_goal_due_date)
         return false
       end
+    end
+
+    def after_destroy_clear_grades_progress_id
+      Grade.update_all({:progress_id => nil}, {:progress_id => self.id})
     end
 end

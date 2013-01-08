@@ -74,9 +74,9 @@ module Util
     end
 
     # This method will convert string to date, if not, it will keep the value is string
-    def try_and_convert_date(value)
+    def try_and_convert_date(value, format = nil)
       if value.is_a?(String)
-        fdate = format_date(value)
+        fdate = format_date(value, format)
         fdate || value
       else
         value

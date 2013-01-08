@@ -1,9 +1,11 @@
 require 'spec_helper'
 
 describe StudentsController do
-  render_views
-  let(:user) {FactoryGirl.create(:teacher)}
-  let(:admin) {FactoryGirl.create(:admin)}
+  render_views  
+  let(:school) {FactoryGirl.create(:school_with_admin)}
+  let(:admin) {school.admin}
+  let(:user) {FactoryGirl.create(:teacher, :school => school)}
+
   before(:each) do
     sign_in user
   end
@@ -82,7 +84,7 @@ describe StudentsController do
   	end 
   end
 
-  describe "Put update" do
+  describe "Put update", :update => true do
   	it "successfully" do 
   		attrs = {:first_name => "test", :last_name => "name", :birthday => '01-02-2012'}
   	  put :update, :id => student.id, :student => attrs
@@ -114,13 +116,6 @@ describe StudentsController do
   describe "Get load grade" do 
     it "successfully" do 
       get :load_grade, :id => student.id, :format => :js 
-      response.should be_success
-    end
-  end
-
-  describe "Get load users" do
-    it "successfully" do  
-      get :load_users, :id => student.id, :format => :js
       response.should be_success
     end
   end
