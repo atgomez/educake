@@ -64,15 +64,15 @@ class ApplicationController < ActionController::Base
   def parse_params_to_get_users
     @current_user = current_user
     @admin = User.unblocked.find_by_id params[:admin_id]
-    if current_user.is_super_admin?
+    if @current_user.is_super_admin?
       @admin = nil if @admin && !@admin.is?(:admin)
       @user = @admin ? @admin.children.unblocked.find_by_id(params[:user_id]) : 
                          User.unblocked.find_by_id(params[:user_id])
-    elsif current_user.is?(:admin) # If current user is admin, deny getting admin from admin_id
-      @admin = current_user
+    elsif @current_user.is?(:admin) # If current user is admin, deny getting admin from admin_id
+      @admin = @current_user
       @user = @admin.children.unblocked.find_by_id(params[:user_id])
     else
-      @user = current_user
+      @user = @current_user
     end
   end
 

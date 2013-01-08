@@ -11,9 +11,7 @@
         %td.width-email= mail_to info.email
         %td.width-role= info.role.name
         %td.width-action
-          -# if !read_only
-          - if !invited_user.is_a?(User) 
-            =# link_to("", edit_invitation_path(user, :user_id => @user, :admin_id => @admin, :student_id => student_id), :class => "icon-pencil color-pen", :method => :get, :remote => true, :title => t("common.edit"))
+          - if !invited_user.is_a?(User)
             = link_to("", 
                 invitation_path(invited_user, :user_id => @user, :admin_id => @admin, :student_id => @student), 
                 :data => { :confirm => t("common.confirm_message") }, 
@@ -21,4 +19,11 @@
                 :remote => true,
                 :title => t("common.delete"))
           - else
-            (Main Teacher)
+            (#{t("student.main_teacher")})
+    
+    - admin = current_student_admin
+    %tr{:id => "admin-#{admin.id}"}
+      %td.width-name= admin.full_name
+      %td.width-email= mail_to admin.email
+      %td.width-role= admin.role.name
+      %td.width-action

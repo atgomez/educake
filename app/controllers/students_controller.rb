@@ -59,8 +59,6 @@ class StudentsController < ApplicationController
         if (@student.teacher.id != @user.id) # Not an owner
           @invited_users << @student.teacher
         end
-
-
       else
         render_page_not_found
       end

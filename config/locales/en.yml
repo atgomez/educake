@@ -162,6 +162,7 @@ en:
     all_students: "All Students"
     all_students_of: "All %{user}'s Students"
     student_not_found: "Student is not found."
+    main_teacher: "Main Teacher"
 
   school:
     error_zipcode_too_long: "Zip code with %{count} characters is the maximum allowed"
