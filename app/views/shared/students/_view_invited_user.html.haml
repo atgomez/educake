@@ -8,7 +8,7 @@
         - else
           - info = invited_user.user || invited_user
         %td.width-name= info.full_name
-        %td.width-email= info.email
+        %td.width-email= mail_to info.email
         %td.width-role= info.role.name
         %td.width-action
           -# if !read_only

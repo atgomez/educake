@@ -13,7 +13,7 @@
       - if !@teacher.email.blank?
         .email
           %span= t("user.email_label")
-          %span= @teacher.email
+          %span= mail_to @teacher.email
       - if !@teacher.phone.blank?
         .phone
           %span= t("user.phone_label")

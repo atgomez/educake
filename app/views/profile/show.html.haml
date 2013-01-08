@@ -10,7 +10,7 @@
       .control-group
         %label.control-label.field-name= t("profile.email")
         .controls
-          .label-value= @user.email
+          .label-value= mail_to @user.email
           = link_to(t("profile.change_password"), "#", :id => "change-password", :class => "form-display-handler")
       #account_password_change.change-password-container.form-container.hide
         = render(:partial => "password_form")
