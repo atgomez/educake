@@ -99,13 +99,16 @@ def create_sample_students(teacher)
             accuracy = rand(70)
           end
 
-          goal.grades.create(
+          grade = goal.build_grade({
             :due_date => (goal.baseline_date + (rand(5)*grade_t).days).to_date,
             :accuracy => accuracy,
             :user_id => teacher.id,
             :time_to_complete => "0#{rand(5)}:00",
             :note => Faker::Lorem.sentence(5)
-          )
+          })
+
+          grade = goal.update_grade_state(grade)
+          grade.save
         end
       end
     end

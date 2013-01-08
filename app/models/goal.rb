@@ -214,7 +214,7 @@ class Goal < ActiveRecord::Base
   end
 
   def last_grade
-    self.grades.computable.order(:due_date).last
+    self.grades.order(:due_date).last
   end
 
   # Check if a grade exist in now
