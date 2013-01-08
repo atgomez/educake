@@ -382,4 +382,64 @@ describe Goal do
 			end
 		end
 	end
+
+	describe "#subject" do
+		it "return curriculum's subject" do
+			goal.subject.should == goal.curriculum.subject
+		end
+	end
+
+	describe "auto removing progresses" do
+		before(:each) do
+			goal.build_progresses
+		end
+
+		context "with new progress" do
+			it "does nothing (does not remove)" do
+				goal.progresses[0] = progress_1
+				goal.save
+				goal.progresses.length.should == 1
+			end
+		end
+
+		context "with available progress" do
+			before(:each) do
+				goal.progresses[0] = progress_1
+				goal.save
+			end
+
+			context "ALL progress attributes are clear" do
+				it "automatically remove the progress", :remove_progress => true do
+					attrs = {
+						:progresses_attributes => {
+							'0' => {
+								:id => progress_1.id,
+								:due_date => nil,
+								:accuracy => nil
+							}
+						}
+					}
+					puts goal.progresses.length 
+					goal.update_attributes(attrs)
+					goal.progresses.length.should == 0
+				end
+			end
+
+			context "with one of attributes is clear" do
+				it "does nothing (does not remove)" do
+					attrs = {
+						:progresses_attributes => {
+							'0' => {
+								:id => progress_1.id,
+								:due_date => progress_1.due_date,
+								:accuracy => nil
+							}
+						}
+					}
+					goal.update_attributes(attrs)
+					goal.progresses.length.should == 1
+				end
+			end
+		end
+	end
 end

@@ -1,7 +1,9 @@
 FactoryGirl.define do
   factory :progress do
-    due_date { due_date }
-    accuracy { accuracy }
+    accuracy { rand(100) }
     goal
+    before(:create) do |p, evaluator|
+      p.due_date = p.goal.baseline_date + 1.days
+    end
   end
 end
