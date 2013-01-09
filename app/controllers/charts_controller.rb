@@ -64,6 +64,10 @@ class ChartsController < ApplicationController
 
     def render_chart(series)
       @series = series
-      render :template => 'charts/common_chart', :layout => "chart"
+      if @series.eql?("[]")
+        render :nothing => true
+      else
+        render :template => 'charts/common_chart', :layout => "chart"
+      end 
     end
 end
