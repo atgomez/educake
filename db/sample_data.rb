@@ -66,7 +66,7 @@ end
 
 def create_sample_students(teacher)
   Goal.transaction do
-    10.times do
+    5.times do
       first_name = Faker::Name.first_name
       last_name = Faker::Name.last_name
       # puts "Student name: #{first_name} #{last_name}"
@@ -93,14 +93,14 @@ def create_sample_students(teacher)
         )
 
         # Create grade for goal
-        10.times do |grade_t|
-          accuracy = goal.baseline + 1
+        15.times do |grade_t|
+          accuracy = goal.baseline + 1          
           if grade_t > 0
-            accuracy = rand(70)
+            accuracy = (10 .. 100).to_a.sample
           end
 
           grade = goal.build_grade({
-            :due_date => (goal.baseline_date + (rand(5)*grade_t).days).to_date,
+            :due_date => (goal.baseline_date + grade_t.days).to_date,
             :accuracy => accuracy,
             :user_id => teacher.id,
             :time_to_complete => "0#{rand(5)}:00",
@@ -162,7 +162,7 @@ puts "[Sampler] Created demo teacher #{teacher.email} / #{password}"
 create_sample_students(teacher)
 
 User.transaction do
-  10.times do 
+  5.times do 
     begin
       first_name = Faker::Name.first_name
       last_name = Faker::Name.last_name
