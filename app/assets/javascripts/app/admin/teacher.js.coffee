@@ -7,7 +7,6 @@ window.teacher =
     $('.teacher-student a.student-link, .teacher-student a.teacher-link').livequery((e) ->
       $(this).tooltip()
     )
-    @setup_teacher_dialog()
     @setup_search()
     @setup_block_link()
     @change_list_teacher()
@@ -65,40 +64,7 @@ window.teacher =
         window.location.href = url
     )
 
-  setup_teacher_dialog: ->
-    $("#teacher-form #btn-save-teacher").livequery('click', (e) -> 
-      e.preventDefault()
-      $("#teacher-form").submit()
-    )
-
-    $("#teacher-form").livequery('submit', (e) ->
-      e.preventDefault()
-
-      data = $("#teacher-form").serialize()
-      url = $("#teacher-form").attr('action')
-      v_method = $("#method").val()
-      $.ajax({
-        url: url,
-        type: v_method,
-        data: data,
-        success: (res) -> 
-          window.location.reload()
-        ,
-
-        error: (xhr, textStatus, error) -> 
-          try
-            res = $.parseJSON(xhr.responseText)
-          catch exc
-            res = null
-
-          if res and res.html
-            teacher_dialog = $(res.html)
-            $("#teacher-dialog").html(teacher_dialog.html())
-      })
-      
-      return false
-    )
-
+  
   setup_search: ->
     ajax_paging_link = (target) ->      
       $('.admin.search .result-container ' + target + ' .pagination a').livequery('click', (e) ->

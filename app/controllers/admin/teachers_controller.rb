@@ -53,31 +53,20 @@ class Admin::TeachersController < Admin::BaseAdminController
   end
 
   def create
-    result = {}
-    status_code = 201
-
     begin
       @teacher = @admin.children.new_with_role_name(:teacher, params[:user])
       @teacher.school_id = @admin.school_id
       @teacher.skip_password!
-      if @teacher.save
-        status_code = 201
-        message = I18n.t('admin.teacher.created_successfully', :name => @teacher.full_name)
-        result[:message] = message
-        flash[:notice] = result[:message]
-      else
-        status_code = 400
-        result[:message] = I18n.t('admin.teacher.create_failed')
-        result[:html] = render_to_string(:partial => 'admin/teachers/form', 
-                          :locals => {:teacher => @teacher})
-      end
+      @teacher.save
+       if @teacher.save
+         message = I18n.t('admin.teacher.created_successfully', :name => @teacher.full_name)
+         flash[:notice] = message
+       end
     rescue Exception => exc
       ::Util.log_error(exc, "Admin::TeachersController#create")
-      status_code = 400
       result[:message] = I18n.t('admin.teacher.create_failed')
     end
 
-    render(:json => result, :status => status_code)
   end
 
   def edit
@@ -92,29 +81,16 @@ class Admin::TeachersController < Admin::BaseAdminController
       return
     end
 
-    result = {}
-    status_code = 201
-
     begin
       @teacher.skip_password!
       if @teacher.update_attributes(params[:user])
-        status_code = 201
         message = I18n.t('admin.teacher.updated_successfully', :name => @teacher.full_name)
-        result[:message] = message
-        flash[:notice] = result[:message]
-      else
-        status_code = 400
-        result[:message] = I18n.t('admin.teacher.updated_failed')
-        result[:html] = render_to_string(:partial => 'admin/teachers/form', 
-                          :locals => {:teacher => @teacher})
+        flash[:notice] = message
       end
     rescue Exception => exc
       ::Util.log_error(exc, "Admin::TeachersController#update")
-      status_code = 400
       result[:message] = I18n.t('admin.teacher.updated_failed')
     end
-
-    render(:json => result, :status => status_code)
   end 
 
   # GET: /admin/teacher/search?query=<QUERY>
