@@ -51,7 +51,6 @@
           animation: false,
           events: {
               load: function(event) {
-                this.zoomOut();
                 $.each(this.series , function(indx, seri) {
                   if (seri.points.length == 1)
                     seri.points[0].update({
@@ -114,37 +113,8 @@
           },
         },
         yAxis: [{
-          min: 0,
-          title: {
-            text: 'Status'
-          },
-          labels: {
-              formatter: function() {
-                  return this.value +'%'
-              }
-          },
-          plotLines: [{
-              value: 0,
-              width: 1,
-              color: '#808080'
-          }],
-          showEmpty: false
-        },{
-          min: 0,
-          title: {
-            text: ''
-          },
-          labels: {
-              formatter: function() {
-                  return this.value +'%'
-              }
-          },
-          plotLines: [{
-              value: 0,
-              width: 1,
-              color: '#808080'
-          }]
-        },{
+          min: #{ @yAxis == 0 ? 0 : 'NaN' },
+          max: #{ @yAxis == 0 ? 100 : 'NaN' },
           title: {
             text: 'Status'
           },

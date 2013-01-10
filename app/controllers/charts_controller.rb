@@ -14,6 +14,7 @@ class ChartsController < ApplicationController
 
   def user_chart
   	if find_and_check_user
+      @yAxis = 2
       render_chart(@user.series_json(params, self))
   	end
   end
@@ -28,6 +29,7 @@ class ChartsController < ApplicationController
   def student_chart
     if find_and_check_user
       @student = @user.accessible_students.find_by_id params[:student_id]
+      @yAxis = 0
       if @student
         render_chart(@student.series_json params)
       else
@@ -45,6 +47,7 @@ class ChartsController < ApplicationController
 
   def goal_chart
     if find_and_check_user
+      @yAxis = 0
       @goal = @user.goals.find_by_id params[:goal_id]
       if @goal
         render_chart(@goal.series_json params)

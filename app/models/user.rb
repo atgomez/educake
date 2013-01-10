@@ -515,7 +515,6 @@ class User < ActiveRecord::Base
         series << {
           :name => teacher.full_name,
           :data => teacher_status,
-          :yAxis => 2,
           :item_id => teacher.id,
           :url => context.students_path(:user_id => teacher.id)
         } unless teacher_status.empty?
@@ -527,7 +526,6 @@ class User < ActiveRecord::Base
         series << {
           :name => student.full_name,
           :data => goals_progresses,
-          :yAxis => 2,
           :item_id => student.id,
           :url => context.student_path(student, :user_id => self.id, :admin_id => params[:admin_id])
         } unless goals_progresses.empty?
