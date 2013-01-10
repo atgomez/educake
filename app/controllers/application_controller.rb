@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   include MongodbLogger::Base
   protect_from_forgery
-  check_authorization :unless => (:is_rails_admin_controller? && :is_devise_controller?)
+  check_authorization :unless => :except_controller?
 
   before_filter :authenticate_user!
   before_filter :do_filter_params
@@ -211,6 +211,10 @@ class ApplicationController < ActionController::Base
           redirect_to '/super_admin/schools'
         end
       end
+    end
+
+    def except_controller?
+      is_devise_controller? || is_rails_admin_controller?
     end
 
     def is_devise_controller?
