@@ -1,6 +1,6 @@
 - if @teacher.errors.any?
   $("#new-form-teacher").html("#{escape_javascript(render :partial => 'form', :locals => {:teacher => @teacher})}");
-  $('#teacher-dialog').modal('show');
+  $('#new-form-teacher').modal('show');
   helper.setup();
 - else
   location.reload();

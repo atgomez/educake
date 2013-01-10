@@ -27,7 +27,8 @@
   %center.clearfix
     %iframe{:frameborder => "0", :width => @width, :height => @height, 
             :src => "/charts/user_chart?user_id=#{@admin.id}", :id => "chart_student"}
-  #new-form-teacher
+ 
+  #new-form-teacher.modal.hide.fade{"data-backdrop" => "static"}
 
   - unless @teachers.blank?
     = render("export", :teachers => @teachers)
