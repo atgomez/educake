@@ -47,6 +47,9 @@ gem 'client_side_validations-simple_form'
 gem "mongodb_logger", :git => 'git://github.com/le0pard/mongodb_logger.git', :branch => 'master'
 gem "moped"
 
+# Database Site
+gem 'rails_admin'
+
 group :development do 
   gem "haml-rails"
   gem 'rails-erd'

@@ -1,5 +1,8 @@
 TeacherMgnt::Application.routes.draw do
 
+  #Rails Admin
+  mount RailsAdmin::Engine => '/backend', :as => 'rails_admin'
+
   #Logger
   mount MongodbLogger::Server.new, :at => "/mongodb"
   mount MongodbLogger::Assets.instance, :at => "/mongodb/assets", :as => :mongodb_assets # assets

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121225085210) do
+ActiveRecord::Schema.define(:version => 20130110065353) do
 
   create_table "curriculum_areas", :force => true do |t|
     t.string   "name",       :null => false
@@ -101,6 +101,19 @@ ActiveRecord::Schema.define(:version => 20121225085210) do
 
   add_index "progresses", ["due_date"], :name => "index_progresses_on_due_date"
   add_index "progresses", ["goal_id"], :name => "index_progresses_on_goal_id"
+
+  create_table "rails_admin_histories", :force => true do |t|
+    t.text     "message"
+    t.string   "username"
+    t.integer  "item"
+    t.string   "table"
+    t.integer  "month",      :limit => 2
+    t.integer  "year",       :limit => 8
+    t.datetime "created_at",              :null => false
+    t.datetime "updated_at",              :null => false
+  end
+
+  add_index "rails_admin_histories", ["item", "table", "month", "year"], :name => "index_rails_admin_histories"
 
   create_table "roles", :force => true do |t|
     t.string   "name",       :null => false

@@ -22,6 +22,8 @@ class Ability
           (a_user.new_record? || a_user.parent_id == user.id)
         end
         can :manage, [Curriculum, Goal, Grade, Student, StudentSharing]
+        can :access, :rails_admin   # grant access to rails_admin
+        can :dashboard              # grant access to the dashboard
       elsif user.is?(:teacher)
         can :read, User
         can :manage, [Curriculum, Goal, Grade, Student, StudentSharing]

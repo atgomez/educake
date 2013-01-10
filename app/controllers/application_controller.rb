@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   include MongodbLogger::Base
   protect_from_forgery
-  check_authorization :unless => :is_devise_controller?
+  check_authorization :unless => (:is_rails_admin_controller? || :is_devise_controller?)
 
   before_filter :authenticate_user!
   before_filter :do_filter_params
@@ -199,20 +199,28 @@ class ApplicationController < ActionController::Base
     #   Admin only work in admin space, cannot go to teacher space.
     #
     def restrict_namespace
-      user = current_user
-      return if (user.blank? || self.is_devise_controller? || !self.is_restricted?)
-      action = self.action_name.to_sym
-      if (user.is?(:admin) && !self.is_a?(Admin::BaseAdminController) && 
-            !self.crossed_role_action.include?(action))
-        redirect_to "/admin/teachers"
-      elsif (user.is_super_admin? && !self.is_a?(SuperAdmin::BaseSuperAdminController) && 
-            !self.crossed_role_action.include?(action))
-        redirect_to '/super_admin/schools'
+      if !is_rails_admin_controller?
+        user = current_user
+        return if (user.blank? || self.is_devise_controller? || !self.is_restricted?)
+        action = self.action_name.to_sym
+        if (user.is?(:admin) && !self.is_a?(Admin::BaseAdminController) && 
+              !self.crossed_role_action.include?(action))
+          redirect_to "/admin/teachers"
+        elsif (user.is_super_admin? && !self.is_a?(SuperAdmin::BaseSuperAdminController) && 
+              !self.crossed_role_action.include?(action))
+          redirect_to '/super_admin/schools'
+        end
       end
     end
 
     def is_devise_controller?
       self.is_a?(DeviseController)
+    end
+
+    def is_rails_admin_controller?
+      puts "*"*80
+      puts self
+      self.is_a?(RailsAdmin::MainController)
     end
 
     def is_restricted?
