@@ -12,7 +12,11 @@
     - if teacher.new_record?
       %h4= t("admin.teacher.add")
     - else
-      %h4= t("admin.teacher.edit")
+      - if teacher.is?(:parent)
+        - user = "Parent"
+      - else 
+        - user = "Teacher"
+      %h4= t("admin.teacher.edit", :user => user)
   .modal-body
     - if notification = f.error_notification
       .alert.alert-error.fade.in

@@ -118,7 +118,7 @@ en:
       not_found: "Could not find the teacher."
       updated_failed: "Could not updated the teacher."
       add: "Add Teacher"
-      edit: "Edit Teacher"
+      edit: "Edit %{user}"
       classroom: "Classroom (opt)"
       phone: "Phone (opt)"
       home: "School Home"
