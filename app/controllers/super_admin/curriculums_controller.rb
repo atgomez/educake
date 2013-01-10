@@ -134,7 +134,8 @@ class SuperAdmin::CurriculumsController < SuperAdmin::BaseSuperAdminController
     end
 
     def sort_criteria
-      return "#{actual_sort_column} #{sort_direction}"
+      # Add curriculums.id to the order, otherwise the pagination won't be correct.
+      return "#{actual_sort_column} #{sort_direction}, curriculums.id"
     end
 
     # Generate human friendly error message for import result.
