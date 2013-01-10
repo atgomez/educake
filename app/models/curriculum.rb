@@ -52,7 +52,7 @@ class Curriculum < ActiveRecord::Base
   validates :description1, :length => { :maximum => 255, :too_long => :name_too_long }
   validates :standard, :uniqueness => { :scope => [ :curriculum_core_id, :subject_id, 
                                                     :curriculum_grade_id, :curriculum_area_id]}
-  
+  validates :curriculum_core_value, :presence => true
   # CALLBACK                                      
   before_validation :init_curriculum_core
   after_destroy :destroy_curriculum_core

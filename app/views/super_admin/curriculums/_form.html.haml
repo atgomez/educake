@@ -15,7 +15,10 @@
   .form-inputs
     .school-info
       = f.input :curriculum_core_value, :as => :select, :collection => CurriculumCore.order(:name),
-                :label => t("curriculum.core"), :input_html => {:class => "editable-combobox reset-on-changed"}
+                :label => t("curriculum.core"),
+                :wrapper_html => {:class => "widget-wrapper"},
+                :input_html => {:class => "editable-combobox reset-on-changed"},
+                :required => true
       = f.association(:subject, :collection => Subject.order(:name),
                 :label => t("curriculum.subject"), :include_blank => false,
                 :input_html => {:class => "extended-combobox reset-on-changed"})

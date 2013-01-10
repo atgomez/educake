@@ -222,8 +222,6 @@ class ApplicationController < ActionController::Base
     end
 
     def is_rails_admin_controller?
-      puts "*"*80
-      puts self
       self.is_a?(RailsAdmin::MainController)
     end
 
