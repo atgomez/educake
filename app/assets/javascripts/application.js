@@ -31,29 +31,6 @@
 //= require rails.validations.simple_form
 //= require rails.validations.customValidators
 
-// Workaround to fix problem when scrolling element within UI widget
-function fix_ui_widget_position(){
-  var scroll_event = function(container, widget, target){
-    $(container).scroll(function(){
-        target = $(target);
-        widget = $(widget);
-        var pos = $(target).position();        
-        var top = pos.top + target.outerHeight() + 23;
-        widget.css({'top': top});
-    });
-  };
-
-  var parent = null;
-  $(".modal-body").find(".ui-combobox-input").livequery(function(){
-    var widget = $(this).data("autocomplete");
-    if(!widget)
-      return;
-    if(!parent)
-      parent = $(this).parents(".modal-body");
-    scroll_event(parent, widget.menu.activeMenu, $(this).parent());
-  });
-};
-
 $(document).ready(function() {
     $('.pagination-container.ajax .pagination a').attr('data-remote', 'true');
     $('.pagination-container.ajax .pagination a').click(function(){
@@ -93,8 +70,6 @@ $(document).ready(function() {
       if (answer)
         $(this).attr("href", $(this).attr("url_tmp"));
     });
-
-    fix_ui_widget_position();
 
 	  // if(typeof parent.setiFrameHeight == 'function'){
    //    parent.setiFrameHeight(document.body.scrollHeight);

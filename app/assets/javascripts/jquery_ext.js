@@ -73,7 +73,6 @@ jquery_ext = {
                     input = $("<span>").html(value);
                 }
 
-                var first_show = true;
                 input.appendTo( wrapper )
                     .addClass( "ui-state-default ui-combobox-input" )
                     .addClass( "ui-widget ui-widget-content ui-corner-left" )
@@ -116,16 +115,6 @@ jquery_ext = {
                             width += input.siblings(".ui-combobox-toggle").outerWidth() - 3;
                             var menu = input.data( "autocomplete" ).menu.activeMenu;
                             $(menu).width(width);
-
-                            if(first_show){
-                                // Workaround to fix bug when showing on Twitter modal dialog.
-                                if(wrapper.parents(".modal-body").length > 0){
-                                    var pos = wrapper.position();                            
-                                    var p_top = pos.top + wrapper.outerHeight() + 23;
-                                    $(menu).css({top: p_top});
-                                    first_show = false;
-                                }
-                            }
                         }
                     });
 
