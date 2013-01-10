@@ -150,7 +150,9 @@ class Student < ActiveRecord::Base
       grades.find_each do |grade|
         vs_baseline = grade.value - goal.baseline
         progress[grade.due_date] = [] if progress[grade.due_date].nil?
-        progress[grade.due_date] << vs_baseline/(goal.accuracy - goal.baseline)*100
+        rate = vs_baseline/(goal.accuracy - goal.baseline)
+        rate = 1 if rate > 1 # In case of large value
+        progress[grade.due_date] << rate*100
       end 
     end
     
