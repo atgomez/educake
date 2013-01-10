@@ -57,14 +57,12 @@ class Admin::TeachersController < Admin::BaseAdminController
       @teacher = @admin.children.new_with_role_name(:teacher, params[:user])
       @teacher.school_id = @admin.school_id
       @teacher.skip_password!
-      @teacher.save
-       if @teacher.save
-         message = I18n.t('admin.teacher.created_successfully', :name => @teacher.full_name)
-         flash[:notice] = message
-       end
+      if @teacher.save
+       message = I18n.t('admin.teacher.created_successfully', :name => @teacher.full_name)
+       flash[:notice] = message
+      end
     rescue Exception => exc
       ::Util.log_error(exc, "Admin::TeachersController#create")
-      result[:message] = I18n.t('admin.teacher.create_failed')
     end
 
   end
@@ -89,7 +87,6 @@ class Admin::TeachersController < Admin::BaseAdminController
       end
     rescue Exception => exc
       ::Util.log_error(exc, "Admin::TeachersController#update")
-      result[:message] = I18n.t('admin.teacher.updated_failed')
     end
   end 
 

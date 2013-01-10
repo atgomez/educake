@@ -57,7 +57,7 @@ describe Admin::TeachersController do
   end
 
   describe "POST 'create'", :create => true do
-    subject { post :create }
+    subject { post :create, :format => :js }
     include_examples "unauthorized"
 
     context "authorized" do
@@ -76,7 +76,7 @@ describe Admin::TeachersController do
           }
         }
         subject {
-          post :create, params
+          post :create, params, :format => :js
         }
 
         it "creates the teacher and response result" do
@@ -97,7 +97,7 @@ describe Admin::TeachersController do
         }
 
         subject {
-          post :create, params
+          post :create, params, :format => :js
         }
 
         it "returns the error" do
@@ -111,7 +111,7 @@ describe Admin::TeachersController do
         }
 
         subject {
-          post :create, params
+          post :create, params, :format => :js 
         }
 
         it "returns the error" do
@@ -205,7 +205,7 @@ describe Admin::TeachersController do
 
           it "returns the error" do
             User.any_instance.stub(:update_attributes).and_raise(Exception.new("Fatal error!"))
-            subject.should_not be_success
+            subject.should be_success
           end
         end
       end
