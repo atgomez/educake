@@ -128,9 +128,14 @@ class Goal < ActiveRecord::Base
     arr_progress_accuracy << self.baseline
 
     progresses = self.progresses.order('due_date ASC')
+    assign_progress = false
+
     progresses.each do |progress|
       arr_progress_date << progress.due_date
       arr_progress_accuracy << progress.accuracy
+      if !assign_progress && progress.due_date >= grade.due_date
+        grade.progress = progress
+      end
     end
 
     arr_progress_date << self.due_date
@@ -425,14 +430,14 @@ class Goal < ActiveRecord::Base
       sheet.add_row ["Report Date:", Date.today], :style => [left_text_style , nil]
       sheet.add_row [""], :style => left_text_style
       sheet.add_row ["", "Status", "Due Date", "On Track"], :style => [left_text_style, bold, bold, bold]
-      sheet.add_row [self.name, "#{(goal_grade*100).round / 100.0}%", 
+      sheet.add_row [self.name, "#{accuracy}%", 
                       due_date, 
                       on_track? ? "ok" : "not ok"], 
                     :style => [left_text_style, nil]
       sheet.add_row [""], :style => left_text_style
       idx = 0
-      self.progresses.each do |progress|
-        sheet.add_row [idx > 0 ? "" : "Progress Reports", "%", progress.due_date, ""], :style => [left_text_style, nil]
+      self.progresses.order(:due_date).each do |progress|
+        sheet.add_row [idx > 0 ? "" : "Progress Reports", "#{progress.accuracy}%", progress.due_date, progress.status], :style => [left_text_style, nil]
       idx = idx + 1
       end
       sheet.add_row [""], :style => left_text_style
@@ -444,7 +449,7 @@ class Goal < ActiveRecord::Base
       (1..3).each {sheet.add_row [""], :style => left_text_style}
 
       sheet.add_row ["", "Date","Score"], :style => [left_text_style, bold, bold]
-      self.grades.order(:due_date).each do |grade|
+      self.grades.order('due_date DESC').each do |grade|
         sheet.add_row ["", grade.due_date, "#{grade.accuracy}%"], :style => [left_text_style, nil]
       end
 

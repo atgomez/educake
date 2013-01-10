@@ -301,7 +301,7 @@ class Student < ActiveRecord::Base
 
     # Export Goals
     idx = 1
-    goals.find_each do |goal| 
+    goals.each do |goal| 
       goal.export_xml(package, context, tmpdir, idx) do |sheet|
         student_name_style = sheet.styles.add_style ChartProcess::TITLE_NAME_STYLE
         left_text_style = sheet.styles.add_style ChartProcess::LEFT_TEXT_STYLE
@@ -334,7 +334,7 @@ class Student < ActiveRecord::Base
       sheet.add_row [nil], :style => left_text_style
       sheet.add_row [nil, "Status", "Due Date", "On Track"], :style => [left_text_style, bold, bold, bold]
       goals.each do |goal| 
-        sheet.add_row [goal.name, "#{(goal.goal_grade*100).round / 100.0}%", 
+        sheet.add_row [goal.name, "#{goal.accuracy}%", 
                       goal.due_date, 
                       goal.on_track? ? "ok" : "not ok"],
                       :style => [left_text_style, nil]

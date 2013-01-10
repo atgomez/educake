@@ -14,7 +14,7 @@ class Progress < ActiveRecord::Base
   attr_accessible :accuracy, :due_date
   attr_accessor :baseline_date, :goal_date
 
-  belongs_to :goal
+  belongs_to :goal, :touch => true
   has_many :grades
 
   # VALIDATION
@@ -33,6 +33,14 @@ class Progress < ActiveRecord::Base
   def due_date=(date)
     date = ::Util.try_and_convert_date(date)
     self.send(:write_attribute, :due_date, date)
+  end
+
+  def status
+    if (due_date > Date.today) # The due_date still be in future
+      return self.goal.on_track? ? "ok" : "not ok"
+    else
+      (grades.order(:due_date).last) && (grades.order(:due_date).last.value >= accuracy) ? "completed" : "missed"
+    end
   end
 
   protected
