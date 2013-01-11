@@ -5,7 +5,11 @@
 .admin.teacher.search
   %h3.school-name= @admin.school.try(:name)
   .search-header.clearfix
-    %h4.search-title= t("common.search_result_for", :query => params[:query])
+    %h4.search-title
+      - unless @teacher.blank?
+        = t("common.search_result_for", :query => params[:query])
+      - else
+        = t("common.no_search_result_for", :query => params[:query])
     = render 'shared/search_box', :action => "/admin/teachers/search", :placeholder => t("common.search_place_holder")
 
   .teachers-result.result-container

@@ -27,6 +27,7 @@ en:
     not_on_track: "Not on-track"    
     search_place_holder: "Search name"
     search_result_for: "Search results for: %{query}"
+    no_search_result_for: "No result found for: %{query}"
     teachers: "Teachers"
     students: "Students"    
     password: "Password"

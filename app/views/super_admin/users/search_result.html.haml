@@ -1,25 +1,30 @@
 = render '/shared/search_box', :action => "search_result", :placeholder => "Enter the term search"
 %div{:style=>"margin-top: 10px;"}
-  %b= t("common.search_result_for", :query => params[:query])
+  %b
+    - unless @teacher.blank?
+      = t("common.search_result_for", :query => params[:query])
+    - else
+      = t("common.no_search_result_for", :query => params[:query])
   %p
     = select_tag "users_search", options_for_select(User::TYPES_SEARCH.invert, :selected => params[:search_type].to_i)
 
-%table.table.table-striped.schools
-  %thead
-    %tr
-      %th.name= t("school.user_name")
-      %th.school= t("school.label")
-      %th.role= t("school.role")
-      %th 
-      %th
+- unless @users.blank?
+  %table.table.table-striped.schools
+    %thead
+      %tr
+        %th.name= t("school.user_name")
+        %th.school= t("school.label")
+        %th.role= t("school.role")
+        %th 
+        %th
 
-  %tbody
-    - @users.each do |user|
-      %tr 
-        %td= highlight(link_to(user.full_name, view_as_super_admin_user_path(user)), params[:query]) rescue ""
-        %td= highlight(link_to(user.school.short_name, super_admin_school_path(user.school)), params[:query]) rescue ""
-        %td= highlight(user.role.name, params[:query]) rescue ""
-        %td.action
-          = link_to "", edit_super_admin_user_path(user), :class => "icon-pencil color-pen", :title => t("common.edit") 
-        %td= link_to t("admin.view_as"), view_as_super_admin_user_path(user)
-= render_pagination @users
+    %tbody
+      - @users.each do |user|
+        %tr 
+          %td= highlight(link_to(user.full_name, view_as_super_admin_user_path(user)), params[:query]) rescue ""
+          %td= highlight(link_to(user.school.short_name, super_admin_school_path(user.school)), params[:query]) rescue ""
+          %td= highlight(user.role.name, params[:query]) rescue ""
+          %td.action
+            = link_to "", edit_super_admin_user_path(user), :class => "icon-pencil color-pen", :title => t("common.edit") 
+          %td= link_to t("admin.view_as"), view_as_super_admin_user_path(user)
+  = render_pagination @users
