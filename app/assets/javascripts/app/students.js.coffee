@@ -140,10 +140,10 @@ window.studentObject =
   
     
   clickPage: ->
-    $("#content-grade").delegate '#goals_pages .pagination ul li a', 'click', (evt)-> 
+    $("#content-grade").delegate '#goals_pages .pagination li:not(.disabled) a', 'click', (evt)-> 
       helper.loadPage(evt, "#content-grade")
 
-    $("#content-grade .grades-container .pagination ul li a").live "click", (evt) ->
+    $("#content-grade .grades-container .pagination li:not(.disabled) a").live "click", (evt) ->
       evt.preventDefault()
       helper.loadPage(evt, $(this).parents(".grades-container"))
     return 

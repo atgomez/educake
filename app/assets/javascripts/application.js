@@ -37,6 +37,10 @@ $(document).ready(function() {
     	$(this).parents('.pagination').siblings('.loading').removeClass('hide');
     });
 
+    $('.pagination li.disabled a').live('click', function(e){
+      e.preventDefault();
+    });
+
 	  Placeholders.init({
 	  	live: true, //Apply to future and modified elements too
     	hideOnFocus: true //Hide the placeholder when the element receives focus
