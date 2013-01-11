@@ -31,6 +31,11 @@
 //= require rails.validations.simple_form
 //= require rails.validations.customValidators
 
+global = {
+  date_format: "mm-dd-yy",
+  date_format_dev: "yy-mm-dd"
+};
+
 $(document).ready(function() {
     $('.pagination-container.ajax .pagination a').attr('data-remote', 'true');
     $('.pagination-container.ajax .pagination a').click(function(){

@@ -83,7 +83,7 @@
           = f.input :accuracy, :as => :string, :label => t("goal.accuracy"), 
                     :input_html => {:id => "accuracy-#{goal.id}"}
           = f.input(:baseline_date, :as => :string, :required => true, 
-                    :input_html => {:class => "date-picker", 
+                    :input_html => {:class => "date-picker baseline-date", 
                     :value => goal.baseline_date_string, :id => "baseline_date#{goal.id}"})
           = f.input(:baseline, :as => :string, :label => t("goal.baseline"), 
                     :input_html => {:id => "baseline-#{goal.id}"})
@@ -108,7 +108,7 @@
               = f.simple_fields_for(:progresses, progress) do |f_progress|
                 %label.grade-name= t("goal.progress_with_id", :id => idx + 1)
                 = f_progress.input( :due_date, :as => :string, :required => false, 
-                                    :input_html => {:class => "date-picker", 
+                                    :input_html => {:class => "date-picker progress-due-date", 
                                         :value => progress.due_date_string, 
                                         :id => "goal_#{goal.id}_#{progress.object_id}"}, 
                                     :label => t("common.due_date"))
@@ -141,5 +141,4 @@
     }); */
 
     goal.get_curriculum();
-  });
-  
+  });  

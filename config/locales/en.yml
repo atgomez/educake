@@ -306,10 +306,11 @@ en:
         goal:
           attributes:
             baseline:
-              must_lower_than_goal: "must be lower than goal"
+              must_lower_than_goal: "must be lower than goal"              
             baseline_date:
               must_lower_than_due_date: "must be before goal date"
               invalid_format: "must be in format MM-DD-YYYY"
+              must_lower_than_grade_due_date: "must be lower than grade's due date"
             trial_days_actual:
               must_lower_than_ideal: "must be lower than the ideal trial days"
             due_date:

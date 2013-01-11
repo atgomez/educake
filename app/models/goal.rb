@@ -542,7 +542,11 @@ class Goal < ActiveRecord::Base
     def validate_baseline_date
       if self.baseline_date && self.due_date && self.baseline_date >= self.due_date
         self.errors.add(:baseline_date, :must_lower_than_due_date)
+      elsif self.baseline_date && self.grades.exists?(["due_date < ?", self.baseline_date])
+        # In case of changing goal baseline to some date greater than grade's date.
+        self.errors.add(:baseline_date, :must_lower_than_grade_due_date)
       end
+
       return self.errors.blank?
     end
 
@@ -596,7 +600,9 @@ class Goal < ActiveRecord::Base
     # Mark progresses as beign removed
     def mark_progresses_for_removal
       self.progresses.each do |p|
-        p.mark_for_destruction if !p.valid?
+        if p.due_date.blank? && p.accuracy.to_i <= 0
+          p.mark_for_destruction
+        end
       end
     end
 end

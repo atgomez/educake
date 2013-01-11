@@ -56,6 +56,13 @@ window.goal =
       $(this).parent().parent().submit()
     )
 
+    $(".goal-form .baseline-date").livequery('change', (e) ->
+      date = helper.parse_date($(this).val(), global.date_format)
+      # Change the min date of sub-goals (progresses)
+      if(date)
+        $(".goal-form .progress-due-date").datepicker("option", "minDate", date)      
+    )
+
     $(".goal-form").livequery('submit', (e) ->
       e.preventDefault()
 
