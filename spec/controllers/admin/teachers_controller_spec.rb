@@ -57,7 +57,7 @@ describe Admin::TeachersController do
   end
 
   describe "POST 'create'", :create => true do
-    subject { post :create, :format => :js }
+    subject { post :create}
     include_examples "unauthorized"
 
     context "authorized" do
@@ -72,15 +72,18 @@ describe Admin::TeachersController do
               :first_name => Faker::Name.first_name,
               :last_name => Faker::Name.last_name,
               :email => Faker::Internet.email
-            }
+            },
+
+            :format => :js
           }
         }
         subject {
-          post :create, params, :format => :js
+          post :create, params
         }
 
-        it "creates the teacher and response result" do
+        it "creates the teacher and response result", :current => true do
           subject.should be_success
+
           assigns(:teacher).should_not be_nil
           ActionMailer::Base.deliveries.last.to.should == [params[:user][:email]]
         end
@@ -92,12 +95,13 @@ describe Admin::TeachersController do
             :user => {
               :first_name => Faker::Name.first_name,
               :last_name => Faker::Name.last_name
-            }
+            },
+            :format => :js
           }
         }
 
         subject {
-          post :create, params, :format => :js
+          post :create, params
         }
 
         it "returns the error" do
@@ -107,15 +111,17 @@ describe Admin::TeachersController do
 
       context "with unexpected error" do
         let(:params) {
-          {:first_name => Faker::Name.first_name}
+          {:first_name => Faker::Name.first_name, :format => :js}
         }
 
         subject {
-          post :create, params, :format => :js 
+          post :create, params 
         }
 
         it "returns the error" do
-          User.should_receive(:new_with_role_name).and_raise(Exception.new("Fatal error!"))
+          teacher = FactoryGirl.build(:teacher)
+          User.should_receive(:new_with_role_name).and_return(teacher)
+          teacher.stub!(:save).and_raise(Exception.new("Fatal error!"))
           subject.should_not be_success
         end
       end
@@ -205,7 +211,7 @@ describe Admin::TeachersController do
 
           it "returns the error" do
             User.any_instance.stub(:update_attributes).and_raise(Exception.new("Fatal error!"))
-            subject.should be_success
+            subject.should_not be_success
           end
         end
       end
@@ -283,14 +289,14 @@ describe Admin::TeachersController do
       context "with invalid teacher" do
         subject { get :get_students, :user_id => "abc" }
 
-         it "renders 'page_not_found'" do
+        it "renders 'page_not_found'" do
           subject.response_code.should == 404
         end
       end
     end
   end
 
-  context "viewed by super admin", :current => true do
+  context "viewed by super admin" do
     let(:super_admin) {FactoryGirl.create(:super_admin)}    
     before(:each) do
       sign_in super_admin
@@ -298,6 +304,13 @@ describe Admin::TeachersController do
 
     context "without 'user_id" do
       subject {get :edit, :id => "abc", :user_id => "abc", :admin_id => admin.id, :format => :js}
+      it "renders 'page_not_found'" do
+        subject.response_code.should == 404
+      end
+    end
+
+    context "without 'admin_id'" do
+      subject {get :edit, :id => "abc", :user_id => "abc", :format => :js}
       it "renders 'page_not_found'" do
         subject.response_code.should == 404
       end
