@@ -1,3 +1,5 @@
 - form_id = "modal-goal-#{@goal.id}"
 $("#new-goal-container").html("#{escape_javascript(render(:partial => "form", :locals => {:goal => @goal, :student => @student, :id => form_id}))}");
 $("##{form_id}").modal('show');
+
+$("##{form_id}").on('shown', function(){$('form').enableClientSideValidations();}); 

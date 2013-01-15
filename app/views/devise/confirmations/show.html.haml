@@ -2,7 +2,7 @@
   %h4.brown= t("devise.confirmation.change_password_title")
   = simple_form_for(resource, :as => resource_name, 
         :url => update_user_confirmation_path(params[:confirmation_token]), 
-        :html => { :method => :put, :class => 'form-horizontal' }) do |f|
+        :html => { :method => :put, :class => 'form-horizontal' }, :validate => true) do |f|
     - if notification = f.error_notification
       .alert.alert-error.fade.in
         %a{:class => "close", 'data-dismiss' => "alert", :href => "#"} &times;

@@ -33,10 +33,11 @@ class Goal < ActiveRecord::Base
   belongs_to :curriculum  
   
   # VALIDATION
+  validates_presence_of :accuracy, :curriculum_id, :student_id,
+                        :baseline, :trial_days_total, :trial_days_actual, :baseline_date, :due_date
   validates :accuracy, :numericality => true, :inclusion => {:in => 0..100, :message => :out_of_range_100}
   validates :baseline, :numericality => true, :inclusion => {:in => 0..100, :message => :out_of_range_100}
-  validates_presence_of :accuracy, :curriculum_id, :student_id,
-                        :baseline, :trial_days_total, :trial_days_actual
+  
   validate :custom_validations
 
   # NESTED ATTRIBUTE

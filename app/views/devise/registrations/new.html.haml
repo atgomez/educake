@@ -4,7 +4,7 @@
 
 - sharing = @sharing || StudentSharing.new
 
-= simple_form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => {:class => "sign-up form-horizontal"}) do |f|
+= simple_form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => {:class => "sign-up form-horizontal"}, :validate => true) do |f|
   - if notification = f.error_notification
     .alert.alert-error.fade.in
       %a{:class => "close", 'data-dismiss' => "alert", :href => "#"} &times;

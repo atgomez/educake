@@ -6,7 +6,7 @@
   - method = "PUT"
 
 = simple_form_for(teacher, :url => url, :method => method, :remote => true,
-      :html => { :class => 'form-horizontal teacher-form' }) do |f|
+      :html => { :class => 'form-horizontal teacher-form' }, :validate => true) do |f|
   .modal-header
     %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} &times;
     - if teacher.new_record?

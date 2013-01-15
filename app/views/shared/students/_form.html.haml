@@ -4,8 +4,7 @@
 / add student from: admin/students/new
 - controller_namespace = ((controller_namespace.nil? ? nil : controller_namespace) rescue nil)
 
-= simple_form_for([controller_namespace, @student], :html => { :multipart => true, :id => "student-form" }, 
-                  :back_link => back_link ||= "" ) do |f|
+= simple_form_for([controller_namespace, @student], :html => { :multipart => true, :id => "student-form" }, :validate => true, :back_link => back_link ||= "" ) do |f|
   - if notification = f.error_notification
     .alert.alert-error.fade.in
       %a{:class => "close", 'data-dismiss' => "alert", :href => "#"} &times;

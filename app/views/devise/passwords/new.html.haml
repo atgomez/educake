@@ -1,6 +1,6 @@
 .center-form
   %h4.brown= t("devise.password.forgot_password_title")
-  = simple_form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :post, :class => 'form-horizontal' }) do |f|
+  = simple_form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :post, :class => 'form-horizontal' }, :validate => true) do |f|
     - if notification = f.error_notification
       .alert.alert-error.fade.in
         %a{:class => "close", 'data-dismiss' => "alert", :href => "#"} &times;

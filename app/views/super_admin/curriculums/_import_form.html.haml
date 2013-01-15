@@ -1,6 +1,6 @@
 = simple_form_for(@import, :url => import_super_admin_curriculums_path, :remote => true,
                   :html => { :multipart => true, 
-                             :class => 'import-form form-horizontal' }) do |f|
+                             :class => 'import-form form-horizontal' }, :validate => true) do |f|
   .modal-header
     %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} &times;
     %h4= t("curriculum.import_title")

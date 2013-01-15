@@ -7,7 +7,7 @@
     #login-form-left-egde
       = image_tag("login-form-left-egde.png", :width => "19", :height => "433", :alt => "")
     #login-form-main
-      = simple_form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f|
+      = simple_form_for(resource, :as => resource_name, :url => session_path(resource_name), :validate => true) do |f|
         #logo-login
           = image_tag("logo.png", :width => "295", :height => "46", :alt => "")
         .font20.bold.white.padding-top20.height10
