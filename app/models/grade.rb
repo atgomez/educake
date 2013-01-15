@@ -29,10 +29,11 @@ class Grade < ActiveRecord::Base
   belongs_to :progress
 
   # VALIDATION
+  validates_presence_of :accuracy, :goal_id
   validates :accuracy, :numericality => true, 
             :inclusion => {:in => 0..100, :message => :out_of_range_100}
   validates :goal_id, :uniqueness => { :scope => :due_date, :message => :only_once_per_day }
-  validates_presence_of :accuracy, :goal_id
+  
 
   # SCOPE
   scope :computable, where('is_unused = ?', false)
