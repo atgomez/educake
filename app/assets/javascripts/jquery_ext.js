@@ -98,12 +98,14 @@ jquery_ext = {
                             }) );
                         },
                         select: function( event, ui ) {
-                            ui.item.option.selected = true;
+                            current_value = select.val();
+                            ui.item.option.selected = true;                            
                             that._trigger( "selected", event, {
                                 item: ui.item.option
                             });
 
-                            select.change();
+                            if(ui.item.option.value != current_value)
+                                select.change();
                         },
                         change: function( event, ui ) {
                             if ( !ui.item )

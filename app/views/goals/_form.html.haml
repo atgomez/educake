@@ -50,11 +50,11 @@
             = f_cur.input(:standard, :as => :select, :collection => data[:standards],
                   :label => t("curriculum.standard"), :include_blank => false,
                   :input_html => {:class => "extended-combobox reset-on-changed"})
-            .control-group.curriculum-description.virtual.hide
+            .control-group.curriculum-description.virtual
               = label_tag(t("curriculum.description"), nil, :class => "control-label")
               .controls
-                .label-value.description1.bold
-                .label-value.description2
+                .label-value.description1.bold= goal.curriculum.try(:description1)
+                .label-value.description2= goal.curriculum.try(:html_description2)
                 .label-value.error
         .modal-footer
           .submit-indicator.loading.hide
@@ -137,9 +137,6 @@
     $(this).find(".modal-body").css({
       "max-height": form_max_height + "px"
     }); */
-    
-    goal.get_curriculum();
-
   });  
 
   $('form').enableClientSideValidations();

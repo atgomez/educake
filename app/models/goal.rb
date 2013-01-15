@@ -545,7 +545,7 @@ class Goal < ActiveRecord::Base
         self.errors.add(:baseline_date, :must_lower_than_due_date)
       elsif self.baseline_date && self.grades.exists?(["due_date < ?", self.baseline_date])
         # In case of changing goal baseline to some date greater than grade's date.
-        self.errors.add(:baseline_date, :must_lower_than_grade_due_date)
+        self.errors.add(:baseline_date, :must_before_grade_due_date)
       end
 
       return self.errors.blank?

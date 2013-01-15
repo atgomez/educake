@@ -147,43 +147,85 @@ window.goal =
     # Show the loading
     loading = $("#curriculum.tab-pane").find(".loading").removeClass("hide")
 
+    # The order of these items is very important, BE CAREFUL when change it.
+    keys_map = {
+      "curriculum_core_id": "curriculum_cores",
+      "subject_id": "subjects",
+      "curriculum_grade_id": "curriculum_grades",
+      "curriculum_area_id": "curriculum_areas",
+      "standard": "standards"
+    }
+
     $.ajax({
       url: "/goals/curriculum_info",
       type: "POST",
       data: attrs,
       success: (res) ->
         curriculum_desc = $("#curriculum.tab-pane .curriculum-description")
-        curriculum_name = $("#goal.tab-pane .curriculum-name-place-holder")
-        keys_map = {
-          'subject_id'          : "subjects",
-          'curriculum_grade_id' : "curriculum_grades",
-          'curriculum_area_id'  : "curriculum_areas",
-          'standard'            : "standards"
-        }
+        curriculum_name = $("#goal.tab-pane .curriculum-name-place-holder")        
 
         # Dynamic change the select box
         if(res && res.extra_info)
-          extra_info = res.extra_info          
+          extra_info = res.extra_info
+          # Contains fields that are skipped
+          skipped_fields = []
+          fields = []
 
+          # Detect the fields need updating.
           $.each(keys_map, (k, v) ->
             select_name = "goal[curriculum_attributes][" + k + "]"
             
             if select_name == current_param_name
               return # Skip the current select box
 
+            select = container.find("select[name='" + select_name + "']")
             options = extra_info[v]
+            found = true
+            # Find if there is anything not matched
+            for opt in options
+              if select.find("option[value='" + opt[1] + "']").length == 0
+                found = false
+                break
+
+            if !found && k != 'curriculum_core_id'
+              fields.push(k)
+            else
+              skipped_fields.push(k)
+          )
+
+          # Change the value of skipped fields.
+          $.each(skipped_fields, (idx, field_key) ->
+            select = container.find("select[name='goal[curriculum_attributes][" + field_key + "]']")
+            current_value = $(select).val().toString()
+            info_key = keys_map[field_key]
+            options = extra_info[info_key]
+            found = false
+            # Find if there is any matched value
+            for opt in options
+              if opt[1].toString() == current_value
+                found = true
+                break
+
+            if(!found && res.curriculum)
+              goal.change_extended_select_value(select, res.curriculum[field_key])
+          )
+
+          # Change the options of other fields.
+          $.each(fields, (idx, field_key) ->
+            info_key = keys_map[field_key]
+            options = extra_info[info_key]
             new_options_html = ""
             $.each(options, (idx, data) ->
               name = data[0]
               value = data[1]
               new_options_html += '<option value="' + value + '">' + name + '</option>'
             )
-            select = container.find("select[name='" + select_name + "']")
+            select = container.find("select[name='goal[curriculum_attributes][" + field_key + "]']")
             select.html(new_options_html)
 
             if res.curriculum
               # Reset the value of dropdown box
-              goal.change_extended_select_value(select, res.curriculum[k])
+              goal.change_extended_select_value(select, res.curriculum[field_key])
           )
 
         # Show the current select curriculum
