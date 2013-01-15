@@ -47,9 +47,9 @@
               %strong.description1= h goal.curriculum.try(:description1)
             %p.description2= simple_format(goal.curriculum.try(:description2))
             %em.goal-description= simple_format(goal.description)
-          .goal-progress.pull-right{:class => (on_edit_mode ? 'large' : '')}
+          .goal-progress.pull-left{:class => (on_edit_mode ? 'large' : '')}
             - goal.progresses.order('due_date ASC').each do |grade|
-              .width-grade= ::Util.round_f(grade.accuracy).to_s + "% by " + grade.due_date.strftime("%m/%Y")
+              .width-progress= ::Util.round_f(grade.accuracy).to_s + "% by " + grade.due_date.strftime("%m/%Y")
           .clearfix
           .grades-container
   .pull-right#goals_pages= render_pagination goals

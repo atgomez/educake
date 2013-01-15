@@ -22,8 +22,8 @@
     - if (!@user.is?(:parent))
       .action-link-container.pull-right
         .clearfix.action-link
-          = link_to(t("common.edit"), url_for(:controller => "students", :action => 'edit', 
-                :id => @student.id, :user_id => @user.id, :admin_id => @admin))
+          = link_to("", url_for(:controller => "students", :action => 'edit', 
+                :id => @student.id, :user_id => @user.id, :admin_id => @admin), :class => "icon-pencil color-pen")
         .clearfix.action-link
           = link_to t("student.invitation_anchor"), "#", :id => "goto-users"
 

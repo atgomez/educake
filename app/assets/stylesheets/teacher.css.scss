@@ -9,6 +9,7 @@ $color-font: #E17C25;
   }
 
   .one-student {
+    background-color: #ededed; 
     border: 1px solid $color-font;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
@@ -80,7 +81,8 @@ $color-font: #E17C25;
   }
 
   .hoverable {
-    &:hover { background-color: white; cursor:pointer }
+    /*&:hover { background: url("/assets/bg-body.png") repeat scroll 0 0 transparent; cursor:pointer }*/
+    &:hover { background-color: #F9F9F9; cursor:pointer }
   }
 
   .student-container, .teacher-container{

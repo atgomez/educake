@@ -57,6 +57,7 @@ form#student-form {
     .width-name { 
       width:150px;
       word-wrap: break-word;
+      padding-left: 27px;
     }
     .width-email {
       width:250px;
@@ -235,7 +236,8 @@ a {
 #export-button{
   margin-bottom: 10px;
 }
-.show-student{
+.show-student {
+
   .separator{
     margin: 15px 0;
   }
@@ -255,6 +257,13 @@ a {
 
     .width-grade{
       width: 140px;
+      text-align: right;
+      margin-right: 10px;
+    }
+    .width-progress {
+      margin-left: 21px;
+      text-align: left;
+      width: 140px;
     }
 
     .goal-progress{
@@ -272,6 +281,7 @@ a {
 
     table td.width-name{
       width: 30%;
+      padding-left: 17px;
     }
 
     table td.width-role{
