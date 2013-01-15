@@ -1,7 +1,7 @@
 = render '/shared/search_box', :action => "search_result", :placeholder => "Enter the term search"
 %div{:style=>"margin-top: 10px;"}
   %b
-    - unless @teacher.blank?
+    - unless @users.blank?
       = t("common.search_result_for", :query => params[:query])
     - else
       = t("common.no_search_result_for", :query => params[:query])
