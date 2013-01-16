@@ -237,6 +237,11 @@ en:
     school: "School"
     student: "Student"
 
+  subscribers:  
+    title: "Subscribers"
+    accept: "Accept"
+    accept_all: "Accept All"
+    created_successfully: "Subscriber was successfully created."
   mail:
     user:
       invitation_confirm_subject: "Confirmation for inviting"
@@ -256,6 +261,8 @@ en:
     hello: "Hello %{name}!"
     hi: "Hi %{name}!"
     school_end: "school."
+    notify_subscriber: "Notify Subscriber"
+    content_notify_subscriber: "You have the request from the following email: "
     new_user:
       admin: "You are the admin at"
       normal_user: "You joined at"

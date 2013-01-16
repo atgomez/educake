@@ -16,6 +16,7 @@
     .container#main
       #banner
         .pull-right= render(:partial => "shared/user_box") if user_signed_in?
+        .pull-right= link_to(t("devise.session.sign_in_action"), new_user_session_path) unless user_signed_in?
         .clearfix
         .header
           %a.logo{:href => "/"}
