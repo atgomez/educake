@@ -6,12 +6,12 @@ development:
   replica_set: true
 
 production:
-  database: db
+  database:  <%= JSON.parse( ENV['VCAP_SERVICES'] )['mongodb-1.8'].first['credentials']['db'] rescue 'tutorial_db' %>
   capsize: <%= 200.megabytes %>
-  host: 10.0.29.251
-  port: 25699
-  username: b9cd33f9-c134-42a7-a6b1-9a01dfbb8225
-  password: da719c2b-62e1-4fd0-bc75-19fcff9dcfc7
+  host: <%= JSON.parse(ENV['VCAP_SERVICES'])['mongodb-1.8'].first['credentials']['hostname'] rescue 'localhost' %>
+  port: <%= JSON.parse( ENV['VCAP_SERVICES'] )['mongodb-1.8'].first['credentials']['port'] rescue 27017 %>
+  username: <%= JSON.parse( ENV['VCAP_SERVICES'] )['mongodb-1.8'].first['credentials']['username'] rescue '' %>
+  password: <%= JSON.parse( ENV['VCAP_SERVICES'] )['mongodb-1.8'].first['credentials']['password'] rescue '' %>
   disable_file_logging: true
 
 test:
