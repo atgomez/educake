@@ -171,11 +171,14 @@ window.goal =
           skipped_fields = []
           fields = []
 
+          after_current_field = false
+
           # Detect the fields need updating.
           $.each(keys_map, (k, v) ->
             select_name = "goal[curriculum_attributes][" + k + "]"
             
             if select_name == current_param_name
+              after_current_field = true
               return # Skip the current select box
 
             select = container.find("select[name='" + select_name + "']")
@@ -187,7 +190,7 @@ window.goal =
                 found = false
                 break
 
-            if !found && k != 'curriculum_core_id'
+            if (!found && k != 'curriculum_core_id') || after_current_field
               fields.push(k)
             else
               skipped_fields.push(k)
