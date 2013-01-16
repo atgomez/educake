@@ -1,7 +1,7 @@
 .super-admin.school
   = link_to t("school.add"), new_super_admin_school_path, :class => "btn"
   - unless @schools.empty?
-    = link_to t("school.add_user"), new_super_admin_user_path(:back => "schools"), :class => "btn"
+    = link_to t("school.add_user"), new_super_admin_user_path(:back => "schools"), :class => "btn margin-left"
   = link_to t("curriculum.title"), super_admin_curriculums_path, :class => "margin-left"
   = "|"
   = link_to t("subscribers.title"), super_admin_subscribers_path, :class => "margin-left"
