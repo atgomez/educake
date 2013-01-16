@@ -1,13 +1,13 @@
 !!!
 %html
   %head
-    %title TeacherMgnt
+    %title Educake
     = stylesheet_link_tag    "application", :media => "all"
     = javascript_include_tag "//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"
     = javascript_include_tag "application"
     = csrf_meta_tags
     %link{:href => path_to_image('favicon.ico'), :type => "image/x-icon", :rel => "shortcut icon"}
-  %body
+  %body.chart
     .container#main
       %center  
         = yield
