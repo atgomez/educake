@@ -6,9 +6,12 @@ development:
   replica_set: true
 
 production:
-  url: <%= ENV['MONGOLAB_URI'] %>
-  capsize: <%= 100.megabytes %>
-  replica_set: true
+  database: db
+  capsize: <%= 200.megabytes %>
+  host: 10.0.29.251
+  port: 25699
+  username: b9cd33f9-c134-42a7-a6b1-9a01dfbb8225
+  password: da719c2b-62e1-4fd0-bc75-19fcff9dcfc7
   disable_file_logging: true
 
 test:
