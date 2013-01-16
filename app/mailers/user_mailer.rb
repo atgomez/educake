@@ -24,4 +24,10 @@ class UserMailer < ActionMailer::Base
     @url = url_for :controller=>'devise/sessions', :action => 'new'
     mail(:to => user.email, :subject => I18n.t("mail.user.inform_block_status_subject"))
   end
+
+  def send_notify_subscriber(subscriber)
+    @subscriber = subscriber 
+    @super_admin = User.super_admins.first
+    mail(:to => "thuy.nguyen@techpropulsionlabs.com", :subject => I18n.t("mail.notify_subscriber"))
+  end
 end

@@ -214,11 +214,15 @@ class ApplicationController < ActionController::Base
     end
 
     def except_controller?
-      is_devise_controller? || is_rails_admin_controller?
+      is_devise_controller? || is_rails_admin_controller? || is_subscribers_controller?
     end
 
     def is_devise_controller?
       self.is_a?(DeviseController)
+    end
+
+    def is_subscribers_controller?
+      self.is_a?(SubscribersController)
     end
 
     def is_rails_admin_controller?

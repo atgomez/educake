@@ -1,5 +1,4 @@
 TeacherMgnt::Application.routes.draw do
-
   #Rails Admin
   mount RailsAdmin::Engine => '/backend', :as => 'rails_admin'
 
@@ -13,8 +12,7 @@ TeacherMgnt::Application.routes.draw do
   # root :to => "admin/teachers#index", :constraints => RoleRouteConstraint.new(:admin)
   # root :to => "students#index", :constraints => RoleRouteConstraint.new(:parent, :teacher)
   root :to => "home#index"
-
-
+  resources :subscribers
   # Chart rooting
   resources :charts do
     collection do
@@ -94,6 +92,7 @@ TeacherMgnt::Application.routes.draw do
   
   namespace :super_admin do 
     resources :schools
+    resources :subscribers, :only => [:index]
     resources :curriculums do
       collection do
         get :init_import
