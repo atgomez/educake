@@ -8,7 +8,6 @@ class GoalsController < ApplicationController
 
   def new
     @goal ||= Goal.build_goal :trial_days_total => 10, :trial_days_actual => 9, :baseline_date => Date.today
-    @goal.build_progresses
     @student = Student.find_by_id(params[:student_id])
   end
 

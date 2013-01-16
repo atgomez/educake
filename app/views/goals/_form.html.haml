@@ -9,7 +9,7 @@
 
 .modal.hide.fade{:tabindex => "-1", :id => id, "data-backdrop" => "static"}
   = simple_form_for(goal, :html => { :id => "goal-form#{goal.id}", 
-                    :class => 'goal-form form-horizontal goal-form' }) do |f|    
+                    :class => 'goal-form form-horizontal goal-form' }, :validate => true) do |f|    
     .modal-header
       %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} &times;
       - if goal.new_record?
@@ -50,11 +50,11 @@
             = f_cur.input(:standard, :as => :select, :collection => data[:standards],
                   :label => t("curriculum.standard"), :include_blank => false,
                   :input_html => {:class => "extended-combobox reset-on-changed"})
-            .control-group.curriculum-description.virtual.hide
+            .control-group.curriculum-description.virtual
               = label_tag(t("curriculum.description"), nil, :class => "control-label")
               .controls
-                .label-value.description1.bold
-                .label-value.description2
+                .label-value.description1.bold= goal.curriculum.try(:description1)
+                .label-value.description2= goal.curriculum.try(:html_description2)
                 .label-value.error
         .modal-footer
           .submit-indicator.loading.hide
@@ -76,9 +76,7 @@
           %center
             .curriculum-name-place-holder.bold= goal.curriculum.try(:full_name)
 
-          = f.input(:due_date, :as => :string, :required => true, 
-                    :input_html => {:class => "date-picker", 
-                    :value => goal.due_date_string, :id => "goal_due_date#{goal.id}"})
+          = f.input(:due_date, :as => :string, :required => true, :validate => { :presence => true }, :input_html => {:class => "date-picker", :value => goal.due_date_string, :id => "goal_due_date#{goal.id}"})
           = f.input(:description, :input_html => {:rows => '5'}, :label => t("goal.note"))
           = f.input :accuracy, :as => :string, :label => t("goal.accuracy"), 
                     :input_html => {:id => "accuracy-#{goal.id}"}
@@ -139,6 +137,7 @@
     $(this).find(".modal-body").css({
       "max-height": form_max_height + "px"
     }); */
-
-    goal.get_curriculum();
   });  
+
+  $('form').enableClientSideValidations();
+

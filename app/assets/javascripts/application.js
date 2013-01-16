@@ -31,6 +31,12 @@
 //= require rails.validations.simple_form
 //= require rails.validations.customValidators
 
+// Extension to remove item from an array
+Array.prototype.remove = function(s) {
+  var i = this.indexOf(s);
+  if(i != -1) this.splice(i, 1);
+}
+
 global = {
   date_format: "mm-dd-yy",
   date_format_dev: "yy-mm-dd"

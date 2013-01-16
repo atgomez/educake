@@ -33,10 +33,11 @@ class Goal < ActiveRecord::Base
   belongs_to :curriculum  
   
   # VALIDATION
+  validates_presence_of :accuracy, :curriculum_id, :student_id,
+                        :baseline, :trial_days_total, :trial_days_actual, :baseline_date, :due_date
   validates :accuracy, :numericality => true, :inclusion => {:in => 0..100, :message => :out_of_range_100}
   validates :baseline, :numericality => true, :inclusion => {:in => 0..100, :message => :out_of_range_100}
-  validates_presence_of :accuracy, :curriculum_id, :student_id,
-                        :baseline, :trial_days_total, :trial_days_actual
+  
   validate :custom_validations
 
   # NESTED ATTRIBUTE
@@ -544,7 +545,7 @@ class Goal < ActiveRecord::Base
         self.errors.add(:baseline_date, :must_lower_than_due_date)
       elsif self.baseline_date && self.grades.exists?(["due_date < ?", self.baseline_date])
         # In case of changing goal baseline to some date greater than grade's date.
-        self.errors.add(:baseline_date, :must_lower_than_grade_due_date)
+        self.errors.add(:baseline_date, :must_before_grade_due_date)
       end
 
       return self.errors.blank?
