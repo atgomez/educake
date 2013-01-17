@@ -5,6 +5,11 @@ development:
   port: 27017
   replica_set: true
 
+staging:
+  url: <%= ENV['MONGOLAB_URI'] %>
+  capsize: <%= 100.megabytes %>
+  replica_set: true
+
 production:
   database:  <%= JSON.parse( ENV['VCAP_SERVICES'] )['mongodb-1.8'].first['credentials']['db'] rescue 'tutorial_db' %>
   capsize: <%= 200.megabytes %>

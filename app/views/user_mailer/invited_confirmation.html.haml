@@ -3,7 +3,7 @@
   %head
     %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}
   %body
-    %h1= t("mail.hi", :name => @sharing.full_name)
+    %p= t("mail.hi", :name => @sharing.full_name)
     %p
       = t("mail.user.invited_inform")
       %b= @sharing.student.full_name
