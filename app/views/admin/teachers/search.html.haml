@@ -6,7 +6,7 @@
   %h3.school-name= @admin.school.try(:name)
   .search-header.clearfix
     %h4.search-title
-      - unless @teacher.blank?
+      - unless @teachers.blank?
         = t("common.search_result_for", :query => params[:query])
       - else
         = t("common.no_search_result_for", :query => params[:query])
