@@ -1,4 +1,4 @@
-== Welcome to Teacher Management
+== Welcome to Educake (Teacher Mgnt)
 
 == Dev command line
   rake db:bootstrap : drop, create, seed, and sample_data
