@@ -6,9 +6,13 @@ development:
   replica_set: true
 
 production:
-  url: <%= ENV['MONGOLAB_URI'] %>
-  capsize: <%= 100.megabytes %>
-  replica_set: true
+  database:  <%= JSON.parse( ENV['VCAP_SERVICES'] )['mongodb-1.8'].first['credentials']['db'] rescue 'tutorial_db' %>
+  capsize: <%= 200.megabytes %>
+  host: <%= JSON.parse(ENV['VCAP_SERVICES'])['mongodb-1.8'].first['credentials']['hostname'] rescue 'localhost' %>
+  port: <%= JSON.parse( ENV['VCAP_SERVICES'] )['mongodb-1.8'].first['credentials']['port'] rescue 27017 %>
+  username: <%= JSON.parse( ENV['VCAP_SERVICES'] )['mongodb-1.8'].first['credentials']['username'] rescue '' %>
+  password: <%= JSON.parse( ENV['VCAP_SERVICES'] )['mongodb-1.8'].first['credentials']['password'] rescue '' %>
+  disable_file_logging: true
 
 test:
   database: teacher-test

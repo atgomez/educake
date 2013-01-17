@@ -81,6 +81,13 @@ GEM
     client_side_validations-simple_form (2.0.1)
       client_side_validations (~> 3.2.0)
       simple_form (~> 2.0.3)
+    cloudfoundry-devise (1.5.2)
+      bcrypt-ruby (~> 3.0)
+      orm_adapter (~> 0.0.3)
+      warden (~> 1.1)
+    cloudfoundry-jquery-rails (1.0.19.1)
+      railties (~> 3.0)
+      thor (~> 0.14)
     cocaine (0.4.2)
     coffee-rails (3.2.2)
       coffee-script (>= 2.2.0)
@@ -89,7 +96,6 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.4.0)
-    commonjs (0.2.6)
     daemons (1.1.9)
     database_cleaner (0.9.1)
     devise (2.0.2)
@@ -138,11 +144,6 @@ GEM
     kaminari (0.14.1)
       actionpack (>= 3.0.0)
       activesupport (>= 3.0.0)
-    less (2.2.2)
-      commonjs (~> 0.2.6)
-    less-rails (2.2.3)
-      actionpack (>= 3.1)
-      less (~> 2.2.0)
     libv8 (3.3.10.4)
     libwebsocket (0.1.7.1)
       addressable
@@ -321,6 +322,8 @@ DEPENDENCIES
   capybara
   client_side_validations
   client_side_validations-simple_form
+  cloudfoundry-devise
+  cloudfoundry-jquery-rails
   coffee-rails (~> 3.2.1)
   database_cleaner (>= 0.8.0)
   devise (>= 2.0.0)
@@ -330,9 +333,7 @@ DEPENDENCIES
   haml
   haml-rails
   hpricot (>= 0.8.5)
-  jquery-rails
   json
-  less-rails
   meta_search
   mongodb_logger!
   moped
