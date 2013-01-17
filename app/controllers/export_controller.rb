@@ -90,7 +90,7 @@ class ExportController < ApplicationController
 
 		  begin 
 		  	# Create temp file to export
-	      temp = Tempfile.new("tempfile.xlsx", path) 
+	      temp = Tempfile.new("tempfile.xlsx", "tmp") 
 	      yield(path, temp.path) # Pass temp folder and the path of temp file
 	     
 		  ensure
