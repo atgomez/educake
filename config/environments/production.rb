@@ -74,7 +74,7 @@ TeacherMgnt::Application.configure do
     :address              => "smtp.gmail.com",
     :port                 => 587,
     :domain               => 'educake.co',
-    :user_name            => 'anne',
+    :user_name            => 'anne@educake.co',
     :password             => 'tpl123456',
     :authentication       => 'plain',
     :enable_starttls_auto => true
