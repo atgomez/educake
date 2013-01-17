@@ -67,16 +67,29 @@ TeacherMgnt::Application.configure do
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
 
   # Config mailer
-  config.action_mailer.default_url_options = { :host => 'educake.co' }
+  config.action_mailer.default_url_options = { :host => 'teacher-mgnt-staging.herokuapp.com' }
   config.action_mailer.delivery_method = :smtp
-  # GMAIL
-  config.action_mailer.smtp_settings = {
-    :address              => "smtp.gmail.com",
-    :port                 => 587,
-    :domain               => 'educake.co',
-    :user_name            => 'anne',
-    :password             => 'tpl123456',
-    :authentication       => 'plain',
-    :enable_starttls_auto => true
-  }
+
+  if !ENV['SENDGRID_USERNAME'].blank? && !ENV['SENDGRID_PASSWORD'].blank?
+    # SENDGRID
+    config.action_mailer.smtp_settings = {
+      :address        => 'smtp.sendgrid.net',
+      :port           => 587,
+      :authentication => :plain,
+      :user_name      => ENV['SENDGRID_USERNAME'],
+      :password       => ENV['SENDGRID_PASSWORD'],
+      :domain         => 'heroku.com'
+    }
+  else
+    # GMAIL
+    config.action_mailer.smtp_settings = {
+      :address              => "smtp.gmail.com",
+      :port                 => 587,
+      :domain               => 'gmail.com',
+      :user_name            => 'tpl.teacher.mailer',
+      :password             => 'TplTeacher123456',
+      :authentication       => 'plain',
+      :enable_starttls_auto => true
+    }
+  end
 end

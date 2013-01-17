@@ -5,6 +5,11 @@ development:
   port: 27017
   replica_set: true
 
+staging:
+  url: <%= ENV['MONGOLAB_URI'] %>
+  capsize: <%= 100.megabytes %>
+  replica_set: true
+
 production:
   url: <%= ENV['MONGOLAB_URI'] %>
   capsize: <%= 100.megabytes %>
