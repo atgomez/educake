@@ -96,7 +96,7 @@ GEM
     commonjs (0.2.6)
     cri (2.3.0)
       colored (>= 1.2)
-    daemons (1.1.9)
+    commonjs (0.2.6)
     database_cleaner (0.9.1)
     descendants_tracker (0.0.1)
     devise (2.0.2)
@@ -170,7 +170,10 @@ GEM
     kaminari (0.14.1)
       actionpack (>= 3.0.0)
       activesupport (>= 3.0.0)
+<<<<<<< HEAD
     kramdown (0.13.8)
+=======
+>>>>>>> Rollback to normal development env. Please user branch 'appfog-production' for deployment
     less (2.2.2)
       commonjs (~> 0.2.6)
     less-rails (2.2.3)
@@ -386,7 +389,10 @@ DEPENDENCIES
   capybara
   client_side_validations
   client_side_validations-simple_form
+<<<<<<< HEAD
   coderay
+=======
+>>>>>>> Rollback to normal development env. Please user branch 'appfog-production' for deployment
   coffee-rails (~> 3.2.1)
   database_cleaner (>= 0.8.0)
   devise (>= 2.0.0)
@@ -401,7 +407,10 @@ DEPENDENCIES
   hpricot (>= 0.8.5)
   jquery-rails
   json
+<<<<<<< HEAD
   kramdown (~> 0.13.2)
+=======
+>>>>>>> Rollback to normal development env. Please user branch 'appfog-production' for deployment
   less-rails
   meta_search
   mime-types (~> 1.16)
