@@ -14,6 +14,8 @@ group :assets do
   gem 'coffee-rails', '~> 3.2.1'
   #gem 'therubyracer', :platforms => :ruby
   gem 'uglifier', '>= 1.0.3'
+  gem 'execjs'
+  gem 'therubyracer'
 end
 
 gem "twitter-bootstrap-rails"
@@ -59,7 +61,7 @@ group :development do
   # For HAML
   gem 'ruby_parser', '>= 2.3.1'
   gem "hpricot", ">= 0.8.5"
-  gem 'therubyracer', :platforms => :ruby
+  # gem 'therubyracer', :platforms => :ruby
 
   # For models annotation
   gem 'annotate', ">=2.5.0"

@@ -327,6 +327,7 @@ DEPENDENCIES
   coffee-rails (~> 3.2.1)
   database_cleaner (>= 0.8.0)
   devise (>= 2.0.0)
+  execjs
   factory_girl_rails (>= 4.1.0)
   faker
   fastercsv
