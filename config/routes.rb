@@ -92,7 +92,11 @@ TeacherMgnt::Application.routes.draw do
   
   namespace :super_admin do 
     resources :schools
-    resources :subscribers, :only => [:index]
+    resources :subscribers do 
+      member do 
+        get :contact
+      end 
+    end
     resources :curriculums do
       collection do
         get :init_import

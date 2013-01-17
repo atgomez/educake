@@ -1,9 +1,5 @@
 class SubscribersController < ApplicationController
-  skip_before_filter :authenticate_user!#, :except => [:index]
-
-  # def index
-  #   @subscribers = Subscriber.load_data(filtered_params)
-  # end
+  skip_before_filter :authenticate_user!
 
   def new
     @subscriber = Subscriber.new

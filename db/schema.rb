@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130110065353) do
+ActiveRecord::Schema.define(:version => 20130116042547) do
 
   create_table "curriculum_areas", :force => true do |t|
     t.string   "name",       :null => false
@@ -173,6 +173,12 @@ ActiveRecord::Schema.define(:version => 20130110065353) do
 
   add_index "students", ["first_name", "last_name", "teacher_id"], :name => "index_students_on_first_name_and_last_name_and_teacher_id", :unique => true
 
+  create_table "subcribers", :force => true do |t|
+    t.string   "email"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "subjects", :force => true do |t|
     t.string   "name",       :null => false
     t.datetime "created_at", :null => false
@@ -180,6 +186,13 @@ ActiveRecord::Schema.define(:version => 20130110065353) do
   end
 
   add_index "subjects", ["name"], :name => "index_subjects_on_name", :unique => true
+
+  create_table "subscribers", :force => true do |t|
+    t.string   "email"
+    t.boolean  "is_accept",  :default => false
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
+  end
 
   create_table "users", :force => true do |t|
     t.string   "email",                  :default => "",    :null => false
