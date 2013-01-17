@@ -88,18 +88,18 @@ class ExportController < ApplicationController
 		  path = File.expand_path "#{Rails.root.join('tmp')}/#{Time.now.to_i}#{rand(1000)}/"
 		  FileUtils.mkdir_p( path )
 
-		  begin 
+		  # begin 
 		  	# Create temp file to export
-	      temp = Tempfile.new("tempfile.xlsx", "tmp") 
+	      temp = File.new(path + "dataconverting", 'wb', :encoding => 'ascii-8bit')
 	      yield(path, temp.path) # Pass temp folder and the path of temp file
 	     
-		  ensure
-	      temp.close 
-	      temp.unlink
-		  end
+		  # ensure
+	   #    temp.close 
+	   #    temp.unlink
+		  # end
 
 		ensure
-		  FileUtils.rm_rf( path ) if File.exists?( path ) # Remove temp folder whatever happening
+		   FileUtils.rm_rf( path ) if File.exists?( path ) # Remove temp folder whatever happening
 		end
 
 		def find_and_check_user
