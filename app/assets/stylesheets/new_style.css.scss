@@ -2,15 +2,6 @@ $color-font: #E17C25;
 
 /* Global styles */
 
-body{
-  background: url("/assets/bg-body.png") repeat scroll 0 0 transparent;
-  padding-top: 0;
-}
-
-body.view-as{
-  overflow: hidden;
-}
-
 .white{
   color: white;
 }
@@ -69,36 +60,15 @@ body.view-as{
 }
 
 .margin-left{
-  margin-left: 10px;
+  margin-left: 15px;
 }
 
 ul{
   list-style: none;
 }
 
-/* End global styles */
-
-/* Primary layout elements */
-
-#banner{
-  background: url("/assets/bg-header.jpeg") no-repeat scroll 0 0 transparent;
-  padding-top: 10px;
-  margin-bottom: 15px;
-}
-
-#menu{
-  margin-bottom: 5px;
-
-  .menu-item{
-    color: #6D6E71;
-    &.active{
-      color: #fff;
-    }
-  }
-}
-
 .separator{
-  background: url("/assets/bg-separator.jpg") repeat-y scroll 0 0 transparent;
+  background: url("/assets/bg-separator.jpg") repeat-x scroll 0 0 transparent;
   height: 2px;
   &.brown{
     background-image: none;
@@ -106,8 +76,7 @@ ul{
   }
 }
 
-/* End primary layout elements */
-
+/* End global styles */
 
 ul.ui-autocomplete {
   list-style: none;
