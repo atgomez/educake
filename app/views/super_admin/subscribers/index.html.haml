@@ -1,11 +1,6 @@
 %h4.pull-left= t("subscribers.title")
-.pull-left= #link_to t("subscribers.accept_all"), "#", :class => "btn custom-btn"
 .clearfix
-%table.table.table-striped.schools
-  %tbody
-  - @subscribers.each do |subscriber|
-    %tr
-      %td= mail_to subscriber.email
-      %td.action= link_to t("subscribers.accept"), "#", :class => "btn custom-btn"
+.ajax-loading.hidden= image_tag('loading-small.gif')
+#subscribers= render "list_subscribers", :subscribers => @subscribers
 
 

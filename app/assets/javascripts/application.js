@@ -25,6 +25,7 @@
 //= require goal
 //= require helper
 //= require schools
+//= require subscribers
 //= require jquery.iframe-transport
 //= require jquery.remotipart
 //= require rails.validations
