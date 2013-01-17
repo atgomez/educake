@@ -103,7 +103,7 @@
           
           .progress-report-container
             - goal.progresses.sort_by{|p| p.id.to_i}.each_with_index do |progress, idx|
-              = f.simple_fields_for(:progresses, progress) do |f_progress|
+              = f.simple_fields_for(:progresses, progress, :validate => false) do |f_progress|
                 %label.grade-name= t("goal.progress_with_id", :id => idx + 1)
                 = f_progress.input( :due_date, :as => :string, :required => false, 
                                     :input_html => {:class => "date-picker progress-due-date", 
