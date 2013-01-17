@@ -57,6 +57,7 @@ group :development do
   # For HAML
   gem 'ruby_parser', '>= 2.3.1'
   gem "hpricot", ">= 0.8.5"
+  gem 'therubyracer', :platforms => :ruby
 
   # For models annotation
   gem 'annotate', ">=2.5.0"

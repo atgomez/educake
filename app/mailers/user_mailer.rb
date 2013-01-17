@@ -1,5 +1,5 @@
 class UserMailer < ActionMailer::Base
-  default from: "teacher@gmail.com"
+  default from: "Educake <anne@educake.co>"
 
   def invited_confirmation(sharing) 
     @sharing = sharing

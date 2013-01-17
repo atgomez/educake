@@ -283,7 +283,7 @@ en:
       current_password_hint: "we need your current password to confirm your changes"
       cancel_account: "Cancel my account"
       unhappy: "Unhappy?"
-      new_user: "You're invited to Teacher Management. Please change your password."
+      new_user: "You're invited to Educake. Please change your password."
       create_account: "Create Account"
     session:
       sign_in_title: "Sign in with your account"
