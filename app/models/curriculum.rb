@@ -112,7 +112,8 @@ class Curriculum < ActiveRecord::Base
       end
 
       if curriculum_core_id.blank?
-        curriculum_core_id = CurriculumCore.first.try(:id)
+        # Get the default Common Core if no core name was supplied.
+        curriculum_core_id = CurriculumCore.find_by_name(I18n.t("curriculum.common_core")).try(:id)
       end
 
       # Cache the Subject
