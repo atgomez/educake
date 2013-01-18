@@ -19,7 +19,7 @@ window.subscriberObject =
 	        success: (data)->
 	          $("#subscribers").html(data)
 	          $(".ajax-loading").addClass("hidden")
-	          window.location = "mailto:tets@test.com"
+	          window.location = "mailto:"+email
 	          return
 	        error: (errors, status)->
 	        	$(".ajax-loading").removeClass("hidden")
