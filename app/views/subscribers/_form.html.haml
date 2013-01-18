@@ -1,7 +1,5 @@
 = simple_form_for(@subscriber) do |f|
-  = f.error_notification
-
   .form-inputs
-    = f.input :email, :label => "Want to learn more? Let us know!"
+    = f.input :email, :placeholder => "email", :label => "Want to learn more? Let us know!"
 
     = f.button :submit, "Send"
