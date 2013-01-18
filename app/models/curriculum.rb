@@ -271,6 +271,7 @@ class Curriculum < ActiveRecord::Base
 
       result.keys.each do |k|
         result[k].uniq!
+        result[k] = result[k].sort_by{|i| i[0]}
       end
 
       # Get the first curriculum
