@@ -16,6 +16,32 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
 end
 
+group :development do 
+  gem "haml-rails"
+  gem 'rails-erd'
+
+  # For HAML
+  gem 'ruby_parser', '>= 2.3.1'
+  gem "hpricot", ">= 0.8.5"
+  gem 'therubyracer', :platforms => :ruby
+
+  # For models annotation
+  gem 'annotate', ">=2.5.0"
+end
+
+group :development, :test do
+  gem "rspec-rails", ">= 2.11.0"
+  gem "capybara"
+  gem "database_cleaner", '>= 0.8.0'
+  gem "faker"
+  gem "factory_girl_rails", '>= 4.1.0'
+  # For code coverage
+  gem "simplecov", :require => false
+  gem "simplecov-rcov", :require => false
+  gem "shoulda-matchers"
+  gem "spork-rails", "~> 3.2.1"
+end
+
 gem "twitter-bootstrap-rails"
 gem "less-rails"
 gem 'jquery-rails'
@@ -50,28 +76,6 @@ gem "moped"
 # Database Site
 gem 'rails_admin'
 
-group :development do 
-  gem "haml-rails"
-  gem 'rails-erd'
-
-  # For HAML
-  gem 'ruby_parser', '>= 2.3.1'
-  gem "hpricot", ">= 0.8.5"
-  gem 'therubyracer', :platforms => :ruby
-
-  # For models annotation
-  gem 'annotate', ">=2.5.0"
-end
-
-group :development, :test do
-  gem "rspec-rails", ">= 2.11.0"
-  gem "capybara"
-  gem "database_cleaner", '>= 0.8.0'
-  gem "faker"
-  gem "factory_girl_rails", '>= 4.1.0'
-  # For code coverage
-  gem "simplecov", :require => false
-  gem "simplecov-rcov", :require => false
-  gem "shoulda-matchers"
-  gem "spork-rails", "~> 3.2.1"
-end
+# API
+gem 'grape'
+gem 'grape-rabl'
