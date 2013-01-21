@@ -1,4 +1,4 @@
 module EducakeAPI
-  class Goal < Base
+  class Goal < Grape::API
   end
 end
