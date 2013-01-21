@@ -1,6 +1,5 @@
 class InvitationsController < ApplicationController 
   authorize_resource :student_sharing
-  cross_role_action :new, :create, :edit, :update, :destroy
   before_filter :find_responder, :find_student
 
   def new 

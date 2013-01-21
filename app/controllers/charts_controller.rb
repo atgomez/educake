@@ -3,7 +3,6 @@ class ChartsController < ApplicationController
 
 	# This controller need user_id in all cases
 	# 
-  cross_role_action :user_chart, :student_chart, :goal_chart
 
 	# GET /charts/user_chart
   # Params:

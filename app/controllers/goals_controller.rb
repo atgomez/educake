@@ -3,9 +3,6 @@ class GoalsController < ApplicationController
   authorize_resource :goal, :except => parent_actions
   authorize_resource :grade, :only => parent_actions
 
-  cross_role_action :new_grade, :add_grade, :update_grade, :initial_import_grades, :import_grades,
-                    :new, :edit, :create, :update, :destroy, :load_grades, :curriculum_info
-
   def new
     @goal ||= Goal.build_goal :trial_days_total => 10, :trial_days_actual => 9, :baseline_date => Date.today
     @student = Student.find_by_id(params[:student_id])
