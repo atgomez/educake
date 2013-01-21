@@ -7,7 +7,7 @@ TeacherMgnt::Application.routes.draw do
   mount MongodbLogger::Assets.instance, :at => "/mongodb/assets", :as => :mongodb_assets # assets
 
   # API endtry point
-  mount TeacherMgnt::API::All => "/"
+  mount EducakeAPI::All => "/"
 
   # Config for dynamic root url
   # DO NOT change the order of the root config, otherwise it will not work properly
