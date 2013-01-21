@@ -56,6 +56,7 @@ GEM
       htmlentities (~> 4.3.1)
       nokogiri (>= 1.4.1)
       rubyzip (>= 0.9.5)
+    backports (2.6.7)
     bcrypt-ruby (3.0.1)
     better_states_select (1.0.0)
       rails (>= 1.2)
@@ -92,6 +93,7 @@ GEM
     commonjs (0.2.6)
     daemons (1.1.9)
     database_cleaner (0.9.1)
+    descendants_tracker (0.0.1)
     devise (2.0.2)
       bcrypt-ruby (~> 3.0)
       orm_adapter (~> 0.0.3)
@@ -114,12 +116,28 @@ GEM
     font-awesome-sass-rails (3.0.0.1)
       railties (>= 3.1.1)
       sass-rails (>= 3.1.1)
+    grape (0.2.6)
+      activesupport
+      builder
+      hashie (~> 1.2)
+      multi_json (>= 1.3.2)
+      multi_xml (>= 0.5.2)
+      rack
+      rack-accept
+      rack-mount
+      virtus
+    grape-rabl (0.1.0)
+      grape (~> 0.2.3)
+      i18n
+      rabl
+      tilt
     haml (3.1.7)
     haml-rails (0.3.5)
       actionpack (>= 3.1, < 4.1)
       activesupport (>= 3.1, < 4.1)
       haml (~> 3.1)
       railties (>= 3.1, < 4.1)
+    hashie (1.2.0)
     hike (1.2.1)
     hpricot (0.8.6)
     htmlentities (4.3.1)
@@ -177,9 +195,16 @@ GEM
     polyamorous (0.5.0)
       activerecord (~> 3.0)
     polyglot (0.3.3)
+    rabl (0.7.9)
+      activesupport (>= 2.3.14)
+      multi_json (~> 1.0)
     rack (1.4.4)
+    rack-accept (0.4.5)
+      rack (>= 0.4)
     rack-cache (1.2)
       rack (>= 0.4)
+    rack-mount (0.8.3)
+      rack (>= 1.0.0)
     rack-pjax (0.7.0)
       nokogiri (~> 1.5)
       rack (~> 1.3)
@@ -301,6 +326,9 @@ GEM
     uuidtools (2.1.3)
     vegas (0.1.11)
       rack (>= 1.0.0)
+    virtus (0.5.4)
+      backports (~> 2.6.1)
+      descendants_tracker (~> 0.0.1)
     warden (1.2.1)
       rack (>= 1.0)
     websocket (1.0.6)
@@ -327,6 +355,8 @@ DEPENDENCIES
   factory_girl_rails (>= 4.1.0)
   faker
   fastercsv
+  grape
+  grape-rabl
   haml
   haml-rails
   hpricot (>= 0.8.5)

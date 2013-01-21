@@ -64,5 +64,10 @@ module TeacherMgnt
 
     # Configure to compress responses.
     config.middleware.insert_before(0, Rack::Deflater)
+
+    # Configure for grape-rabl view path.
+    config.middleware.use(Rack::Config) do |env|
+      env['api.tilt.root'] = Rails.root.join "app", "views", "api"
+    end
   end
 end
