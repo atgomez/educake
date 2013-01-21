@@ -76,6 +76,10 @@ class User < ActiveRecord::Base
   has_many :shared_students, :through => :student_sharings, :source => :student
   has_many :students, :foreign_key => "teacher_id", :dependent => :destroy
 
+  has_many :client_applications
+  has_many :tokens, :class_name=>"Oauth2Token",:order=>"authorized_at desc",:include=>[:client_application]
+
+
   belongs_to :role
   belongs_to :school
 

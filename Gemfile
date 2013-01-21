@@ -61,6 +61,7 @@ gem 'meta_search'
 gem 'newrelic_rpm'
 gem 'fastercsv'
 gem "remotipart", "~> 1.0"
+gem "oauth-plugin", ">= 0.4.0.rc2"
 
 #Excel Parser
 gem "axlsx"
