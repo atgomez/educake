@@ -87,7 +87,7 @@ class SuperAdmin::CurriculumsController < SuperAdmin::BaseSuperAdminController
     begin      
       if @import.valid?
         result = Curriculum.import_data(@import.import_file_path, 
-                              :curriculum_core_name => @import.curriculum_core_name)
+                              :curriculum_core => @import.curriculum_core_name)
         if result[:errors].blank?
           flash[:notice] = I18n.t("curriculum.import_successfully")
         else          
