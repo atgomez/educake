@@ -52,4 +52,21 @@ TeacherMgnt::Application.configure do
     :authentication       => 'plain',
     :enable_starttls_auto => true
   }
+
+  # In order to auto-reload Grape API in development mode.
+  # See https://github.com/intridea/grape/issues/131#issuecomment-10413342
+  @last_api_change = Time.now
+  files = Dir["#{Rails.root}/app/api/**/*.rb"]
+  api_reloader = ActiveSupport::FileUpdateChecker.new(files) do |reloader|
+    times = files.map{|f| File.mtime(f) }
+    files = files.map{|f| f }
+
+    Rails.application.reload_routes!
+    Rails.application.routes_reloader.reload!
+    Rails.application.eager_load!
+  end
+
+  ActionDispatch::Reloader.to_prepare do
+    api_reloader.execute_if_updated
+  end
 end
