@@ -1,0 +1,7 @@
+%h4 Edit your application
+= simple_form_for(@client_application, :url => { :action => :update }, :html => {:class => "form-horizontal"}, :validate => true) do |f|
+  - if notification = f.error_notification
+    .alert.alert-error.fade.in
+      = notification
+  = render :partial => "form", :locals => { :f => f }
+  

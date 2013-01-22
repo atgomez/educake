@@ -132,6 +132,9 @@ en:
       block_account: "Block Account"
       block_account_description: "User will be locked out of their account until reinstated."
 
+  oauth: 
+    register: "Register"
+    
   user:
     title: "User Management"
     created_successfully: "User %{name} was created successfully."
