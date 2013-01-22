@@ -25,3 +25,10 @@ test:
   host: localhost
   port: 27017
   replica_set: true
+
+proxied-appfog:
+  database: teacher-dev
+  capsize: <%= 2.megabytes %>
+  host: localhost
+  port: 27017
+  replica_set: true
