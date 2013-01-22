@@ -170,6 +170,11 @@ class Curriculum < ActiveRecord::Base
       Curriculum.transaction do
         options = {:skip_blanks => true, :col_sep => DEFAULT_CSV_SEPARATOR}
         CSV.foreach(data_source, options) do |row|
+          if line_num == 0 # Skip header
+            line_num += 1
+            next
+          end
+
           # Get the current line number
           # See http://stackoverflow.com/questions/12407035/ruby-csv-get-current-line-row-number
           # line_num = $.
