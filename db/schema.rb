@@ -173,12 +173,6 @@ ActiveRecord::Schema.define(:version => 20130116042547) do
 
   add_index "students", ["first_name", "last_name", "teacher_id"], :name => "index_students_on_first_name_and_last_name_and_teacher_id", :unique => true
 
-  create_table "subcribers", :force => true do |t|
-    t.string   "email"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
-
   create_table "subjects", :force => true do |t|
     t.string   "name",       :null => false
     t.datetime "created_at", :null => false
