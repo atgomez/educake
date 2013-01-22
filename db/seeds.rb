@@ -24,7 +24,7 @@ super_admin.save!
 
 CurriculumCore.destroy_all
 # CurriculumCore
-["Common Core"].each do |name|
+[I18n.t("curriculum.common_core")].each do |name|
   CurriculumCore.create!(:name => name)
 end
 

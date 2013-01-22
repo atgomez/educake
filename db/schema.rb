@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130110065353) do
+ActiveRecord::Schema.define(:version => 20130116042547) do
 
   create_table "curriculum_areas", :force => true do |t|
     t.string   "name",       :null => false
@@ -180,6 +180,13 @@ ActiveRecord::Schema.define(:version => 20130110065353) do
   end
 
   add_index "subjects", ["name"], :name => "index_subjects_on_name", :unique => true
+
+  create_table "subscribers", :force => true do |t|
+    t.string   "email"
+    t.boolean  "is_accept",  :default => false
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
+  end
 
   create_table "users", :force => true do |t|
     t.string   "email",                  :default => "",    :null => false

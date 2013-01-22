@@ -18,3 +18,10 @@ production:
   secret_access_key: 0rUsMMg8UdwVvCBbSwnOo72qnXE5hkHSqSPp+eit
   max_file_size: 104857600
   acl: public-read
+
+staging:
+  bucket: teacher_mgnt  
+  access_key_id: AKIAIOYCWZFROQJEEBYQ
+  secret_access_key: 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
+  max_file_size: 104857600
+  acl: public-read

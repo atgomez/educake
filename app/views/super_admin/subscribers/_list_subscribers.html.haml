@@ -1,0 +1,10 @@
+%table.table.table-striped.schools
+  %tbody
+  - subscribers.each do |subscriber|
+    %tr
+      %td.list_subs
+        %span{:id => "subscriber_#{subscriber.id}", :email => subscriber.email}= link_to subscriber.email, "#"
+      %td.action
+        - if subscriber.is_accept
+          .icon-check.icon-orange
+= render_pagination subscribers

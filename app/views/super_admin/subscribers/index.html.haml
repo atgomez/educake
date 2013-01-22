@@ -1,0 +1,6 @@
+%h4.pull-left= t("subscribers.title")
+.clearfix
+.ajax-loading.hidden= image_tag('loading-small.gif')
+#subscribers= render "list_subscribers", :subscribers => @subscribers
+
+

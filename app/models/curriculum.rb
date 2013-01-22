@@ -94,16 +94,20 @@ class Curriculum < ActiveRecord::Base
     end
 
     def import_data(data_source, options = {})
-      errors = {}
-      imported_num = 0
-
       # Size of each cache
       cache_size = 10
 
       # CurriculumCore
       curriculum_core_id = nil
-      unless options[:curriculum_core_name].blank?
-        curriculum_core = CurriculumCore.find_or_initialize_by_name(options[:curriculum_core_name])
+      unless options[:curriculum_core].blank?
+        # Find by ID first
+        curriculum_core = CurriculumCore.find_by_id(options[:curriculum_core])
+        if curriculum_core.blank?
+          # Then find or init a new record with the name
+          curriculum_core = CurriculumCore.find_or_initialize_by_name(options[:curriculum_core].to_s)
+        end
+
+        # Save the record
         if curriculum_core.new_record?
           curriculum_core.save
         end
@@ -112,7 +116,8 @@ class Curriculum < ActiveRecord::Base
       end
 
       if curriculum_core_id.blank?
-        curriculum_core_id = CurriculumCore.first.try(:id)
+        # Get the default Common Core if no core name was supplied.
+        curriculum_core_id = CurriculumCore.find_by_name(I18n.t("curriculum.common_core")).try(:id)
       end
 
       # Cache the Subject
@@ -157,11 +162,21 @@ class Curriculum < ActiveRecord::Base
         record.id
       end
 
+      # Begin importing...
+      errors = {}
+      imported_num = 0
+      line_num = 0
+
       Curriculum.transaction do
-        CSV.foreach(data_source, :col_sep => DEFAULT_CSV_SEPARATOR) do |row|
+        options = {:skip_blanks => true, :col_sep => DEFAULT_CSV_SEPARATOR}
+        CSV.foreach(data_source, options) do |row|
           # Get the current line number
           # See http://stackoverflow.com/questions/12407035/ruby-csv-get-current-line-row-number
-          line_num = $.
+          # line_num = $.
+          line_num += 1
+          row.compact!
+          # Skip this row
+          next if row.blank?
 
           begin
             finder_attrs = {
@@ -270,6 +285,7 @@ class Curriculum < ActiveRecord::Base
 
       result.keys.each do |k|
         result[k].uniq!
+        result[k] = result[k].sort_by{|i| i[0]}
       end
 
       # Get the first curriculum

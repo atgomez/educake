@@ -6,7 +6,6 @@ class ApplicationController < ActionController::Base
   before_filter :authenticate_user!
   before_filter :do_filter_params
   before_filter :set_current_tab
-  before_filter :restrict_namespace
   before_filter :pagination_ajax_setting
   before_filter :check_blocked_account
   before_filter :check_view_as_state
@@ -16,23 +15,24 @@ class ApplicationController < ActionController::Base
   PAGE_SIZE = 8
   MAX_PAGE_SIZE = 100
 
+
   #
   # Class methods
   #
   class << self
-    # Contain list of crossed role actions that are internally used in the current class.
-    # TODO: this will not work for inherit classes. Consider using cattr_accessor ?
-    attr_accessor :_crossed_role_action
+    # # Contain list of crossed role actions that are internally used in the current class.
+    # # TODO: this will not work for inherit classes. Consider using cattr_accessor ?
+    # attr_accessor :_crossed_role_action
 
-    # Set value for crossed_role_action
-    # Please use list of Symbol instead of String, otherwise it won't work properly!
-    def cross_role_action(*actions)
-      @_crossed_role_action = actions
-    end
+    # # Set value for crossed_role_action
+    # # Please use list of Symbol instead of String, otherwise it won't work properly!
+    # def cross_role_action(*actions)
+    #   @_crossed_role_action = actions
+    # end
 
-    def crossed_role_action
-      @_crossed_role_action ||= []
-    end
+    # def crossed_role_action
+    #   @_crossed_role_action ||= []
+    # end
   end
   
   def check_blocked_account
@@ -104,10 +104,10 @@ class ApplicationController < ActionController::Base
       @filtered_params
     end
 
-    # Return list of crossed role actions
-    def crossed_role_action
-      self.class.crossed_role_action
-    end
+    # # Return list of crossed role actions
+    # def crossed_role_action
+    #   self.class.crossed_role_action
+    # end
 
     def set_current_tab
       "please override this method in your sub class"
@@ -198,31 +198,34 @@ class ApplicationController < ActionController::Base
     # It's because of the requirement: each role has a specific workspace, for ex:
     #   Admin only work in admin space, cannot go to teacher space.
     #
-    def restrict_namespace
-      if !is_rails_admin_controller?
-        user = current_user
-        return if (user.blank? || self.is_devise_controller? || !self.is_restricted?)
-        action = self.action_name.to_sym
-        if (user.is?(:admin) && !self.is_a?(Admin::BaseAdminController) && 
-              !self.crossed_role_action.include?(action))
-          redirect_to "/admin/teachers"
-        elsif (user.is_super_admin? && !self.is_a?(SuperAdmin::BaseSuperAdminController) && 
-              !self.crossed_role_action.include?(action))
-          redirect_to '/super_admin/schools'
-        end
-      end
-    end
+    # def restrict_namespace
+    #   if !is_rails_admin_controller?
+    #     user = current_user
+    #     return if (user.blank? || self.is_devise_controller? || !self.is_restricted?)
+    #     action = self.action_name.to_sym
+    #     if (user.is?(:admin) && !self.is_a?(Admin::BaseAdminController) && 
+    #           !self.crossed_role_action.include?(action))
+    #       redirect_to "/admin/teachers"
+    #     elsif (user.is_super_admin? && !self.is_a?(SuperAdmin::BaseSuperAdminController) && 
+    #           !self.crossed_role_action.include?(action))
+    #       redirect_to '/super_admin/schools'
+    #     end
+    #   end
+    # end
 
     def except_controller?
-      is_devise_controller? || is_rails_admin_controller?
+      except_controllers = [DeviseController, HomeController, 
+                            GoalsController, RailsAdmin::MainController,
+                            SubscribersController, ChartsController,
+                            ExportController, StudentsController, InvitationsController]
+      except_controllers.each do |class_controller|
+        return true if self.is_a?(class_controller)
+      end
+      return false
     end
 
     def is_devise_controller?
       self.is_a?(DeviseController)
-    end
-
-    def is_rails_admin_controller?
-      self.is_a?(RailsAdmin::MainController)
     end
 
     def is_restricted?

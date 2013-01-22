@@ -1,0 +1,11 @@
+!!!
+%html
+  %head
+    %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}
+  %body
+    %h1= t("mail.hi", :name => @super_admin.full_name)
+    %p
+      = t("mail.content_notify_subscriber")
+      = @subscriber.email
+    %p
+      =  t("mail.regard_end")     

@@ -1,6 +1,5 @@
 class ExportController < ApplicationController
 	authorize_resource :student, :user
-	cross_role_action :export_student, :export_classroom, :export_school, :relay
 	before_filter :find_and_check_user
 
 	# This is used to redirect to suitable action base on 'data' parameter
