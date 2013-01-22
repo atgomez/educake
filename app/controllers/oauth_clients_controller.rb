@@ -1,6 +1,6 @@
 class OauthClientsController < ApplicationController
   #before_filter :login_required
-  #before_filter :get_client_application, :only => [:show, :edit, :update, :destroy]
+  before_filter :get_client_application, :only => [:show, :edit, :update, :destroy]
   cross_role_action :index, :new, :create, :show, :edit, :update, :destroy
   def index
     @client_applications = current_user.client_applications

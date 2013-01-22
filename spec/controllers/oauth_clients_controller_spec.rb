@@ -1,20 +1,21 @@
 require File.dirname(__FILE__) + '/../spec_helper'
-require File.dirname(__FILE__) + '/oauth_controller_spec_helper'
-require 'oauth/client/action_controller_request'
+#require File.dirname(__FILE__) + '/oauth_controller_spec_helper'
+#require 'oauth/client/action_controller_request'
 
 describe OauthClientsController do
   if defined?(Devise)
     include Devise::TestHelpers
   end
-  include OAuthControllerSpecHelper
-  fixtures :client_applications, :oauth_tokens, :users
-  before(:each) do
-    login_as_application_owner
-  end
+  #include OAuthControllerSpecHelper
+  #fixtures :client_applications, :oauth_tokens, :users
+  let(:app) {FactoryGirl.create(:client_application )}
 
+  before(:each) do
+    sign_in app.user
+  end
   describe "index" do
     before do
-      @client_applications = @user.client_applications
+      @client_applications = [app]
     end
 
     def do_get
@@ -40,7 +41,7 @@ describe OauthClientsController do
   describe "show" do
 
     def do_get
-      get :show, :id => '1'
+      get :show, :id => app.id
     end
 
     it "should be successful" do
@@ -50,7 +51,7 @@ describe OauthClientsController do
 
     it "should assign client_applications" do
       do_get
-      assigns[:client_application].should==current_client_application
+      assigns[:client_application].should == app
     end
 
     it "should render show template" do
@@ -85,7 +86,7 @@ describe OauthClientsController do
 
   describe "edit" do
     def do_get
-      get :edit, :id => '1'
+      get :edit, :id => app.id 
     end
 
     it "should be successful" do
@@ -95,7 +96,7 @@ describe OauthClientsController do
 
     it "should assign client_applications" do
       do_get
-      assigns[:client_application].should==current_client_application
+      assigns[:client_application].should == app
     end
 
     it "should render edit template" do
@@ -131,12 +132,12 @@ describe OauthClientsController do
   describe "destroy" do
 
     def do_delete
-      delete :destroy, :id => '1'
+      delete :destroy, :id => app.id 
     end
 
     it "should destroy client applications" do
       do_delete
-      ClientApplication.should_not be_exists(1)
+      ClientApplication.should_not be_exists(app.id)
     end
 
     it "should redirect to list" do
@@ -150,22 +151,22 @@ describe OauthClientsController do
   describe "update" do
 
     def do_valid_update
-      put :update, :id => '1', 'client_application'=>{'name' => 'updated site'}
+      put :update, :id => app.id, 'client_application'=>{'name' => 'updated site'}
     end
 
     def do_invalid_update
-      put :update, :id => '1', 'client_application'=>{'name' => nil}
+      put :update, :id => app.id, 'client_application'=>{'name' => nil}
     end
 
     it "should redirect to show client_application" do
       do_valid_update
       response.should be_redirect
-      response.should redirect_to(:action => "show", :id => 1)
+      response.should redirect_to(:action => "show", :id => app.id)
     end
 
     it "should assign client_applications" do
       do_invalid_update
-      assigns[:client_application].should == ClientApplication.find(1)
+      assigns[:client_application].should == ClientApplication.find(app.id)
     end
 
     it "should render show template" do
