@@ -1,4 +1,8 @@
 %h1 Edit your application
-= form_for :client_application do |f|
+= simple_form_for(@client_application, :url => { :action => :create }, :validate => true) do |f|
+  - if notification = f.error_notification
+    .alert.alert-error.fade.in
+      %a{:class => "close", 'data-dismiss' => "alert", :href => "#"} &times;
+      = notification
   = render :partial => "form", :locals => { :f => f }
   = submit_tag "Edit"
