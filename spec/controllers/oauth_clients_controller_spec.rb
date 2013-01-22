@@ -1,13 +1,9 @@
 require File.dirname(__FILE__) + '/../spec_helper'
-#require File.dirname(__FILE__) + '/oauth_controller_spec_helper'
-#require 'oauth/client/action_controller_request'
 
 describe OauthClientsController do
   if defined?(Devise)
     include Devise::TestHelpers
   end
-  #include OAuthControllerSpecHelper
-  #fixtures :client_applications, :oauth_tokens, :users
   let(:app) {FactoryGirl.create(:client_application )}
 
   before(:each) do

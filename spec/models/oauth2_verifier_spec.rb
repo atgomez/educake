@@ -1,9 +1,9 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
 describe Oauth2Verifier do
-  fixtures :client_applications, :users, :oauth_tokens
+  let(:app) {FactoryGirl.create(:client_application)}
   before(:each) do
-    @verifier = Oauth2Verifier.create :client_application => client_applications(:one), :user=>users(:aaron), :scope => "bbbb aaaa"
+    @verifier = Oauth2Verifier.create :client_application => app, :user => app.user, :scope => "test"
   end
 
   it "should be valid" do

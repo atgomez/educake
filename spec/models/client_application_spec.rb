@@ -1,6 +1,5 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 describe ClientApplication do
-  #fixtures :users, :client_applications, :oauth_tokens
   before(:each) do
     @application = FactoryGirl.create(:client_application)
   end
