@@ -1,5 +1,5 @@
 class Admin::TeachersController < Admin::BaseAdminController
- before_filter :find_user
+  before_filter :find_user
 
   # TODO: improve this method, because it load teachers 2 times.
   def index
