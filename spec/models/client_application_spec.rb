@@ -1,8 +1,8 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 describe ClientApplication do
-  fixtures :users, :client_applications, :oauth_tokens
+  #fixtures :users, :client_applications, :oauth_tokens
   before(:each) do
-    @application = ClientApplication.create :name => "Agree2", :url => "http://agree2.com", :user => users(:quentin)
+    @application = FactoryGirl.create(:client_application)
   end
 
   it "should be valid" do
