@@ -7,6 +7,7 @@
   - if f.object.new_record?
     = f.button :submit, :value => t("oauth.register")
   - else
+    = link_to "Cancel", oauth_clients_path, :class => "btn"
     = f.button :submit, :value => t("common.save")
 
 
