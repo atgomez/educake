@@ -26,8 +26,8 @@
 - else
   %p
     You have the following client applications registered:
-  - @client_applications.each do |client|
-    %table.table
+  %table.table.table-striped.schools
+    - @client_applications.each do |client|
       %tr
         %td= link_to client.name, :action => :show, :id => client.id
         %td.action
