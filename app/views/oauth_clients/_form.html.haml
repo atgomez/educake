@@ -3,4 +3,10 @@
   = f.input :url
   = f.input :callback_url
   = f.input :support_url
+.form-actions
+  - if f.object.new_record?
+    = f.button :submit, :value => t("oauth.register")
+  - else
+    = f.button :submit, :value => t("common.save")
+
 

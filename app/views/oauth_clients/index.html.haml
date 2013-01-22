@@ -1,5 +1,5 @@
-.flash= flash[:notice]
-%h1 OAuth Client Applications
+%h4 OAuth Client Applications
+= link_to "Register your application", :action => :new
 - unless @tokens.empty?
 
   %p
@@ -19,8 +19,6 @@
             = hidden_field_tag 'token', token.token
             = submit_tag "Revoke!"
 
-%h3 Application Developers
-
 - if @client_applications.empty?
   %p
     Do you have an application you would like to register for use with us using the <a href="http://oauth.net">OAuth</a> standard?
@@ -29,7 +27,7 @@
   %p
     You have the following client applications registered:
   - @client_applications.each do |client|
-    %table.table.table-striped.schools
+    %table.table
       %tr
         %td= link_to client.name, :action => :show, :id => client.id
         %td.action
@@ -37,5 +35,4 @@
           = " | "
           = link_to 'Delete', oauth_client_path(client), :confirm => "Are you sure?", :method => :delete
 %br
-%h3
-  = link_to "Register your application", :action => :new
+

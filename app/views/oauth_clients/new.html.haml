@@ -1,9 +1,7 @@
-%h1 Register a new application
+%h4 Register a new application
 = #form_for :client_application, :url => { :action => :create } do |f|
-= simple_form_for(@client_application, :url => { :action => :create }, :validate => true) do |f|
+= simple_form_for(@client_application, :url => { :action => :create }, :html => {:class => "form-horizontal"}, :validate => true) do |f|
   - if notification = f.error_notification
     .alert.alert-error.fade.in
-      %a{:class => "close", 'data-dismiss' => "alert", :href => "#"} &times;
       = notification
   = render :partial => "form", :locals => { :f => f }
-  = submit_tag "Register"
