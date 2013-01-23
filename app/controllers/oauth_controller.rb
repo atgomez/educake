@@ -1,7 +1,7 @@
 require 'oauth/controllers/provider_controller'
 class OauthController < ApplicationController
   include OAuth::Controllers::ProviderController
-  skip_before_filter :login_required
+  skip_before_filter :login_required, :authenticate_user!
   
   protected
   # Override this to match your authorization page form
