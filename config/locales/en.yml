@@ -134,7 +134,11 @@ en:
 
   oauth: 
     register: "Register"
-    
+    created_successfully: "Registered the information successfully"
+    updated_successfully: "Updated the client information successfully"
+    deleted_successfully: "Destroyed the client application registration"
+    error: "Wrong application id"
+
   user:
     title: "User Management"
     created_successfully: "User %{name} was created successfully."
