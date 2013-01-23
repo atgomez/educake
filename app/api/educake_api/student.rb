@@ -2,7 +2,7 @@ module EducakeAPI
   class Student < Grape::API
     resource :students do
       desc "Get list students"
-      get "/" do
+      get "/" do        
         # TODO: implement this API
         {}
       end

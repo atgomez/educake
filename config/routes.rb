@@ -1,4 +1,6 @@
 TeacherMgnt::Application.routes.draw do
+  root :to => "home#index"
+
   #Rails Admin
   mount RailsAdmin::Engine => '/backend', :as => 'rails_admin'
 
@@ -9,11 +11,7 @@ TeacherMgnt::Application.routes.draw do
   # API endtry point
   mount EducakeAPI::All => "/"
 
-  # Config for dynamic root url
-  # DO NOT change the order of the root config, otherwise it will not work properly
-  # root :to => "super_admin/schools#index", :constraints => RoleRouteConstraint.new(:super_admin)
-  # root :to => "admin/teachers#index", :constraints => RoleRouteConstraint.new(:admin)
-  # root :to => "students#index", :constraints => RoleRouteConstraint.new(:parent, :teacher)
+  # OAuth
   resources :oauth_clients
 
   match '/oauth/test_request',  :to => 'oauth#test_request',  :as => :test_request
@@ -26,10 +24,11 @@ TeacherMgnt::Application.routes.draw do
 
   match '/oauth/authorize',     :to => 'oauth#authorize',     :as => :authorize
 
-  match '/oauth',               :to => 'oauth#index',         :as => :oauth
-  root :to => "home#index"
+  match '/oauth',               :to => 'oauth#index',         :as => :oauth  
+
   resources :subscribers
-  # Chart rooting
+
+  # Chart routing
   resources :charts do
     collection do
       get :user_chart

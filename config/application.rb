@@ -1,6 +1,7 @@
 require File.expand_path('../boot', __FILE__)
 
 require 'rails/all'
+require 'oauth/rack/oauth_filter'
 
 if defined?(Bundler)
   # If you precompile assets before deploying to production, use this line
@@ -69,5 +70,8 @@ module TeacherMgnt
     config.middleware.use(Rack::Config) do |env|
       env['api.tilt.root'] = Rails.root.join "app", "views", "api"
     end
+
+    # Configure for OAuth-plugin
+    config.middleware.use OAuth::Rack::OAuthFilter
   end
 end
