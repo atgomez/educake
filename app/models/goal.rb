@@ -21,6 +21,7 @@ require 'csv'
 
 class Goal < ActiveRecord::Base
   include ::SharedMethods::Paging
+  include ::SharedMethods::SerializationConfig
 
   attr_accessible :accuracy, :curriculum_id, :due_date, :progresses_attributes, :curriculum_attributes,
                   :baseline_date, :baseline, :trial_days_total, :trial_days_actual, 
@@ -83,7 +84,7 @@ class Goal < ActiveRecord::Base
                 :order => paging_info.sort_string
               }
       unless complete.nil?
-          conds = conds.merge(:conditions => ["is_completed = ?", complete])
+        conds = conds.merge(:conditions => ["is_completed = ?", complete])
       end 
       self.paginate(conds)
     end
@@ -94,6 +95,23 @@ class Goal < ActiveRecord::Base
       # Build the sample Curriculum
       goal.curriculum = Curriculum.build_curriculum
       return goal
+    end
+
+    # Names of methods will be exposed when serializing object to JSON, XML, etc.
+    def exposed_methods
+      []
+    end
+    
+    # Names of attributes will be exposed when serializing object to JSON, XML, etc.
+    def exposed_attributes
+      [ :id, :student_id, :curriculum_id, :accuracy, :baseline, :trial_days_actual, :trial_days_total,
+        :description, :is_completed, :baseline_date, :due_date
+      ]
+    end
+    
+    # Names of ActiveRecord associations will be exposed when serializing object to JSON, XML, etc.
+    def exposed_associations
+      []
     end
 
     protected

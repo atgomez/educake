@@ -15,7 +15,6 @@ class ApplicationController < ActionController::Base
   PAGE_SIZE = 8
   MAX_PAGE_SIZE = 100
 
-
   #
   # Class methods
   #

@@ -1,8 +1,9 @@
 require 'spec_helper'
 
-describe "Students API", :type => :feature do
+describe "Goal API", :type => :feature do
   let(:client_application) { FactoryGirl.create(:client_application) }
   let(:user) { FactoryGirl.create(:teacher) }
+  let(:student) { FactoryGirl.create(:student, :teacher => user) }
   let(:oauth_consumer) do
     OAuth::Consumer.new(client_application.key, client_application.secret, {
       :site => "http://www.example.com",
@@ -15,15 +16,15 @@ describe "Students API", :type => :feature do
  
   before(:each) do
     access_token
-    20.times {FactoryGirl.create(:student, :teacher => user)}
+    20.times {FactoryGirl.create(:goal, :student => student)}
   end
  
   after do
     Capybara.reset_sessions!
   end
 
-  describe "GET /api/v1/students" do
-    let(:req_path) { "/api/v1/students" }
+  describe "GET /api/v1/goals/:student_id" do
+    let(:req_path) { "/api/v1/goals/#{student.id}" }
 
     context "OAuth1" do
       before do
@@ -40,6 +41,32 @@ describe "Students API", :type => :feature do
     context "OAuth2" do
       it "returns data" do
         get req_path, nil, {"HTTP_AUTHORIZATION" => "OAuth #{access_token.token}"}
+        response.should be_success
+      end
+    end
+  end
+
+  describe "POST /api/v1/goals/:goal_id/add_grade" do
+    let(:goal) {FactoryGirl.create(:goal, :student => student)}
+    let(:req_path) { "/api/v1/goals/#{goal.id}/add_grade" }
+
+    # context "OAuth1" do
+    #   before do
+    #     req = oauth_consumer.create_signed_request(:post, req_path, access_token)
+    #     visit req.path
+    #   end    
+
+    #   it "returns data" do
+    #     puts page.body
+    #     page.body.should_not be_blank
+    #   end
+    # end
+
+    context "OAuth2" do
+      it "create the grade" do
+        post req_path, {:accuracy => 10, :due_date => goal.baseline_date + 2.days}, 
+                       {"HTTP_AUTHORIZATION" => "OAuth #{access_token.token}"}
+        puts response.body
         response.should be_success
       end
     end

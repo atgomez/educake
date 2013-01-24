@@ -3,18 +3,20 @@ module EducakeAPI
     prefix "api"
     format :json
     version "v1"
-    # Use Rabl is optional
-    # formatter :json, Grape::Formatter::Rabl
+    # Using Rabl is optional
+    formatter :json, Grape::Formatter::Rabl   
 
     # Helper
     helpers EducakeAPI::Helpers::Authentication
+    helpers EducakeAPI::Helpers::FilterParams
 
     before do
       authenticate_user
+      do_filter_params
     end
 
     # Mount other API classes.
-    mount EducakeAPI::Goal
-    mount EducakeAPI::Student
+    mount EducakeAPI::GoalAPI
+    mount EducakeAPI::StudentAPI
   end
 end

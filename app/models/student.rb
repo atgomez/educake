@@ -18,6 +18,7 @@
 
 class Student < ActiveRecord::Base
   include ::SharedMethods::Paging
+  include ::SharedMethods::SerializationConfig
   DEFAULT_ORDER = "#{self.table_name}.last_name ASC, #{self.table_name}.first_name ASC"
 
   attr_accessible :birthday, :first_name, :gender, :last_name, :teacher_id, :photo
@@ -103,6 +104,21 @@ class Student < ActiveRecord::Base
       return self.search(meta_query).paginate(:page => paging_info.page_id,
                       :per_page => paging_info.page_size,
                       :order => paging_info.sort_string)
+    end
+
+    # Names of methods will be exposed when serializing object to JSON, XML, etc.
+    def exposed_methods
+      [:photo_url]
+    end
+    
+    # Names of attributes will be exposed when serializing object to JSON, XML, etc.
+    def exposed_attributes
+      [:id, :first_name, :last_name, :teacher_id, :birthday, :gender]
+    end
+    
+    # Names of ActiveRecord associations will be exposed when serializing object to JSON, XML, etc.
+    def exposed_associations
+      []
     end
 
     protected

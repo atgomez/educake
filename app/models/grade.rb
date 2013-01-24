@@ -19,6 +19,7 @@
 
 class Grade < ActiveRecord::Base
   include ::SharedMethods::Paging  
+  include ::SharedMethods::SerializationConfig
 
   attr_accessible :accuracy, :due_date, :goal_id, :user_id,
                   :value, :time_to_complete, :is_unused, :note
@@ -54,6 +55,21 @@ class Grade < ActiveRecord::Base
       self.paginate(conds)
     end
     
+    # Names of methods will be exposed when serializing object to JSON, XML, etc.
+    def exposed_methods
+      []
+    end
+    
+    # Names of attributes will be exposed when serializing object to JSON, XML, etc.
+    def exposed_attributes
+      [ :id, :goal_id, :user_id, :accuracy, :time_to_complete, :note, :due_date ]
+    end
+    
+    # Names of ActiveRecord associations will be exposed when serializing object to JSON, XML, etc.
+    def exposed_associations
+      []
+    end
+
     protected
 
       # Parse params to PagingInfo object.
