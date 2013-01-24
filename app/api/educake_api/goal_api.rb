@@ -28,6 +28,8 @@ module EducakeAPI
       desc "Get list goals"
       params do
         requires :student_id, :type => Integer, :desc => "Student ID"
+        optional :page_size, :type => Integer, :desc => "Size for pagination"
+        optional :page_id, :type => Integer, :desc => "Page index"
       end
       get "/:student_id" do
         @student = find_student(params[:student_id])
@@ -45,6 +47,8 @@ module EducakeAPI
         requires :goal_id, :type => Integer, :desc => "Goal ID"
         requires :due_date, :type => Date, :desc => "Due date"
         requires :accuracy, :type => Float, :desc => "Accuracy"
+        optional :time_to_complete, :type => Time, :desc => "Time to complete"
+        optional :note, :type => String, :desc => "Some more extra description"
       end
       post "/:goal_id/add_grade" do
         @goals = find_goal(params[:goal_id])
