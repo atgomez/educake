@@ -304,6 +304,9 @@ en:
     change_password_action: "Change my password"
     unlock_action: "Unlock my account"
 
+  api:
+    developer: "Developer"
+    
   activerecord:
     errors:
       messages:
