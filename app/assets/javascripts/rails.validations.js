@@ -526,11 +526,12 @@
           name = options['class'] + '[' + name.split('[')[1];
         }
         data[name] = element.val();
+
         if (jQuery.ajax({
           url: '/validators/uniqueness',
           data: data,
-          async: false,
-          cache: false
+          async: true,
+          cache: true
         }).status === 200) {
           return options.message;
         }

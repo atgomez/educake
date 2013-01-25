@@ -15,7 +15,6 @@ class ApplicationController < ActionController::Base
   PAGE_SIZE = 8
   MAX_PAGE_SIZE = 100
 
-
   #
   # Class methods
   #
@@ -87,7 +86,6 @@ class ApplicationController < ActionController::Base
     end
     
     def do_filter_params
-      # TODO: filter paging info and other necessary parameters.
       @filtered_params = params
       @filtered_params = @filtered_params.symbolize_keys
       # Check the page_size params.
@@ -198,6 +196,7 @@ class ApplicationController < ActionController::Base
     # It's because of the requirement: each role has a specific workspace, for ex:
     #   Admin only work in admin space, cannot go to teacher space.
     #
+
     # def restrict_namespace
     #   if !is_rails_admin_controller?
     #     user = current_user
@@ -213,11 +212,14 @@ class ApplicationController < ActionController::Base
     #   end
     # end
 
+
     def except_controller?
       except_controllers = [DeviseController, HomeController, 
                             GoalsController, RailsAdmin::MainController,
                             SubscribersController, ChartsController,
-                            ExportController, StudentsController, InvitationsController]
+                            ExportController, StudentsController, InvitationsController,
+                            OauthClientsController, OauthController]
+
       except_controllers.each do |class_controller|
         return true if self.is_a?(class_controller)
       end

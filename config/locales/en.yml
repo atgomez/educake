@@ -132,6 +132,13 @@ en:
       block_account: "Block Account"
       block_account_description: "User will be locked out of their account until reinstated."
 
+  oauth: 
+    register: "Register"
+    created_successfully: "Registered the information successfully"
+    updated_successfully: "Updated the client information successfully"
+    deleted_successfully: "Destroyed the client application registration"
+    error: "Wrong application id"
+
   user:
     title: "User Management"
     created_successfully: "User %{name} was created successfully."
@@ -213,6 +220,7 @@ en:
     error_delete_in_used: "Cannot delete the curriculum '%{name}' because it is in-used."
     import_line_failed: "Cannot import the line."
     import_failed: "Some error occurred while importing file. Please try again."
+    import_failed_with_file_format: "Cannot import the file. Please make sure the file is correctly formatted in UTF-8 encoding."
     import_successfully: "Import curriculums is successfully."
     import_successfully_with_one_line: "There is one curriculum is imported."
     import_successfully_with_lines: "There are %{num} curriculums are imported."
@@ -301,6 +309,9 @@ en:
     change_password_action: "Change my password"
     unlock_action: "Unlock my account"
 
+  api:
+    developer: "Developer"
+    
   activerecord:
     errors:
       messages:

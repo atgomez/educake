@@ -1,6 +1,7 @@
 require File.expand_path('../boot', __FILE__)
 
 require 'rails/all'
+require 'oauth/rack/oauth_filter'
 
 if defined?(Bundler)
   # If you precompile assets before deploying to production, use this line
@@ -8,6 +9,8 @@ if defined?(Bundler)
   # If you want your assets lazily compiled in production, use this line
   # Bundler.require(:default, :assets, Rails.env)
 end
+
+require 'oauth/rack/oauth_filter'
 
 module TeacherMgnt
   class Application < Rails::Application
@@ -64,5 +67,12 @@ module TeacherMgnt
 
     # Configure to compress responses.
     config.middleware.insert_before(0, Rack::Deflater)
+
+    # Configure for grape-rabl view path.
+    config.middleware.use(Rack::Config) do |env|
+      env['api.tilt.root'] = Rails.root.join "app", "views", "api"
+    end
+    # Configure for OAuth-plugin
+    config.middleware.use OAuth::Rack::OAuthFilter
   end
 end

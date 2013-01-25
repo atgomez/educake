@@ -1,0 +1,13 @@
+.form-inputs
+  = f.input :name
+  = f.input :url
+  = f.input :callback_url
+  = f.input :support_url
+.form-actions
+  - if f.object.new_record?
+    = f.button :submit, :value => t("oauth.register")
+  - else
+    = link_to "Cancel", oauth_clients_path, :class => "btn"
+    = f.button :submit, :value => t("common.save")
+
+

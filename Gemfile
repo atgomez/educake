@@ -18,6 +18,42 @@ group :assets do
   gem 'therubyracer'
 end
 
+group :development do 
+  gem "haml-rails"
+  gem 'rails-erd'
+
+  # For HAML
+  gem 'ruby_parser', '>= 2.3.1'
+  gem "hpricot", ">= 0.8.5"
+  # gem 'therubyracer', :platforms => :ruby
+
+  # For models annotation
+  gem 'annotate', ">=2.5.0"
+
+  # For API doc
+  gem 'grape_doc'
+  gem 'coderay'
+  gem 'kramdown', '~> 0.13.2'
+  gem 'mime-types', '~> 1.16'
+  gem 'nanoc', '~> 3.4.3'
+  gem 'nokogiri'
+  gem 'pygments.rb'
+  gem 'yajl-ruby', '~> 0.8.2'
+end
+
+group :development, :test do
+  gem "rspec-rails", ">= 2.11.0"
+  gem "capybara"
+  gem "database_cleaner", '>= 0.8.0'
+  gem "faker"
+  gem "factory_girl_rails", '>= 4.1.0'
+  # For code coverage
+  gem "simplecov", :require => false
+  gem "simplecov-rcov", :require => false
+  gem "shoulda-matchers"
+  gem "spork-rails", "~> 3.2.1"
+end
+
 gem "twitter-bootstrap-rails"
 #gem "less-rails"
 #gem 'jquery-rails'
@@ -39,6 +75,7 @@ gem 'meta_search'
 gem 'newrelic_rpm'
 gem 'fastercsv'
 gem "remotipart", "~> 1.0"
+gem "oauth-plugin", ">= 0.4.0.rc2"
 
 #Excel Parser
 gem "axlsx"
@@ -54,28 +91,6 @@ gem "moped"
 # Database Site
 gem 'rails_admin'
 
-group :development do 
-  gem "haml-rails"
-  gem 'rails-erd'
-
-  # For HAML
-  gem 'ruby_parser', '>= 2.3.1'
-  gem "hpricot", ">= 0.8.5"
-  # gem 'therubyracer', :platforms => :ruby
-
-  # For models annotation
-  gem 'annotate', ">=2.5.0"
-end
-
-group :development, :test do
-  gem "rspec-rails", ">= 2.11.0"
-  gem "capybara"
-  gem "database_cleaner", '>= 0.8.0'
-  gem "faker"
-  gem "factory_girl_rails", '>= 4.1.0'
-  # For code coverage
-  gem "simplecov", :require => false
-  gem "simplecov-rcov", :require => false
-  gem "shoulda-matchers"
-  gem "spork-rails", "~> 3.2.1"
-end
+# API
+gem 'grape'
+gem 'grape-rabl'

@@ -3,4 +3,7 @@
   = link_to(current_user.try(:full_name), my_account_path)
 %span= "|"
 %span.blue
+  = link_to(t("api.developer"), oauth_clients_path) 
+%span= "|"
+%span.blue
   = link_to(t("devise.session.sign_out_action"), destroy_user_session_path, :method => "delete", :id => "sign_out")  

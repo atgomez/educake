@@ -4,6 +4,8 @@ ENV["RAILS_ENV"] ||= 'test'
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'rspec/autorun'
+require 'capybara/rspec'
+require 'capybara/rails'
 include ActionDispatch::TestProcess
 
 # Requires supporting ruby files with custom matchers and macros, etc,

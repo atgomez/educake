@@ -1,4 +1,6 @@
 TeacherMgnt::Application.routes.draw do
+  root :to => "home#index"
+
   #Rails Admin
   mount RailsAdmin::Engine => '/backend', :as => 'rails_admin'
 
@@ -6,14 +8,28 @@ TeacherMgnt::Application.routes.draw do
   mount MongodbLogger::Server.new, :at => "/mongodb"
   mount MongodbLogger::Assets.instance, :at => "/mongodb/assets", :as => :mongodb_assets # assets
 
-  # Config for dynamic root url
-  # DO NOT change the order of the root config, otherwise it will not work properly
-  # root :to => "super_admin/schools#index", :constraints => RoleRouteConstraint.new(:super_admin)
-  # root :to => "admin/teachers#index", :constraints => RoleRouteConstraint.new(:admin)
-  # root :to => "students#index", :constraints => RoleRouteConstraint.new(:parent, :teacher)
-  root :to => "home#index"
+  # API endtry point
+  mount EducakeAPI::All => "/"
+
+  # OAuth
+  resources :oauth_clients
+
+  match '/oauth/test_request',  :to => 'oauth#test_request',  :as => :test_request
+
+  match '/oauth/token',         :to => 'oauth#token',         :as => :token
+
+  match '/oauth/access_token',  :to => 'oauth#access_token',  :as => :access_token
+
+  match '/oauth/request_token', :to => 'oauth#request_token', :as => :request_token
+  match '/oauth/revoke',        :to => 'oauth#revoke',        :as => :revoke_token
+
+  match '/oauth/authorize',     :to => 'oauth#authorize',     :as => :authorize
+
+  match '/oauth',               :to => 'oauth#index',         :as => :oauth  
+
   resources :subscribers
-  # Chart rooting
+
+  # Chart routing
   resources :charts do
     collection do
       get :user_chart
