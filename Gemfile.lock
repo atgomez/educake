@@ -434,3 +434,4 @@ DEPENDENCIES
   twitter-bootstrap-rails
   uglifier (>= 1.0.3)
   yajl-ruby (~> 0.8.2)
+
