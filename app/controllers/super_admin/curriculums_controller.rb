@@ -15,6 +15,7 @@ class SuperAdmin::CurriculumsController < SuperAdmin::BaseSuperAdminController
   def create
     begin
       @curriculum = Curriculum.new(params[:curriculum])
+      @curriculum.auto_init_new_curriculum_core!
       if @curriculum.save
         flash[:notice] = I18n.t("curriculum.created_successfully", :name => @curriculum.name)
         redirect_to :action => 'index'
@@ -38,6 +39,7 @@ class SuperAdmin::CurriculumsController < SuperAdmin::BaseSuperAdminController
   def update
     if find_curriculum
       begin
+        @curriculum.auto_init_new_curriculum_core!
         if @curriculum.update_attributes(params[:curriculum])
           flash[:notice] = I18n.t("curriculum.updated_successfully", :name => @curriculum.name)
           redirect_to :action => 'index'
@@ -84,10 +86,10 @@ class SuperAdmin::CurriculumsController < SuperAdmin::BaseSuperAdminController
     attrs = params[:curriculum_import] || {}
     @import = CurriculumImport.new(attrs)
 
-    begin      
+    begin
       if @import.valid?
         result = Curriculum.import_data(@import.import_file_path, 
-                              :curriculum_core => @import.curriculum_core_name)
+                              :curriculum_core_name => @import.curriculum_core_name)
         if result[:errors].blank?
           flash[:notice] = I18n.t("curriculum.import_successfully")
         else          

@@ -76,21 +76,6 @@ describe Curriculum do
     end
   end
 
-  describe "#curriculum_core_value" do
-    context "without initialization" do
-      it "returns the value equal with curriculum_core_id" do
-        curriculum.curriculum_core_value.should eq(curriculum.curriculum_core_id)
-      end
-    end
-
-    context "with initialization" do
-      it "returns the initialized value of curriculum_core_value" do
-        curriculum.curriculum_core_value = "New Common Core"
-        curriculum.curriculum_core_value.should_not eq(curriculum.curriculum_core_id)
-      end
-    end
-  end
-
   describe "#destroy" do
     subject {curriculum.destroy}
     context "without deleting CurriculumCore" do
@@ -126,15 +111,7 @@ describe Curriculum do
       it "creates a new CurriculumCore object" do
         new_core_name = "New Core Name"
         curriculum.curriculum_core_value = new_core_name
-        curriculum.save!
-        curriculum.curriculum_core.name.should eq(new_core_name)
-      end
-    end
-
-    context "with a brand new curriculum core name (as a number)" do
-      it "creates a new CurriculumCore object" do
-        new_core_name = "123456"
-        curriculum.curriculum_core_value = new_core_name
+        curriculum.auto_init_new_curriculum_core!
         curriculum.save!
         curriculum.curriculum_core.name.should eq(new_core_name)
       end
@@ -143,24 +120,16 @@ describe Curriculum do
     context "with an available curriculum core name" do      
       it "should only change the curriculum_core_id and not create a new CurriculumCore object" do
         curriculum.curriculum_core_value = curriculum_core.name
+        curriculum.auto_init_new_curriculum_core!
         curriculum.save!
         curriculum.reload
         curriculum.curriculum_core.name.should eq(curriculum_core.name)
       end
     end
 
-    context "with an available curriculum core id" do
-      it "should only change the curriculum_core_id and not create a new CurriculumCore object" do
-        curriculum.curriculum_core_value = curriculum_core.id
-        curriculum.save!
-        curriculum.reload
-        curriculum.curriculum_core.name.should eq(curriculum_core.name)
-      end
-    end 
-
     context "with changing of curriculum_core_id" do
       it "normally save the changed value" do
-        curriculum.curriculum_core_id = curriculum_core.id
+        curriculum.curriculum_core_id = curriculum_core.id        
         curriculum.save!
         curriculum.reload
         curriculum.curriculum_core.name.should eq(curriculum_core.name)
@@ -331,7 +300,7 @@ describe Curriculum do
         context "with new name" do
           it "auto creates the curriculum core" do
             new_name = "New Core Name"
-            result = Curriculum.import_data(csv_file.path, :curriculum_core => new_name)
+            result = Curriculum.import_data(csv_file.path, :curriculum_core_name => new_name)
             result[:errors].should be_blank
             CurriculumCore.find_by_name(new_name).should_not be_blank
           end
@@ -339,14 +308,14 @@ describe Curriculum do
 
         context "with available name" do
           it "auto creates the curriculum core" do
-            result = Curriculum.import_data(csv_file.path, :curriculum_core => curriculum.name)
+            result = Curriculum.import_data(csv_file.path, :curriculum_core_name => curriculum.name)
             result[:errors].should be_blank
           end
         end
 
         context "with available core ID" do
           it "auto detect the CurriculumCore" do
-            result = Curriculum.import_data(csv_file.path, :curriculum_core => curriculum.id)
+            result = Curriculum.import_data(csv_file.path, :curriculum_core_name => curriculum.id)
             result[:errors].should be_blank
           end
         end

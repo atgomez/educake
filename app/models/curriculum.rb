@@ -21,7 +21,7 @@ class Curriculum < ActiveRecord::Base
   include ::SharedMethods::Paging
   include ::SharedMethods::SerializationConfig  
 
-  attr_accessor :curriculum_core_value
+  attr_accessor :curriculum_core_value, :auto_init_new_curriculum_core
 
   attr_accessible :curriculum_core_id, :subject_id, :curriculum_grade_id, :curriculum_area_id,
                   :standard, :description1, :description2,
@@ -52,9 +52,9 @@ class Curriculum < ActiveRecord::Base
   validates :description1, :length => { :maximum => 255, :too_long => :name_too_long }
   validates :standard, :uniqueness => { :scope => [ :curriculum_core_id, :subject_id, 
                                                     :curriculum_grade_id, :curriculum_area_id]}
-  validates :curriculum_core_value, :presence => true
+  validates :curriculum_core_value, :presence => true, :if => :auto_init_new_curriculum_core
   # CALLBACK                                      
-  before_validation :init_curriculum_core
+  before_validation :init_curriculum_core, :if => :auto_init_new_curriculum_core
   after_destroy :destroy_curriculum_core
 
   #                                                    
@@ -147,13 +147,9 @@ class Curriculum < ActiveRecord::Base
       Curriculum.transaction do
         # Prepare the curriculum core
         curriculum_core_id = nil
-        unless options[:curriculum_core].blank?
-          # Find by ID first
-          curriculum_core = CurriculumCore.find_by_id(options[:curriculum_core])
-          if curriculum_core.blank?
-            # Then find or init a new record with the name
-            curriculum_core = CurriculumCore.find_or_initialize_by_name(options[:curriculum_core].to_s)
-          end
+        unless options[:curriculum_core_name].blank?
+          # Find or init a new record with the name
+          curriculum_core = CurriculumCore.find_or_initialize_by_name(options[:curriculum_core_name].to_s)
 
           # Save the record
           if curriculum_core.new_record?
@@ -330,42 +326,23 @@ class Curriculum < ActiveRecord::Base
     "#{self.curriculum_core.try(:name)}, #{self.name}"
   end
 
-  def curriculum_core_id=(value)
-    @curriculum_core_value = value
-    self.send(:write_attribute, :curriculum_core_id, value)
-  end
-
-  def curriculum_core_value
-    @curriculum_core_value ||= self.curriculum_core_id
-  end
-
-  def curriculum_core_value=(value)
-    @curriculum_core_value = value
-  end
-
   # Return the description2 in HTML format
   def html_description2
     ::Util.simple_format(self.description2)
+  end
+
+  # To auto-initialize a new curriculum core from the curriculum_core_value.
+  def auto_init_new_curriculum_core!
+    self.auto_init_new_curriculum_core = true
   end
 
   protected
 
     # Init CurriculumCore if necessary
     def init_curriculum_core
-      if self.curriculum_core_value != self.curriculum_core_id && !self.curriculum_core_value.blank?
-        # Find by ID first
-        tmp_core = nil
-        if ::Util.is_a_number?(self.curriculum_core_value)
-          tmp_core = CurriculumCore.find_by_id(self.curriculum_core_value)
-        end
-
-        if tmp_core.blank?
-          # Find by name
-          tmp_core = CurriculumCore.find_or_initialize_by_name(self.curriculum_core_value)
-        end
-        self.curriculum_core = tmp_core
-      else
-        self.curriculum_core_id = self.curriculum_core_value
+      if self.curriculum_core_value != self.curriculum_core.try(:name)
+        # Find by name
+        self.curriculum_core = CurriculumCore.find_or_initialize_by_name(self.curriculum_core_value)
       end
     end
 
