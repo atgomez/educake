@@ -30,7 +30,7 @@ class Grade < ActiveRecord::Base
   belongs_to :progress
 
   # VALIDATION
-  validates_presence_of :accuracy, :goal_id
+  validates_presence_of :accuracy, :goal_id, :due_date
   validates :accuracy, :numericality => true, 
             :inclusion => {:in => 0..100, :message => :out_of_range_100}
   validates :goal_id, :uniqueness => { :scope => :due_date, :message => :only_once_per_day }
@@ -104,7 +104,9 @@ class Grade < ActiveRecord::Base
       ::Util.check_date_validation(self, @attributes, :due_date, true)
     end
 
-    def validate_due_date      
+    def validate_due_date
+      return false if self.due_date.blank?
+      
       if (self.goal.baseline_date > self.due_date)
         self.errors.add(:due_date, :must_eq_greater_than_goal_baseline)
         return false
