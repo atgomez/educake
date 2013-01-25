@@ -8,7 +8,7 @@ module EducakeAPI
       end
 
       def find_goal(id)
-        goal = Goal.find_by_id(id)
+        goal = Goal.incomplete.find_by_id(id)
         error!('Goal not found', 404) unless goal
 
         # Check if the current user can access the goal
@@ -45,25 +45,40 @@ module EducakeAPI
       desc "Add grade for a goal"
       params do
         requires :goal_id, :type => Integer, :desc => "Goal ID"
-        requires :due_date, :type => Date, :desc => "Due date"
+        requires :due_date, :api_date => true, :desc => "Due date"
         requires :accuracy, :type => Float, :desc => "Accuracy"
         optional :time_to_complete, :type => Time, :desc => "Time to complete"
         optional :note, :type => String, :desc => "Some more extra description"
       end
       post "/:goal_id/add_grade" do
-        @goals = find_goal(params[:goal_id])
+        @goal = find_goal(params[:goal_id])
         attrs = {}
         [:due_date, :accuracy, :time_to_complete, :note].each do |key|
           attrs[key] = params[key]
         end
         attrs[:user_id] = current_user.id
-        @grade = @goals.grades.new(attrs)
 
-        if @grade.save
-          @grade
+        @grade = @goal.grades.new(attrs)
+        unless @grade.valid?
+          error!(@grade.errors.full_messages, 400)
         else
-          {:error => @grade.errors.full_messages}
+          Grade.transaction do
+            @grade = @goal.build_grade(attrs)
+
+            if (@grade)
+              @grade = @goal.update_grade_state(@grade)
+              if @grade.save
+                @goal.update_all_grade
+                status 201
+              else
+                error!(@grade.errors.full_messages, 400)
+              end
+            end
+          end          
         end
+
+        # Success
+        @grade
       end
     end
   end

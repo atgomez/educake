@@ -138,6 +138,8 @@ note
 
 ### Response
 
+#### Success
+
 <%= json_string \
   %({
      "accuracy":10.0,
@@ -147,5 +149,11 @@ note
      "note":null,
      "time_to_complete":null,
      "user_id":13
-  })
+  }), 201
+%>
+
+#### Errors
+
+<%= json_string \
+  %({"error":["Due date must be less than or equal to goal due date"]}), 400
 %>

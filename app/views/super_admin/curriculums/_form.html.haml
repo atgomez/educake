@@ -15,6 +15,9 @@
   .form-inputs
     .school-info
       = f.input :curriculum_core_value, :as => :select, :collection => CurriculumCore.order(:name),
+                :label_method => :name,
+                :value_method => :name,
+                :selected => @curriculum.curriculum_core.try(:name),
                 :label => t("curriculum.core"),
                 :wrapper_html => {:class => "widget-wrapper"},
                 :input_html => {:class => "editable-combobox reset-on-changed"},

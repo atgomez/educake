@@ -321,6 +321,26 @@ describe SuperAdmin::CurriculumsController do
           import_obj.errors.should be_blank
         end
 
+        context "with new core name" do
+          let(:params) {
+            {
+              :curriculum_import => {
+                :import_file => csv_file,
+                :curriculum_core_name => Faker::Name.name
+              }
+            }
+          }
+          subject { post :import, params.merge(:format => :js) }
+
+          it "runs the import and show the notice" do
+            subject.should render_template("import")
+            import_obj = assigns(:import)
+            import_obj.errors.should be_blank
+            curriculum_core = CurriculumCore.find_by_name(params[:curriculum_import][:curriculum_core_name])
+            curriculum_core.should_not be_blank
+          end
+        end
+
         context "import failed" do
           context "with only one curriculum is impored and some errors" do
             let(:result) do
