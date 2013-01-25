@@ -29,6 +29,7 @@ group :development do
   gem 'annotate', ">=2.5.0"
 
   # For API doc
+  gem 'grape_doc'
   gem 'coderay'
   gem 'kramdown', '~> 0.13.2'
   gem 'mime-types', '~> 1.16'
@@ -89,4 +90,3 @@ gem 'rails_admin'
 # API
 gem 'grape'
 gem 'grape-rabl'
-gem 'grape_doc'
