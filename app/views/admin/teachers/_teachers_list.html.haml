@@ -33,9 +33,14 @@
     - else 
       - if (idx + 1) % row_size == 0
         .clearfix
-- if with_pagination
+- unless on_search
+  - if with_pagination
+    .clearfix
+    .pagination-container.ajax
+      = render_pagination teachers, :current_page => @current_page
+      .loading.hide
+- else
   .clearfix
-  .pagination-container.ajax
-    - pagination_params ||= {}
-    = render_pagination(teachers, {:type => 'teacher', :current_page => @current_page}, pagination_params)
-    .loading.hide
+  - pagination_params ||= {}
+  = render_pagination(teachers, {:type => 'teacher', :current_page => @current_page}, pagination_params)
+  .loading.hide
