@@ -11,10 +11,8 @@ staging:
   replica_set: true
 
 production:
-  database: teacher-dev
-  capsize: <%= 10.megabytes %>
-  host: localhost
-  port: 27017
+  url: <%= ENV['MONGOLAB_URI'] %>
+  capsize: <%= 100.megabytes %>
   replica_set: true
 
 test:
