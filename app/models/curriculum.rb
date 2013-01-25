@@ -95,30 +95,7 @@ class Curriculum < ActiveRecord::Base
 
     def import_data(data_source, options = {})
       # Size of each cache
-      cache_size = 10
-
-      # CurriculumCore
-      curriculum_core_id = nil
-      unless options[:curriculum_core].blank?
-        # Find by ID first
-        curriculum_core = CurriculumCore.find_by_id(options[:curriculum_core])
-        if curriculum_core.blank?
-          # Then find or init a new record with the name
-          curriculum_core = CurriculumCore.find_or_initialize_by_name(options[:curriculum_core].to_s)
-        end
-
-        # Save the record
-        if curriculum_core.new_record?
-          curriculum_core.save
-        end
-
-        curriculum_core_id = curriculum_core.id
-      end
-
-      if curriculum_core_id.blank?
-        # Get the default Common Core if no core name was supplied.
-        curriculum_core_id = CurriculumCore.find_by_name(I18n.t("curriculum.common_core")).try(:id)
-      end
+      cache_size = 10      
 
       # Cache the Subject
       tmp_data = {}
@@ -168,6 +145,29 @@ class Curriculum < ActiveRecord::Base
       line_num = 0
 
       Curriculum.transaction do
+        # Prepare the curriculum core
+        curriculum_core_id = nil
+        unless options[:curriculum_core].blank?
+          # Find by ID first
+          curriculum_core = CurriculumCore.find_by_id(options[:curriculum_core])
+          if curriculum_core.blank?
+            # Then find or init a new record with the name
+            curriculum_core = CurriculumCore.find_or_initialize_by_name(options[:curriculum_core].to_s)
+          end
+
+          # Save the record
+          if curriculum_core.new_record?
+            curriculum_core.save
+          end
+
+          curriculum_core_id = curriculum_core.id
+        end
+
+        if curriculum_core_id.blank?
+          # Get the default Common Core if no core name was supplied.
+          curriculum_core_id = CurriculumCore.find_by_name(I18n.t("curriculum.common_core")).try(:id)
+        end
+
         options = {:skip_blanks => true, :col_sep => DEFAULT_CSV_SEPARATOR}
         CSV.foreach(data_source, options) do |row|
           if line_num == 0 # Skip header
