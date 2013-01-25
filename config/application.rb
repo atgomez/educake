@@ -10,6 +10,8 @@ if defined?(Bundler)
   # Bundler.require(:default, :assets, Rails.env)
 end
 
+require 'oauth/rack/oauth_filter'
+
 module TeacherMgnt
   class Application < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.
@@ -70,7 +72,6 @@ module TeacherMgnt
     config.middleware.use(Rack::Config) do |env|
       env['api.tilt.root'] = Rails.root.join "app", "views", "api"
     end
-
     # Configure for OAuth-plugin
     config.middleware.use OAuth::Rack::OAuthFilter
   end

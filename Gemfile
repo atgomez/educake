@@ -27,6 +27,16 @@ group :development do
 
   # For models annotation
   gem 'annotate', ">=2.5.0"
+
+  # For API doc
+  gem 'grape_doc'
+  gem 'coderay'
+  gem 'kramdown', '~> 0.13.2'
+  gem 'mime-types', '~> 1.16'
+  gem 'nanoc', '~> 3.4.3'
+  gem 'nokogiri'
+  gem 'pygments.rb'
+  gem 'yajl-ruby', '~> 0.8.2'
 end
 
 group :development, :test do

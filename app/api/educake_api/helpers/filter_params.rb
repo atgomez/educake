@@ -8,8 +8,7 @@ module EducakeAPI::Helpers
     end
     
     def do_filter_params
-      # TODO: filter paging info and other necessary parameters.
-      @filtered_params = params
+      @filtered_params = params.to_hash
       # Check the page_size params.
       if @filtered_params[:page_size].to_i <= 0
         @filtered_params[:page_size] = default_page_size
@@ -22,6 +21,15 @@ module EducakeAPI::Helpers
     
     def filtered_params
       @filtered_params
+    end
+
+    def check_page_id(max_page)
+      page_id = filtered_params[:page_id].to_i
+      page_id = 1 if page_id <= 0
+      if page_id > max_page
+        page_id = -1
+      end
+      page_id
     end
   end
 end
