@@ -38,12 +38,15 @@
 <dt>student_id</dt>
   <dd>
 <em>required</em> <strong>integer</strong> - The student’s ID.</dd>
+  <dt>page_id</dt>
+  <dd>
+<em>optional</em> <strong>integer</strong> - The page index.</dd>
   <dt>page_size</dt>
   <dd>
 <em>optional</em> <strong>integer</strong> - The total items per page will be returned.
 
     <ul>
-<li>Default value is <code>20</code> items</li>
+<li>Default value is <code>20</code> items.</li>
       <li>Maximum value is <code>100</code>. If you pass a number greater than <code>100</code>, the returned items will be limited at <code>100</code>.</li>
     </ul>
 </dd>

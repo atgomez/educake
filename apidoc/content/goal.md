@@ -16,10 +16,13 @@ title: Goal
 student_id
 : _required_ **integer** - The student's ID.
 
+page_id
+: _optional_ **integer** - The page index.
+
 page_size
 : _optional_ **integer** - The total items per page will be returned.
 
-  - Default value is `20` items
+  - Default value is `20` items.
   - Maximum value is `100`. If you pass a number greater than `100`, the returned items will be limited at `100`.
 
 ### Response
