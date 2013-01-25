@@ -5,3 +5,7 @@
   rake db:reset : drop, create, and seed data
 
   annotate -p after (require https://github.com/ctran/annotate_models gem)
+
+  Generate document:
+    $ cd apidoc
+    $ nanoc compile
