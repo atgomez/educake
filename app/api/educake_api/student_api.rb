@@ -8,7 +8,7 @@ module EducakeAPI
       end      
       get "/" do
         @students = current_user.accessible_students.load_data(filtered_params)
-        @current_page = filtered_params[:page_id] || 1
+        @current_page = check_page_id(@students.total_pages)
         {:data => @students, :total_pages => @students.total_pages, :current_page => @current_page}
       end
     end

@@ -34,7 +34,7 @@ module EducakeAPI
       get "/:student_id" do
         @student = find_student(params[:student_id])
         @goals = @student.goals.load_data(filtered_params)
-        @current_page = filtered_params[:page_id] || 1
+        @current_page = check_page_id(@goals.total_pages)
         {:data => @goals, :total_pages => @goals.total_pages, :current_page => @current_page}
       end
 

@@ -12,10 +12,11 @@ describe "Students API", :type => :feature do
     })
   end
   let(:access_token) { FactoryGirl.create(:oauth2_token, :client_application => client_application, :user => user) }
- 
+  let(:total_items) {40}
+
   before(:each) do
     access_token
-    20.times {FactoryGirl.create(:student, :teacher => user)}
+    total_items.times {FactoryGirl.create(:student, :teacher => user)}
   end
  
   after do
@@ -41,6 +42,20 @@ describe "Students API", :type => :feature do
       it "returns data" do
         get req_path, nil, {"HTTP_AUTHORIZATION" => "OAuth #{access_token.token}"}
         response.should be_success
+      end
+
+      context "pagination", :pagination => true do
+        it "returns the correct items number" do
+          total = 0
+          (total_items/20 + 1).times do |t|
+            get req_path, {:page_id => t+1}, {"HTTP_AUTHORIZATION" => "OAuth #{access_token.token}"}
+            response.should be_success
+            info = JSON.parse(response.body)
+            total += info['data'].length
+          end
+
+          total.should eq(total_items)
+        end
       end
     end
   end

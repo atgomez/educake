@@ -86,7 +86,6 @@ class ApplicationController < ActionController::Base
     end
     
     def do_filter_params
-      # TODO: filter paging info and other necessary parameters.
       @filtered_params = params
       @filtered_params = @filtered_params.symbolize_keys
       # Check the page_size params.
