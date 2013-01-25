@@ -173,7 +173,9 @@ Content-Type: application/json</code></pre>
 
 <h3 id="response-1">Response</h3>
 
-<pre class="headers"><code>Status: 200 OK
+<h4 id="success">Success</h4>
+
+<pre class="headers"><code>Status: 201 Created
 Content-Type: application/json</code></pre>
 <pre class="highlight"><code class="language-javascript"><span class="p">{</span>
      <span class="s2">"accuracy"</span><span class="o">:</span><span class="mf">10.0</span><span class="p">,</span>
@@ -184,6 +186,12 @@ Content-Type: application/json</code></pre>
      <span class="s2">"time_to_complete"</span><span class="o">:</span><span class="kc">null</span><span class="p">,</span>
      <span class="s2">"user_id"</span><span class="o">:</span><span class="mi">13</span>
   <span class="p">}</span></code></pre>
+
+<h4 id="errors">Errors</h4>
+
+<pre class="headers"><code>Status: 400 Bad Request
+Content-Type: application/json</code></pre>
+<pre class="highlight"><code class="language-javascript"><span class="p">{</span><span class="s2">"error"</span><span class="o">:</span><span class="p">[</span><span class="s2">"Due date must be less than or equal to goal due date"</span><span class="p">]}</span></code></pre>
       </div>
 
       <div id="js-sidebar" class="sidebar-shell">
