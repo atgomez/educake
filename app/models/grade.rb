@@ -34,14 +34,13 @@ class Grade < ActiveRecord::Base
   validates :accuracy, :numericality => true, 
             :inclusion => {:in => 0..100, :message => :out_of_range_100}
   validates :goal_id, :uniqueness => { :scope => :due_date, :message => :only_once_per_day }
-  
+  validate :validate_due_date
 
   # SCOPE
   scope :computable, where('is_unused = ?', false)
 
   # CALLBACK
   before_validation :valid_date_attribute?
-  before_save :validate_due_date
   
   # CLASS METHODS
   class << self
@@ -97,8 +96,7 @@ class Grade < ActiveRecord::Base
   def due_date=(date)
     date = ::Util.try_and_convert_date(date)
     self.send(:write_attribute, :due_date, date)
-  end
-  
+  end  
   
   protected
 
@@ -106,8 +104,7 @@ class Grade < ActiveRecord::Base
       ::Util.check_date_validation(self, @attributes, :due_date, true)
     end
 
-    def validate_due_date
-      
+    def validate_due_date      
       if (self.goal.baseline_date > self.due_date)
         self.errors.add(:due_date, :must_eq_greater_than_goal_baseline)
         return false

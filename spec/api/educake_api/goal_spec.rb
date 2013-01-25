@@ -79,11 +79,35 @@ describe "Goal API", :type => :feature do
     # end
 
     context "OAuth2" do
+      let(:due_date) {(goal.baseline_date + 2.days).strftime(I18n.t("date.formats.default"))}
       it "create the grade" do
-        post req_path, {:accuracy => 10, :due_date => goal.baseline_date + 2.days}, 
+        post req_path, {:accuracy => 10, :due_date => due_date}, 
                        {"HTTP_AUTHORIZATION" => "OAuth #{access_token.token}"}
         puts response.body
         response.should be_success
+      end
+
+      context "failure" do
+        context "with invalid goal" do
+          let(:req_path) { "/api/v1/goals/111233/add_grade" }
+
+          it "returns 404 Not Found" do
+            post req_path, {:accuracy => 10, :due_date => due_date}, 
+                           {"HTTP_AUTHORIZATION" => "OAuth #{access_token.token}"}
+            puts response.body
+            response.response_code.should eq(404)
+          end
+        end
+
+        context "with invalid param" do
+          let(:due_date) {(goal.due_date + 2.days).strftime(I18n.t("date.formats.default"))}
+          it "returns 404 Not Found" do
+            post req_path, {:accuracy => 10, :due_date => due_date}, 
+                           {"HTTP_AUTHORIZATION" => "OAuth #{access_token.token}"}
+            puts response.body
+            response.response_code.should eq(400)
+          end
+        end
       end
     end
   end

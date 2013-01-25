@@ -3,12 +3,17 @@ module EducakeAPI
     prefix "api"
     format :json
     version "v1"
+    rescue_from :all
+    
     # Using Rabl is optional
     formatter :json, Grape::Formatter::Rabl   
 
-    # Helper
+    # Helpers
     helpers EducakeAPI::Helpers::Authentication
     helpers EducakeAPI::Helpers::FilterParams
+
+    # Validators
+    Grape::Validations.register_validator("api_date", EducakeAPI::Validators::APIDate)
 
     before do
       authenticate_user
