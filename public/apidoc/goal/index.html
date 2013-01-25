@@ -12,22 +12,187 @@
   <body class="api">
     <div id="header-wrapper">
       <div id="header">
-        <a class="logo" href="/apidoc">Educake API</a>
+        <div>
+          <a class="logo" href="/apidoc"><img src="/apidoc/images/logo.png" alt="Educake" /><span>API</span></a>
+          <ul class="nav">
+            <li><a href="/">Home</a></li>
+            <li><a href="/apidoc">API v1</a></li>
+          </ul>
+        </div>
       </div>
     </div>
     <div id="wrapper">
       <div class="content">
         <h1>Goal APIs</h1>
+
+<ul id="markdown-toc">
+<li><a href="#get-list-goals">Get list goals</a></li>
+  <li><a href="#add-grade-for-a-goal">Add grade for a goal</a></li>
+</ul><h2 id="get-list-goals">Get list goals</h2>
+
+<pre><code>GET /api/v1/goals/:student_id</code></pre>
+
+<h3 id="parameters">Parameters</h3>
+
+<dl>
+<dt>student_id</dt>
+  <dd>
+<em>required</em> <strong>integer</strong> - The student’s ID.</dd>
+  <dt>page_size</dt>
+  <dd>
+<em>optional</em> <strong>integer</strong> - The total items per page will be returned.
+
+    <ul>
+<li>Default value is <code>20</code> items</li>
+      <li>Maximum value is <code>100</code>. If you pass a number greater than <code>100</code>, the returned items will be limited at <code>100</code>.</li>
+    </ul>
+</dd>
+</dl><h3 id="response">Response</h3>
+
+<pre class="headers"><code>Status: 200 OK
+Content-Type: application/json</code></pre>
+<pre class="highlight"><code class="language-javascript"><span class="p">{</span>
+      <span class="s2">"total_pages"</span><span class="o">:</span><span class="mi">1</span><span class="p">,</span>
+      <span class="s2">"current_page"</span><span class="o">:</span><span class="mi">1</span><span class="p">,</span>
+      <span class="s2">"data"</span><span class="o">:</span><span class="p">[</span>
+        <span class="p">{</span>
+           <span class="s2">"accuracy"</span><span class="o">:</span><span class="mf">90.0</span><span class="p">,</span>
+           <span class="s2">"baseline"</span><span class="o">:</span><span class="mf">20.0</span><span class="p">,</span>
+           <span class="s2">"baseline_date"</span><span class="o">:</span><span class="s2">"2012-11-01"</span><span class="p">,</span>
+           <span class="s2">"curriculum_id"</span><span class="o">:</span><span class="mi">5</span><span class="p">,</span>
+           <span class="s2">"description"</span><span class="o">:</span><span class="s2">" Ad corrupti quisquam a consequuntur in occaecati et. Soluta nam ut architecto delectus."</span><span class="p">,</span>
+           <span class="s2">"due_date"</span><span class="o">:</span><span class="s2">"2013-11-01"</span><span class="p">,</span>
+           <span class="s2">"id"</span><span class="o">:</span><span class="mi">5</span><span class="p">,</span>
+           <span class="s2">"is_completed"</span><span class="o">:</span><span class="kc">false</span><span class="p">,</span>
+           <span class="s2">"student_id"</span><span class="o">:</span><span class="mi">1</span><span class="p">,</span>
+           <span class="s2">"trial_days_actual"</span><span class="o">:</span><span class="mi">9</span><span class="p">,</span>
+           <span class="s2">"trial_days_total"</span><span class="o">:</span><span class="mi">10</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+           <span class="s2">"accuracy"</span><span class="o">:</span><span class="mf">90.0</span><span class="p">,</span>
+           <span class="s2">"baseline"</span><span class="o">:</span><span class="mf">20.0</span><span class="p">,</span>
+           <span class="s2">"baseline_date"</span><span class="o">:</span><span class="s2">"2012-11-01"</span><span class="p">,</span>
+           <span class="s2">"curriculum_id"</span><span class="o">:</span><span class="mi">4</span><span class="p">,</span>
+           <span class="s2">"description"</span><span class="o">:</span><span class="s2">"Nesciunt perferendis unde nisi temporibus modi. Nemo consectetur id deserunt cum"</span><span class="p">,</span>
+           <span class="s2">"due_date"</span><span class="o">:</span><span class="s2">"2013-11-01"</span><span class="p">,</span>
+           <span class="s2">"id"</span><span class="o">:</span><span class="mi">4</span><span class="p">,</span>
+           <span class="s2">"is_completed"</span><span class="o">:</span><span class="kc">false</span><span class="p">,</span>
+           <span class="s2">"student_id"</span><span class="o">:</span><span class="mi">1</span><span class="p">,</span>
+           <span class="s2">"trial_days_actual"</span><span class="o">:</span><span class="mi">9</span><span class="p">,</span>
+           <span class="s2">"trial_days_total"</span><span class="o">:</span><span class="mi">10</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+           <span class="s2">"accuracy"</span><span class="o">:</span><span class="mf">90.0</span><span class="p">,</span>
+           <span class="s2">"baseline"</span><span class="o">:</span><span class="mf">20.0</span><span class="p">,</span>
+           <span class="s2">"baseline_date"</span><span class="o">:</span><span class="s2">"2012-11-01"</span><span class="p">,</span>
+           <span class="s2">"curriculum_id"</span><span class="o">:</span><span class="mi">3</span><span class="p">,</span>
+           <span class="s2">"description"</span><span class="o">:</span><span class="s2">"Et sunt consequatur enim adipisci est quaerat voluptas. Accusamus sed omnis."</span><span class="p">,</span>
+           <span class="s2">"due_date"</span><span class="o">:</span><span class="s2">"2013-11-01"</span><span class="p">,</span>
+           <span class="s2">"id"</span><span class="o">:</span><span class="mi">3</span><span class="p">,</span>
+           <span class="s2">"is_completed"</span><span class="o">:</span><span class="kc">false</span><span class="p">,</span>
+           <span class="s2">"student_id"</span><span class="o">:</span><span class="mi">1</span><span class="p">,</span>
+           <span class="s2">"trial_days_actual"</span><span class="o">:</span><span class="mi">9</span><span class="p">,</span>
+           <span class="s2">"trial_days_total"</span><span class="o">:</span><span class="mi">10</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+           <span class="s2">"accuracy"</span><span class="o">:</span><span class="mf">90.0</span><span class="p">,</span>
+           <span class="s2">"baseline"</span><span class="o">:</span><span class="mf">20.0</span><span class="p">,</span>
+           <span class="s2">"baseline_date"</span><span class="o">:</span><span class="s2">"2012-11-01"</span><span class="p">,</span>
+           <span class="s2">"curriculum_id"</span><span class="o">:</span><span class="mi">2</span><span class="p">,</span>
+           <span class="s2">"description"</span><span class="o">:</span><span class="s2">"Sint nihil et temporibus voluptatem atque. Beatae aut maiores. Consequuntur animi dolores eius aut. Quisquam earum aliquid</span>
+<span class="s2">  voluptatem."</span><span class="p">,</span>
+           <span class="s2">"due_date"</span><span class="o">:</span><span class="s2">"2013-11-01"</span><span class="p">,</span>
+           <span class="s2">"id"</span><span class="o">:</span><span class="mi">2</span><span class="p">,</span>
+           <span class="s2">"is_completed"</span><span class="o">:</span><span class="kc">false</span><span class="p">,</span>
+           <span class="s2">"student_id"</span><span class="o">:</span><span class="mi">1</span><span class="p">,</span>
+           <span class="s2">"trial_days_actual"</span><span class="o">:</span><span class="mi">9</span><span class="p">,</span>
+           <span class="s2">"trial_days_total"</span><span class="o">:</span><span class="mi">10</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+           <span class="s2">"accuracy"</span><span class="o">:</span><span class="mf">90.0</span><span class="p">,</span>
+           <span class="s2">"baseline"</span><span class="o">:</span><span class="mf">20.0</span><span class="p">,</span>
+           <span class="s2">"baseline_date"</span><span class="o">:</span><span class="s2">"2012-11-01"</span><span class="p">,</span>
+           <span class="s2">"curriculum_id"</span><span class="o">:</span><span class="mi">1</span><span class="p">,</span>
+           <span class="s2">"description"</span><span class="o">:</span><span class="s2">"Totam consequatur aut sit officiis in similique. Perferendis distinctio cumque."</span><span class="p">,</span>
+           <span class="s2">"due_date"</span><span class="o">:</span><span class="s2">"2013-11-01"</span><span class="p">,</span>
+           <span class="s2">"id"</span><span class="o">:</span><span class="mi">1</span><span class="p">,</span>
+           <span class="s2">"is_completed"</span><span class="o">:</span><span class="kc">false</span><span class="p">,</span>
+           <span class="s2">"student_id"</span><span class="o">:</span><span class="mi">1</span><span class="p">,</span>
+           <span class="s2">"trial_days_actual"</span><span class="o">:</span><span class="mi">9</span><span class="p">,</span>
+           <span class="s2">"trial_days_total"</span><span class="o">:</span><span class="mi">10</span>
+        <span class="p">}</span>
+     <span class="p">]</span>
+  <span class="p">}</span></code></pre>
+
+<h2 id="add-grade-for-a-goal">Add grade for a goal</h2>
+
+<pre><code>POST /api/v1/goals/:goal_id/add_grade</code></pre>
+
+<h3 id="parameters-1">Parameters</h3>
+
+<dl>
+<dt>goal_id</dt>
+  <dd>
+<em>required</em> <strong>integer</strong> - The goal’s ID.</dd>
+</dl><h3 id="post-data">Post data</h3>
+
+<dl>
+<dt>due_date</dt>
+  <dd>
+<em>required</em> <strong>date</strong> - Date when the grade created.
+
+    <ul>
+<li>Date must be in format <code>mm-dd-yyyy</code>.</li>
+    </ul>
+</dd>
+  <dt>accuracy</dt>
+  <dd>
+<em>required</em> <strong>float</strong> - Value of the grade.</dd>
+  <dt>time_to_complete</dt>
+  <dd>
+<em>optional</em> <strong>time</strong> - Time to complete the grade.
+
+    <ul>
+<li>Example: <code>5:30</code>.</li>
+    </ul>
+</dd>
+  <dt>note</dt>
+  <dd>
+<em>optional</em> <strong>string</strong> - Some extra description.</dd>
+</dl><pre class="headers"><code>Content-Type: application/json</code></pre>
+
+<pre class="highlight"><code class="language-javascript"><span class="p">{</span>
+  <span class="s2">"due_date"</span><span class="o">:</span> <span class="s2">"01-25-2013"</span><span class="p">,</span>
+  <span class="s2">"accuracy"</span><span class="o">:</span> <span class="mi">25</span><span class="p">,</span>
+  <span class="s2">"time_to_complete"</span><span class="o">:</span> <span class="s2">"5:30"</span><span class="p">,</span>
+  <span class="s2">"note"</span><span class="o">:</span> <span class="s2">"Final exercise"</span>
+<span class="p">}</span></code></pre>
+
+<h3 id="response-1">Response</h3>
+
+<pre class="headers"><code>Status: 200 OK
+Content-Type: application/json</code></pre>
+<pre class="highlight"><code class="language-javascript"><span class="p">{</span>
+     <span class="s2">"accuracy"</span><span class="o">:</span><span class="mf">10.0</span><span class="p">,</span>
+     <span class="s2">"due_date"</span><span class="o">:</span><span class="s2">"2012-11-03"</span><span class="p">,</span>
+     <span class="s2">"goal_id"</span><span class="o">:</span><span class="mi">16</span><span class="p">,</span>
+     <span class="s2">"id"</span><span class="o">:</span><span class="mi">1</span><span class="p">,</span>
+     <span class="s2">"note"</span><span class="o">:</span><span class="kc">null</span><span class="p">,</span>
+     <span class="s2">"time_to_complete"</span><span class="o">:</span><span class="kc">null</span><span class="p">,</span>
+     <span class="s2">"user_id"</span><span class="o">:</span><span class="mi">13</span>
+  <span class="p">}</span></code></pre>
       </div>
 
       <div id="js-sidebar" class="sidebar-shell">
         <h2>Documentation</h2>
-        <ul>
-          <li><a href="/apidoc/authentication">Authentication</a></li>
-          <li><a href="/apidoc/student">Student</a></li>
-          <li><a href="/apidoc/goal">Goal</a></li>
-          <li><a href="/apidoc/api_list">API List</a></li>
-        </ul>
+        <div class="js-toggle-list sidebar-module expandable">
+          <ul>
+            <li class="js-guides"><h3><a href="/apidoc/authentication">Authentication</a></h3></li>
+            <li class="js-guides"><h3><a href="/apidoc/student">Student</a></h3></li>
+            <li class="js-guides"><h3><a href="/apidoc/goal">Goal</a></h3></li>
+            <li class="js-guides"><h3><a href="/apidoc/api_list">API List</a></h3></li>
+          </ul>
+        </div>
       </div>
     </div>    
   </body>

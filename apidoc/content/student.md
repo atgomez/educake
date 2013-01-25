@@ -9,7 +9,7 @@ title: Student
 
 ## Get list students
 
-<pre><code>GET /api/:version/students</code></pre>
+<pre><code>GET /api/v1/students</code></pre>
 
 ### Parameters
 

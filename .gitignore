@@ -18,6 +18,6 @@
 
 .DS_Store
 /coverage
-/apidoc/*/*.log
+/apidoc/*.log
 /apidoc/tmp
 /grape_doc

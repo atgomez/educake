@@ -38,7 +38,11 @@ module Educake
 
       def headers(status, head = {})
         css_class = (status == 204 || status == 404) ? 'headers no-response' : 'headers'
-        lines = ["Status: #{STATUSES[status]}"]
+        lines = []
+        if status
+          lines << "Status: #{STATUSES[status]}"
+        end
+        
         head.each do |key, value|
           case key
             when :pagination
