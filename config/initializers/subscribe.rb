@@ -1,0 +1,1 @@
+SUBSCRIBE_NOTIFY_EMAIL = ENV["SUBSCRIBE_NOTIFY_EMAIL"] || "anne.gomez@techpropulsionlabs.com"
