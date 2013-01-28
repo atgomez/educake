@@ -28,6 +28,6 @@ class UserMailer < ActionMailer::Base
   def send_notify_subscriber(subscriber)
     @subscriber = subscriber 
     @super_admin = User.super_admins.first
-    mail(:to => "thu.pham@techpropulsionlabs.com", :subject => I18n.t("mail.notify_subscriber"))
+    mail(:to => "anne.gomez@techpropulsionlabs.com", :subject => I18n.t("mail.notify_subscriber"))
   end
 end
