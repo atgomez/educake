@@ -548,7 +548,8 @@ class Goal < ActiveRecord::Base
 
     # Run all custom validations
     def custom_validations
-      self.validate_baseline && validate_baseline_date && self.validate_trial_days && self.validates_goal_name 
+      self.validate_baseline && validate_baseline_date && 
+        self.validate_trial_days && self.validates_goal_name && self.validation_due_date
     end
 
     def validate_baseline
@@ -567,6 +568,13 @@ class Goal < ActiveRecord::Base
       end
 
       return self.errors.blank?
+    end
+
+    def validation_due_date
+      if self.due_date && self.grades.exists?(["due_date > ?", self.due_date])
+        # In case of changing goal baseline to some date greater than grade's date.
+        self.errors.add(:due_date, :must_after_grade_due_date)
+      end
     end
 
     def validate_trial_days

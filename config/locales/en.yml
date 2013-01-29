@@ -334,6 +334,7 @@ en:
               must_lower_than_ideal: "must be lower than the ideal trial days"
             due_date:
               invalid_format: "must be in format MM-DD-YYYY"
+              must_after_grade_due_date: "must be equal or greater than grade's due date"
         grade:
           attributes:
             due_date:
