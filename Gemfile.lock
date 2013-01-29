@@ -203,6 +203,7 @@ GEM
     newrelic_rpm (3.5.5.38)
     nokogiri (1.5.6)
     oauth (0.4.7)
+<<<<<<< Updated upstream
     oauth-plugin (0.4.1)
       multi_json
       oauth (~> 0.4.4)
