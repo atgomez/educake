@@ -6,6 +6,7 @@ window.goal =
     @setup_form()
     @update_grade()
     @clickOnGoal()
+    @clickOnGoalType()
     return
 
   clickOnGoal: -> 
@@ -44,6 +45,20 @@ window.goal =
         window.chartMode = 'view_all'
       return
 
+  clickOnGoalType: ->
+    $("#new-goal-container").delegate ".radio_buttons", "click", ()->
+      console.log $(this).attr("value")
+      if $(this).attr("value") == "true"
+        $(".percentage").show()
+        $(".objective").hide()
+        console.log 5
+      else if $(this).attr("value") == "false"
+        $(".objective").show()
+        $(".percentage").hide()
+        $("#goal_goal_x").parent().parent().removeClass("control-group")
+        $("#goal_baseline_x").parent().parent().removeClass("control-group")
+        console.log 6
+      return
   setup_form: ->
     @setup_wizard()
 

@@ -25,7 +25,8 @@ class Goal < ActiveRecord::Base
 
   attr_accessible :accuracy, :curriculum_id, :due_date, :progresses_attributes, :curriculum_attributes,
                   :baseline_date, :baseline, :trial_days_total, :trial_days_actual, 
-                  :grades_data, :is_completed, :description, :student_id
+                  :grades_data, :is_completed, :description, :student_id, 
+                  :is_percentage, :goal_x, :goal_y, :baseline_x, :baseline_y
 
   # ASSOCIATION
   has_many :progresses, :dependent => :destroy
@@ -553,7 +554,7 @@ class Goal < ActiveRecord::Base
     end
 
     def validate_baseline
-      if self.baseline.to_f >= self.accuracy.to_f
+      if self.baseline.to_f >= self.accuracy.to_f #&& self.is_percentage
         self.errors.add(:baseline, :must_lower_than_goal)
       end
       return self.errors.blank?
