@@ -9,3 +9,7 @@
   Generate document:
     $ cd apidoc
     $ nanoc compile
+
+== Deployment
+Appfog production: tpl.teacher.mailer@gmail.com / 12345678
+Appfog staging: tpl.teacher.dev@gmail.com / tpl123456
