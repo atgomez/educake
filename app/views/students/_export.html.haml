@@ -4,6 +4,7 @@
     %h3= t("common.export")
   = form_tag('/export/relay', :method => :get) do
     .modal-body
+      = hidden_field_tag "user_id", @user.id
       %table
         %tr
           %td
@@ -15,8 +16,7 @@
             - if (!@user.is?(:parent))
               .checkbox-group.margin-left
                 = radio_button_tag "data", "classroom", false, :class => "export_data_selector"
-                = label_tag :data_classroom, t("export.classroom")
-                = hidden_field_tag "user_id", @user.id
+                = label_tag :data_classroom, t("export.classroom")                
         %tr
           %td
             = t("export.student")

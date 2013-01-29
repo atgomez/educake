@@ -4,6 +4,7 @@
     %h3= t("common.export")
   = form_tag('/export/relay', :method => :get) do
     .modal-body
+      = hidden_field_tag "admin_id", @admin.id
       %table
         %tr
           %td{:valign => 'top'}
@@ -20,7 +21,6 @@
             .checkbox-group
               = radio_button_tag "data", "school", false, :class => "export_data_selector"
               = label_tag :data_school, t("export.school")
-              = hidden_field_tag "admin_id", @admin.id
         %tr
           %td
             Teacher

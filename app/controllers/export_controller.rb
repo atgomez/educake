@@ -38,7 +38,7 @@ class ExportController < ApplicationController
 	      					:type => "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
 			end
 		else
-			render_unauthorized(:iframe => true)
+			render_unauthorized
 		end
 	end
 
@@ -57,7 +57,7 @@ class ExportController < ApplicationController
 	      					:type => "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
 			end
 		else
-			render_unauthorized(:iframe => true)
+			render_unauthorized
 		end
 	end
 
@@ -76,7 +76,7 @@ class ExportController < ApplicationController
 	      					:type => "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
 			end
 		else
-			render_unauthorized(:iframe => true)
+			render_unauthorized
 		end
 	end
 
@@ -105,6 +105,7 @@ class ExportController < ApplicationController
 			parse_params_to_get_users
 
       @teacher = @user
+      puts "======= teacher =====", @teacher.inspect
       if @teacher
 	  		@student = @teacher.accessible_students.find_by_id(params[:student_id])
 	  	end
