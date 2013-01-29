@@ -37,19 +37,19 @@
             - data = curriculum_associtions_for_goal(goal)
             = f_cur.association(:curriculum_core, :collection => CurriculumCore.order(:name),
                   :label => t("goal.curriculum"), :include_blank => false,
-                  :input_html => {:class => "extended-combobox reset-on-changed"})
+                  :input_html => {:class => "editable-combobox reset-on-changed"})
             = f_cur.association(:subject, :collection => data[:subjects],
                   :label => t("curriculum.subject"), :include_blank => false,
-                  :input_html => {:class => "extended-combobox reset-on-changed"})
+                  :input_html => {:class => "editable-combobox reset-on-changed"})
             = f_cur.association(:curriculum_grade, :collection => data[:curriculum_grades],
                   :label => t("curriculum.grade"), :include_blank => false,
-                  :input_html => {:class => "extended-combobox reset-on-changed"})
+                  :input_html => {:class => "editable-combobox reset-on-changed"})
             = f_cur.association(:curriculum_area, :collection => data[:curriculum_areas],
                   :label => t("curriculum.area"), :include_blank => false,
-                  :input_html => {:class => "extended-combobox reset-on-changed"})
+                  :input_html => {:class => "editable-combobox reset-on-changed"})
             = f_cur.input(:standard, :as => :select, :collection => data[:standards],
                   :label => t("curriculum.standard"), :include_blank => false,
-                  :input_html => {:class => "extended-combobox reset-on-changed"})
+                  :input_html => {:class => "editable-combobox reset-on-changed"})
             .control-group.curriculum-description.virtual
               = label_tag(t("curriculum.description"), nil, :class => "control-label")
               .controls
