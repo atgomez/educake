@@ -25,3 +25,10 @@ staging:
   secret_access_key: 0rUsMMg8UdwVvCBbSwnOo72qnXE5hkHSqSPp+eit
   max_file_size: 104857600
   acl: public-read
+
+staging_appfog:
+  bucket: teacher_mgnt_stg_af
+  access_key_id: AKIAIOYCWZFROQJEEBYQ
+  secret_access_key: 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
+  max_file_size: 104857600
+  acl: public-read

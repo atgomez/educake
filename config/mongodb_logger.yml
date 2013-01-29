@@ -19,6 +19,15 @@ production:
   password: <%= JSON.parse( ENV['VCAP_SERVICES'] )['mongodb-1.8'].first['credentials']['password'] rescue '' %>
   disable_file_logging: true
 
+staging_appfog:
+  database:  <%= JSON.parse( ENV['VCAP_SERVICES'] )['mongodb-1.8'].first['credentials']['db'] rescue 'tutorial_db' %>
+  capsize: <%= 200.megabytes %>
+  host: <%= JSON.parse(ENV['VCAP_SERVICES'])['mongodb-1.8'].first['credentials']['hostname'] rescue 'localhost' %>
+  port: <%= JSON.parse( ENV['VCAP_SERVICES'] )['mongodb-1.8'].first['credentials']['port'] rescue 27017 %>
+  username: <%= JSON.parse( ENV['VCAP_SERVICES'] )['mongodb-1.8'].first['credentials']['username'] rescue '' %>
+  password: <%= JSON.parse( ENV['VCAP_SERVICES'] )['mongodb-1.8'].first['credentials']['password'] rescue '' %>
+  disable_file_logging: true
+
 test:
   database: teacher-test
   capsize: <%= 2.megabytes %>
@@ -27,6 +36,13 @@ test:
   replica_set: true
 
 proxied-appfog:
+  database: teacher-dev
+  capsize: <%= 2.megabytes %>
+  host: localhost
+  port: 27017
+  replica_set: true
+  
+proxied-appfog-stg:
   database: teacher-dev
   capsize: <%= 2.megabytes %>
   host: localhost
