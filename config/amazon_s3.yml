@@ -1,12 +1,12 @@
 development:
-  bucket: teacher_mgnt 
+  bucket: teacher_mgnt_dev
   access_key_id: AKIAIOYCWZFROQJEEBYQ
   secret_access_key: 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
   max_file_size: 104857600
   acl: public-read
     
 test:
-  bucket: 
+  bucket: teacher_mgnt_test
   access_key_id: 
   secret_access_key: 
   max_file_size: 104857600
@@ -20,7 +20,7 @@ production:
   acl: public-read
 
 staging:
-  bucket: teacher_mgnt  
+  bucket: teacher_mgnt_stg
   access_key_id: AKIAIOYCWZFROQJEEBYQ
   secret_access_key: 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
   max_file_size: 104857600
