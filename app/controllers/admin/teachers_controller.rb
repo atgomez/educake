@@ -51,6 +51,10 @@ class Admin::TeachersController < Admin::BaseAdminController
     @teachers = @admin.children.unblocked.order(User::DEFAULT_ORDER)
   end
 
+  def new
+    @teacher = User.new
+  end
+
   def create
     begin
       @teacher = @admin.children.new_with_role_name(:teacher, params[:user])

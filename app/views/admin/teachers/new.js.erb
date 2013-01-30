@@ -1,0 +1,4 @@
+$("#new-form-teacher").html("<%= escape_javascript(render :partial => 'form', :locals => {:teacher => @teacher}) %>");
+$('#new-form-teacher').modal('show');
+helper.setup();
+$('#new-form-teacher form[data-validate]').validate();
