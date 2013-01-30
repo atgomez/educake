@@ -19,9 +19,10 @@ class GoalsController < ApplicationController
     status_code = 201
 
     @student = Student.find_by_id(params[:goal][:student_id])
-    params[:goal][:accuracy] = (params[:goal][:goal_x].to_f / params[:goal][:goal_y].to_f)*100
-    params[:goal][:baseline] = (params[:goal][:baseline_x].to_f / params[:goal][:baseline_y].to_f)*100
-
+    if params[:goal][:is_percentage] == "false"
+      params[:goal][:accuracy] = (params[:goal][:goal_x].to_f / params[:goal][:goal_y].to_f)*100
+      params[:goal][:baseline] = (params[:goal][:baseline_x].to_f / params[:goal][:baseline_y].to_f)*100
+    end
     if @student.blank?
       result[:message] = I18n.t('student.student_not_found')
       status_code = 400

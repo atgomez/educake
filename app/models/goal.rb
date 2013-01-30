@@ -388,7 +388,7 @@ class Goal < ActiveRecord::Base
   def build_progresses
     count_progress = self.progresses.length
     # Create remaining progresses
-    (3 - count_progress).times { self.progresses.build } if count_progress < 3
+    (1 - count_progress).times { self.progresses.build } if count_progress < 2
   end
 
   def build_grade(params, is_updatable = false)

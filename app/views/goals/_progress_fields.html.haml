@@ -1,0 +1,13 @@
+.fields
+	.div{:style=>"width:400px;"}
+		%label.grade-name.pull-left= t("goal.progress_with_id", :id => idx + 1)
+		.pull-right= link_to_remove_fields "", f 
+		.clearfix
+	= f.input( :due_date, :as => :string, :required => false, 
+	                                    :input_html => {:class => "date-picker progress-due-date", 
+	                                        :value => f.object.due_date_string, 
+	                                        :id => "goal_#{goal.id}_#{f.object.object_id}"}, 
+	                                    :label => t("common.due_date"))
+	= f.input :accuracy, :as => :string, :required => false, 
+	                                   :label => t("goal.progress_accuracy")
+	
