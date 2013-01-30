@@ -120,6 +120,7 @@
               = f.simple_fields_for(:progresses, progress, :validate => false) do |f_progress|
                 
                 = #render "progress_fields", :f => f_progress, :goal => goal, :progress => progress
+              = hidden_field_tag "count_field", goal.progresses.count
               %span= link_to_add_fields "Add a Progress Report", f, :progresses, goal, progress, idx
 
         .modal-footer

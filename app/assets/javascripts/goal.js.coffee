@@ -7,6 +7,7 @@ window.goal =
     @update_grade()
     @clickOnGoal()
     @clickOnGoalType()
+    @clickOnAddProgress()
     return
 
   clickOnGoal: -> 
@@ -51,14 +52,23 @@ window.goal =
       if $(this).attr("value") == "true"
         $(".percentage").show()
         $(".objective").hide()
-        console.log 5
       else if $(this).attr("value") == "false"
         $(".objective").show()
         $(".percentage").hide()
         $("#goal_goal_x").parent().parent().removeClass("control-group")
         $("#goal_baseline_x").parent().parent().removeClass("control-group")
-        console.log 6
       return
+
+  clickOnAddProgress: ->
+    $(".progress-report-container").find("a[class='add_link']").live "click", () ->
+      count = parseInt($("#count_field").val()) 
+      if count <= 1
+        $("#count_field").attr("value", count + 1)
+        $(this).show()
+      else 
+        $(this).hide()
+      return
+
   setup_form: ->
     @setup_wizard()
 
