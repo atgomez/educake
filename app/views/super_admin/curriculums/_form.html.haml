@@ -24,14 +24,14 @@
                 :required => true
       = f.association(:subject, :collection => Subject.order(:name),
                 :label => t("curriculum.subject"), :include_blank => false,
-                :input_html => {:class => "editable-combobox reset-on-changed"})
+                :input_html => {:class => "extended-combobox reset-on-changed"})
       = f.association(:curriculum_grade, :collection => CurriculumGrade.order(:name),
                 :label => t("curriculum.grade"), :include_blank => false,
-                :input_html => {:class => "editable-combobox reset-on-changed"})
+                :input_html => {:class => "extended-combobox reset-on-changed"})
       = f.association(:curriculum_area, :collection => CurriculumArea.order(:name),
                 :label => t("curriculum.area"), :include_blank => false,
-                :input_html => {:class => "editable-combobox reset-on-changed"})
-      = f.input :standard, :as => :string, :input_html => {:class => "valid_number editable-textbox"}
+                :input_html => {:class => "extended-combobox reset-on-changed"})
+      = f.input :standard, :as => :string, :input_html => {:class => "valid_number extended-textbox"}
       = f.input :description1, :as => :text, :label => t("curriculum.description1"),
                 :input_html => {:rows => "2", :class => "description-input"}
       = f.input :description2, :as => :text, :label => t("curriculum.description2"),

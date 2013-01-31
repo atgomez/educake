@@ -302,6 +302,14 @@ a {
   select{
     width:230px;
   }
+
+  .control-group.email {
+    .help-inline{ float: right; }
+  }
+
+  .control-group.name-field, .control-group.role-field{
+    .help-inline{ margin-left: 96px; }
+  }
 }
 
 .grades-container{

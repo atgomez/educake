@@ -34,7 +34,9 @@ class School < ActiveRecord::Base
   validates_uniqueness_of :name, :scope => [:city]
   validates_uniqueness_of :name, :scope => [:state]
   validates_presence_of :address1, :name, :state, :phone, :city
-  validates :zipcode, :length => { :maximum => 5, :too_long => I18n.t("school.error_zipcode_too_long") }
+  validates :zipcode, :length => { :minimum => 4, :maximum => 5, 
+                          :too_long => I18n.t("school.error_zipcode_too_long"),
+                          :too_short => I18n.t("school.error_zipcode_too_short") }
   validates :name, :length => { :maximum => 255, :too_long => :name_too_long }
   validates_format_of :name, :with => /^[^!@#\$%\^&*+_=]+$/
   

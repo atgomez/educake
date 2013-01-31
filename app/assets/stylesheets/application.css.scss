@@ -114,8 +114,11 @@ form textarea{
   *top: 0.1em;
 
   .ui-button-icon-primary{
-    margin-left: 6px !important;
+    margin-left: -8px !important \0/IE9;
+    margin-top: -8px !important \0/IE9;
+    position: absolute;
     margin-top: 7px !important;
+    top: auto !important;
   }
 }
 .ui-combobox-input {

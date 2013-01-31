@@ -10,6 +10,7 @@
                 :label_method => :name,
                 :value_method => :name,
                 :input_html => {:class => "editable-combobox"},
+                :wrapper_html => {:class => "widget-wrapper"},
                 :include_blank => false,
                 :label => t("curriculum.core")
       = f.input :import_file, :as => :file, :required => true, :label => t("common.select_import_file")

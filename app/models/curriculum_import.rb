@@ -9,6 +9,8 @@ class CurriculumImport
   # VALIDATION
   validates_presence_of :import_file
   validate :check_import_file_format
+  validates :curriculum_core_name, :format => {:with => /^[^!@#\$%\^&*+_=]+$/}, 
+            :unless => :curriculum_core_name_blank?
   # validates_format_of :import_file, :with => %r{\.(csv)$}i, :message => I18n.t('common.file.wrong_csv_file_type')
 
   # Constructor
@@ -53,5 +55,9 @@ class CurriculumImport
           self.errors.add(:import_file, I18n.t('common.file.wrong_csv_file_type'))
         end 
       end
+    end
+
+    def curriculum_core_name_blank?
+      self.curriculum_core_name.blank?
     end
 end

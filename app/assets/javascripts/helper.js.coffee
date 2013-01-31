@@ -115,10 +115,11 @@ window.helper =
   allowInputNumber: ->
     $('#user_phone').filter_input({regex:'[0-9\r\n]'})
     $('#grade_value').filter_input({regex:'[0-9.\r\n]', live:true})
-    $(".numeric").filter_input({regex:'[0-9.\r\n]', live:true})
+    $(".numeric").filter_input({regex:'[0-9.\r\n]', live:true})    
     $('#user_first_name').filter_input({regex:'[a-zA-Z0-9- \r\n]', live:true})
     $('#user_last_name').filter_input({regex:'[a-zA-Z0-9- \r\n]', live:true}) 
     $('#user_email').filter_input({regex:'[a-zA-Z0-9_.@+\r\n]', live:true}) 
+    $('#user_classroom').filter_input({regex:'[a-zA-Z0-9_.@+\r\n]', live:true}) 
     $('#student_sharing_first_name').filter_input({regex:'[a-zA-Z- \r\n]', live:true})
     $('#student_sharing_last_name').filter_input({regex:'[a-zA-Z- \r\n]', live:true}) 
     $('#student_sharing_email').filter_input({regex:'[a-zA-Z0-9_.@+\r\n]', live:true})
@@ -126,7 +127,13 @@ window.helper =
     $('#student_last_name').filter_input({regex:'[a-zA-Z- \r\n]', live:true}) 
     $('.valid_name').filter_input({regex:'[a-zA-Z0-9- \r\n]', live:true})
     $('.valid_email').filter_input({regex:'[a-zA-Z0-9_.@+\r\n]', live:true}) 
-    $('.valid_number').filter_input({regex:'[0-9\r\n]', live:true}) 
+    $('.valid_number').filter_input({regex:'[0-9\r\n]', live:true})
+
+    $('#school_name, #school_address1, #school_address2, #school_city').filter_input({regex:'[a-zA-Z0-9- \r\n]', live:true})
+
+    $('.simple_form.curriculum-form input.ui-combobox-input').filter_input({regex:'[a-zA-Z0-9- \r\n]', live:true})
+    $('#new_curriculum_import input.ui-combobox-input').filter_input({regex:'[a-zA-Z0-9- \r\n]', live:true})
+    $('.goal-form .accuracy').filter_input({regex:'[0-9.\r\n]', live:true})
     return
 
   addDatePicker: ->

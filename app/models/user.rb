@@ -89,7 +89,8 @@ class User < ActiveRecord::Base
                    :default_url => 'default-avatar.jpeg',
                    :path => "photos/users/:id/:style.:extension"  
 
-  # VALIDATION  
+  # VALIDATION
+  validates_format_of :email, :with  => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i
   validates_presence_of :first_name, :last_name, :email
   validates_presence_of :role, :unless => :is_super_admin?
   validates_presence_of :school_id, :if => :is_not_admin?

@@ -37,19 +37,19 @@
             - data = curriculum_associtions_for_goal(goal)
             = f_cur.association(:curriculum_core, :collection => CurriculumCore.order(:name),
                   :label => t("goal.curriculum"), :include_blank => false,
-                  :input_html => {:class => "editable-combobox reset-on-changed"})
+                  :input_html => {:class => "extended-combobox reset-on-changed"})
             = f_cur.association(:subject, :collection => data[:subjects],
                   :label => t("curriculum.subject"), :include_blank => false,
-                  :input_html => {:class => "editable-combobox reset-on-changed"})
+                  :input_html => {:class => "extended-combobox reset-on-changed"})
             = f_cur.association(:curriculum_grade, :collection => data[:curriculum_grades],
                   :label => t("curriculum.grade"), :include_blank => false,
-                  :input_html => {:class => "editable-combobox reset-on-changed"})
+                  :input_html => {:class => "extended-combobox reset-on-changed"})
             = f_cur.association(:curriculum_area, :collection => data[:curriculum_areas],
                   :label => t("curriculum.area"), :include_blank => false,
-                  :input_html => {:class => "editable-combobox reset-on-changed"})
+                  :input_html => {:class => "extended-combobox reset-on-changed"})
             = f_cur.input(:standard, :as => :select, :collection => data[:standards],
                   :label => t("curriculum.standard"), :include_blank => false,
-                  :input_html => {:class => "editable-combobox reset-on-changed"})
+                  :input_html => {:class => "extended-combobox reset-on-changed"})
             .control-group.curriculum-description.virtual
               = label_tag(t("curriculum.description"), nil, :class => "control-label")
               .controls
@@ -79,12 +79,12 @@
           = f.input(:due_date, :as => :string, :required => true, :validate => { :presence => true }, :input_html => {:class => "date-picker", :value => goal.due_date_string, :id => "goal_due_date#{goal.id}"})
           = f.input(:description, :input_html => {:rows => '5'}, :label => t("goal.note"))
           = f.input :accuracy, :as => :string, :label => t("goal.accuracy"), 
-                    :input_html => {:id => "accuracy-#{goal.id}"}
+                    :input_html => {:id => "accuracy-#{goal.id}", :class => "accuracy"}
           = f.input(:baseline_date, :as => :string, :required => true, 
                     :input_html => {:class => "date-picker baseline-date", 
                     :value => goal.baseline_date_string, :id => "baseline_date#{goal.id}"})
           = f.input(:baseline, :as => :string, :label => t("goal.baseline"), 
-                    :input_html => {:id => "baseline-#{goal.id}"})
+                    :input_html => {:id => "baseline-#{goal.id}", :class => "accuracy"})
 
           .control-group.date.required{:class => (goal.errors[:trial_days_actual].blank? ? "" : "error")}
             %label.date.required.control-label{:for => "goal_baseline_date_1i"}
@@ -111,7 +111,8 @@
                                         :id => "goal_#{goal.id}_#{progress.object_id}"}, 
                                     :label => t("common.due_date"))
                 = f_progress.input :accuracy, :as => :string, :required => false, 
-                                   :label => t("goal.progress_accuracy")
+                                   :label => t("goal.progress_accuracy"),
+                                   :input_html => {:class => "accuracy"}
 
         .modal-footer
           .submit-indicator.loading.hide
@@ -137,7 +138,4 @@
     $(this).find(".modal-body").css({
       "max-height": form_max_height + "px"
     }); */
-  });  
-
-  $('form').enableClientSideValidations();
-
+  });

@@ -123,7 +123,7 @@ window.goal =
       $(".wizard-step-indicator").html(step_html)
     )
 
-    $(".reset-on-changed").live("change", (e) ->
+    $(".goal-form .reset-on-changed").live("change", (e) ->
       # Reset the client-side validation states.
       goal.get_curriculum($(this).attr('name'))
     )

@@ -1,4 +1,4 @@
-= simple_form_for(@sharing, :url => url, :method => method, :remote => true, 
+= simple_form_for(@sharing, :url => url, :method => method, :remote => true, :validate => true,
                   :html => {:id => :invite_student_sharing_form, :class => "invitation-form"}) do |f|
   .modal-header
     %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} &times;
@@ -15,18 +15,20 @@
         = notification
     .form-inputs
       = f.input(:email, :disabled=> !f.object.new_record?, :error => false, 
-                :input_html => {:class => "pull-left", :data => {:autocomplete_source => emails(@responder)}})
+                :input_html => {:class => "pull-left", :data => {:autocomplete_source => emails(@responder)}}                )
       %input{:type => "button", :id => "search-email", :class => "pull-left btn margin-btn", :value => t("common.search")}
       .control-group.error
         .controls
           = f.error :email
       .clearfix
-      = f.input :first_name, :disabled=> !f.object.new_record?, :input_html => {:class => "pull-left name"}
+      = f.input(:first_name, :disabled => !f.object.new_record?, :input_html => {:class => "pull-left name"},
+                :wrapper_html => {:class => "name-field"})
       .clearfix
-      = f.input :last_name, :disabled=> !f.object.new_record?, :input_html => {:class => "pull-left name"}
+      = f.input(:last_name, :disabled => !f.object.new_record?, :input_html => {:class => "pull-left name"},
+                :wrapper_html => {:class => "name-field"})
       .clearfix
       = f.input(:role_id, :collection => roles(@responder), :prompt => t("common.select_prompt"), 
-                :input_html => {:class => "pull-left"}, :disabled => @sharing.confirmed?)
+                :input_html => {:class => "pull-left"}, :disabled => @sharing.confirmed?, :wrapper_html => {:class => "role-field"})
       = hidden_field_tag :user_id, params[:user_id]
       = hidden_field_tag :admin_id, params[:admin_id]
       = hidden_field_tag :student_id, params[:student_id]
