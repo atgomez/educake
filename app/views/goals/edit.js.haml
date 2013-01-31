@@ -1,5 +1,9 @@
 - form_id = "modal-goal-#{@goal.id}"
 $("#new-goal-container").html("#{escape_javascript(render(:partial => "form", :locals => {:goal => @goal, :student => @student, :id => form_id, :url => goal_path(@goal), :method => :put}))}");
+- if @goal.progresses.count == 3 
+  $(".add_link").hide();
+- if @goal.progresses.count == 0
+  $(".progress-report-container .fields").first().addClass("hide");
 - if @goal.is_percentage == false
   $(".objective").show();
   $(".percentage").hide();

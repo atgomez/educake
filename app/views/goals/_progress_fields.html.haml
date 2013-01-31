@@ -6,8 +6,7 @@
 		.clearfix
 	= f.input( :due_date, :as => :string, :required => false, 
 	                                    :input_html => {:class => "date-picker progress-due-date", 
-	                                        :value => f.object.due_date_string, 
-	                                        :id => "goal_#{goal.id}_#{f.object.object_id}"}, 
+	                                        :value => progress.due_date_string}, 
 	                                    :label => t("common.due_date"))
 	= f.input :accuracy, :as => :string, :required => false, 
 	                                   :label => t("goal.progress_accuracy")
