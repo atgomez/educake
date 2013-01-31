@@ -1,3 +1,3 @@
-$("#new-goal-container").html("#{escape_javascript(render('form', :student => @student, :goal => @goal))}");
+$("#new-goal-container").html("#{escape_javascript(render('form', :student => @student, :goal => @goal, :url => goals_path, :method => :post))}");
 $('#goal-dialog').modal('show');
 $('form').enableClientSideValidations();

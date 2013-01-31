@@ -8,6 +8,7 @@ window.goal =
     @clickOnGoal()
     @clickOnGoalType()
     @clickOnAddProgress()
+    @clickOnCancel()
     return
 
   clickOnGoal: -> 
@@ -48,7 +49,6 @@ window.goal =
 
   clickOnGoalType: ->
     $("#new-goal-container").delegate ".radio_buttons", "click", ()->
-      console.log $(this).attr("value")
       if $(this).attr("value") == "true"
         $(".percentage").show()
         $(".objective").hide()
@@ -59,6 +59,12 @@ window.goal =
         $("#goal_baseline_x").parent().parent().removeClass("control-group")
       return
 
+  clickOnCancel: ->
+    $("#cancel_goal_form").live "click", ->
+      $('.modal-backdrop.fade.in').remove();
+    return
+
+  
   clickOnAddProgress: ->
     $(".progress-report-container").find("a[class='add_link']").live "click", () ->
       count = parseInt($("#count_field").val()) 
@@ -87,27 +93,7 @@ window.goal =
       data = $(this).serialize()
       url = $(this).attr('action')
       parent = $(this).parent()
-      $.ajax({
-        url: url,
-        type: 'POST',
-        data: data,
-        success: (res) -> 
-          window.location.reload()
-        ,
-
-        error: (xhr, textStatusx, error) -> 
-          try
-            res = $.parseJSON(xhr.responseText)
-          catch exc
-            res = null
-
-          if res and res.html
-            goal_dialog = $(res.html)
-            $(parent).html(goal_dialog.html())
-            goal.get_curriculum()
-      })
-
-      return false
+      
     )
 
     $(".grade-form").livequery('submit', (e) ->
@@ -116,25 +102,7 @@ window.goal =
       data = $(this).serialize()
       url = $(this).attr('action')
       parent = $(this).parent()
-      $.ajax({
-        url: url,
-        type: 'POST',
-        data: data,
-        success: (res) -> 
-          window.location.reload()
-        ,
-
-        error: (xhr, textStatus, error) -> 
-          try
-            res = $.parseJSON(xhr.responseText)
-          catch exc
-            res = null
-          if res and res.html
-            goal_dialog = $(res.html)
-            $(parent).html(goal_dialog.html())
-      })
-
-      return false
+      
     )
 
   setup_wizard: ->

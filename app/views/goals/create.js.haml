@@ -1,0 +1,18 @@
+- if @goal.errors.any?
+  $("#new-goal-container").html("#{escape_javascript render :partial => 'form', :locals => {:goal => @goal, :student => @student, :url => goals_path, :method => :post}}");
+  $("#goal-dialog").modal('show');
+  - if @goal_type == "false" 
+    $(".objective").show();
+    $(".percentage").hide();
+    $(".radio_buttons").find("input[value=false]").attr("checked", "checked");
+    $("#goal_goal_x").parent().parent().removeClass("control-group");
+    $("#goal_goal_y").parent().parent().removeClass("control-group");
+    $("#goal_baseline_x").parent().parent().removeClass("control-group");
+    $("#goal_baseline_y").parent().parent().removeClass("control-group");
+  - else 
+    $(".percentage").show();
+    $(".objective").hide();
+    $(".radio_buttons").find("input[value=true]").attr("checked", "checked");
+  
+- else
+  location.reload();

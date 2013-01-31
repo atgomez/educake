@@ -8,8 +8,8 @@
   - goal_class = "active"
 
 .modal.hide.fade{:tabindex => "-1", :id => id, "data-backdrop" => "static"}
-  = simple_form_for(goal, :html => { :id => "goal-form#{goal.id}", 
-                    :class => 'goal-form form-horizontal goal-form' }, :validate => true) do |f|    
+  = simple_form_for(goal, :url => url, :method => method, :remote => true,
+               :html => {:id => "goal-form#{goal.id}", :class => "goal-form form-horizontal goal-form"}, :validate => true) do |f|  
     .modal-header
       %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} &times;
       - if goal.new_record?
@@ -93,13 +93,15 @@
             .pull-left /
             = f.input :goal_y, :label => false, :input_html => {:class => "pull-left"}
             .clearfix
+            %center= f.error :accuracy, :class => "font-error"
             = f.input(:baseline_date, :as => :string, :required => true, 
                       :input_html => {:class => "date-picker baseline-date", 
                       :value => goal.baseline_date_string, :id => "baseline_date#{goal.id}"})
             = f.input :baseline_x, :label => "Baseline", :input_html => {:class => "pull-left"}
             .pull-left /
             = f.input :baseline_y, :label => false, :input_html => {:class => "pull-left"}
-
+            .clearfix
+            %center= f.error :baseline, :class => "font-error"
           .control-group.date.required{:class => (goal.errors[:trial_days_actual].blank? ? "" : "error")}
             %label.date.required.control-label{:for => "goal_baseline_date_1i"}
               %abbr{:title => "required"} *
@@ -130,7 +132,7 @@
                       :wrapper_html => {:class => "archived-input"})
             
           %input.btn{:value => t("common.cancel"), :type => "button", "aria-hidden" => "true", 
-                      "data-dismiss" => "modal", :class => "close-dialog"}
+                      "data-dismiss" => "modal", :class => "close-dialog", :id => "cancel_goal_form"}
           %input.btn.wizard-action{:value => t("common.back"), :type => "button", 
                                     "data-target" => "#curriculum", "aria-hidden" => "true"} 
           = f.submit t("common.save"), :class => "btn btn-primary", :disable_with => t("common.saving")

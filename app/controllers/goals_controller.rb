@@ -15,76 +15,41 @@ class GoalsController < ApplicationController
   end
 
   def create
-    result = {}
-    status_code = 201
-
     @student = Student.find_by_id(params[:goal][:student_id])
+    @goal_type = params[:goal][:is_percentage]
     if params[:goal][:is_percentage] == "false"
       params[:goal][:accuracy] = (params[:goal][:goal_x].to_f / params[:goal][:goal_y].to_f)*100
       params[:goal][:baseline] = (params[:goal][:baseline_x].to_f / params[:goal][:baseline_y].to_f)*100
     end
-    if @student.blank?
-      result[:message] = I18n.t('student.student_not_found')
-      status_code = 400
-    else
-      #Remove id and student_id 
-      params[:goal].delete :id
-      params[:goal].delete :student_id
-
-      @goal = @student.goals.new(params[:goal])
-
-      if @goal.save
-        status_code = 201
-        result[:message] = I18n.t('goal.created_successfully')
-        flash[:notice] = result[:message]
-      else
-        @goal.build_progresses
-        status_code = 400
-        result[:message] = I18n.t('goal.save_failed')
-        result[:html] = render_to_string(:partial => 'goals/form', 
-                          :locals => {:student => @student, :goal => @goal})
-      end
-    end
-  
-    render(:json => result, :status => status_code)
+    
+    params[:goal].delete :id
+    params[:goal].delete :student_id
+    @goal = @student.goals.new(params[:goal])
+    @goal.save
   end
 
   def update
-    result = {}
-    status_code = 201
     @student = Student.find_by_id(params[:goal][:student_id])
-
-    if @student.blank?
-      result[:message] = I18n.t('student.student_not_found')
-      status_code = 400
-    else
-      @goal = @student.goals.find_by_id params[:id]
-      if (@goal)
-        #Remove id and student_id 
-        params[:goal].delete :id
-        params[:goal].delete :student_id
-        before_checked = @goal.is_completed
-        if (@goal.changed? && before_checked == true) || (params[:goal][:is_completed].to_i ==  1 && (before_checked == true))
-          params[:goal][:is_completed] = false
-        end 
-        if @goal.update_attributes params[:goal]
-          status_code = 201
-          result[:message] = I18n.t('goal.updated_successfully')
-          flash[:notice] = result[:message]
-        else
-          @goal.build_progresses
-          status_code = 400
-          result[:message] = I18n.t('goal.save_failed')
-          result[:html] = render_to_string(:partial => 'goals/form', 
-                            :locals => {:student => @student, :goal => @goal, :fail_to_update => true})
-        end
-      else
-        result[:message] = I18n.t('goal.not_found')
-        status_code = 404
-      end
+    @goal = @student.goals.find_by_id params[:id]
+    @goal_type = params[:goal][:is_percentage]
+    if params[:goal][:is_percentage] == "false"
+      params[:goal][:accuracy] = (params[:goal][:goal_x].to_f / params[:goal][:goal_y].to_f)*100
+      params[:goal][:baseline] = (params[:goal][:baseline_x].to_f / params[:goal][:baseline_y].to_f)*100
     end
-  
-    render(:json => result, :status => status_code)
+    if (@goal)
+      #Remove id and student_id 
+      params[:goal].delete :id
+      params[:goal].delete :student_id
+      before_checked = @goal.is_completed
+      if (@goal.changed? && before_checked == true) || (params[:goal][:is_completed].to_i ==  1 && (before_checked == true))
+        params[:goal][:is_completed] = false
+      end 
+      if @goal.update_attributes params[:goal]
+        flash[:notice] = I18n.t('goal.updated_successfully')
+      end
+    else
+      flash[:notice] = I18n.t('goal.not_found')
+    end
   end
   
   def new_grade 

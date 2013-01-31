@@ -1,5 +1,17 @@
 - form_id = "modal-goal-#{@goal.id}"
-$("#new-goal-container").html("#{escape_javascript(render(:partial => "form", :locals => {:goal => @goal, :student => @student, :id => form_id}))}");
+$("#new-goal-container").html("#{escape_javascript(render(:partial => "form", :locals => {:goal => @goal, :student => @student, :id => form_id, :url => goal_path(@goal), :method => :put}))}");
+- if @goal.is_percentage == false
+  $(".objective").show();
+  $(".percentage").hide();
+  $(".radio_buttons").find("input[value=false]").attr("checked", "checked");
+  $("#goal_goal_x").parent().parent().removeClass("control-group");
+  $("#goal_goal_y").parent().parent().removeClass("control-group");
+  $("#goal_baseline_x").parent().parent().removeClass("control-group");
+  $("#goal_baseline_y").parent().parent().removeClass("control-group");
+- else
+  $(".percentage").show();
+  $(".objective").hide();
+  $(".radio_buttons").find("input[value=true]").attr("checked", "checked");
 $("##{form_id}").modal('show');
 
 $("##{form_id}").on('shown', function(){$('form').enableClientSideValidations();}); 
