@@ -44,7 +44,7 @@ class Goal < ActiveRecord::Base
 
   # NESTED ATTRIBUTE
   accepts_nested_attributes_for :curriculum
-  accepts_nested_attributes_for :progresses, :reject_if => lambda { |progress| 
+  accepts_nested_attributes_for :progresses, :allow_destroy => true, :reject_if => lambda { |progress| 
 
     if progress['id'].blank?
       (progress['accuracy'].blank? || progress['due_date'].blank?)
