@@ -63,12 +63,9 @@ class Admin::TeachersController < Admin::BaseAdminController
       if @teacher.save
         message = I18n.t('admin.teacher.created_successfully', :name => @teacher.full_name)
         flash[:notice] = message
-      else
-        response.status = 400
       end
     rescue Exception => exc
       ::Util.log_error(exc, "Admin::TeachersController#create")
-      response.status = 400
     end
   end
 
@@ -89,12 +86,9 @@ class Admin::TeachersController < Admin::BaseAdminController
       if @teacher.update_attributes(params[:user])
         message = I18n.t('admin.teacher.updated_successfully', :name => @teacher.full_name)
         flash[:notice] = message
-      else
-        response.status = 400
       end
     rescue Exception => exc
       ::Util.log_error(exc, "Admin::TeachersController#update")
-      response.status = 400
     end
   end 
 

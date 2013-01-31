@@ -133,6 +133,7 @@ window.helper =
 
     $('.simple_form.curriculum-form input.ui-combobox-input').filter_input({regex:'[a-zA-Z0-9- \r\n]', live:true})
     $('#new_curriculum_import input.ui-combobox-input').filter_input({regex:'[a-zA-Z0-9- \r\n]', live:true})
+    $('.goal-form .accuracy').filter_input({regex:'[0-9.\r\n]', live:true})
     return
 
   addDatePicker: ->
