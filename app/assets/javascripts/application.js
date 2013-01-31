@@ -112,10 +112,11 @@ function remove_fields(link) {
   $(link).prev("input[type=hidden]").val("1");
   $(link).closest(".fields").hide();
   count = parseInt($("#count_field").val());
+  if (count > 0)
+    count = count - 1
   if (count <= 2)
     $(".add_link").show();
-  if (count != 0)
-    $("#count_field").attr("value", count - 1);
+  $("#count_field").attr("value", count);
   
 }
 

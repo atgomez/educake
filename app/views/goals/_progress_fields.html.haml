@@ -1,6 +1,7 @@
+
 .fields
 	.div{:style=>"width:400px;"}
-		%label.grade-name.pull-left= t("goal.progress_with_id", :id => idx + 1)
+		%label.grade-name.pull-left= t("goal.progress_with_id", :id => "")
 		.pull-right= link_to_remove_fields "", f 
 		.clearfix
 	= f.input( :due_date, :as => :string, :required => false, 

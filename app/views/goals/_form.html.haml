@@ -123,7 +123,7 @@
                 
                 = #render "progress_fields", :f => f_progress, :goal => goal, :progress => progress
               = hidden_field_tag "count_field", goal.progresses.count
-              %span= link_to_add_fields "Add a Progress Report", f, :progresses, goal, progress, idx
+              %span= link_to_add_fields "Add a Progress Report", f, :progresses, goal, progress
 
         .modal-footer
           .submit-indicator.loading.hide

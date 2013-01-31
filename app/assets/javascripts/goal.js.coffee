@@ -64,14 +64,15 @@ window.goal =
       $('.modal-backdrop.fade.in').remove();
     return
 
-  
+
   clickOnAddProgress: ->
     $(".progress-report-container").find("a[class='add_link']").live "click", () ->
-      count = parseInt($("#count_field").val()) 
-      if count <= 1
-        $("#count_field").attr("value", count + 1)
+      count = parseInt($("#count_field").val())
+      count =  count + 1
+      if count <= 3
+        $("#count_field").attr("value", count)
         $(this).show()
-      else 
+      if count >= 3 
         $(this).hide()
       return
 

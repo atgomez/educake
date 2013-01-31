@@ -4,10 +4,10 @@ module ApplicationHelper
     f.hidden_field(:_destroy) + link_to_function(name, "remove_fields(this)", :class => "icon-trash color-pen delete_field")
   end
   
-  def link_to_add_fields(name, f, association, goal, progress, index)
+  def link_to_add_fields(name, f, association, goal, progress)
     new_object = f.object.class.reflect_on_association(association).klass.new
     fields = f.fields_for(association, new_object, :child_index => "new_#{association}") do |builder|
-      render(association.to_s.singularize + "_fields", :f => builder, :goal => goal, :progress => progress, :idx => index)
+      render(association.to_s.singularize + "_fields", :f => builder, :goal => goal, :progress => progress, :idx => 1)
     end
     link_to_function(name, "add_fields(this, \"#{association}\", \"#{escape_javascript(fields)}\")", :class => "add_link")
   end
