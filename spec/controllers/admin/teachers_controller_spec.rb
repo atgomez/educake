@@ -105,7 +105,7 @@ describe Admin::TeachersController do
         }
 
         it "returns the error" do
-          subject.should_not be_success
+          subject.should render_template("create")
         end
       end
 
@@ -122,7 +122,7 @@ describe Admin::TeachersController do
           teacher = FactoryGirl.build(:teacher)
           User.should_receive(:new_with_role_name).and_return(teacher)
           teacher.stub!(:save).and_raise(Exception.new("Fatal error!"))
-          subject.should_not be_success
+          subject.should render_template("create")
         end
       end
     end
@@ -202,7 +202,7 @@ describe Admin::TeachersController do
 
           it "returns the error" do
             User.any_instance.stub(:update_attributes).and_return(false)
-            subject.should_not be_success
+            subject.should render_template("update")
           end
         end
 
@@ -211,7 +211,7 @@ describe Admin::TeachersController do
 
           it "returns the error" do
             User.any_instance.stub(:update_attributes).and_raise(Exception.new("Fatal error!"))
-            subject.should_not be_success
+            subject.should render_template("update")
           end
         end
       end
