@@ -8,8 +8,8 @@
   - goal_class = "active"
 
 .modal.hide.fade{:tabindex => "-1", :id => id, "data-backdrop" => "static"}
-  = simple_form_for(goal, :html => { :id => "goal-form#{goal.id}", 
-                    :class => 'goal-form form-horizontal goal-form' }, :validate => true) do |f|    
+  = simple_form_for(goal, :url => url, :method => method, :remote => true,
+               :html => {:id => "goal-form#{goal.id}", :class => "goal-form form-horizontal goal-form"}, :validate => true) do |f|  
     .modal-header
       %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} &times;
       - if goal.new_record?
@@ -37,19 +37,19 @@
             - data = curriculum_associtions_for_goal(goal)
             = f_cur.association(:curriculum_core, :collection => CurriculumCore.order(:name),
                   :label => t("goal.curriculum"), :include_blank => false,
-                  :input_html => {:class => "extended-combobox reset-on-changed"})
+                  :input_html => {:class => "editable-combobox reset-on-changed"})
             = f_cur.association(:subject, :collection => data[:subjects],
                   :label => t("curriculum.subject"), :include_blank => false,
-                  :input_html => {:class => "extended-combobox reset-on-changed"})
+                  :input_html => {:class => "editable-combobox reset-on-changed"})
             = f_cur.association(:curriculum_grade, :collection => data[:curriculum_grades],
                   :label => t("curriculum.grade"), :include_blank => false,
-                  :input_html => {:class => "extended-combobox reset-on-changed"})
+                  :input_html => {:class => "editable-combobox reset-on-changed"})
             = f_cur.association(:curriculum_area, :collection => data[:curriculum_areas],
                   :label => t("curriculum.area"), :include_blank => false,
-                  :input_html => {:class => "extended-combobox reset-on-changed"})
+                  :input_html => {:class => "editable-combobox reset-on-changed"})
             = f_cur.input(:standard, :as => :select, :collection => data[:standards],
                   :label => t("curriculum.standard"), :include_blank => false,
-                  :input_html => {:class => "extended-combobox reset-on-changed"})
+                  :input_html => {:class => "editable-combobox reset-on-changed"})
             .control-group.curriculum-description.virtual
               = label_tag(t("curriculum.description"), nil, :class => "control-label")
               .controls
@@ -78,14 +78,30 @@
 
           = f.input(:due_date, :as => :string, :required => true, :validate => { :presence => true }, :input_html => {:class => "date-picker", :value => goal.due_date_string, :id => "goal_due_date#{goal.id}"})
           = f.input(:description, :input_html => {:rows => '5'}, :label => t("goal.note"))
-          = f.input :accuracy, :as => :string, :label => t("goal.accuracy"), 
-                    :input_html => {:id => "accuracy-#{goal.id}", :class => "accuracy"}
-          = f.input(:baseline_date, :as => :string, :required => true, 
-                    :input_html => {:class => "date-picker baseline-date", 
-                    :value => goal.baseline_date_string, :id => "baseline_date#{goal.id}"})
-          = f.input(:baseline, :as => :string, :label => t("goal.baseline"), 
-                    :input_html => {:id => "baseline-#{goal.id}", :class => "accuracy"})
+          = f.input :is_percentage, :collection => [[true, 'Percentage'], [false, 'Objective (X/Y)']], :label_method => :last, :value_method => :first, as: :radio_buttons, :label => "Goal Type", :item_wrapper_class => 'inline', :checked => true
 
+          .percentage
+            = f.input :accuracy, :as => :string, :label => t("goal.accuracy"), 
+                      :input_html => {:id => "accuracy-#{goal.id}"}
+            = f.input(:baseline_date, :as => :string, :required => true, 
+                      :input_html => {:class => "date-picker baseline-date", 
+                      :value => goal.baseline_date_string, :id => "baseline_date#{goal.id}"})
+            = f.input(:baseline, :as => :string, :label => t("goal.baseline"), 
+                      :input_html => {:id => "baseline-#{goal.id}"})
+          .objective.hide
+            = f.input :goal_x, :label => "Goal", :input_html => {:class => "pull-left"}
+            .pull-left /
+            = f.input :goal_y, :label => false, :input_html => {:class => "pull-left"}
+            .clearfix
+            %center= f.error :accuracy, :class => "font-error"
+            = f.input(:baseline_date, :as => :string, :required => true, 
+                      :input_html => {:class => "date-picker baseline-date", 
+                      :value => goal.baseline_date_string, :id => "baseline_date#{goal.id}"})
+            = f.input :baseline_x, :label => "Baseline", :input_html => {:class => "pull-left"}
+            .pull-left /
+            = f.input :baseline_y, :label => false, :input_html => {:class => "pull-left"}
+            .clearfix
+            %center= f.error :baseline, :class => "font-error"
           .control-group.date.required{:class => (goal.errors[:trial_days_actual].blank? ? "" : "error")}
             %label.date.required.control-label{:for => "goal_baseline_date_1i"}
               %abbr{:title => "required"} *
@@ -104,15 +120,9 @@
           .progress-report-container
             - goal.progresses.sort_by{|p| p.id.to_i}.each_with_index do |progress, idx|
               = f.simple_fields_for(:progresses, progress, :validate => false) do |f_progress|
-                %label.grade-name= t("goal.progress_with_id", :id => idx + 1)
-                = f_progress.input( :due_date, :as => :string, :required => false, 
-                                    :input_html => {:class => "date-picker progress-due-date", 
-                                        :value => progress.due_date_string, 
-                                        :id => "goal_#{goal.id}_#{progress.object_id}"}, 
-                                    :label => t("common.due_date"))
-                = f_progress.input :accuracy, :as => :string, :required => false, 
-                                   :label => t("goal.progress_accuracy"),
-                                   :input_html => {:class => "accuracy"}
+                = render "progress_fields", :f => f_progress, :goal => goal, :progress => progress
+              = hidden_field_tag "count_field", goal.progresses.count
+            %span= link_to_add_fields "Add a Progress Report", f, :progresses, goal, "progress"
 
         .modal-footer
           .submit-indicator.loading.hide
@@ -121,7 +131,7 @@
                       :wrapper_html => {:class => "archived-input"})
             
           %input.btn{:value => t("common.cancel"), :type => "button", "aria-hidden" => "true", 
-                      "data-dismiss" => "modal", :class => "close-dialog"}
+                      "data-dismiss" => "modal", :class => "close-dialog", :id => "cancel_goal_form"}
           %input.btn.wizard-action{:value => t("common.back"), :type => "button", 
                                     "data-target" => "#curriculum", "aria-hidden" => "true"} 
           = f.submit t("common.save"), :class => "btn btn-primary", :disable_with => t("common.saving")

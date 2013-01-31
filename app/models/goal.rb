@@ -25,7 +25,8 @@ class Goal < ActiveRecord::Base
 
   attr_accessible :accuracy, :curriculum_id, :due_date, :progresses_attributes, :curriculum_attributes,
                   :baseline_date, :baseline, :trial_days_total, :trial_days_actual, 
-                  :grades_data, :is_completed, :description, :student_id
+                  :grades_data, :is_completed, :description, :student_id, 
+                  :is_percentage, :goal_x, :goal_y, :baseline_x, :baseline_y
 
   # ASSOCIATION
   has_many :progresses, :dependent => :destroy
@@ -34,7 +35,7 @@ class Goal < ActiveRecord::Base
   belongs_to :curriculum  
   
   # VALIDATION
-  validates_presence_of :accuracy, :curriculum_id, :student_id,
+  validates_presence_of :accuracy, :curriculum_id, :student_id, :goal_x, :goal_y, :baseline_x, :baseline_y,
                         :baseline, :trial_days_total, :trial_days_actual, :baseline_date, :due_date
   validates :accuracy, :numericality => true, :inclusion => {:in => 0..100, :message => :out_of_range_100}
   validates :baseline, :numericality => true, :inclusion => {:in => 0..100, :message => :out_of_range_100}
@@ -74,6 +75,7 @@ class Goal < ActiveRecord::Base
   after_validation :reset_curriculum
   after_save :update_all_grade  
 
+  
   # CLASS METHODS
   class << self
     def load_data(params = {}, complete = nil)
@@ -387,7 +389,7 @@ class Goal < ActiveRecord::Base
   def build_progresses
     count_progress = self.progresses.length
     # Create remaining progresses
-    (3 - count_progress).times { self.progresses.build } if count_progress < 3
+    (1 - count_progress).times { self.progresses.build } if count_progress < 2
   end
 
   def build_grade(params, is_updatable = false)
@@ -553,7 +555,7 @@ class Goal < ActiveRecord::Base
     end
 
     def validate_baseline
-      if self.baseline.to_f >= self.accuracy.to_f
+      if self.baseline.to_f >= self.accuracy.to_f #&& self.is_percentage
         self.errors.add(:baseline, :must_lower_than_goal)
       end
       return self.errors.blank?
@@ -595,6 +597,8 @@ class Goal < ActiveRecord::Base
       return !existed
     end 
 
+    def validate_for_objective_type 
+    end
     def valid_date_attribute?
       ::Util.check_date_validation(self, @attributes, :baseline_date, true)
       ::Util.check_date_validation(self, @attributes, :due_date, true)

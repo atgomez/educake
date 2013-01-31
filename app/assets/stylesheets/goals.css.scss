@@ -12,3 +12,13 @@
 .font-error {
   color: red;
 }
+form.goal-form .objective {
+	input#goal_goal_x, input#goal_goal_y, input#goal_baseline_x, input#goal_baseline_y {
+		width: 50px !important;
+	  margin-right: 3px;
+	  margin-bottom: 10px;
+	}
+	input#goal_goal_y, input#goal_baseline_y {
+		margin-left: 3px;
+	}
+}

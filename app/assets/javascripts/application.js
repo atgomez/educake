@@ -105,8 +105,26 @@ $(document).ready(function() {
    //      }
    //    }
    //  });
-});
 
+  
+});
+function remove_fields(link) {
+  $(link).prev("input[type=hidden]").val("1");
+  $(link).closest(".fields").hide();
+  count = parseInt($("#count_field").val());
+  if (count > 0)
+    count = count - 1
+  if (count <= 2)
+    $(".add_link").show();
+  $("#count_field").attr("value", count);
+  
+}
+
+function add_fields(link, association, content) {
+  var new_id = new Date().getTime();
+  var regexp = new RegExp("new_" + association, "g")
+  $(link).parent().before(content.replace(regexp, new_id));
+}
 // function setiFrameHeight(height){
 // 	if($('#iframe-view-as').length > 0){
 // 		$('#iframe-view-as').attr('height', height);

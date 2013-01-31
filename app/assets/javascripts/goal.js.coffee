@@ -6,6 +6,9 @@ window.goal =
     @setup_form()
     @update_grade()
     @clickOnGoal()
+    @clickOnGoalType()
+    @clickOnAddProgress()
+    @clickOnCancel()
     return
 
   clickOnGoal: -> 
@@ -44,6 +47,35 @@ window.goal =
         window.chartMode = 'view_all'
       return
 
+  clickOnGoalType: ->
+    $("#new-goal-container").delegate ".radio_buttons", "click", ()->
+      if $(this).attr("value") == "true"
+        $(".percentage").show()
+        $(".objective").hide()
+      else if $(this).attr("value") == "false"
+        $(".objective").show()
+        $(".percentage").hide()
+        $("#goal_goal_x").parent().parent().removeClass("control-group")
+        $("#goal_baseline_x").parent().parent().removeClass("control-group")
+      return
+
+  clickOnCancel: ->
+    $("#cancel_goal_form").live "click", ->
+      $('.modal-backdrop.fade.in').remove();
+    return
+
+
+  clickOnAddProgress: ->
+    $(".progress-report-container").find("a[class='add_link']").live "click", () ->
+      count = parseInt($("#count_field").val())
+      count =  count + 1
+      if count <= 3
+        $("#count_field").attr("value", count)
+        $(this).show()
+      if count >= 3 
+        $(this).hide()
+      return
+
   setup_form: ->
     @setup_wizard()
 
@@ -62,27 +94,7 @@ window.goal =
       data = $(this).serialize()
       url = $(this).attr('action')
       parent = $(this).parent()
-      $.ajax({
-        url: url,
-        type: 'POST',
-        data: data,
-        success: (res) -> 
-          window.location.reload()
-        ,
-
-        error: (xhr, textStatusx, error) -> 
-          try
-            res = $.parseJSON(xhr.responseText)
-          catch exc
-            res = null
-
-          if res and res.html
-            goal_dialog = $(res.html)
-            $(parent).html(goal_dialog.html())
-            goal.get_curriculum()
-      })
-
-      return false
+      
     )
 
     $(".grade-form").livequery('submit', (e) ->
@@ -91,25 +103,7 @@ window.goal =
       data = $(this).serialize()
       url = $(this).attr('action')
       parent = $(this).parent()
-      $.ajax({
-        url: url,
-        type: 'POST',
-        data: data,
-        success: (res) -> 
-          window.location.reload()
-        ,
-
-        error: (xhr, textStatus, error) -> 
-          try
-            res = $.parseJSON(xhr.responseText)
-          catch exc
-            res = null
-          if res and res.html
-            goal_dialog = $(res.html)
-            $(parent).html(goal_dialog.html())
-      })
-
-      return false
+      
     )
 
   setup_wizard: ->

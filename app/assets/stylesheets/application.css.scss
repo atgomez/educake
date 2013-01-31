@@ -19,7 +19,7 @@
  *= require goals
  *= require schools
  *= require "lib/jquery-ui-bootstrap/jquery-ui"
- *= require "lib/jquery-ui-bootstrap/jquery-ui.ie"
+ 
  */
 
 #main{
@@ -101,6 +101,7 @@ form textarea{
 
   .ui-combobox-input{
     width: 178px;
+    display: inline-block;
   }
 }
 .ui-combobox-toggle {
