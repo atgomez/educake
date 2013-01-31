@@ -76,8 +76,8 @@ TeacherMgnt::Application.routes.draw do
     end
   end 
 
-  devise_for :users, :controllers => { :registrations => 'devise/user_registrations', 
-    :confirmations => 'devise/user_confirmations'}
+  devise_for :users, :controllers => {:registrations => 'devise/user_registrations', 
+                                      :confirmations => 'devise/user_confirmations'}
 
   as :user do
     match '/user/confirmation' => 'devise/user_confirmations#update', :via => :put, :as => :update_user_confirmation

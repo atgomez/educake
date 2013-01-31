@@ -11,9 +11,8 @@
  *= require_self
  *= require bootstrap_and_overrides
  *= require curriculum
- *= require layout
- *= require login
- *= require new_style
+ *= require shared
+ *= require web
  *= require students
  *= require teacher
  *= require goals

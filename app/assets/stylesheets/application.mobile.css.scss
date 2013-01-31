@@ -1,0 +1,25 @@
+/*
+ *= require_self
+ *= require bootstrap_and_overrides
+ *= require shared
+ *= require "lib/jquery-ui-bootstrap/jquery-ui"
+ */
+
+body {
+  padding: 10px;
+}
+
+.header {
+  .logo{
+    background-image: url("../assets/logo-mobile.png");
+    background-repeat: no-repeat;
+    background-position: left;
+    height: 60px;
+    width: 275px;
+    display: inline-block;
+  }
+}
+
+#app-version{
+  font-size: 12px;
+}

@@ -2,6 +2,8 @@ class ApplicationController < ActionController::Base
   include MongodbLogger::Base
   protect_from_forgery
   check_authorization :unless => :except_controller?
+  has_mobile_fu
+  # before_filter :force_mobile_format # Test only!
 
   before_filter :authenticate_user!
   before_filter :do_filter_params
@@ -9,6 +11,7 @@ class ApplicationController < ActionController::Base
   before_filter :pagination_ajax_setting
   before_filter :check_blocked_account
   before_filter :check_view_as_state
+  before_filter :detect_mobile_device
 
   rescue_from CanCan::AccessDenied, :with => :rescue_access_denied 
 
@@ -236,5 +239,11 @@ class ApplicationController < ActionController::Base
 
     def exception_engine_authentication
       authenticate_admin!
+    end
+
+    def detect_mobile_device
+      if is_mobile_device?
+        force_mobile_format # TODO: remove this
+      end
     end
 end

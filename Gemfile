@@ -90,3 +90,6 @@ gem 'rails_admin'
 # API
 gem 'grape'
 gem 'grape-rabl'
+
+# Mobile support
+gem 'mobile-fu'
