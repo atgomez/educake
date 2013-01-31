@@ -12,13 +12,19 @@
           %a{:class => "close", 'data-dismiss' => "alert", :href => "#"} &times;
           = notification
       .form-inputs
-        = f.input(:goal_id, :collection => @goals, :prompt => t("common.select_prompt"), 
+        = f.input(:goal_id, :collection => @goals, :prompt => t("common.select_prompt"),
                   :input_html => {:class => "pull-left"})
         .clearfix
         = f.input(:due_date, :as => :string, :required => true, :input_html => {:class => "date-picker pull-left", :value => @grade.due_date_string}, :label => t("common.due_date"))
         .clearfix
-        = f.input :accuracy, :label => t("grade.accuracy"), :input_html => {:class => "pull-left", :type => "text"}
-        .clearfix
+        .grade-percentage
+          = f.input :accuracy, :label => t("grade.accuracy"), :input_html => {:class => "pull-left", :type => "text"}
+          .clearfix
+        .grade-objective.hide
+          = f.input :goal_x, :label => "Goal", :input_html => {:class => "pull-left"}
+          .pull-left /
+          = f.input :goal_y, :label => false, :input_html => {:class => "pull-left"}
+          .clearfix
         = f.input :time_to_complete, :as => :string, :ampm => true
         = f.input :note, :as => :text, :label => t("grade.note"), :input_html => {:rows =>"5"}
 

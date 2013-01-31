@@ -22,3 +22,14 @@ form.goal-form .objective {
 		margin-left: 3px;
 	}
 }
+
+form.grade-form .grade-objective {
+  input#grade_goal_x, input#grade_goal_y {
+    width: 50px !important;
+    margin-right: 3px;
+    margin-bottom: 10px;
+  }
+  input#goal_goal_y{
+    margin-left: 3px;
+  }
+}

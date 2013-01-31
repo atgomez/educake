@@ -6,5 +6,12 @@
       $("#duedate_error").html("#{ escape_javascript ( error )}");
     - elsif error.include?("Accuracy") 
       $("#accuracy_error").html("#{ escape_javascript ( error )}");
+	- if @goal_type == false
+		$(".grade-objective").show();
+    $(".grade-percentage").hide();
+    $("#grade_goal_x").parent().parent().removeClass("control-group");
+  - else
+  	$(".grade-objective").hide();
+    $(".grade-percentage").show();
 - else
   location.reload()
