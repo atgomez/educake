@@ -96,7 +96,7 @@ class SuperAdmin::CurriculumsController < SuperAdmin::BaseSuperAdminController
           flash[:alert] = generate_import_errors(result)
         end      
       end
-    rescue ArgumentError => exc
+    rescue *[ArgumentError, CSV::MalformedCSVError] => exc
       ::Util.log_error(exc, "SuperAdmin::CurriculumsController#import")
       flash[:alert] = I18n.t("curriculum.import_failed_with_file_format")
     rescue Exception => exc
