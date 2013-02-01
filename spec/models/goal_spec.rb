@@ -237,7 +237,7 @@ describe Goal do
 			before{
 				@new_goal = Goal.build_goal :trial_days_total => 10, :trial_days_actual => 9, :baseline_date => Date.today
 			}
-			it { @new_goal.progresses.length.should == 3	}
+			it { @new_goal.progresses.length.should == 1	}
 		end
 	end
 
