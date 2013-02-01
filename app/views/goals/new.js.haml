@@ -1,4 +1,4 @@
 $("#new-goal-container").html("#{escape_javascript(render('form', :student => @student, :goal => @goal, :url => goals_path, :method => :post))}");
 $(".progress-report-container .fields").first().addClass("hide");
 $('#goal-dialog').modal('show');
-$('form').enableClientSideValidations();
+$('#goal-dialog').on('shown', function(){$('form').enableClientSideValidations();}); 

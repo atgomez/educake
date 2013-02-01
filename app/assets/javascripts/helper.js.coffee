@@ -115,7 +115,7 @@ window.helper =
   allowInputNumber: ->
     $('#user_phone').filter_input({regex:'[0-9\r\n]'})
     $('#grade_value').filter_input({regex:'[0-9.\r\n]', live:true})
-    $(".numeric").filter_input({regex:'[0-9.\r\n]', live:true})    
+    $(".numeric, .float_number").filter_input({regex:'[0-9.\r\n]', live:true})    
     $('#user_first_name').filter_input({regex:'[a-zA-Z0-9- \r\n]', live:true})
     $('#user_last_name').filter_input({regex:'[a-zA-Z0-9- \r\n]', live:true}) 
     $('#user_email').filter_input({regex:'[a-zA-Z0-9_.@+\r\n]', live:true}) 
