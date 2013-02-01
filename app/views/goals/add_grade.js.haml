@@ -3,12 +3,12 @@
   $("#render_add_grade").modal('show');
   $("#render_add_grade").on('shown', function(){$('.grade-form').enableClientSideValidations();});
 
-  - if @goal_type
-    $(".grade-objective").show();
-    $(".grade-percentage").hide();
-  - else
+  - if @is_percentage
     $(".grade-objective").hide();
     $(".grade-percentage").show();
+  - else
+    $(".grade-objective").show();
+    $(".grade-percentage").hide();
     
 - else
   location.reload();

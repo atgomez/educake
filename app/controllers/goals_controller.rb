@@ -116,7 +116,7 @@ class GoalsController < ApplicationController
      
       begin
         @goal = Goal.incomplete.find_by_id(params[:grade][:goal_id])
-        @goal_type = @goal.is_percentage if @goal
+        @is_percentage = @goal.is_percentage if @goal
         
         if (@goal)
           # Simple validation
