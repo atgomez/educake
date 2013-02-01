@@ -1,1 +1,7 @@
-#app-version= "Educake v#{VERSION}, build #{BUILD_NUMBER}"
+#app-version
+  %span= "Educake v#{VERSION}, build #{BUILD_NUMBER}"
+  %span= "|"
+  %span= mail_to "anne@educake.co", "Contact us", :encode => "hex", :class => "ui-link"
+  - if is_mobile_device?
+    %span= "|"
+    %span= link_to "View mobile site", "/?mobile=true"

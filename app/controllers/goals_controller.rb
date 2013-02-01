@@ -114,40 +114,48 @@ class GoalsController < ApplicationController
         @goals = @student.goals.incomplete.map{|g| [g.name, g.id, {:goal_type => g.is_percentage}]}
       end 
      
-      @goal = Goal.incomplete.find_by_id(params[:grade][:goal_id])
-      @goal_type = @goal.is_percentage if @goal
-      
-      if (@goal)
-        # Simple validation
-        valid_grade = Grade.new params[:grade]
-        unless valid_grade.valid?
-          @grade = valid_grade
-        else
-          @grade = @goal.build_grade params[:grade]          
-          if (@grade)
-            @grade.user = @user
-            @grade = @goal.update_grade_state(@grade)
-            if @grade.save
-              @goal.update_all_grade
-              flash[:notice] = I18n.t('grade.created_successfully')
+      begin
+        @goal = Goal.incomplete.find_by_id(params[:grade][:goal_id])
+        @goal_type = @goal.is_percentage if @goal
+        
+        if (@goal)
+          # Simple validation
+          valid_grade = Grade.new params[:grade]
+          unless valid_grade.valid?
+            @grade = valid_grade
+          else
+            @grade = @goal.build_grade params[:grade]          
+            if (@grade)
+              @grade.user = @user
+              @grade = @goal.update_grade_state(@grade)
+              if @grade.save
+                @goal.update_all_grade
+                flash[:notice] = I18n.t('grade.created_successfully')
+              end
             end
           end
+        else
+          @grade = Grade.new params[:grade]
+          @grade.errors.add(:goal_id, :not_selected)
         end
-      else
-        @grade = Grade.new params[:grade]
-        @grade.errors.add(:goal_id, :not_selected)
+      rescue Exception => exc
+        ::Util.log_error(exc, "GoalsController#add_grade")
+        if @grade.blank?
+          @grade = Grade.new
+          @grade.due_date = Date.today
+        end
+      end
+
+      if @grade.new_record? && is_mobile_request?
+        # Load students for mobile view.
+        @students = @user.accessible_students
+      elsif is_mobile_request?
+        # TODO: change this.
+        redirect_to(:action => "new_grade")
       end
     else
       flash[:warning] = I18n.t("common.error_unauthorized")
-    end
-
-    if @grade.new_record? && is_mobile_request?
-      # Load students for mobile view.
-      @students = @user.accessible_students
-    elsif is_mobile_request?
-      # TODO: change this.
-      redirect_to(:action => "new_grade")
-    end
+    end   
   end
 
   # GET /goals/load_goals

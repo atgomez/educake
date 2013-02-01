@@ -238,8 +238,22 @@ class ApplicationController < ActionController::Base
     end
 
     def detect_mobile_device
-      if is_mobile_device?
-        force_mobile_format # TODO: remove this
+      # Workaround to switch to mobile mode
+      if (params[:mobile] == "false")
+        session[:mobile_view] = false
+      elsif (params[:mobile] == "true")
+        session[:mobile_view] = true
+      end
+
+      if session[:mobile_view]
+        force_mobile_format
+      else
+        unless request.xhr?
+          request.format = :html
+        end
+      end
+
+      if is_mobile_device?  
         if !except_controller? ||
               (devise_controller? && ['create', 'destroy'].include?(action_name) && 
                 ['POST', 'DELETE'].include?(request.method))
@@ -249,6 +263,6 @@ class ApplicationController < ActionController::Base
     end
 
     def is_mobile_request?
-      return (is_mobile_device? || request.format == :mobile)
+      return (session[:mobile_view] && (is_mobile_device? || request.format == :mobile))
     end
 end
