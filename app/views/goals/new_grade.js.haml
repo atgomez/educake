@@ -1,2 +1,3 @@
-$("#render_add_grade").html("#{escape_javascript render 'form_grade', :student_id => params[:student_id]}")
-$("#add_grade").modal('show')
+$("#render_add_grade").html("#{escape_javascript render 'form_grade', :student_id => params[:student_id]}");
+$("#render_add_grade").modal('show');
+$("#render_add_grade").on('shown', function(){$('.grade-form').enableClientSideValidations();});

@@ -97,15 +97,6 @@ window.goal =
       
     )
 
-    $(".grade-form").livequery('submit', (e) ->
-      e.preventDefault()
-
-      data = $(this).serialize()
-      url = $(this).attr('action')
-      parent = $(this).parent()
-      
-    )
-
   setup_wizard: ->
     $(".wizard-content .wizard-action").live("click", (e) ->
       e.preventDefault()

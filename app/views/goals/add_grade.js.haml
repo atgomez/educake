@@ -1,10 +1,6 @@
-- if @grade.errors.any?
-  - @grade.errors.full_messages.each do |error| 
-    - if error.include?("Goal") 
-      $("#goal_error").html("#{escape_javascript ( error )}");
-    - elsif error.include?("Due date") 
-      $("#duedate_error").html("#{ escape_javascript ( error )}");
-    - elsif error.include?("Accuracy") 
-      $("#accuracy_error").html("#{ escape_javascript ( error )}");
+- if @grade && @grade.errors.any?
+  $("#render_add_grade").html("#{escape_javascript render 'form_grade', :student_id => params[:student_id]}");
+  $("#render_add_grade").modal('show');
+  $("#render_add_grade").on('shown', function(){$('.grade-form').enableClientSideValidations();});
 - else
-  location.reload()
+  location.reload();
