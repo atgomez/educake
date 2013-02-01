@@ -87,6 +87,12 @@ en:
     progress_accuracy: "% Accuracy"
     mark_completed: "Mark as complete"
     trial_days: "Trial days"
+    baseline: "Baseline"
+    name: "Goal"
+    objective: "Objective (X/Y)"
+    percentage: "Percentage"
+    add_progress: "Add a Progress Report"
+    goal_type: "Goal Type"
 
   grade:
     created_successfully: "Created grade successfully"
