@@ -71,14 +71,15 @@ class GoalsController < ApplicationController
     if find_user
       @student = @user.accessible_students.find_by_id(params[:student_id])
       if @student 
-        @goals = @student.goals.incomplete.map{|g| [g.name, g.id, {:value => g.id, :goal_type => g.is_percentage}]}
+        @goals = @student.goals.incomplete.map{|g| [g.name, g.id, {:goal_type => g.is_percentage}]}
       end 
      
       @goal = Goal.incomplete.find_by_id(params[:grade][:goal_id])
-      @goal_type = @goal.is_percentage
+      @goal_type = @goal.is_percentage if @goal	
       if @goal_type == false
-        params[:goal][:accuracy] = (params[:grade][:goal_x].to_f / params[:grade][:goal_y].to_f)*100
+        params[:grade][:accuracy] = (params[:grade][:goal_x].to_f / params[:grade][:goal_y].to_f)*100
       end
+      result[:goal_type] = @goal_type
       if (@goal)
         # Simple validation
         valid_grade = Grade.new params[:grade]
