@@ -4,6 +4,7 @@ $ ->
 window.goal =
   setup: ->
     @setup_grade_form()
+    @check_on_select_grade()
     return
 
   setup_grade_form: ->
@@ -49,3 +50,17 @@ window.goal =
       $(selector).removeAttr("disabled")
     else
       $(selector).attr("disabled", true)
+
+  check_on_select_grade: ->
+    $("#grade_goal_id").live "change", () ->
+      goal_type = $(this).find('option:selected').attr('goal_type')
+      if goal_type == "true"
+        $(".grade-percentage").show()
+        $(".grade-objective").hide()
+      else
+        $(".grade-percentage").hide()
+        $(".grade-objective").show()
+
+    # Force change
+    $("#grade_goal_id").change()
+    return

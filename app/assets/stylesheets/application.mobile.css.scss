@@ -25,8 +25,16 @@ body {
 }
 
 .grade-form{
-  .datepicker-trigger{
+  .datepicker-trigger {
     margin-left: 10px;
-    padding: 6px;    
+    padding: 6px;
+  }
+
+  .objective-separator{
+    margin: 0 5px;
+  }
+
+  .objective-number{
+    width: 50px;
   }
 }

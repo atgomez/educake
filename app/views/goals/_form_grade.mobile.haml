@@ -21,9 +21,20 @@
               :label => t("common.due_date"),
               :disabled => @student.blank?)
     .clearfix
-    = f.input :accuracy, :label => t("grade.accuracy"), 
-              :input_html => {:class => "pull-left", :type => "text"},
-              :disabled => @student.blank?
+
+    .grade-percentage
+      = f.input :accuracy, :label => t("grade.accuracy"), 
+                :input_html => {:class => "pull-left", :type => "text"},
+                :disabled => @student.blank?
+      .clearfix
+    .grade-objective.hide
+      = f.input :goal_x, :label => "Accuracy", :input_html => {:class => "pull-left objective-number"}, 
+                :disabled => @student.blank?
+      .pull-left.objective-separator /
+      = f.input :goal_y, :label => false, :input_html => {:class => "pull-left objective-number", :style => "margin-top: -5px;"}, 
+                :disabled => @student.blank?
+      .clearfix
+
     .clearfix
     = f.input :time_to_complete, :as => :string, :ampm => true, :disabled => @student.blank?
     = f.input :note, :as => :text, :label => t("grade.note"), :input_html => {:rows =>"5"}, :disabled => @student.blank?
