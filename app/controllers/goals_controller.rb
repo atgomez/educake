@@ -17,10 +17,6 @@ class GoalsController < ApplicationController
   def create
     @student = Student.find_by_id(params[:goal][:student_id])
     @goal_type = params[:goal][:is_percentage]
-    if params[:goal][:is_percentage] == "false"
-      params[:goal][:accuracy] = (params[:goal][:goal_x].to_f / params[:goal][:goal_y].to_f)*100
-      params[:goal][:baseline] = (params[:goal][:baseline_x].to_f / params[:goal][:baseline_y].to_f)*100
-    end
     
     params[:goal].delete :id
     params[:goal].delete :student_id
@@ -32,10 +28,6 @@ class GoalsController < ApplicationController
     @student = Student.find_by_id(params[:goal][:student_id])
     @goal = @student.goals.find_by_id params[:id]
     @goal_type = params[:goal][:is_percentage]
-    if params[:goal][:is_percentage] == "false"
-      params[:goal][:accuracy] = (params[:goal][:goal_x].to_f / params[:goal][:goal_y].to_f)*100
-      params[:goal][:baseline] = (params[:goal][:baseline_x].to_f / params[:goal][:baseline_y].to_f)*100
-    end
     if (@goal)
       #Remove id and student_id 
       params[:goal].delete :id
@@ -58,7 +50,7 @@ class GoalsController < ApplicationController
       @grade.due_date = Date.today
       @student = @user.accessible_students.find_by_id(params[:student_id])
       if @student 
-        @goals = @student.goals.incomplete.map{|g| [g.name, g.id]}
+        @goals = @student.goals.incomplete.map{|g| [g.name, g.id, {:goal_type => g.is_percentage}]}
       else
         render_page_not_found(I18n.t("student.student_not_found"))
       end 
@@ -71,10 +63,13 @@ class GoalsController < ApplicationController
     if find_user
       @student = @user.accessible_students.find_by_id(params[:student_id])
       if @student 
-        @goals = @student.goals.incomplete.map{|g| [g.name, g.id]}
+        @goals = @student.goals.incomplete.map{|g| [g.name, g.id, {:goal_type => g.is_percentage}]}
       end 
-
+     
       @goal = Goal.incomplete.find_by_id(params[:grade][:goal_id])
+      @goal_type = @goal.is_percentage if @goal	
+    
+      result[:goal_type] = @goal_type
       if (@goal)
         # Simple validation
         valid_grade = Grade.new params[:grade]
