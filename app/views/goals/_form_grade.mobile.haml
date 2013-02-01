@@ -17,7 +17,7 @@
               :disabled => @student.blank?)
     .clearfix
     = f.input(:due_date, :as => :string, :required => true, 
-              :input_html => {:class => "date-picker pull-left", :value => @grade.due_date_string}, 
+              :input_html => {:class => "date-picker-ext pull-left", :value => @grade.due_date_string, :readonly => true}, 
               :label => t("common.due_date"),
               :disabled => @student.blank?)
     .clearfix

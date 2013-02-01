@@ -56,13 +56,11 @@ class GoalsController < ApplicationController
       end
 
       if @student 
-        @goals = @student.goals.incomplete.map{|g| [g.name, g.id]}
-
+        @goals = @student.goals.incomplete.map{|g| [g.name, g.id, {:goal_type => g.is_percentage}]}
         if is_mobile_request?
           # Clear the default student
           @student = nil
-        end
-        @goals = @student.goals.incomplete.map{|g| [g.name, g.id, {:goal_type => g.is_percentage}]}
+        end        
       else
         render_page_not_found(I18n.t("student.student_not_found"))
       end 

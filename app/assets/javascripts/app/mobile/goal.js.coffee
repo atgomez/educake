@@ -21,7 +21,27 @@ window.goal =
         })
       else
         goal.enable_grade_fields(false)
-    )    
+    )
+
+    $(".date-picker-ext").datepicker({
+      dateFormat: "mm-dd-yy",
+      yearRange: "-10:+10",
+      changeMonth: true,
+      changeYear: true,
+      showOn: 'button',
+      buttonText: "",
+      showButtonPanel: true
+    })
+
+    # Add a custom trigger
+    trigger = $("#grade_due_date").next(".ui-datepicker-trigger")
+    trigger.replaceWith('<div class="ui-button ui-state-default ui-corner-all datepicker-trigger">
+                        <span class="ui-icon ui-icon-calculator"></span></div>')
+
+    # Trigger event
+    $(".datepicker-trigger").live("click",  ->
+      $(".date-picker-ext").datepicker("show")
+    )
 
   enable_grade_fields: (enabled) ->
     selector = "input[name^='grade['], select[name^='grade['], textarea[name^='grade[']"
