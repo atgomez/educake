@@ -1,3 +1,23 @@
+# == Schema Information
+#
+# Table name: oauth_tokens
+#
+#  id                    :integer          not null, primary key
+#  user_id               :integer
+#  type                  :string(20)
+#  client_application_id :integer
+#  token                 :string(40)
+#  secret                :string(40)
+#  callback_url          :string(255)
+#  verifier              :string(20)
+#  scope                 :string(255)
+#  authorized_at         :datetime
+#  invalidated_at        :datetime
+#  expires_at            :datetime
+#  created_at            :datetime         not null
+#  updated_at            :datetime         not null
+#
+
 class Oauth2Token < AccessToken
   attr_accessor :state
   def as_json(options={})

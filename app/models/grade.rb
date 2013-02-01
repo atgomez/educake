@@ -15,6 +15,8 @@
 #  note             :text
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
+#  goal_x           :integer          default(0), not null
+#  goal_y           :integer          default(0), not null
 #
 
 class Grade < ActiveRecord::Base

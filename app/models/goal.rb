@@ -15,6 +15,11 @@
 #  is_completed      :boolean          default(FALSE)
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
+#  goal_x            :integer          default(0), not null
+#  goal_y            :integer          default(0), not null
+#  baseline_x        :integer          default(0), not null
+#  baseline_y        :integer          default(0), not null
+#  is_percentage     :boolean          default(TRUE)
 #
 
 require 'csv'

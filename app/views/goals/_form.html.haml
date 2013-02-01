@@ -78,28 +78,32 @@
 
           = f.input(:due_date, :as => :string, :required => true, :validate => { :presence => true }, :input_html => {:class => "date-picker", :value => goal.due_date_string, :id => "goal_due_date#{goal.id}"})
           = f.input(:description, :input_html => {:rows => '5'}, :label => t("goal.note"))
-          = f.input :is_percentage, :collection => [[true, t("goal.percentage")], [false, t("goal.objective")]], :label_method => :last, :value_method => :first, as: :radio_buttons, :label => t("goal.goal_type"), :item_wrapper_class => 'inline label-width', :checked => true
+          = f.input :is_percentage, :collection => [[true, t("goal.percentage")], [false, t("goal.objective")]],
+                    :label_method => :last, :value_method => :first, as: :radio_buttons, 
+                    :label => t("goal.goal_type"), :item_wrapper_class => 'inline label-width', :checked => true
 
           .percentage
             = f.input :accuracy, :as => :string, :label => t("goal.accuracy"), 
-                      :input_html => {:id => "accuracy-#{goal.id}"}
+                      :input_html => {:id => "accuracy-#{goal.id}", :class => "float_number"}
             = f.input(:baseline_date, :as => :string, :required => true, 
                       :input_html => {:class => "date-picker baseline-date", 
                       :value => goal.baseline_date_string, :id => "baseline_date_percent_#{goal.id}"})
             = f.input(:baseline, :as => :string, :label => t("goal.baseline"), 
-                      :input_html => {:id => "baseline-#{goal.id}"})
+                      :input_html => {:id => "baseline-#{goal.id}", :class => "float_number"})
           .objective.hide
-            = f.input :goal_x, :label => t("goal.name"), :input_html => {:class => "pull-left"}
+            = f.input :goal_x, :label => t("goal.name"), :input_html => {:class => "pull-left valid_number"}
             .pull-left /
-            = f.input :goal_y, :label => false, :input_html => {:class => "pull-left"}
+            = f.input :goal_y, :label => false, :input_html => {:class => "pull-left valid_number"}
             .clearfix
             %center= f.error :accuracy, :class => "font-error"
             = f.input(:baseline_date, :as => :string, :required => true, 
                       :input_html => {:class => "date-picker baseline-date", 
                       :value => goal.baseline_date_string, :id => "baseline_date#{goal.id}"})
-            = f.input :baseline_x, :label => t("goal.baseline"), :input_html => {:class => "pull-left"}
+            = f.input :baseline_x, :label => t("goal.baseline"), 
+                      :input_html => {:class => "pull-left valid_number"}
             .pull-left /
-            = f.input :baseline_y, :label => false, :input_html => {:class => "pull-left"}
+            = f.input :baseline_y, :label => false, 
+                      :input_html => {:class => "pull-left valid_number"}
             .clearfix
             %center= f.error :baseline, :class => "font-error"
           .control-group.date.required{:class => (goal.errors[:trial_days_actual].blank? ? "" : "error")}

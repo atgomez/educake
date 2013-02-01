@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130129042256) do
+ActiveRecord::Schema.define(:version => 20130131092514) do
 
   create_table "client_applications", :force => true do |t|
     t.string   "name"
@@ -103,6 +103,8 @@ ActiveRecord::Schema.define(:version => 20130129042256) do
     t.text     "note"
     t.datetime "created_at",                          :null => false
     t.datetime "updated_at",                          :null => false
+    t.integer  "goal_x",           :default => 0,     :null => false
+    t.integer  "goal_y",           :default => 0,     :null => false
   end
 
   add_index "grades", ["due_date"], :name => "index_grades_on_due_date"

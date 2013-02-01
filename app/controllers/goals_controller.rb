@@ -112,7 +112,7 @@ class GoalsController < ApplicationController
       @student = @user.accessible_students.find_by_id(params[:student_id])
       if @student 
         @goals = @student.goals.incomplete.map{|g| [g.name, g.id, {:goal_type => g.is_percentage}]}
-      end 
+      end
      
       begin
         @goal = Goal.incomplete.find_by_id(params[:grade][:goal_id])
@@ -149,6 +149,13 @@ class GoalsController < ApplicationController
       if @grade.new_record? && is_mobile_request?
         # Load students for mobile view.
         @students = @user.accessible_students
+        # Prepare goals
+        if @goals.blank?
+          student = @students.first
+          if student
+            @goals = student.goals.incomplete.map{|g| [g.name, g.id, {:goal_type => g.is_percentage}]}
+          end
+        end
       elsif is_mobile_request?
         # TODO: change this.
         redirect_to(:action => "new_grade")

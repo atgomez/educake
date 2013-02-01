@@ -5,6 +5,7 @@ window.goal =
   setup: ->
     @setup_grade_form()
     @check_on_select_grade()
+    @toggle_goal_type()
     return
 
   setup_grade_form: ->
@@ -18,6 +19,7 @@ window.goal =
           complete: (xhr, status ) ->
             if(xhr.status == 200 && xhr.responseText)
               $("#grade_goal_id").html(xhr.responseText)
+              goal.toggle_goal_type()
               goal.enable_grade_fields(true)
         })
       else
@@ -51,16 +53,16 @@ window.goal =
     else
       $(selector).attr("disabled", true)
 
-  check_on_select_grade: ->
-    $("#grade_goal_id").live "change", () ->
-      goal_type = $(this).find('option:selected').attr('goal_type')
-      if goal_type == "true"
-        $(".grade-percentage").show()
-        $(".grade-objective").hide()
-      else
-        $(".grade-percentage").hide()
-        $(".grade-objective").show()
+  toggle_goal_type: ->
+    goal_type = $("#grade_goal_id").find('option:selected').attr('goal_type')
+    if goal_type == "true"
+      $(".grade-percentage").show()
+      $(".grade-objective").hide()
+    else
+      $(".grade-percentage").hide()
+      $(".grade-objective").show()
 
-    # Force change
-    $("#grade_goal_id").change()
-    return
+  check_on_select_grade: ->
+    $("#grade_goal_id").live("change", () ->
+      goal.toggle_goal_type()
+    )

@@ -64,7 +64,7 @@ window.schoolObject =
     return
 
   checkBeforeExport: ->
-    if $("#student_selection").size() == 1 && $("#data_individual").attr("checked") == "checked"
+    if $("#student_selection").find("option").length == 0 && $("#data_individual").attr("checked") == "checked"
       $("#export_teacher").attr("disabled", "disabled")
       $("#error").html("Please add more student.")
     else
@@ -72,7 +72,7 @@ window.schoolObject =
       $("#error").html("")
 
     $("td#radios").find("input").live "click", () ->
-      if $("#student_selection").size() == 1 && $("#data_individual").attr("checked") == "checked"
+      if $("#student_selection").find("option").length == 0 && $("#data_individual").attr("checked") == "checked"
         $("#export_teacher").attr("disabled", "disabled")
         $("#error").html("Please add more student.")
       else

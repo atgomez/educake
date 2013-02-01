@@ -9,5 +9,6 @@
 	                                        :value => progress.due_date_string}, 
 	                                    :label => t("common.due_date"))
 	= f.input :accuracy, :as => :string, :required => false, 
-	                                   :label => t("goal.progress_accuracy")
+	          :label => t("goal.progress_accuracy"),
+	          :input_html => {:class => "float_number"}
 	
