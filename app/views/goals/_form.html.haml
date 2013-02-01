@@ -78,7 +78,7 @@
 
           = f.input(:due_date, :as => :string, :required => true, :validate => { :presence => true }, :input_html => {:class => "date-picker", :value => goal.due_date_string, :id => "goal_due_date#{goal.id}"})
           = f.input(:description, :input_html => {:rows => '5'}, :label => t("goal.note"))
-          = f.input :is_percentage, :collection => [[true, 'Percentage'], [false, 'Objective (X/Y)']], :label_method => :last, :value_method => :first, as: :radio_buttons, :label => "Goal Type", :item_wrapper_class => 'inline label-width', :checked => true
+          = f.input :is_percentage, :collection => [[true, t("goal.percentage")], [false, t("goal.objective")]], :label_method => :last, :value_method => :first, as: :radio_buttons, :label => t("goal.goal_type"), :item_wrapper_class => 'inline label-width', :checked => true
 
           .percentage
             = f.input :accuracy, :as => :string, :label => t("goal.accuracy"), 
@@ -89,7 +89,7 @@
             = f.input(:baseline, :as => :string, :label => t("goal.baseline"), 
                       :input_html => {:id => "baseline-#{goal.id}"})
           .objective.hide
-            = f.input :goal_x, :label => "Goal", :input_html => {:class => "pull-left"}
+            = f.input :goal_x, :label => t("goal.name"), :input_html => {:class => "pull-left"}
             .pull-left /
             = f.input :goal_y, :label => false, :input_html => {:class => "pull-left"}
             .clearfix
@@ -97,7 +97,7 @@
             = f.input(:baseline_date, :as => :string, :required => true, 
                       :input_html => {:class => "date-picker baseline-date", 
                       :value => goal.baseline_date_string, :id => "baseline_date#{goal.id}"})
-            = f.input :baseline_x, :label => "Baseline", :input_html => {:class => "pull-left"}
+            = f.input :baseline_x, :label => t("goal.baseline"), :input_html => {:class => "pull-left"}
             .pull-left /
             = f.input :baseline_y, :label => false, :input_html => {:class => "pull-left"}
             .clearfix
@@ -122,7 +122,7 @@
               = f.simple_fields_for(:progresses, progress, :validate => false) do |f_progress|
                 = render "progress_fields", :f => f_progress, :goal => goal, :progress => progress
               = hidden_field_tag "count_field", goal.progresses.count
-            %span= link_to_add_fields "Add a Progress Report", f, :progresses, goal, "progress"
+            %span= link_to_add_fields t("goal.add_progress"), f, :progresses, goal, "progress"
 
         .modal-footer
           .submit-indicator.loading.hide
