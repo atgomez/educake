@@ -8,7 +8,6 @@ window.goal =
     @clickOnGoal()
     @clickOnGoalType()
     @clickOnAddProgress()
-    @clickOnCancel()
     @checkOnSelectGrade()
     @clickOnAddGoalLink()
     return
@@ -61,12 +60,6 @@ window.goal =
         $("#goal_baseline_x").parent().parent().removeClass("control-group")
       return
 
-  clickOnCancel: ->
-    $("#cancel_goal_form").live "click", ->
-      $('.modal-backdrop.fade.in').remove();
-    return
-
-
   clickOnAddProgress: ->
     $(".progress-report-container").find("a[class='add_link']").live "click", () ->
       count = parseInt($("#count_field").val())
@@ -88,11 +81,15 @@ window.goal =
         $(".grade-percentage").hide()
         $(".grade-objective").show()
     return
+
   clickOnAddGoalLink: ->
-    $("#add-goal11").live "click", () ->
-      $(this).removeAttr("data-remote")
-      $(this).removeAttr("href")
-    return
+    $("a[data-remote=true]").live("ajax:before", ->
+      if $(this).attr("ajax-loading")
+        false
+      else
+        $(this).attr "ajax-loading", true
+    ).live "ajax:complete", ->
+      $(this).removeAttr "ajax-loading"
 
   setup_form: ->
     @setup_wizard()
@@ -112,8 +109,43 @@ window.goal =
       data = $(this).serialize()
       url = $(this).attr('action')
       parent = $(this).parent()
-      
+      method = $(this).attr('method')
+      $.ajax({
+        url: url,
+        type: method,
+        data: data,
+        success: (res) ->
+          window.location.reload()
+        ,
+
+        error: (xhr, textStatusx, error) ->
+          try
+            res = $.parseJSON(xhr.responseText)
+          catch exc
+            res = null
+
+          if res and res.html
+            goal_dialog = $(res.html)
+            $(parent).html(goal_dialog.html())
+            goal.get_curriculum()
+            if res["goal_type"] == "false" 
+              $(".objective").show()
+              $(".percentage").hide()
+              $(".radio_buttons").find("input[value=false]").attr("checked", "checked")
+              $("#goal_goal_x").parent().parent().removeClass("control-group")
+              $("#goal_goal_y").parent().parent().removeClass("control-group")
+              $("#goal_baseline_x").parent().parent().removeClass("control-group")
+              $("#goal_baseline_y").parent().parent().removeClass("control-group")
+            else 
+              $(".percentage").show()
+              $(".objective").hide()
+              $(".radio_buttons").find("input[value=true]").attr("checked", "checked")
+  
+        })
+
+      return false
     )
+
 
     $(".grade-form").livequery('submit', (e) ->
       e.preventDefault()
@@ -121,7 +153,6 @@ window.goal =
       data = $(this).serialize()
       url = $(this).attr('action')
       parent = $(this).parent()
-      console.log data
       $.ajax({
         url: url,
         type: 'POST',
@@ -141,11 +172,9 @@ window.goal =
             if res["goal_type"] == false 
               $(".grade-objective").show()
               $(".grade-percentage").hide()
-              console.log "object tive"
             else
               $(".grade-objective").hide()
               $(".grade-percentage").show()
-              console.log "percentage"
            
       })
 
