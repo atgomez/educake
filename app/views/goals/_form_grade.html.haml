@@ -1,5 +1,5 @@
 - id ||= 'add_grade'
-.modal.hide.fade{:tabindex => "-1", :id => id}
+.modal.hide.fade{:tabindex => "-1", :id => id, "data-backdrop" => "static"}
   = simple_form_for(@grade, :url => add_grade_goals_path, :method => :post, :remote => true, 
                     :html => {:class => "grade-form"}, :validate => true) do |f|
     .modal-header
