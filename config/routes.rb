@@ -68,6 +68,7 @@ TeacherMgnt::Application.routes.draw do
       get :initial_import_grades
       put :import_grades
       get :load_grades
+      get :load_goals
       post :curriculum_info
     end
 
