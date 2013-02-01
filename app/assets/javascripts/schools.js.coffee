@@ -8,6 +8,7 @@ window.schoolObject =
     @limitInput()
     @searchForSuperAdmin()
     @clickOnSubmitAdmin()
+    @checkBeforeExport()
   
   checkForCheckbox: ->
     checked = $("#check_locked").val()
@@ -61,5 +62,22 @@ window.schoolObject =
         else
           event.preventDefault()
     return
+
+  checkBeforeExport: ->
+    if $("#student_selection").size() == 1 && $("#data_individual").attr("checked") == "checked"
+      $("#export_teacher").attr("disabled", "disabled")
+      $("#error").html("Please add more student.")
+    else
+      $("#export_teacher").attr("disabled", false)
+      $("#error").html("")
+
+    $("td#radios").find("input").live "click", () ->
+      if $("#student_selection").size() == 1 && $("#data_individual").attr("checked") == "checked"
+        $("#export_teacher").attr("disabled", "disabled")
+        $("#error").html("Please add more student.")
+      else
+        $("#export_teacher").attr("disabled", false)
+        $("#error").html("")
+
     
     
