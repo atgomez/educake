@@ -57,6 +57,10 @@ module TeacherMgnt
     # parameters by using an attr_accessible or attr_protected declaration.
     config.active_record.whitelist_attributes = true
 
+    # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
+    # config.assets.precompile += %w( search.js )
+    config.assets.precompile += ['application.mobile.css', 'application.mobile.js', 'app/*.js', 'lib/*.js', 'app/*.css', 'lib/*.css']
+
     # Enable the asset pipeline
     config.assets.enabled = true
     config.action_mailer.default_url_options = {:host => "teacher-mgnt-staging.herokuapp.com"}
