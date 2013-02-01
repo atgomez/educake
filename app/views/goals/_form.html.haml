@@ -78,7 +78,7 @@
 
           = f.input(:due_date, :as => :string, :required => true, :validate => { :presence => true }, :input_html => {:class => "date-picker", :value => goal.due_date_string, :id => "goal_due_date#{goal.id}"})
           = f.input(:description, :input_html => {:rows => '5'}, :label => t("goal.note"))
-          = f.input :is_percentage, :collection => [[true, 'Percentage'], [false, 'Objective (X/Y)']], :label_method => :last, :value_method => :first, as: :radio_buttons, :label => "Goal Type", :item_wrapper_class => 'inline', :checked => true
+          = f.input :is_percentage, :collection => [[true, 'Percentage'], [false, 'Objective (X/Y)']], :label_method => :last, :value_method => :first, as: :radio_buttons, :label => "Goal Type", :item_wrapper_class => 'inline label-width', :checked => true
 
           .percentage
             = f.input :accuracy, :as => :string, :label => t("goal.accuracy"), 

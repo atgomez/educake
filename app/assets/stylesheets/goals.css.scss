@@ -12,16 +12,23 @@
 .font-error {
   color: #B94A48;
 }
-form.goal-form .objective {
-	input#goal_goal_x, input#goal_goal_y, input#goal_baseline_x, input#goal_baseline_y {
-		width: 50px !important;
-	  margin-right: 3px;
-	  margin-bottom: 10px;
-	}
-	input#goal_goal_y, input#goal_baseline_y {
-		margin-left: 3px;
-	}
+form.goal-form {
+  .objective {
+  	input#goal_goal_x, input#goal_goal_y, input#goal_baseline_x, input#goal_baseline_y {
+  		width: 50px !important;
+  	  margin-right: 3px;
+  	  margin-bottom: 10px;
+  	}
+  	input#goal_goal_y, input#goal_baseline_y {
+  		margin-left: 3px;
+  	}
+    
+  }
+  .label-width {
+    width: 100px;
+  }
 }
+
 
 form.grade-form .grade-objective {
   input#grade_goal_x, input#grade_goal_y {
