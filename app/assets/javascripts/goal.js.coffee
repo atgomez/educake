@@ -9,6 +9,8 @@ window.goal =
     @clickOnGoalType()
     @clickOnAddProgress()
     @clickOnCancel()
+    @checkOnSelectGrade()
+    @clickOnAddGoalLink()
     return
 
   clickOnGoal: -> 
@@ -75,6 +77,22 @@ window.goal =
       if count >= 3 
         $(this).hide()
       return
+
+  checkOnSelectGrade: ->
+    $("#grade_goal_id").live "change", () ->
+      goal_type = $(this).find('option:selected').attr('goal_type')
+      if goal_type == "true"
+        $(".grade-percentage").show()
+        $(".grade-objective").hide()
+      else
+        $(".grade-percentage").hide()
+        $(".grade-objective").show()
+    return
+  clickOnAddGoalLink: ->
+    $("#add-goal11").live "click", () ->
+      $(this).removeAttr("data-remote")
+      $(this).removeAttr("href")
+    return
 
   setup_form: ->
     @setup_wizard()

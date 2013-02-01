@@ -22,7 +22,7 @@ class Grade < ActiveRecord::Base
   include ::SharedMethods::SerializationConfig
 
   attr_accessible :accuracy, :due_date, :goal_id, :user_id,
-                  :value, :time_to_complete, :is_unused, :note
+                  :value, :time_to_complete, :is_unused, :note, :goal_x, :goal_y
   
   # ASSOCIATIONS
   belongs_to :user
@@ -40,7 +40,7 @@ class Grade < ActiveRecord::Base
   scope :computable, where('is_unused = ?', false)
 
   # CALLBACK
-  before_validation :valid_date_attribute?
+  before_validation :valid_date_attribute?, :calculate_accuracy
   
   # CLASS METHODS
   class << self
@@ -121,4 +121,10 @@ class Grade < ActiveRecord::Base
         return false
       end
     end
+
+    def calculate_accuracy
+      if !goal.is_percentage
+        self.accuracy = (self.goal_x.to_f / self.goal_y.to_f).round(2)*100.0
+      end
+   end
 end
