@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130121082522) do
+ActiveRecord::Schema.define(:version => 20130129042256) do
 
   create_table "client_applications", :force => true do |t|
     t.string   "name"
@@ -78,6 +78,11 @@ ActiveRecord::Schema.define(:version => 20130121082522) do
     t.boolean  "is_completed",      :default => false
     t.datetime "created_at",                           :null => false
     t.datetime "updated_at",                           :null => false
+    t.integer  "goal_x",            :default => 0,     :null => false
+    t.integer  "goal_y",            :default => 0,     :null => false
+    t.integer  "baseline_x",        :default => 0,     :null => false
+    t.integer  "baseline_y",        :default => 0,     :null => false
+    t.boolean  "is_percentage",     :default => true
   end
 
   add_index "goals", ["baseline_date"], :name => "index_goals_on_baseline_date"

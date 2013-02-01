@@ -1,4 +1,4 @@
-.modal#import_grades.hide.fade
+.modal#import_grades.hide.fade{"data-backdrop" => "static"}
   = form_tag(import_grades_goals_path, :method => :put, :remote => true, :multipart => true, 
               :class => "import-grade-form") do
     .modal-header

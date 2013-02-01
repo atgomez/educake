@@ -164,6 +164,7 @@ en:
     add: "Add Student"
     edit: "Edit Student"
     new: "New Student"
+    single: "Student"
     birthday: "DOB"
     edit_goal: "Edit Goal"
     invitation_anchor: "Users"

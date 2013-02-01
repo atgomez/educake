@@ -1,41 +1,37 @@
-- id ||= 'add_grade'
-.modal.hide.fade{:tabindex => "-1", :id => id}
-  = simple_form_for(@grade, :url => add_grade_goals_path, :method => :post, :remote => true, 
-                    :html => {:class => "grade-form"}, :validate => true) do |f|
-    .modal-header
-      %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} &times;
-      %h4= t("grade.add")
-    .modal-body
-      
-      - if notification = f.error_notification
-        .alert.alert-error.fade.in
-          %a{:class => "close", 'data-dismiss' => "alert", :href => "#"} &times;
-          = notification
-      .form-inputs
-        = f.input :grade do 
-          = f.select :goal_id, @goals, :prompt => t("common.select_prompt")
-          = f.error :goal_id, :class => "font-error"
+= simple_form_for(@grade, :url => add_grade_goals_path, :method => :post, :remote => true, 
+                  :html => {:class => "grade-form"}, :validate => true) do |f|
+  .modal-header
+    %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} &times;
+    %h4= t("grade.add")
+  .modal-body    
+    - if notification = f.error_notification
+      .alert.alert-error.fade.in
+        %a{:class => "close", 'data-dismiss' => "alert", :href => "#"} &times;
+        = notification
+    .form-inputs
+      = f.input :grade do 
+        = f.select :goal_id, @goals, :prompt => t("common.select_prompt")
+        = f.error :goal_id, :class => "font-error"
+      .clearfix
+      = f.input(:due_date, :as => :string, :required => true, :input_html => {:class => "date-picker pull-left", :value => @grade.due_date_string}, :label => t("common.due_date"))
+      .clearfix
+      .grade-percentage
+        = f.input :accuracy, :label => t("grade.accuracy"), :input_html => {:class => "pull-left", :type => "text"}
+      .clearfix
+      .grade-objective.hide
+        = f.input :goal_x, :label => "Accuracy", :input_html => {:class => "pull-left"}
+        .pull-left /
+        = f.input :goal_y, :label => false, :input_html => {:class => "pull-left"}
         .clearfix
-        = f.input(:due_date, :as => :string, :required => true, :input_html => {:class => "date-picker pull-left", :value => @grade.due_date_string}, :label => t("common.due_date"))
-        .clearfix
-        .grade-percentage
-          = f.input :accuracy, :label => t("grade.accuracy"), :input_html => {:class => "pull-left", :type => "text"}
-          .clearfix
-        .grade-objective.hide
-          = f.input :goal_x, :label => "Accuracy", :input_html => {:class => "pull-left"}
-          .pull-left /
-          = f.input :goal_y, :label => false, :input_html => {:class => "pull-left"}
-          .clearfix
-        = f.input :time_to_complete, :as => :string, :ampm => true
-        = f.input :note, :as => :text, :label => t("grade.note"), :input_html => {:rows =>"5"}
+      = f.input :time_to_complete, :as => :string, :ampm => true
+      = f.input :note, :as => :text, :label => t("grade.note"), :input_html => {:rows =>"5"}
 
-        = hidden_field_tag :user_id, @user.id
-        = hidden_field_tag :student_id, @student.id
-        = hidden_field_tag :admin_id, @admin.id if @admin
-        
+    = hidden_field_tag :user_id, @user.id
+    = hidden_field_tag :student_id, @student.id
+    = hidden_field_tag :admin_id, @admin.id if @admin        
 
-        .clearfix
-    .modal-footer
-      %input.btn{:value => t("common.cancel"), :type => "button", "aria-hidden" => "true", 
-                  "data-dismiss" => "modal", :class => "close-dialog"}
-      = f.submit t("common.save"), :class => "btn btn-primary"
+  .clearfix
+  .modal-footer
+    %input.btn{:value => t("common.cancel"), :type => "button", "aria-hidden" => "true", 
+                "data-dismiss" => "modal", :class => "close-dialog"}
+    = f.submit t("common.save"), :class => "btn btn-primary"

@@ -48,7 +48,7 @@
 
 .show-student
   .grade
-    #render_add_grade
+    #render_add_grade.modal.hide.fade{"data-backdrop" => "static"}
     - if @goals.size > 0
       .pull-right= link_to t("grade.add"), new_grade_goals_path(:student_id => params[:id], :user_id => @user, :admin_id => @admin), :remote => true, :class => "btn", :id => "add-grade"
       - if !@user.is?(:parent)

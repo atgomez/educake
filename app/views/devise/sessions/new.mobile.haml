@@ -1,0 +1,13 @@
+#login-form
+  = simple_form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f|
+    - if notification = flash[:alert]
+      - flash.delete(:alert) # Remove the message to prevent from showing on the layout
+      .alert.alert-error.fade.in
+        %a{:class => "close", 'data-dismiss' => "alert", :href => "#"} &times;
+        = notification
+    = f.input :email, :required => false, :input_html => {:class => 'input_string'}, 
+                :autofocus => true
+    = f.input :password, :required => false, :input_html => {:class => 'input_string'}
+
+    #login-button
+      = f.submit t("devise.session.sign_in_action"), :class => "btn btn-primary"

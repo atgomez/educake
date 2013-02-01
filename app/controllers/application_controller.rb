@@ -2,13 +2,16 @@ class ApplicationController < ActionController::Base
   include MongodbLogger::Base
   protect_from_forgery
   check_authorization :unless => :except_controller?
+  has_mobile_fu
+  # before_filter :force_mobile_format # Test only!
 
+  before_filter :detect_mobile_device
   before_filter :authenticate_user!
   before_filter :do_filter_params
   before_filter :set_current_tab
   before_filter :pagination_ajax_setting
   before_filter :check_blocked_account
-  before_filter :check_view_as_state
+  before_filter :check_view_as_state  
 
   rescue_from CanCan::AccessDenied, :with => :rescue_access_denied 
 
@@ -36,7 +39,7 @@ class ApplicationController < ActionController::Base
   
   def check_blocked_account
     user = current_user
-    return if (user.blank? || self.is_devise_controller?)
+    return if (user.blank? || self.devise_controller?)
     if user && user.is_blocked?
       render_error(I18n.t("common.error_blocked_account"), :status => 403)
     end
@@ -200,7 +203,7 @@ class ApplicationController < ActionController::Base
     # def restrict_namespace
     #   if !is_rails_admin_controller?
     #     user = current_user
-    #     return if (user.blank? || self.is_devise_controller? || !self.is_restricted?)
+    #     return if (user.blank? || self.devise_controller? || !self.is_restricted?)
     #     action = self.action_name.to_sym
     #     if (user.is?(:admin) && !self.is_a?(Admin::BaseAdminController) && 
     #           !self.crossed_role_action.include?(action))
@@ -226,15 +229,40 @@ class ApplicationController < ActionController::Base
       return false
     end
 
-    def is_devise_controller?
-      self.is_a?(DeviseController)
-    end
-
     def is_restricted?
       @is_restricted = true
     end
 
     def exception_engine_authentication
       authenticate_admin!
+    end
+
+    def detect_mobile_device
+      # Workaround to switch to mobile mode
+      if (params[:mobile] == "false")
+        session[:mobile_view] = false
+      elsif (params[:mobile] == "true")
+        session[:mobile_view] = true
+      end
+
+      if session[:mobile_view]
+        force_mobile_format
+      else
+        unless request.xhr?
+          request.format = :html
+        end
+      end
+
+      if is_mobile_device?  
+        if !except_controller? ||
+              (devise_controller? && ['create', 'destroy'].include?(action_name) && 
+                ['POST', 'DELETE'].include?(request.method))
+          request.format = :html
+        end
+      end
+    end
+
+    def is_mobile_request?
+      return (session[:mobile_view] && (is_mobile_device? || request.format == :mobile))
     end
 end

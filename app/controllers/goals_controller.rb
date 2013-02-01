@@ -14,7 +14,6 @@ class GoalsController < ApplicationController
     @goal.build_progresses
   end
 
-
   def create
     result = {}
     status_code = 201
@@ -45,9 +44,8 @@ class GoalsController < ApplicationController
     end
 
     render(:json => result, :status => status_code)
-  end
+  end  
 
-  
   def update
     result = {}
     status_code = 201
@@ -86,13 +84,23 @@ class GoalsController < ApplicationController
     render(:json => result, :status => status_code)
   end
 
-  def new_grade 
+  def new_grade
     if find_user
       @grade = Grade.new
       @grade.due_date = Date.today
       @student = @user.accessible_students.find_by_id(params[:student_id])
+
+      if is_mobile_request?
+        @students = @user.accessible_students
+        @student = @students.first
+      end
+
       if @student 
         @goals = @student.goals.incomplete.map{|g| [g.name, g.id, {:goal_type => g.is_percentage}]}
+        if is_mobile_request?
+          # Clear the default student
+          @student = nil
+        end        
       else
         render_page_not_found(I18n.t("student.student_not_found"))
       end 
@@ -100,56 +108,64 @@ class GoalsController < ApplicationController
   end
   
   def add_grade
-    result = {}
-    status_code = 201
     if find_user
       @student = @user.accessible_students.find_by_id(params[:student_id])
       if @student 
         @goals = @student.goals.incomplete.map{|g| [g.name, g.id, {:goal_type => g.is_percentage}]}
       end 
      
-      @goal = Goal.incomplete.find_by_id(params[:grade][:goal_id])
-      @goal_type = @goal.is_percentage if @goal	
-    
-      result[:goal_type] = @goal_type
-      if (@goal)
-        # Simple validation
-        valid_grade = Grade.new params[:grade]
-        unless valid_grade.valid?
-          @grade = valid_grade
-          status_code = 400
-          result[:message] = I18n.t('grade.save_failed')
-          result[:html] = render_to_string(:partial => 'goals/form_grade')  
-        else
-          @grade = @goal.build_grade params[:grade]
-          @grade.user = @user
-          if (@grade)
-            @grade = @goal.update_grade_state(@grade)
-            if @grade.save
-              @goal.update_all_grade
-              status_code = 201
-              result[:message] = I18n.t('grade.created_successfully')
-              flash[:notice] = result[:message]
-            else
-              status_code = 400
-              result[:message] = I18n.t('grade.save_failed')
-              result[:html] = render_to_string(:partial => 'goals/form_grade', :locals => {:student_id => params[:student_id]})
+      begin
+        @goal = Goal.incomplete.find_by_id(params[:grade][:goal_id])
+        @is_percentage = @goal.is_percentage if @goal
+        
+        if (@goal)
+          # Simple validation
+          valid_grade = Grade.new params[:grade]
+          unless valid_grade.valid?
+            @grade = valid_grade
+          else
+            @grade = @goal.build_grade params[:grade]          
+            if (@grade)
+              @grade.user = @user
+              @grade = @goal.update_grade_state(@grade)
+              if @grade.save
+                @goal.update_all_grade
+                flash[:notice] = I18n.t('grade.created_successfully')
+              end
             end
           end
+        else
+          @grade = Grade.new params[:grade]
+          @grade.errors.add(:goal_id, :not_selected)
         end
-      else
-        @grade = Grade.new params[:grade]
-        @grade.errors.add(:goal_id, :not_selected)
-        status_code = 400
-        result[:message] = I18n.t('grade.save_failed')
-        result[:html] = render_to_string(:partial => 'goals/form_grade', :locals => {:student_id => params[:student_id]})
+      rescue Exception => exc
+        ::Util.log_error(exc, "GoalsController#add_grade")
+        if @grade.blank?
+          @grade = Grade.new
+          @grade.due_date = Date.today
+        end
+      end
+
+      if @grade.new_record? && is_mobile_request?
+        # Load students for mobile view.
+        @students = @user.accessible_students
+      elsif is_mobile_request?
+        # TODO: change this.
+        redirect_to(:action => "new_grade")
       end
     else
-      result[:message] = I18n.t("common.error_unauthorized")
-      status_code = 403
-    end
+      flash[:warning] = I18n.t("common.error_unauthorized")
+    end   
+  end
 
-    render(:json => result, :status => status_code)
+  # GET /goals/load_goals
+  def load_goals
+    if find_user
+      @student = @user.accessible_students.find_by_id(params[:student_id])
+      if @student 
+        @goals = @student.goals.incomplete.map{|g| [g.name, g.id, {:goal_type => g.is_percentage}]}
+      end
+    end
   end
 
   def update_grade

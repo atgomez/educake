@@ -146,41 +146,6 @@ window.goal =
       return false
     )
 
-
-    $(".grade-form").livequery('submit', (e) ->
-      e.preventDefault()
-
-      data = $(this).serialize()
-      url = $(this).attr('action')
-      parent = $(this).parent()
-      $.ajax({
-        url: url,
-        type: 'POST',
-        data: data,
-        success: (res) -> 
-          window.location.reload()
-        ,
-
-        error: (xhr, textStatus, error) -> 
-          try
-            res = $.parseJSON(xhr.responseText)
-          catch exc
-            res = null
-          if res and res.html
-            goal_dialog = $(res.html)
-            $(parent).html(goal_dialog.html())
-            if res["goal_type"] == false 
-              $(".grade-objective").show()
-              $(".grade-percentage").hide()
-            else
-              $(".grade-objective").hide()
-              $(".grade-percentage").show()
-           
-      })
-
-      return false
-    )
-
   setup_wizard: ->
     $(".wizard-content .wizard-action").live("click", (e) ->
       e.preventDefault()

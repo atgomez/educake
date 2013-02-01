@@ -1,0 +1,46 @@
+= simple_form_for(@grade, :url => add_grade_goals_path, :method => :post, 
+                  :html => {:class => "grade-form"}, :validate => true) do |f|        
+  - if notification = f.error_notification
+    .alert.alert-error.fade.in
+      %a{:class => "close", 'data-dismiss' => "alert", :href => "#"} &times;
+      = notification
+  .form-inputs
+    .control-group.select.students
+      = label_tag 'student_id', nil, :class => 'select required control-label' do
+        %abbr{:title => "required"} *
+        = t("student.single")
+      = select_tag(:student_id, options_from_collection_for_select(@students, "id", "full_name", @student.try(:id)), 
+                  {:prompt => "Select one"})
+
+    = f.input(:goal_id, :collection => @goals, :prompt => t("common.select_prompt"), 
+              :input_html => {:class => "pull-left"},
+              :disabled => @student.blank?)
+    .clearfix
+    = f.input(:due_date, :as => :string, :required => true, 
+              :input_html => {:class => "date-picker-ext pull-left", :value => @grade.due_date_string, :readonly => true}, 
+              :label => t("common.due_date"),
+              :disabled => @student.blank?)
+    .clearfix
+
+    .grade-percentage
+      = f.input :accuracy, :label => t("grade.accuracy"), 
+                :input_html => {:class => "pull-left", :type => "text"},
+                :disabled => @student.blank?
+      .clearfix
+    .grade-objective.hide
+      = f.input :goal_x, :label => "Accuracy", :input_html => {:class => "pull-left objective-number"}, 
+                :disabled => @student.blank?
+      .pull-left.objective-separator /
+      = f.input :goal_y, :label => false, :input_html => {:class => "pull-left objective-number", :style => "margin-top: -5px;"}, 
+                :disabled => @student.blank?
+      .clearfix
+
+    .clearfix
+    = f.input :time_to_complete, :as => :string, :ampm => true, :disabled => @student.blank?
+    = f.input :note, :as => :text, :label => t("grade.note"), :input_html => {:rows =>"5"}, :disabled => @student.blank?
+
+    = hidden_field_tag :user_id, @user.id
+    = hidden_field_tag :admin_id, @admin.id if @admin          
+
+    .clearfix
+    = f.submit t("common.save"), :class => "btn btn-primary"
