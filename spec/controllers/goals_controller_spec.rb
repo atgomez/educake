@@ -116,38 +116,30 @@ describe GoalsController do
     it "when existed goal, but invalid grade" do
       attrs = grade.attributes.except("id", "progress_id", "ideal_value", "created_at", "updated_at")
       attrs[:due_date] = "dfdfdf"
-      post :add_grade, :grade => attrs , :student_id => student.id
-      response.should_not be_success
-      body = JSON.parse(response.body)
-      body["message"].should be_eql(I18n.t("grade.save_failed"))
+      post :add_grade, :grade => attrs , :student_id => student.id, :format => :js
+      response.should render_template("add_grade")
     end
 
     it "when existed goal, and create grade for it successfully" do 
       attrs = build_grade.attributes.except("id", "progress_id", "ideal_value", "created_at", "updated_at")
       attrs[:due_date] = Date.today.strftime("%m-%d-%Y")
-      post :add_grade, :grade => attrs , :student_id => student.id
-      response.should be_success
-      body = JSON.parse(response.body)
-      body["message"].should be_eql(I18n.t("grade.created_successfully"))
+      post :add_grade, :grade => attrs , :student_id => student.id, :format => :js
+      response.should render_template("add_grade")
     end
 
     it "when existed goal, and create new grade unsuccessfully" do
       attrs = build_grade.attributes.except("id", "progress_id", "ideal_value", "created_at", "updated_at")
       attrs[:due_date] = "01-01-2012"
-      post :add_grade, :grade => attrs , :student_id => student.id
-      response.should_not be_success
-      body = JSON.parse(response.body)
-      body["message"].should be_eql(I18n.t("grade.save_failed"))
+      post :add_grade, :grade => attrs , :student_id => student.id, :format => :js
+      response.should render_template("add_grade")
     end
     
     it "when unexisted goal, create grade unsuccessfully" do
       attrs = build_grade.attributes.except("id", "progress_id", "ideal_value", "created_at", "updated_at")
       attrs[:due_date] = Date.today.strftime("%m-%d-%Y")
       attrs[:goal_id] = nil
-      post :add_grade, :grade => attrs , :student_id => student.id
-      response.should_not be_success
-      body = JSON.parse(response.body)
-      body["message"].should be_eql(I18n.t("grade.save_failed"))
+      post :add_grade, :grade => attrs , :student_id => student.id, :format => :js
+      response.should render_template("add_grade")
     end
   end
 
