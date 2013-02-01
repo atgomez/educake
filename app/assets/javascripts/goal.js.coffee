@@ -9,6 +9,8 @@ window.goal =
     @clickOnGoalType()
     @clickOnAddProgress()
     @clickOnCancel()
+    @checkOnSelectGrade()
+    @clickOnAddGoalLink()
     return
 
   clickOnGoal: -> 
@@ -76,6 +78,22 @@ window.goal =
         $(this).hide()
       return
 
+  checkOnSelectGrade: ->
+    $("#grade_goal_id").live "change", () ->
+      goal_type = $(this).find('option:selected').attr('goal_type')
+      if goal_type == "true"
+        $(".grade-percentage").show()
+        $(".grade-objective").hide()
+      else
+        $(".grade-percentage").hide()
+        $(".grade-objective").show()
+    return
+  clickOnAddGoalLink: ->
+    $("#add-goal11").live "click", () ->
+      $(this).removeAttr("data-remote")
+      $(this).removeAttr("href")
+    return
+
   setup_form: ->
     @setup_wizard()
 
@@ -103,7 +121,35 @@ window.goal =
       data = $(this).serialize()
       url = $(this).attr('action')
       parent = $(this).parent()
-      
+      console.log data
+      $.ajax({
+        url: url,
+        type: 'POST',
+        data: data,
+        success: (res) -> 
+          window.location.reload()
+        ,
+
+        error: (xhr, textStatus, error) -> 
+          try
+            res = $.parseJSON(xhr.responseText)
+          catch exc
+            res = null
+          if res and res.html
+            goal_dialog = $(res.html)
+            $(parent).html(goal_dialog.html())
+            if res["goal_type"] == false 
+              $(".grade-objective").show()
+              $(".grade-percentage").hide()
+              console.log "object tive"
+            else
+              $(".grade-objective").hide()
+              $(".grade-percentage").show()
+              console.log "percentage"
+           
+      })
+
+      return false
     )
 
   setup_wizard: ->

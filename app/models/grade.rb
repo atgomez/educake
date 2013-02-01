@@ -22,7 +22,7 @@ class Grade < ActiveRecord::Base
   include ::SharedMethods::SerializationConfig
 
   attr_accessible :accuracy, :due_date, :goal_id, :user_id,
-                  :value, :time_to_complete, :is_unused, :note
+                  :value, :time_to_complete, :is_unused, :note, :goal_x, :goal_y
   
   # ASSOCIATIONS
   belongs_to :user
