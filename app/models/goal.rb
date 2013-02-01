@@ -71,7 +71,7 @@ class Goal < ActiveRecord::Base
 
   # CALLBACK
   before_validation :update_progresses, :valid_date_attribute?, :checK_curriculum, 
-                    :mark_progresses_for_removal
+                    :mark_progresses_for_removal, :calculate_accuracy
   after_validation :reset_curriculum
   after_save :update_all_grade  
 
@@ -634,6 +634,13 @@ class Goal < ActiveRecord::Base
         if p.due_date.blank? && p.accuracy.to_i <= 0
           p.mark_for_destruction
         end
+      end
+    end
+
+    def calculate_accuracy
+      if !self.is_percentage
+        self.accuracy = (self.goal_x.to_f / self.goal_y.to_f).round(2)*100.0
+        self.baseline = (self.baseline_x.to_f / self.baseline_y.to_f).round(2)*100.0
       end
     end
 end

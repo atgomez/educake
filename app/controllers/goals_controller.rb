@@ -17,10 +17,6 @@ class GoalsController < ApplicationController
   def create
     @student = Student.find_by_id(params[:goal][:student_id])
     @goal_type = params[:goal][:is_percentage]
-    if params[:goal][:is_percentage] == "false"
-      params[:goal][:accuracy] = (params[:goal][:goal_x].to_f / params[:goal][:goal_y].to_f)*100
-      params[:goal][:baseline] = (params[:goal][:baseline_x].to_f / params[:goal][:baseline_y].to_f)*100
-    end
     
     params[:goal].delete :id
     params[:goal].delete :student_id
@@ -32,10 +28,6 @@ class GoalsController < ApplicationController
     @student = Student.find_by_id(params[:goal][:student_id])
     @goal = @student.goals.find_by_id params[:id]
     @goal_type = params[:goal][:is_percentage]
-    if @goal_type == "false"
-      params[:goal][:accuracy] = (params[:goal][:goal_x].to_f / params[:goal][:goal_y].to_f)*100
-      params[:goal][:baseline] = (params[:goal][:baseline_x].to_f / params[:goal][:baseline_y].to_f)*100
-    end
     if (@goal)
       #Remove id and student_id 
       params[:goal].delete :id
@@ -76,9 +68,7 @@ class GoalsController < ApplicationController
      
       @goal = Goal.incomplete.find_by_id(params[:grade][:goal_id])
       @goal_type = @goal.is_percentage if @goal	
-      if @goal_type == false
-        params[:grade][:accuracy] = (params[:grade][:goal_x].to_f / params[:grade][:goal_y].to_f)*100
-      end
+    
       result[:goal_type] = @goal_type
       if (@goal)
         # Simple validation

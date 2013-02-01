@@ -85,7 +85,7 @@
                       :input_html => {:id => "accuracy-#{goal.id}"}
             = f.input(:baseline_date, :as => :string, :required => true, 
                       :input_html => {:class => "date-picker baseline-date", 
-                      :value => goal.baseline_date_string, :id => "baseline_date#{goal.id}"})
+                      :value => goal.baseline_date_string, :id => "baseline_date_percent_#{goal.id}"})
             = f.input(:baseline, :as => :string, :label => t("goal.baseline"), 
                       :input_html => {:id => "baseline-#{goal.id}"})
           .objective.hide
