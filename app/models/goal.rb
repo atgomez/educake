@@ -70,7 +70,7 @@ class Goal < ActiveRecord::Base
   attr_accessor :last_grade #For add/update purpose
 
   # CALLBACK
-  before_validation :update_progresses, :valid_date_attribute?, :checK_curriculum, 
+  before_validation :update_progresses, :valid_date_attribute?, :check_curriculum, 
                     :mark_progresses_for_removal, :calculate_accuracy
   after_validation :reset_curriculum
   after_save :update_all_grade  
@@ -604,7 +604,7 @@ class Goal < ActiveRecord::Base
       ::Util.check_date_validation(self, @attributes, :due_date, true)
     end
 
-    def checK_curriculum
+    def check_curriculum
       unless self.curriculum.blank?
         cur = self.curriculum
         attrs = {
