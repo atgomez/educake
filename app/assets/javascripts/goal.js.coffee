@@ -67,8 +67,13 @@ window.goal =
       if count <= 3
         $("#count_field").attr("value", count)
         $(this).show()
+        
+        # Scroll to the link
+        modal_body = $(this).parents(".modal-body")
+        helper.scroll_to(this, 300, modal_body)
       if count >= 3 
         $(this).hide()
+
       return
 
   checkOnSelectGrade: ->
@@ -148,13 +153,15 @@ window.goal =
 
   setup_wizard: ->
     $(".wizard-content .wizard-action").live("click", (e) ->
+      form = $(this).parents(".goal-form")
       e.preventDefault()
-      tab_nav = $(".wizard-nav").find("a[href='" + $(this).attr("data-target") + "']")
+      tab_nav = form.find(".wizard-nav a[href='" + $(this).attr("data-target") + "']")
       tab_nav.tab('show')
-      total_steps = $(".wizard-nav a").length
-      current_step = $(".wizard-nav a").index(tab_nav) + 1
+      navigations = form.find(".wizard-nav a")
+      total_steps = navigations.length
+      current_step = navigations.index(tab_nav) + 1
       step_html = "(" + current_step + "/" + total_steps + ")"
-      $(".wizard-step-indicator").html(step_html)
+      form.find(".wizard-step-indicator").html(step_html)
     )
 
     $(".goal-form .reset-on-changed").live("change", (e) ->
