@@ -126,7 +126,10 @@ class Grade < ActiveRecord::Base
 
     def calculate_accuracy
       if !goal.is_percentage
-        self.accuracy = (self.goal_x.to_f / self.goal_y.to_f).round(2)*100.0
+        self.goal_y = self.goal_y.to_f
+        if self.goal_y != 0
+          self.accuracy = (self.goal_x.to_f / self.goal_y.to_f).round(2)*100.0
+        end
       end
    end
 end
