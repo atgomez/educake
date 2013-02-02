@@ -108,6 +108,7 @@ $(document).ready(function() {
 
   
 });
+
 function remove_fields(link) {
   $(link).prev("input[type=hidden]").val("1");
   $(link).closest(".fields").hide();
@@ -116,8 +117,7 @@ function remove_fields(link) {
     count = count - 1
   if (count <= 2)
     $(".add_link").show();
-  $("#count_field").attr("value", count);
-  
+  $("#count_field").attr("value", count);  
 }
 
 function add_fields(link, association, content) {
@@ -125,6 +125,7 @@ function add_fields(link, association, content) {
   var regexp = new RegExp("new_" + association, "g")
   $(link).parent().before(content.replace(regexp, new_id));
 }
+
 // function setiFrameHeight(height){
 // 	if($('#iframe-view-as').length > 0){
 // 		$('#iframe-view-as').attr('height', height);

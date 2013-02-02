@@ -19,10 +19,12 @@ window.helper =
       alert("This feature is coming soon")
     )
 
-  scroll_to: (element, delay_time) ->
+  scroll_to: (element, delay_time, container) ->
+    if !container
+      container = 'html, body'
     if !delay_time
       delay_time = 300
-    $('html, body').animate({ scrollTop: $(element).offset().top - 10}, delay_time)
+    $(container).animate({ scrollTop: $(element).offset().top - 10}, delay_time)
 
   # Parse string to Date object.
   # Require: jQuery UI datepicker.
