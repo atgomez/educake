@@ -121,7 +121,7 @@ window.helper =
     $('#user_first_name').filter_input({regex:'[a-zA-Z0-9- \r\n]', live:true})
     $('#user_last_name').filter_input({regex:'[a-zA-Z0-9- \r\n]', live:true}) 
     $('#user_email').filter_input({regex:'[a-zA-Z0-9_.@+\r\n]', live:true}) 
-    $('#user_classroom').filter_input({regex:'[a-zA-Z0-9_.@+\r\n]', live:true}) 
+    $('#user_classroom').filter_input({regex:'[a-zA-Z0-9- \r\n]', live:true}) 
     $('#student_sharing_first_name').filter_input({regex:'[a-zA-Z- \r\n]', live:true})
     $('#student_sharing_last_name').filter_input({regex:'[a-zA-Z- \r\n]', live:true}) 
     $('#student_sharing_email').filter_input({regex:'[a-zA-Z0-9_.@+\r\n]', live:true})
