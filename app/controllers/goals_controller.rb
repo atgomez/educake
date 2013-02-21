@@ -275,11 +275,11 @@ class GoalsController < ApplicationController
     if params[:grade_id]
       grade = goal.grades.find_by_id(params[:grade_id])
       if grade.blank?
-        flash[:alert] = I18n.t('grade.not_found')     
+        flash.now[:alert] = I18n.t('grade.not_found')     
       elsif grade.destroy
-        flash[:notice] = I18n.t('grade.delete_successfully')      
+        flash.now[:notice] = I18n.t('grade.delete_successfully')      
       else
-        flash[:alert] = I18n.t('grade.delete_failed')
+        flash.now[:alert] = I18n.t('grade.delete_failed')
       end
     end
     grades = goal.grades.order('due_date DESC').load_data(filtered_params)

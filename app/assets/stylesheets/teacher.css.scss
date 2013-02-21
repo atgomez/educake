@@ -420,6 +420,13 @@ $color-font: #E17C25;
   .grade{
     border-top: 1px solid #E17C25;
   }
+
+  .detele_grade .grade{
+    border: none;
+    background: none;
+    min-height: 10px;
+    padding: 0;
+  }
 }
 
 #export-dialog {
