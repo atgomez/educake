@@ -1,5 +1,5 @@
-= simple_form_for(@subscriber) do |f|
+= simple_form_for(@subscriber, :html => {:class => "subscriber"}) do |f|
   .form-inputs
-    = f.input :email, :placeholder => "email", :label => "Want to learn more? Let us know!"
-
-    = f.button :submit, "Send"
+    .text-learn= t("subscribers.text_learn")
+    = f.input :email, :placeholder => "email", :label => false 
+    .pull-right= f.button :submit, "Send"

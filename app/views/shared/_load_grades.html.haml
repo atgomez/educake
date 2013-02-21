@@ -7,6 +7,7 @@
         %th.time{:width => '10%'}= t("grade.time")
         %th.note{:width => '35%'}= t("grade.note")
         %th.user{:width => '15%'}= t("grade.user")
+        %th{:width => '5%'}
     %tbody
       - grades.each do |grade|
         %tr 
@@ -17,4 +18,8 @@
             .wordbreak
               = grade.note
           %td.user= grade.user.full_name
+          %td.detele_grade= link_to("", "#goal_#{grade.goal.id}", :class => "grade icon-trash color-pen", :id => "goal#{grade.goal.id}", :id_grade => "grade_#{grade.id}", :data => { :confirm => t("common.confirm_message") })
+  = hidden_field_tag "page", params[:page_id] 
+
 #grades_pages= render_pagination grades
+

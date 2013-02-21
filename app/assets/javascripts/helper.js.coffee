@@ -155,8 +155,13 @@ window.helper =
     # Mask loading
     #$('#content-grade').addClass('loading')
     sender = evt.target
+    url = sender.href
+    if url.contains("grade_id")
+      grade_id = url.split("&")[1]
+      url = url.replace(grade_id, "")
+
     $.ajax({
-      url: sender.href
+      url: url
       type: 'GET'
       success: (data) ->
         $(element).html(data)
@@ -168,11 +173,15 @@ window.helper =
     })
     return
 
-  loadGrades: (id) ->
+  loadGrades: (id, page_id, grade_id = 0) ->
+    if grade_id != 0
+      data = {goal_id: id, grade_id:grade_id, page_id:page_id}
+    else
+      data = {goal_id: id}
     $.ajax({
       url: "/goals/load_grades",
       type: 'GET',
-      data: {goal_id: id},
+      data: data,
       success: (res) ->
         return
       ,
@@ -181,6 +190,23 @@ window.helper =
       ,
       complete: (res) ->
         $('#goal_' + id).find('.grades-container').html(res.responseText)
+        return
+    })
+    return
+
+  deleteGrade: (goal_id, grade_id) ->
+    $.ajax({
+      url: "/goals/delete_grade",
+      type: 'GET',
+      data: {goal_id: goal_id, grade_id:grade_id},
+      success: (res) ->
+        return
+      ,
+      error: (data) ->
+        return
+      ,
+      complete: (res) ->
+        $('#goal_' + goal_id).find('.grades-container').html(res.responseText)
         return
     })
     return

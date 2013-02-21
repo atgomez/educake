@@ -272,7 +272,8 @@ class GoalsController < ApplicationController
   
   def load_grades
     goal = Goal.find_by_id params[:goal_id]
-    grades = goal.grades.order('due_date ASC').load_data(filtered_params)
+    goal.grades.find(params[:grade_id]).destroy if params[:grade_id]
+    grades = goal.grades.order('due_date DESC').load_data(filtered_params)
     render :partial => "shared/load_grades", :locals => {:grades => grades}
   end
 

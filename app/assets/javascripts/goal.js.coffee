@@ -13,17 +13,21 @@ window.goal =
     return
 
   clickOnGoal: -> 
-    $(".grade a.goal").live 'click', () ->
+    $("a.goal, a.grade").live 'click', () ->
       id_content = $(this).attr("href")
       id = id_content.split("_")[1]
       current_iframe = $('#chart').attr("src")
       id_content = $(this).attr("href")
-      if $(this).hasClass("icon-plus")
+      page_id = $("#page").val()
+      if $(this).hasClass("icon-trash") 
+        grade_id = $(this).attr("id_grade").split("_")[1]
+      if $(this).hasClass("icon-plus") || $(this).hasClass("icon-trash")
         $(this).removeClass("icon-plus").addClass("icon-minus")
         $(id_content).slideDown('fast', ->
           $(id_content).attr("style","display:block;")
         )
-        helper.loadGrades(id)
+
+        helper.loadGrades(id, page_id, grade_id)
         $('#chart').attr("src", "/charts/goal_chart?goal_id="+id + "&color=" + $(this).attr('color') + "&user_id=" + $("#user_id").val());
         $('#chart').attr("height", "500");
         $('#chart').attr("width", "100%");
@@ -48,7 +52,7 @@ window.goal =
         window.chartMode = 'view_all'
       return
 
-  clickOnGoalType: ->
+   clickOnGoalType: ->
     $("#new-goal-container").delegate ".radio_buttons", "click", ()->
       if $(this).attr("value") == "true"
         $(".percentage").show()
