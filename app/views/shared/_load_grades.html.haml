@@ -1,4 +1,14 @@
 - if !grades.empty?
+  #flash
+    - if notice
+      %div{:class => "alert alert-success fade in", 'data-alert' => "alert"}
+        %a{:class => "close", 'data-dismiss' => 'alert', :href => "#"} &times;
+        = notice
+
+    - if alert
+      %div{:class => "alert alert-error fade in", 'data-alert' => "alert"}
+        %a{:class => "close", 'data-dismiss' => "alert", :href => "#"} &times;
+        = alert
   %table.table.table-striped
     %thead
       %tr

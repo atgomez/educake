@@ -97,6 +97,9 @@ en:
   grade:
     created_successfully: "Created grade successfully"
     import_successfully: "Imported .csv file for grades successfully"
+    delete_successfully: "Grade was remove successfully."
+    delete_failed: "Cannot remove grade."
+    not_found: "Cannot find the grade!"
     save_failed: "There are some invalid grades on:"
     msg_failed: "Grade's cannot be submitted for those dates."
     msg_failed1: "were not included."
@@ -259,6 +262,8 @@ en:
     accept: "Accept"
     accept_all: "Accept All"
     created_successfully: "Subscriber was successfully created."
+    introduce: "Educake tracks your students grades against their individual goals. Contact us to learn more."
+    text_learn: "Want to learn more? Let us know!"
   mail:
     user:
       invitation_confirm_subject: "Confirmation for inviting"

@@ -212,10 +212,24 @@ describe GoalsController do
     end 
   end
 
-  describe "Get loads grades" do
-    it "successfully" do 
-       get :load_grades, :goal_id => goal.id
-       response.should be_success
+  describe "Get loads grades and Delete grade" do
+    context "Unexisted the grade that want to delete" do 
+      it "successfully" do 
+         get :load_grades, :goal_id => goal.id
+         response.should be_success
+      end
+    end
+    context "Existed the grade that want to delete" do 
+      let(:goal_grade) {FactoryGirl.create(:goal_with_grades)}
+      let(:grade) {FactoryGirl.create(:grade, :due_date => Date.today - 1.days, :goal => goal, :user_id => user.id)}
+      it "successfully" do 
+         get :load_grades, :goal_id => goal_grade.id, :grade_id => goal_grade.grades.first.id
+         response.should be_success
+      end
+      it "unsuccessfully" do 
+         get :load_grades, :goal_id => goal.id, :grade_id => goal_grade.grades.first.id
+         response.should be_success
+      end
     end
   end
 end

@@ -272,7 +272,16 @@ class GoalsController < ApplicationController
   
   def load_grades
     goal = Goal.find_by_id params[:goal_id]
-    goal.grades.find(params[:grade_id]).destroy if params[:grade_id]
+    if params[:grade_id]
+      grade = goal.grades.find_by_id(params[:grade_id])
+      if grade.blank?
+        flash[:alert] = I18n.t('grade.not_found')     
+      elsif grade.destroy
+        flash[:notice] = I18n.t('grade.delete_successfully')      
+      else
+        flash[:alert] = I18n.t('grade.delete_failed')
+      end
+    end
     grades = goal.grades.order('due_date DESC').load_data(filtered_params)
     render :partial => "shared/load_grades", :locals => {:grades => grades}
   end

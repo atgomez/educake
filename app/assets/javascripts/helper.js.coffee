@@ -175,7 +175,7 @@ window.helper =
 
   loadGrades: (id, page_id, grade_id = 0) ->
     if grade_id != 0
-      data = {goal_id: id, grade_id:grade_id, page_id:page_id}
+      data = {goal_id: id, grade_id:grade_id}
     else
       data = {goal_id: id}
     $.ajax({
