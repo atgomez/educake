@@ -100,7 +100,7 @@ class Goal < ActiveRecord::Base
       goal = self.new(attrs)
       goal.build_progresses
       # Build the sample Curriculum
-      goal.curriculum = Curriculum.build_curriculum
+      goal.curriculum = Curriculum.new
       return goal
     end
 

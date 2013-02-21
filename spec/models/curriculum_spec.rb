@@ -160,7 +160,7 @@ describe Curriculum do
     end
   end
 
-  describe ".get_associations_by_field", :get_associations_by_field => true do
+  describe ".get_associations_by_fields", :get_associations_by_fields => true do
     context "with curriculum_core_id" do
       let(:curriculum1) {FactoryGirl.create(:curriculum, :curriculum_core => curriculum.curriculum_core)}
       let(:curriculum2) {FactoryGirl.create(:curriculum, :curriculum_core => curriculum.curriculum_core)}
@@ -169,7 +169,7 @@ describe Curriculum do
         curriculum1
         curriculum2
 
-        result = Curriculum.get_associations_by_field('curriculum_core_id', curriculum.curriculum_core_id)
+        result = Curriculum.get_associations_by_fields('curriculum_core_id' => curriculum.curriculum_core_id)
         result.should_not be_blank
         result.should be_kind_of(Hash)
 
@@ -188,7 +188,7 @@ describe Curriculum do
         curriculum1
         curriculum2
 
-        result = Curriculum.get_associations_by_field('subject_id', curriculum.subject_id)
+        result = Curriculum.get_associations_by_fields('subject_id' => curriculum.subject_id)
         result.should_not be_blank
         result.should be_kind_of(Hash)
 
@@ -207,7 +207,7 @@ describe Curriculum do
         curriculum1
         curriculum2
 
-        result = Curriculum.get_associations_by_field('curriculum_grade_id', curriculum.curriculum_grade_id)
+        result = Curriculum.get_associations_by_fields('curriculum_grade_id' => curriculum.curriculum_grade_id)
         result.should_not be_blank
         result.should be_kind_of(Hash)
 
@@ -226,7 +226,7 @@ describe Curriculum do
         curriculum1
         curriculum2
 
-        result = Curriculum.get_associations_by_field('curriculum_area_id', curriculum.curriculum_area_id)
+        result = Curriculum.get_associations_by_fields('curriculum_area_id' => curriculum.curriculum_area_id)
         result.should_not be_blank
         result.should be_kind_of(Hash)
 
@@ -245,7 +245,7 @@ describe Curriculum do
         curriculum1
         curriculum2
 
-        result = Curriculum.get_associations_by_field('standard', curriculum.standard)
+        result = Curriculum.get_associations_by_fields('standard' => curriculum.standard)
         result.should_not be_blank
         result.should be_kind_of(Hash)
 
@@ -259,7 +259,7 @@ describe Curriculum do
     context "with invalid field name" do
       context "with nil field name" do
         it "return an empty result" do
-          result = Curriculum.get_associations_by_field(nil, 1)
+          result = Curriculum.get_associations_by_fields(nil => 1)
           result.should be_blank
         end
       end
@@ -270,7 +270,7 @@ describe Curriculum do
           # We must simulate the scenario.
           Curriculum.should_receive(:where).with({'abc' => 1}).and_raise(Exception.new("Fatal error!"))
           
-          result = Curriculum.get_associations_by_field('abc', 1)                    
+          result = Curriculum.get_associations_by_fields('abc' => 1)                    
           result.should be_blank
         end
       end

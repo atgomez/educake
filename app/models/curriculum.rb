@@ -248,8 +248,7 @@ class Curriculum < ActiveRecord::Base
     #
     # === Parameters
     #
-    #     * field_name (String): name of the base column
-    #     * field_value (String): value of the base column
+    #     * attributes (Hash): attributes list
     #
     # === Returns
     #
@@ -261,8 +260,8 @@ class Curriculum < ActiveRecord::Base
     #   :standards=>[1, 2, 3]
     # }
     #
-    def get_associations_by_field(field_name, field_value)
-      data = Curriculum.where(field_name => field_value).includes(
+    def get_associations_by_fields(attributes)
+      data = Curriculum.where(attributes).includes(
         :curriculum_core, :subject, 
         :curriculum_grade, :curriculum_area
       )
@@ -295,7 +294,7 @@ class Curriculum < ActiveRecord::Base
 
       return result
     rescue Exception => exc
-      ::Util.log_error(exc, "Curriculum.get_associations_by_field")
+      ::Util.log_error(exc, "Curriculum.get_associations_by_fields")
       return {}
     end
 
@@ -324,7 +323,8 @@ class Curriculum < ActiveRecord::Base
 
   # Curriculum name with CurriculumCore
   def full_name
-    "#{self.curriculum_core.try(:name)}, #{self.name}"
+    return "" if self.curriculum_core.blank?
+    "#{self.curriculum_core.name}, #{self.name}"
   end
 
   # Return the description2 in HTML format
