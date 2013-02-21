@@ -247,10 +247,6 @@ class ApplicationController < ActionController::Base
 
       if session[:mobile_view]
         force_mobile_format
-      else
-        if !request.xhr? && request.format != :js
-          request.format = :html
-        end
       end
 
       if is_mobile_device?  
