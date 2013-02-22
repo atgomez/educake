@@ -23,6 +23,7 @@ en:
     import: "Import"
     export: "Export"
     search: "Search"
+    accuracy: "Accuracy"
     on_track: "On-track"
     not_on_track: "Not on-track"    
     search_place_holder: "Search name"

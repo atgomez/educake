@@ -117,9 +117,9 @@
             = f.input :accuracy, :as => :string, :label => t("goal.accuracy"), 
                       :input_html => {:id => "accuracy-#{goal.id}", :class => "float_number"}
           .objective.hide
-            = f.input :goal_x, :label => t("goal.name"), :input_html => {:class => "pull-left valid_number"}
+            = f.input :goal_x, :as => :string, :label => t("goal.name"), :input_html => {:class => "pull-left valid_number"}
             .pull-left /
-            = f.input :goal_y, :label => false, :input_html => {:class => "pull-left valid_number"}
+            = f.input :goal_y, :as => :string, :label => false, :input_html => {:class => "pull-left valid_number"}
             .clearfix
             %center= f.error :accuracy, :class => "font-error"
 
@@ -131,10 +131,10 @@
             = f.input(:baseline, :as => :string, :label => t("goal.baseline"), 
                       :input_html => {:id => "baseline-#{goal.id}", :class => "float_number"})
           .objective.hide
-            = f.input :baseline_x, :label => t("goal.baseline"), 
+            = f.input :baseline_x, :as => :string, :label => t("goal.baseline"), 
                       :input_html => {:class => "pull-left valid_number"}
             .pull-left /
-            = f.input :baseline_y, :label => false, 
+            = f.input :baseline_y, :as => :string, :label => false, 
                       :input_html => {:class => "pull-left valid_number"}
             .clearfix
             %center= f.error :baseline, :class => "font-error"

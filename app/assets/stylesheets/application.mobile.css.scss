@@ -1,8 +1,7 @@
 /*
- *= require_self
- *= require bootstrap_and_overrides
+ *= require_self 
+ *= require "lib/mobile/jquery.mobile"
  *= require shared
- *= require "lib/jquery-ui-bootstrap/jquery-ui"
  */
 
 body {
@@ -31,11 +30,22 @@ body {
     padding: 6px;
   }
 
-  .objective-separator{
-    margin: 0 5px;
+  .objective-separator {
+    float: left;
+    margin: 15px 5px;
   }
 
   .objective-number{
     width: 50px;
   }
+
+  .grade-objective{
+    .control-group{
+      float: left;
+    }
+  }
+}
+
+#login-button {
+  margin-top: 20px;
 }

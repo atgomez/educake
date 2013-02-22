@@ -18,7 +18,9 @@ window.goal =
           
           complete: (xhr, status ) ->
             if(xhr.status == 200 && xhr.responseText)
+              console.log($("#grade_goal_id"))
               $("#grade_goal_id").html(xhr.responseText)
+              $("#grade_goal_id").selectmenu( "refresh" );
               goal.toggle_goal_type()
               goal.enable_grade_fields(true)
         })
@@ -47,11 +49,21 @@ window.goal =
     )
 
   enable_grade_fields: (enabled) ->
-    selector = "input[name^='grade['], select[name^='grade['], textarea[name^='grade[']"
+    selector = $("input[name^='grade['], select[name^='grade['], textarea[name^='grade[']")
+    method = ""
     if(enabled)
-      $(selector).removeAttr("disabled")
+      method = "enable"
+      selector.removeAttr("disabled")
     else
-      $(selector).attr("disabled", true)
+      method = "disable"
+      selector.attr("disabled", true)
+
+    $.each(selector, (idx, elem) ->
+      if($(elem).is("input") || $(elem).is("textarea"))
+        $(elem).textinput(method)
+      else if($(elem).is("select"))
+        $(elem).selectmenu(method)
+    )
 
   toggle_goal_type: ->
     goal_type = $("#grade_goal_id").find('option:selected').attr('goal_type')
