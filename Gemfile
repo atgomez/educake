@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.11'
+gem 'rails', '3.2.12'
 gem 'thin'
 
 # Remember to update bundler to pre by $gem install bundler --pre
@@ -43,7 +43,6 @@ group :development, :test do
   gem "rspec-rails", ">= 2.11.0"
   gem "capybara"
   gem "database_cleaner", '>= 0.8.0'
-  gem "faker"
   gem "factory_girl_rails", '>= 4.1.0'
   # For code coverage
   gem "simplecov", :require => false
