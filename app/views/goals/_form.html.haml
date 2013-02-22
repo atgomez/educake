@@ -3,7 +3,7 @@
 - curriculum_class = "active"
 - goal_class = ""
 - error_on_curriculum = are_all_errors_on_curriculum?(goal)
-- if !goal.new_record? || (!error_on_curriculum && !goal.errors.blank?)
+- if !error_on_curriculum && !goal.errors.blank?
   - curriculum_class = ""
   - goal_class = "active"
 
@@ -33,29 +33,60 @@
       .tab-pane#curriculum{:class => curriculum_class}
         -#============== Curriculum ==============
         .modal-body
-          = f.simple_fields_for(:curriculum, goal.curriculum) do |f_cur|
-            - data = curriculum_associtions_for_goal(goal)
+          = f.simple_fields_for(:curriculum, goal.curriculum, :validate => false) do |f_cur|
+            - data = curriculum_associations_for_goal(goal)
             = f_cur.association(:curriculum_core, :collection => CurriculumCore.order(:name),
-                  :label => t("goal.curriculum"), :include_blank => false,
+                  :label => t("goal.curriculum"), :include_blank => t("common.select_prompt"),
                   :input_html => {:class => "editable-combobox reset-on-changed"})
+            
+            - disabled = disable_goal_curriculum_field(goal.curriculum.curriculum_core_id, goal, 'subject_id')
+            - selected = selected_value_for_goal_curriculum_field(goal.curriculum.curriculum_core_id, goal, 'subject_id')
+            - prev_selected = selected
             = f_cur.association(:subject, :collection => data[:subjects],
-                  :label => t("curriculum.subject"), :include_blank => false,
-                  :input_html => {:class => "editable-combobox reset-on-changed"})
+                  :label => t("curriculum.subject"), :include_blank => t("common.select_prompt"),
+                  :input_html => {:class => "editable-combobox reset-on-changed"},
+                  :selected => selected,
+                  :disabled => disabled)
+            
+            - disabled = disable_goal_curriculum_field(prev_selected, goal, 'curriculum_grade_id')
+            - selected = selected_value_for_goal_curriculum_field(prev_selected, goal, 'curriculum_grade_id')
+            - prev_selected = selected
             = f_cur.association(:curriculum_grade, :collection => data[:curriculum_grades],
-                  :label => t("curriculum.grade"), :include_blank => false,
-                  :input_html => {:class => "editable-combobox reset-on-changed"})
+                  :label => t("curriculum.grade"), :include_blank => t("common.select_prompt"),
+                  :input_html => {:class => "editable-combobox reset-on-changed"},
+                  :selected => selected,
+                  :disabled => disabled)
+
+            - disabled = disable_goal_curriculum_field(prev_selected, goal, 'curriculum_area_id')
+            - selected = selected_value_for_goal_curriculum_field(prev_selected, goal, 'curriculum_area_id')
+            - prev_selected = selected
             = f_cur.association(:curriculum_area, :collection => data[:curriculum_areas],
-                  :label => t("curriculum.area"), :include_blank => false,
-                  :input_html => {:class => "editable-combobox reset-on-changed"})
+                  :label => t("curriculum.area"), :include_blank => t("common.select_prompt"),
+                  :input_html => {:class => "editable-combobox reset-on-changed"},
+                  :selected => selected,
+                  :disabled => disabled)
+
+            - disabled = disable_goal_curriculum_field(prev_selected, goal, 'standard')
+            - selected = selected_value_for_goal_curriculum_field(prev_selected, goal, 'standard')
+            - prev_selected = selected
             = f_cur.input(:standard, :as => :select, :collection => data[:standards],
-                  :label => t("curriculum.standard"), :include_blank => false,
-                  :input_html => {:class => "editable-combobox reset-on-changed"})
+                  :label => t("curriculum.standard"), :include_blank => t("common.select_prompt"),
+                  :input_html => {:class => "editable-combobox reset-on-changed"},
+                  :selected => selected,
+                  :disabled => disabled)
+
             .control-group.curriculum-description.virtual
-              = label_tag(t("curriculum.description"), nil, :class => "control-label")
+              - label_class = (goal.new_record? ? "hide" : "")
+              = label_tag(t("curriculum.description"), nil, :class => "control-label #{label_class}")
               .controls
-                .label-value.description1.bold= goal.curriculum.try(:description1)
-                .label-value.description2= goal.curriculum.try(:html_description2)
-                .label-value.error
+                - if goal.new_record?
+                  .label-value.description1.bold
+                  .label-value.description2
+                  .label-value.error= t("curriculum.select_prompt")
+                - else
+                  .label-value.description1.bold= goal.curriculum.try(:description1)
+                  .label-value.description2= goal.curriculum.try(:html_description2)
+                  .label-value.error
         .modal-footer
           .submit-indicator.loading.hide
           %input.btn{:value => t("common.cancel"), :type => "button", "aria-hidden" => "true", 
@@ -145,13 +176,12 @@
 
 :javascript
   $("##{id}").on('show', function(){
-    /* var win_height = $(window).height();
-    if(win_height <= $(this).height()){
-    var form_max_height = win_height - 400;
-    if(form_max_height <= 0)
+    var win_height = $(window).height();
+    var form_max_height = win_height - 300;
+    if(form_max_height < 100)
       form_max_height = 100;
-      
+    
     $(this).find(".modal-body").css({
       "max-height": form_max_height + "px"
-    }); */
+    });
   });

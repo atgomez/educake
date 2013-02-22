@@ -272,7 +272,17 @@ class GoalsController < ApplicationController
   
   def load_grades
     goal = Goal.find_by_id params[:goal_id]
-    grades = goal.grades.order('due_date ASC').load_data(filtered_params)
+    if params[:grade_id]
+      grade = goal.grades.find_by_id(params[:grade_id])
+      if grade.blank?
+        flash.now[:alert] = I18n.t('grade.not_found')     
+      elsif grade.destroy
+        flash.now[:notice] = I18n.t('grade.delete_successfully')      
+      else
+        flash.now[:alert] = I18n.t('grade.delete_failed')
+      end
+    end
+    grades = goal.grades.order('due_date DESC').load_data(filtered_params)
     render :partial => "shared/load_grades", :locals => {:grades => grades}
   end
 
@@ -280,27 +290,30 @@ class GoalsController < ApplicationController
   def curriculum_info
     result = {}
     begin
-      unless params[:current_param_name].blank?
-        # Find other association info
-        field_name = params[:current_param_name]
-        field_value = params[:goal][:curriculum_attributes][field_name]
-        result[:extra_info] = Curriculum.get_associations_by_field(field_name, field_value)
+      unless params[:current_param_names].blank?
+        attributes = {}
+        params[:current_param_names].each do |field_name|
+          # Find other association info
+          attributes[field_name] = params[:goal][:curriculum_attributes][field_name]
+        end
+
+        result[:extra_info] = Curriculum.get_associations_by_fields(attributes)
       end
 
       curriculum = Curriculum.where(params[:goal][:curriculum_attributes]).first
-      if curriculum.blank? && !result[:extra_info].blank?
-        # Get the curriculum from the extra info
-        curriculum = result[:extra_info].delete(:curriculum)
-      end
+      # if curriculum.blank? && !result[:extra_info].blank?
+      #   # Get the curriculum from the extra info
+      #   curriculum = result[:extra_info].delete(:curriculum)
+      # end
 
       if curriculum
         result[:curriculum] = curriculum       
       else
-        result = {:error => I18n.t("curriculum.not_found")}
+        result[:error] = I18n.t("curriculum.select_prompt")
       end
     rescue Exception => exc
       ::Util.log_error(exc, "GoalsController#curriculum_info")
-      result = {:error => I18n.t("curriculum.not_found")}
+      result[:error] = I18n.t("curriculum.select_prompt")
     end
 
     render(:json => result)

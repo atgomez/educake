@@ -97,6 +97,9 @@ en:
   grade:
     created_successfully: "Created grade successfully"
     import_successfully: "Imported .csv file for grades successfully"
+    delete_successfully: "Grade was remove successfully."
+    delete_failed: "Cannot remove grade."
+    not_found: "Cannot find the grade!"
     save_failed: "There are some invalid grades on:"
     msg_failed: "Grade's cannot be submitted for those dates."
     msg_failed1: "were not included."
@@ -219,6 +222,7 @@ en:
     description1: "Description 1"
     description2: "Description 2"
     not_found: "Cannot find the curriculum."
+    select_prompt: "Please select an available curriculum."
     created_successfully: "The curriculum %{name} was created successfully."
     updated_successfully: "The curriculum %{name} was updated successfully."
     deleted_successfully: "The curriculum '%{name}' was deleted successfully."
@@ -259,6 +263,8 @@ en:
     accept: "Accept"
     accept_all: "Accept All"
     created_successfully: "Subscriber was successfully created."
+    introduce: "Educake tracks your students grades against their individual goals. Contact us to learn more."
+    text_learn: "Want to learn more? Let us know!"
   mail:
     user:
       invitation_confirm_subject: "Confirmation for inviting"

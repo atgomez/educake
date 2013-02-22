@@ -21,8 +21,9 @@ FactoryGirl.define do
     # Build Goal with two grades
     factory :goal_with_grades, :parent => :valid_goal do
       after(:create) do |goal, evaluator|
-        FactoryGirl.create(:grade, :due_date => Date.today - 1.days, :goal => goal)
-        FactoryGirl.create(:grade, :due_date => Date.today - 2.days, :goal => goal)
+        user =  FactoryGirl.create :admin
+        FactoryGirl.create(:grade, :due_date => Date.today - 1.days, :goal => goal, :user => user)
+        FactoryGirl.create(:grade, :due_date => Date.today - 2.days, :goal => goal, :user => user)
       end
     end    
   end

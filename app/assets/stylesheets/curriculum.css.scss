@@ -15,3 +15,15 @@
     }
   }
 }
+
+.subscriber {
+  .control-group {
+    margin-bottom: 0px !important;
+  }
+  input[type="email"] {
+    width: 265px !important;
+  }
+  .text-learn {
+    margin-bottom: 5px;
+  }
+}

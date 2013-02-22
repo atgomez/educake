@@ -13,17 +13,21 @@ window.goal =
     return
 
   clickOnGoal: -> 
-    $(".grade a.goal").live 'click', () ->
+    $("a.goal, a.grade").live 'click', () ->
       id_content = $(this).attr("href")
       id = id_content.split("_")[1]
       current_iframe = $('#chart').attr("src")
       id_content = $(this).attr("href")
-      if $(this).hasClass("icon-plus")
+      page_id = $("#page").val()
+      if $(this).hasClass("icon-trash") 
+        grade_id = $(this).attr("id_grade").split("_")[1]
+      if $(this).hasClass("icon-plus") || $(this).hasClass("icon-trash")
         $(this).removeClass("icon-plus").addClass("icon-minus")
         $(id_content).slideDown('fast', ->
           $(id_content).attr("style","display:block;")
         )
-        helper.loadGrades(id)
+
+        helper.loadGrades(id, page_id, grade_id)
         $('#chart').attr("src", "/charts/goal_chart?goal_id="+id + "&color=" + $(this).attr('color') + "&user_id=" + $("#user_id").val());
         $('#chart').attr("height", "500");
         $('#chart').attr("width", "100%");
@@ -48,7 +52,7 @@ window.goal =
         window.chartMode = 'view_all'
       return
 
-  clickOnGoalType: ->
+   clickOnGoalType: ->
     $("#new-goal-container").delegate ".radio_buttons", "click", ()->
       if $(this).attr("value") == "true"
         $(".percentage").show()
@@ -170,24 +174,6 @@ window.goal =
     )
 
   get_curriculum: (current_param_name) ->
-    # Collect all curriculum attributes
-    attrs = {}
-    container = $("#curriculum.tab-pane")
-    if current_param_name
-      # Workaround to get the attribute name
-      param_name = current_param_name.replace("goal[curriculum_attributes]", "")
-      param_name = param_name.replace("[", "")
-      param_name = param_name.replace("]", "")
-      attrs['current_param_name'] = param_name
-
-    container.find("select[name!='goal[curriculum_attributes]']").each( ->
-      name = $(this).attr('name')
-      attrs[$(this).attr('name')] = $(this).val()
-    )
-
-    # Show the loading
-    loading = $("#curriculum.tab-pane").find(".loading").removeClass("hide")
-
     # The order of these items is very important, BE CAREFUL when change it.
     keys_map = {
       "curriculum_core_id": "curriculum_cores",
@@ -196,6 +182,33 @@ window.goal =
       "curriculum_area_id": "curriculum_areas",
       "standard": "standards"
     }
+
+    # Collect all curriculum attributes
+    attrs = {'current_param_names': []}
+    container = $("#curriculum.tab-pane")
+
+    container.find("select[name!='goal[curriculum_attributes]']").each( ->
+      name = $(this).attr('name')
+      attrs[$(this).attr('name')] = $(this).val()      
+    )
+
+    # Collect key parameters to find curriculums.
+    stop = false
+    $.each(keys_map, (k, v) ->
+      select_name = "goal[curriculum_attributes][" + k + "]"
+      
+      if !stop
+        select = container.find("select[name='" + select_name + "']")
+        if !$(select).attr("disabled")
+          attrs['current_param_names'].push(k)
+
+      if select_name == current_param_name
+        # Stop at the current field
+        stop = true
+    )
+
+    # Show the loading
+    loading = $("#curriculum.tab-pane").find(".loading").removeClass("hide")  
 
     $.ajax({
       url: "/goals/curriculum_info",
@@ -224,17 +237,24 @@ window.goal =
 
             select = container.find("select[name='" + select_name + "']")
             options = extra_info[v]
-            found = true
-            # Find if there is anything not matched
-            for opt in options
-              if select.find("option[value='" + opt[1] + "']").length == 0
-                found = false
-                break
 
-            if (!found && k != 'curriculum_core_id') || after_current_field
-              fields.push(k)
-            else
-              skipped_fields.push(k)
+            if options
+              found = true
+              # Find if there is anything not matched
+              for opt in options
+                if select.find("option[value='" + opt[1] + "']").length == 0
+                  found = false
+                  break
+
+              if (!found && k != 'curriculum_core_id') || after_current_field
+                fields.push(k)
+              else
+                skipped_fields.push(k)
+            else if after_current_field
+              # Reset the value
+              goal.change_extended_select_value(select, "")
+              # Disable field
+              select.attr("disabled", true)
           )
 
           # Change the value of skipped fields.
@@ -265,7 +285,9 @@ window.goal =
               new_options_html += '<option value="' + value + '">' + name + '</option>'
             )
             select = container.find("select[name='goal[curriculum_attributes][" + field_key + "]']")
-            select.html(new_options_html)
+            # Create a temporary element to get the HTML of blank option.
+            prompt_option = $('<div>').append(select.find("option[value='']")).html()
+            select.html(prompt_option + new_options_html)
 
             if res.curriculum
               # Reset the value of dropdown box
@@ -304,6 +326,9 @@ window.goal =
           # Change curriculum name
           $(curriculum_name).html("")        
         
+        # Enable/Disable select fields
+        goal.enable_select_fields(container, current_param_name, keys_map)
+
         # Hide the loading
         $(loading).addClass("hide")
     })
@@ -314,7 +339,31 @@ window.goal =
     $(select).val(value)
     opt_name = $(select).find("option:selected").text()
     if widget
-      $(widget.wrapper).find(".ui-combobox-input").html(opt_name)    
+      $(widget.wrapper).find(".ui-combobox-input").html(opt_name)
+
+  # Enable/Disable select fields base on the curent field.
+  enable_select_fields: (container, current_field_name, keys_map) ->
+    current_field_value = container.find("select[name='" + current_field_name + "']").val()
+    blank = ($.trim(current_field_value) == '')
+    after_current_field = false
+    enable_next = false
+
+    $.each(keys_map, (k, v) ->
+      select_name = "goal[curriculum_attributes][" + k + "]"
+      
+      if select_name == current_field_name
+        after_current_field = true
+        enable_next = true
+        return # Skip the current select box
+
+      select = container.find("select[name='" + select_name + "']")
+      if after_current_field && blank
+        container.find("select[name='" + select_name + "']").attr("disabled", true)
+
+      if enable_next && !blank
+        container.find("select[name='" + select_name + "']").removeAttr("disabled")
+        enable_next = false
+    )
 
   update_grade: ->
     $(".complete-checkbox .goal-complete").live 'click', ->
