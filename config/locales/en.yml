@@ -154,6 +154,7 @@ en:
     teacher_home: "Teacher Home"
     all_students: "All Students"
     all_students_of: "All %{user}'s Students"
+    student_not_found: "Student is not found."
 
   school:
     error_zipcode_too_long: "Zip code with %{count} characters is the maximum allowed"
