@@ -50,7 +50,8 @@ class Curriculum < ActiveRecord::Base
   validates :curriculum_core, :subject, :curriculum_grade, :curriculum_area, 
             :standard, :description1, :description2, :presence => true
   validates :description1, :length => { :maximum => 255, :too_long => :name_too_long }
-  validates :standard, :uniqueness => { :scope => [ :curriculum_core_id, :subject_id, 
+  validates :standard, :numericality => {:greater_than_or_equal_to => 0, :less_than_or_equal_to => 1000},
+                       :uniqueness => { :scope => [ :curriculum_core_id, :subject_id, 
                                                     :curriculum_grade_id, :curriculum_area_id]}
   validates :curriculum_core_value, :presence => true, :format => {:with => /^[^!@#\$%\^&*+_=]+$/},
             :if => :auto_init_new_curriculum_core
