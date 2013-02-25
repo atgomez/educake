@@ -147,6 +147,11 @@ window.helper =
         changeYear: true
       })
     )
+    if ($.browser.msie) 
+      $(".ui-datepicker .ui-state-highlight").livequery( () -> 
+        $(this).attr("style", "margin-bottom:0px;")
+      )
+
 
   loadPage: (evt, element) ->
     # Prevent loading page
