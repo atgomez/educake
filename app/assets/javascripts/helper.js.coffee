@@ -156,7 +156,7 @@ window.helper =
     #$('#content-grade').addClass('loading')
     sender = evt.target
     url = sender.href
-    if url.contains("grade_id")
+    if url.indexOf("grade_id") > 0
       grade_id = url.split("&")[1]
       url = url.replace(grade_id, "")
 

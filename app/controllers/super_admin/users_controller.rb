@@ -130,7 +130,11 @@ class SuperAdmin::UsersController < SuperAdmin::BaseSuperAdminController
   protected
 
     def load_roles
-      @roles = [Role[:teacher]]
+      if params[:action] == "edit" || params[:action] == "update"
+        @roles = [Role[:teacher], Role[:parent]]
+      else
+        @roles = [Role[:teacher]]
+      end
     end
 
     def find_user
