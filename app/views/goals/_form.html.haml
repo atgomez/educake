@@ -184,4 +184,15 @@
     $(this).find(".modal-body").css({
       "max-height": form_max_height + "px"
     });
+
+    $(window).resize(function() {
+      var win_height = $(window).height();
+      var form_max_height = win_height - 300;
+      if(form_max_height < 100)
+        form_max_height = 100;
+      
+      $($("##{id}")).find(".modal-body").css({
+        "max-height": form_max_height + "px"
+      });
+    });
   });
