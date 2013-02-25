@@ -1,3 +1,6 @@
+- content_for :js do
+  = javascript_include_tag('app/super_admin/user.js')
+
 = simple_form_for([:super_admin, @user], :html => {:class => "user-form form-horizontal", :id => "user_form"}, 
                   :validate => true) do |f|
   - title_user = t("school.user_info")
@@ -71,6 +74,8 @@
       = link_to(check_box_tag("is_blocked", 1, 1), 
                 blocked_account_super_admin_user_path(@user, :is_blocked => (!@user.is_blocked).to_s), 
                 :data => { :confirm => mgs }, :method => :put, :remote => true, 
-                :title => t("admin.teacher.block_account"))
+                :title => t("admin.teacher.block_account"),
+                :id => "block-user-trigger")
       %span.ckb-label= t("admin.teacher.block_account")
+      %span.block-indicator.loading.hide
       %p.text-block= t("admin.teacher.block_account_description")
