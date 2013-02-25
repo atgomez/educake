@@ -5,38 +5,60 @@
       = label_tag 'student_id', nil, :class => 'select required control-label' do
         = t("student.single")
       = select_tag(:student_id, options_from_collection_for_select(@students, "id", "full_name", @student.try(:id)), 
-                  {:prompt => "Select one"})
+                  {:prompt => t("common.select_prompt")})
 
-    = f.input(:goal_id, :collection => @goals, :prompt => t("common.select_prompt"), 
-              :input_html => {:class => "pull-left"}, :required => false,
-              :disabled => @student.blank?)
+    -# Work-around the fix the SimpleForm problem, 
+    -# the below simple_form code won't work when the form re-render after errors:
+    / = f.input(:goal_id, :as => :select, :collection => @goals, :prompt => t("common.select_prompt"), 
+    /           :input_html => {:class => "pull-left"}, :required => false,
+    /           :disabled => @student.blank?)
+
+    .control-group.select.students{:class => (@grade.errors.has_key?(:goal_id) ? "error" : "")}
+      = label_tag "grade_goal_id", nil, :class => 'select required control-label' do
+        = t("goal.name")
+      = select_tag("grade[goal_id]", options_for_select(@goals, @grade.goal_id), 
+                  {:id => "grade_goal_id", :prompt => "Select one", :disabled => @student.blank?})
+      = f.error :goal_id, :class => "font-error"   
+
     .clearfix
     = f.input(:due_date, :as => :string, :required => false, 
-              :input_html => {:class => "date-picker-ext pull-left", :value => @grade.due_date_string, :readonly => true}, 
+              :input_html => {:class => "date-picker-ext pull-left", 
+              :value => @grade.due_date_string, "data-role" => "datebox",
+              "type" => "date",
+              "data-options" => '{"mode": "calbox", "overrideDateFormat": "%m-%d-%Y",
+              "calUsePickers": true, "calNoHeader": true, "useFocus": true}'}, 
               :label => t("common.due_date"),
               :disabled => @student.blank?)
+
     .clearfix
 
     .grade-percentage
       = f.input :accuracy, :label => t("grade.accuracy"), :required => false,
-                :input_html => {:class => "pull-left", :type => "text"},
+                :input_html => {:class => "pull-left", :type => "number"},
                 :disabled => @student.blank?
       .clearfix
     .grade-objective.hide.clearfix{:style => "height: 85px;"}
       = label_tag('grade_goal_x', t("common.accuracy"), :class => "control-label")
-      = f.input :goal_x, :label => false, :input_html => {:class => "pull-left objective-number"}, 
+      = f.input :goal_x, :label => false, :input_html => {:class => "pull-left objective-number", :type => "number"}, 
                 :disabled => @student.blank?
       .pull-left.objective-separator /
-      = f.input :goal_y, :label => false, :input_html => {:class => "pull-left objective-number"}, 
+      = f.input :goal_y, :label => false, :input_html => {:class => "pull-left objective-number", :type => "number"}, 
             :disabled => @student.blank?
       .clearfix
 
     .clearfix
-    = f.input :time_to_complete, :as => :string, :ampm => true, :disabled => @student.blank?
+    = f.input(:time_to_complete, :as => :string, 
+              :ampm => true, :disabled => @student.blank?, :input_html => {"data-role" => "datebox", 
+              :class => "date-picker-ext", 
+              "data-options" => '{"mode": "durationbox",
+              "overrideTitleDateDialogLabel": "Set Time",
+              "useFocus": true,
+              "overrideDurationOrder": ["h","i"],
+              "overrideDurationFormat": "%Dl:%DM"}'})
     = f.input :note, :as => :text, :label => t("grade.note"), :input_html => {:rows =>"5"}, :disabled => @student.blank?
 
     = hidden_field_tag :user_id, @user.id
     = hidden_field_tag :admin_id, @admin.id if @admin          
 
     .clearfix
-    = f.submit t("common.save"), :class => "btn btn-primary"
+    = f.submit t("common.save"), :class => "btn btn-primary", "data-theme" => "b"

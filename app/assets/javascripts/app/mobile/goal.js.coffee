@@ -18,7 +18,6 @@ window.goal =
           
           complete: (xhr, status ) ->
             if(xhr.status == 200 && xhr.responseText)
-              console.log($("#grade_goal_id"))
               $("#grade_goal_id").html(xhr.responseText)
               $("#grade_goal_id").selectmenu( "refresh" );
               goal.toggle_goal_type()
@@ -26,26 +25,6 @@ window.goal =
         })
       else
         goal.enable_grade_fields(false)
-    )
-
-    $(".date-picker-ext").datepicker({
-      dateFormat: "mm-dd-yy",
-      yearRange: "-10:+10",
-      changeMonth: true,
-      changeYear: true,
-      showOn: 'button',
-      buttonText: "",
-      showButtonPanel: true
-    })
-
-    # Add a custom trigger
-    trigger = $("#grade_due_date").next(".ui-datepicker-trigger")
-    trigger.replaceWith('<div class="ui-button ui-state-default ui-corner-all datepicker-trigger">
-                        <span class="ui-icon ui-icon-calculator"></span></div>')
-
-    # Trigger event
-    $(".datepicker-trigger").live("click",  ->
-      $(".date-picker-ext").datepicker("show")
     )
 
   enable_grade_fields: (enabled) ->
@@ -61,6 +40,8 @@ window.goal =
     $.each(selector, (idx, elem) ->
       if($(elem).is("input") || $(elem).is("textarea"))
         $(elem).textinput(method)
+        if($(elem).hasClass("date-picker-ext"))
+          $(elem).datebox(method)
       else if($(elem).is("select"))
         $(elem).selectmenu(method)
     )

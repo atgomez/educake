@@ -1,7 +1,8 @@
 /*
  *= require_self 
  *= require "lib/mobile/jquery.mobile"
- *= require shared
+ *= require "shared"
+ *= require "lib/mobile/jqm-datebox.min"
  */
 
 body {
@@ -19,9 +20,25 @@ body {
   }
 }
 
+.simple_form {
+  .control-group{
+    margin-top: 15px;
+  }
+
+  .error {
+    .ui-shadow, .ui-shadow-inset {
+      -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 6px #D59392;
+      -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 6px #D59392;
+      box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 6px #D59392;
+      color: #B94A48;
+    }
+  }
+}
+
 #app-version{
   font-size: 14px;
   text-align: center;
+  padding: 10px;
 }
 
 .grade-form{
@@ -40,12 +57,76 @@ body {
   }
 
   .grade-objective{
+    margin-top: 10px;
     .control-group{
       float: left;
+      margin-top: 0px;
     }
   }
 }
 
 #login-button {
   margin-top: 20px;
+}
+
+.ui-btn{
+  .btn{
+    background-image: none !important;
+  }
+}
+.ui-btn-up-b, {
+  border: 1px solid #E17C25 !important;
+  background-color: #E17C25 !important;
+  font-weight: bold;
+  color:          #fff /*{b-bup-color}*/;
+  text-shadow: 0 1px 0 #194b7e;
+   /* Saf4+, Chrome */
+  background-image: -webkit-gradient(linear, left top, left bottom, from( #E17C25), to( #DA7622)) !important;
+  /* Chrome 10+, Saf5.1+ */
+  background-image: -webkit-linear-gradient( #E17C25, #DA7622) !important;
+   /* FF3.6 */
+  background-image:    -moz-linear-gradient( #E17C25, #DA7622) !important;
+  /* IE10 */
+  background-image:     -ms-linear-gradient( #E17C25, #DA7622) !important;
+  /* Opera 11.10+ */
+  background-image:      -o-linear-gradient( #E17C25, #DA7622) !important;
+  background-image:         linear-gradient( #E17C25, #DA7622) !important;
+}
+
+.ui-btn-hover-b {
+  border: 1px solid #E98936 !important;
+  background-color: #E98936 !important;
+  font-weight: bold;
+  color:          #fff /*{b-bup-color}*/;
+  text-shadow: 0 1px 0 #194b7e;
+   /* Saf4+, Chrome */
+  background-image: -webkit-gradient(linear, left top, left bottom, from( #E98936), to(#E17C25)) !important;
+  /* Chrome 10+, Saf5.1+ */
+  background-image: -webkit-linear-gradient( #E98936, #E17C25) !important;
+   /* FF3.6 */
+  background-image:    -moz-linear-gradient( #E98936, #E17C25) !important;
+  /* IE10 */
+  background-image:     -ms-linear-gradient( #E98936, #E17C25) !important;
+  /* Opera 11.10+ */
+  background-image:      -o-linear-gradient( #E98936, #E17C25) !important;
+  background-image:         linear-gradient( #E98936, #E17C25) !important;
+}
+
+.ui-btn-down-b {
+  border: 1px solid #E17C25 !important;
+  background-color: #D86E16 !important;
+  font-weight: bold;
+  color:          #fff /*{b-bup-color}*/;
+  text-shadow: 0 1px 0 #194b7e;
+   /* Saf4+, Chrome */
+  background-image: -webkit-gradient(linear, left top, left bottom, from( #E17C25), to( #D86E16)) !important;
+  /* Chrome 10+, Saf5.1+ */
+  background-image: -webkit-linear-gradient( #E17C25, #D86E16) !important;
+   /* FF3.6 */
+  background-image:    -moz-linear-gradient( #E17C25, #D86E16) !important;
+  /* IE10 */
+  background-image:     -ms-linear-gradient( #E17C25, #D86E16) !important;
+  /* Opera 11.10+ */
+  background-image:      -o-linear-gradient( #E17C25, #D86E16) !important;
+  background-image:         linear-gradient( #E17C25, #D86E16) !important;
 }

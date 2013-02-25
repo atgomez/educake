@@ -9,7 +9,7 @@
         %a{:class => "close", 'data-dismiss' => "alert", :href => "#"} &times;
         = notification
     .form-inputs
-      = f.input :grade do 
+      = f.input :goal do 
         = f.select :goal_id, @goals, :prompt => t("common.select_prompt")
         = f.error :goal_id, :class => "font-error"
       .clearfix
@@ -19,9 +19,9 @@
         = f.input :accuracy, :label => t("grade.accuracy"), :input_html => {:class => "pull-left", :type => "text"}
       .clearfix
       .grade-objective.hide
-        = f.input :goal_x, :label => "Accuracy", :input_html => {:class => "pull-left"}
-        .pull-left /
-        = f.input :goal_y, :label => false, :input_html => {:class => "pull-left"}
+        = f.input :goal_x, :as => :string, :label => t("common.accuracy"), :input_html => {:class => "pull-left"}
+        .pull-left.objective-separator /
+        = f.input :goal_y, :as => :string, :label => false, :input_html => {:class => "pull-left"}
         .clearfix
       = f.input :time_to_complete, :as => :string, :ampm => true
       = f.input :note, :as => :text, :label => t("grade.note"), :input_html => {:rows =>"5"}
