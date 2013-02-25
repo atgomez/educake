@@ -208,7 +208,7 @@ window.goal =
     )
 
     # Show the loading
-    loading = $("#curriculum.tab-pane").find(".loading").removeClass("hide")  
+    loading = $("#curriculum.tab-pane").find(".loading").removeClass("hide")
 
     $.ajax({
       url: "/goals/curriculum_info",
@@ -233,28 +233,28 @@ window.goal =
             
             if select_name == current_param_name
               after_current_field = true
-              return # Skip the current select box
+            else
+              select = container.find("select[name='" + select_name + "']")
+              options = extra_info[v]
 
-            select = container.find("select[name='" + select_name + "']")
-            options = extra_info[v]
+              if options
+                found = true
+                # Find if there is anything not matched
+                for opt in options
+                  if select.find("option[value='" + opt[1] + "']").length == 0
+                    found = false
+                    break
 
-            if options
-              found = true
-              # Find if there is anything not matched
-              for opt in options
-                if select.find("option[value='" + opt[1] + "']").length == 0
-                  found = false
-                  break
-
-              if (!found && k != 'curriculum_core_id') || after_current_field
-                fields.push(k)
-              else
-                skipped_fields.push(k)
-            else if after_current_field
-              # Reset the value
-              goal.change_extended_select_value(select, "")
-              # Disable field
-              select.attr("disabled", true)
+                if (!found && k != 'curriculum_core_id') || after_current_field
+                  fields.push(k)
+                else
+                  skipped_fields.push(k)
+              else if after_current_field
+                # Reset the value
+                goal.change_extended_select_value(select, "")
+                # Disable field
+                select.attr("disabled", true)
+            return true
           )
 
           # Change the value of skipped fields.
@@ -272,6 +272,8 @@ window.goal =
 
             if(!found && res.curriculum)
               goal.change_extended_select_value(select, res.curriculum[field_key])
+
+            return true
           )
 
           # Change the options of other fields.
@@ -292,6 +294,8 @@ window.goal =
             if res.curriculum
               # Reset the value of dropdown box
               goal.change_extended_select_value(select, res.curriculum[field_key])
+
+            return true
           )
 
         # Show the current select curriculum
@@ -324,10 +328,10 @@ window.goal =
           curriculum_desc.find(".error").addClass("hide")
           curriculum_desc.find(".control-label").removeClass("hide")
           # Change curriculum name
-          $(curriculum_name).html("")        
+          $(curriculum_name).html("")
         
         # Enable/Disable select fields
-        goal.enable_select_fields(container, current_param_name, keys_map)
+        goal.enable_select_fields(container, current_param_name, keys_map, (res && res.curriculum))
 
         # Hide the loading
         $(loading).addClass("hide")
@@ -342,27 +346,32 @@ window.goal =
       $(widget.wrapper).find(".ui-combobox-input").html(opt_name)
 
   # Enable/Disable select fields base on the curent field.
-  enable_select_fields: (container, current_field_name, keys_map) ->
+  enable_select_fields: (container, current_field_name, keys_map, curriculum_found) ->
     current_field_value = container.find("select[name='" + current_field_name + "']").val()
-    blank = ($.trim(current_field_value) == '')
+    blank = ($.trim(current_field_value) == "")
     after_current_field = false
     enable_next = false
+    selected_key = ""
 
     $.each(keys_map, (k, v) ->
       select_name = "goal[curriculum_attributes][" + k + "]"
       
       if select_name == current_field_name
+        selected_key = k
         after_current_field = true
-        enable_next = true
-        return # Skip the current select box
-
-      select = container.find("select[name='" + select_name + "']")
-      if after_current_field && blank
-        container.find("select[name='" + select_name + "']").attr("disabled", true)
-
-      if enable_next && !blank
-        container.find("select[name='" + select_name + "']").removeAttr("disabled")
-        enable_next = false
+        if !blank
+          enable_next = true
+      else
+        select = container.find("select[name='" + select_name + "']")
+        if enable_next
+          select.removeAttr("disabled")
+          enable_next = false
+        else if after_current_field && !curriculum_found
+          if selected_key != "curriculum_area_id" || blank
+            select.attr("disabled", true)
+          goal.change_extended_select_value(select, "")
+          
+      return true
     )
 
   update_grade: ->
