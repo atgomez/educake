@@ -133,19 +133,22 @@ window.helper =
     return
 
   addDatePicker: ->
+    
     $(".date-picker").livequery( ->
       $(this).datepicker({
         dateFormat: "mm-dd-yy",
         yearRange: "-10:+10",
         changeMonth: true,
-        changeYear: true
+        changeYear: true,
+        onClose: () ->
+          if($.trim($(this).val()) != "")
+            $(this).parents("form[data-validate]").resetClientSideValidations()
       })
     )
     if ($.browser.msie) 
       $(".ui-datepicker .ui-state-highlight").livequery( () -> 
         $(this).attr("style", "margin-bottom:0px;")
       )
-
 
   loadPage: (evt, element) ->
     # Prevent loading page
