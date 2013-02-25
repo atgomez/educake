@@ -1,2 +1,2 @@
-$("#render_add_grade").html("#{escape_javascript render 'form_grade'}")
+$("#render_add_grade").html("#{escape_javascript render 'form_grade', :student_id => params[:student_id]}")
 $("#add_grade").modal('show')

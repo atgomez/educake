@@ -73,22 +73,113 @@ describe GoalsController do
   end
 
   describe "Put Update Goal" do 
-  	# it "when not found student" do 
-  	# 	put "update", :goal => {:student_id => 0}
-  	# 	response.should_not be_success 
-  	# 	body = JSON.parse(response.body)
-	  #  	body.should include("message" => I18n.t("student.student_not_found"))
-  	# end
-  	it "when updating successfully" do 
+  	it "when not found student" do 
+  		put "update", :id => goal.id, :goal => {:student_id => 0}
+  		response.should_not be_success 
+  		body = JSON.parse(response.body)
+	   	body.should include("message" => I18n.t("student.student_not_found"))
+  	end
+  	it "when updating successfully" do
+      put "update", :id => goal.id, :goal => {:student_id => goal.student.id, :description =>  "test"}
+      response.should be_success 
+      body = JSON.parse(response.body)
+      body.should include("message" => I18n.t("goal.updated_successfully"))
   	end 
-  	it "when updating unsuccessfully" do 
-  	end 
+  	it "when updating unsuccessfully" do
+      put "update", :id => goal.id, :goal => {:student_id => goal.student.id, :due_date => nil}
+      response.should_not be_success 
+      body = JSON.parse(response.body)
+      body.should include("message" => I18n.t("goal.save_failed"))
+  	end
+
+    it "when goal not found" do
+      put :update, :id => 0, :goal => {:student_id => goal.student.id}
+      response.should_not be_success
+      body = JSON.parse(response.body) 
+      body["message"].should be_eql(I18n.t("goal.not_found"))
+    end  
   end 
 
   describe "Get New Grade" do 
-  	# it "new gade" do 
-  	# 	get :new_grade, :format => :js 
-  	# 	response.should be_success 
-  	# end 
+  	it "when existed student" do 
+  		get :new_grade, :student_id => student.id, :format => :js 
+  		response.should be_success
+  	end
+    it "when unexisted student" do 
+      get :new_grade, :student_id => 0, :format => :js 
+      response.should be_success 
+    end 
+  end 
+
+  describe "POST Add grade" do
+    let(:grade) {FactoryGirl.create(:grade, :due_date => Date.today.strftime("%m-%d-%Y"),
+    :accuracy => 20.0, 
+    :goal => goal)}
+
+    let(:build_grade) {FactoryGirl.build(:grade, :due_date => Date.today.strftime("%m-%d-%Y"),
+    :accuracy => 20.0, 
+    :goal => goal)}
+
+    it "when existed goal, but invalid grade" do
+      attrs = grade.attributes.except("id", "progress_id", "ideal_value", "created_at", "updated_at")
+      attrs[:due_date] = "dfdfdf"
+      post :add_grade, :grade => attrs , :student_id => student.id
+      response.should_not be_success
+      body = JSON.parse(response.body)
+      body["message"].should be_eql(I18n.t("grade.save_failed"))
+    end
+
+    it "when existed goal, and create grade for it successfully" do 
+      attrs = build_grade.attributes.except("id", "progress_id", "ideal_value", "created_at", "updated_at")
+      attrs[:due_date] = Date.today.strftime("%m-%d-%Y")
+      post :add_grade, :grade => attrs , :student_id => student.id
+      response.should be_success
+      body = JSON.parse(response.body)
+      body["message"].should be_eql(I18n.t("grade.created_successfully"))
+    end
+
+    it "when existed goal, and create new grade unsuccessfully" do
+      attrs = build_grade.attributes.except("id", "progress_id", "ideal_value", "created_at", "updated_at")
+      attrs[:due_date] = "01-01-2012"
+      post :add_grade, :grade => attrs , :student_id => student.id
+      response.should_not be_success
+      body = JSON.parse(response.body)
+      body["message"].should be_eql(I18n.t("grade.save_failed"))
+    end
+    
+    it "when unexisted goal, create grade unsuccessfully" do
+      attrs = build_grade.attributes.except("id", "progress_id", "ideal_value", "created_at", "updated_at")
+      attrs[:due_date] = Date.today.strftime("%m-%d-%Y")
+      attrs[:goal_id] = nil
+      post :add_grade, :grade => attrs , :student_id => student.id
+      response.should_not be_success
+      body = JSON.parse(response.body)
+      body["message"].should be_eql(I18n.t("grade.save_failed"))
+    end
+  end
+
+  describe "PUT Update grade" do 
+    it "successfully" do
+      put :update_grade, :id => goal.id, :grade => true
+      response.should be_success
+      body = JSON.parse(response.body)
+      body["message"].should be_eql(I18n.t("goal.updated_successfully"))
+    end 
+    it "unsuccessfully" do 
+      put :update_grade, :id => 0, :grade => true
+      response.should_not be_success
+      body = JSON.parse(response.body)
+      body["message"].should be_eql(I18n.t("goal.save_failed"))
+    end
+  end 
+
+  describe "Get Initial import grades" do 
+    it "return popup" do 
+      get :initial_import_grades, :student_id => student.id, :format => :js
+      response.should be_success
+    end
+  end 
+
+  describe "PUT import grades" do 
   end 
 end

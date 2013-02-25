@@ -139,6 +139,17 @@ module Util
       return full_name
     end
 
+    # Use to work around date validation problem
+    # 
+
+    def check_date_validation(context, attributes_list, attribute, check_blank)
+      if context[attribute].nil? && attributes_list[attribute.to_s].empty? && check_blank
+        context.errors.add attribute, :blank
+      elsif context[attribute].nil?
+        context.errors.add attribute, :invalid_format
+      end
+    end
+
     private
 
     def perform_format_money(number, options = {})
