@@ -5,7 +5,7 @@
 //= require "lib/mobile/jqm-datebox.core.min.js"
 //= require "lib/mobile/jqm-datebox.mode.calbox.min.js"
 //= require "lib/mobile/jqm-datebox.mode.datebox.min.js"
-//= require "lib/mobile/jqm-datebox.mode.durationbox.min.js"
+//= require "lib/mobile/jqm-datebox.mode.durationflipbox.js"
 //= require "app/mobile/goal"
 //= require "app/mobile/mobile_helper"
 

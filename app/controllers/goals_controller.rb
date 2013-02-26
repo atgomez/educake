@@ -100,9 +100,13 @@ class GoalsController < ApplicationController
         if is_mobile_request?
           # Clear the default student
           @student = nil
-        end        
+        end
       else
-        render_page_not_found(I18n.t("student.student_not_found"))
+        msg = I18n.t("student.student_not_found")
+        if is_mobile_request?
+          msg = I18n.t("user.mobile_no_students")
+        end
+        render_page_not_found(msg)
       end 
     end
   end

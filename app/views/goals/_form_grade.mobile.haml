@@ -50,7 +50,7 @@
     = f.input(:time_to_complete, :as => :string, 
               :ampm => true, :disabled => @student.blank?, :input_html => {"data-role" => "datebox", 
               :class => "date-picker-ext", 
-              "data-options" => '{"mode": "durationbox",
+              "data-options" => '{"mode": "durationflipbox",
               "overrideTitleDateDialogLabel": "Set Time",
               "useFocus": true,
               "overrideDurationOrder": ["h","i"],
@@ -61,4 +61,5 @@
     = hidden_field_tag :admin_id, @admin.id if @admin          
 
     .clearfix
-    = f.submit t("common.save"), :class => "btn btn-primary", "data-theme" => "b"
+    .submit-container.pull-right
+      = f.submit t("grade.add"), :class => "btn btn-primary", "data-theme" => "b", "data-inline" => true

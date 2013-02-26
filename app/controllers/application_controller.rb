@@ -173,6 +173,11 @@ class ApplicationController < ActionController::Base
           render("shared/error", options)
         }
         
+        format.mobile {
+          @message = message
+          render("shared/error")
+        }
+
         format.any(:json, :js) {
           options.merge!({:json => message})
           render(options)
