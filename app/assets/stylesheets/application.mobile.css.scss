@@ -20,6 +20,14 @@ body {
   }
 }
 
+.pull-left{
+  float: left;
+}
+
+.pull-right{
+  float: right;
+}
+
 .simple_form {
   .control-group{
     margin-top: 15px;
@@ -123,14 +131,14 @@ body {
   color:          #fff /*{b-bup-color}*/;
   text-shadow: 0 1px 0 #194b7e;
    /* Saf4+, Chrome */
-  background-image: -webkit-gradient(linear, left top, left bottom, from( #E17C25), to( #D86E16)) !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, from( #D86E16), to( #BF5D0B)) !important;
   /* Chrome 10+, Saf5.1+ */
-  background-image: -webkit-linear-gradient( #E17C25, #D86E16) !important;
+  background-image: -webkit-linear-gradient( #D86E16, #BF5D0B) !important;
    /* FF3.6 */
-  background-image:    -moz-linear-gradient( #E17C25, #D86E16) !important;
+  background-image:    -moz-linear-gradient( #D86E16, #BF5D0B) !important;
   /* IE10 */
-  background-image:     -ms-linear-gradient( #E17C25, #D86E16) !important;
+  background-image:     -ms-linear-gradient( #D86E16, #BF5D0B) !important;
   /* Opera 11.10+ */
-  background-image:      -o-linear-gradient( #E17C25, #D86E16) !important;
-  background-image:         linear-gradient( #E17C25, #D86E16) !important;
+  background-image:      -o-linear-gradient( #D86E16, #BF5D0B) !important;
+  background-image:         linear-gradient( #D86E16, #BF5D0B) !important;
 }
