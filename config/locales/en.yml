@@ -177,6 +177,7 @@ en:
     role: "Role"
     user_name: "Name"
     account: "Account"
+    back: "View Schools"
 
   profile:
     title: "Account Settings"

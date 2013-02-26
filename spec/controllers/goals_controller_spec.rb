@@ -7,7 +7,6 @@ describe GoalsController do
     sign_in user
   end
   let(:student) { FactoryGirl.create(:student)}
-  let(:student1) { FactoryGirl.create(:student)}
   let(:curriculum) {FactoryGirl.create(:curriculum)}
   let(:subject) {FactoryGirl.create(:subject)}
   let(:curriculum1) {FactoryGirl.create(:curriculum)}
@@ -24,7 +23,7 @@ describe GoalsController do
     									 :due_date  => "03-01-2013",
                        :curriculum => curriculum1, 
                        :subject => subject1,
-                       :student => student1)
+                       :student => student)
   }
   
   describe "Get New" do
@@ -62,9 +61,7 @@ describe GoalsController do
   	end
 
   	it "when creating unsuccessfully" do
-  		attrs = build_goal.attributes.except("created_at", "updated_at", 
-  			"grades_data_file_name", "grades_data_content_type", 
-  			"grades_data_file_size", "grades_data_updated_at")
+  		attrs = build_goal.attributes.except("created_at", "updated_at")
   		post  :create, :goal => attrs
   		response.should_not be_success 
   		body = JSON.parse(response.body)
@@ -86,7 +83,7 @@ describe GoalsController do
       body.should include("message" => I18n.t("goal.updated_successfully"))
   	end 
   	it "when updating unsuccessfully" do
-      put "update", :id => goal.id, :goal => {:student_id => goal.student.id, :due_date => nil}
+      put "update", :id => goal.id, :goal => {:student_id => goal.student.id, :due_date => "dsds"}
       response.should_not be_success 
       body = JSON.parse(response.body)
       body.should include("message" => I18n.t("goal.save_failed"))
@@ -180,6 +177,50 @@ describe GoalsController do
     end
   end 
 
-  describe "PUT import grades" do 
-  end 
+  # describe "PUT import grades" do 
+  #   it "successfully" do 
+  #     put :import_grades, :student_id => student.id, :goal => {:id => goal.id,
+  #      :grades => File.new(Rails.root+"app/assets/images/files/CSV 1-Table 1.csv")}
+
+  #     response.should be_success
+  #   end
+  # end 
+
+  describe "Delete destroy" do
+    context "successfully" do 
+      it "when having student_id" do 
+        delete :destroy, :id => goal.id, :student_id  => student.id
+        response.should redirect_to(edit_student_path(student.id))
+      end
+
+      it "when student_id blank" do 
+        delete :destroy, :id => goal.id
+        response.should redirect_to(students_path)
+      end
+
+      it "when having redirect link" do 
+        delete :destroy, :id => goal.id, :redirect_link => students_path
+        response.should redirect_to(students_path)
+      end
+    end
+
+    context "unsuccessfully" do 
+      it "when goal is not found" do 
+        delete :destroy, :id => 0, :student_id  => student.id
+        response.should_not be_success
+      end
+
+      # it "when can not destroy" do 
+      #   delete :destroy, :id => 0, :student_id  => student.id
+      #   response.should_not be_success
+      # end
+    end 
+  end
+
+  describe "Get loads grades" do
+    it "successfully" do 
+       get :load_grades, :goal_id => goal.id
+       response.should be_success
+    end
+  end
 end
