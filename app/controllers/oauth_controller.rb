@@ -2,6 +2,7 @@ require 'oauth/controllers/provider_controller'
 class OauthController < ApplicationController
   alias :login_required :authenticate_user!
   include OAuth::Controllers::ProviderController
+  skip_before_filter :set_request_format
   skip_before_filter :login_required, :authenticate_user!, :only => [:token]
 
 

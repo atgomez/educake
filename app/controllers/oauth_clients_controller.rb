@@ -1,5 +1,6 @@
 class OauthClientsController < ApplicationController
   #before_filter :login_required
+  skip_before_filter :set_request_format
   before_filter :get_client_application, :only => [:show, :edit, :update, :destroy]
   
   def index
