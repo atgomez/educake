@@ -17,5 +17,5 @@
       .grade
         = link_to(" " + t("invitation.new_title"), new_invitation_path(:user_id => @user.id), 
                   :remote => true, :class => "icon-plus-sign add")
-        = render "shared/students/view_invited_user", :invited_users => @student.sharings
+        = render "shared/students/view_invited_user", :invited_users => @student.sharings, :student_id => @student.id
         
