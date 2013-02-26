@@ -1,6 +1,6 @@
 class OauthClientsController < ApplicationController
   #before_filter :login_required
-  skip_before_filter :set_request_format
+  skip_before_filter :set_request_format, :detect_mobile_device
   before_filter :get_client_application, :only => [:show, :edit, :update, :destroy]
   
   def index
