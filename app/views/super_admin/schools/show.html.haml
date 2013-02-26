@@ -36,7 +36,7 @@
         %tr
           %td= user.role.name rescue ""
           %td= user.full_name rescue ""
-          %td= user.accessible_students.count rescue ""
+          %td= user.accessible_students.count rescue "" if !user.is?(:admin)
           %td
             - if user.is_blocked?
               %a.icon-lock.color-pen

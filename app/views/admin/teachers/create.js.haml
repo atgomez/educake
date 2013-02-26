@@ -1,8 +1,6 @@
 - if @teacher.errors.any?
   $("#new-form-teacher").html("#{escape_javascript(render :partial => 'form', :locals => {:teacher => @teacher})}");
+  $('#new-form-teacher').on('shown', function(){$('#new-form-teacher form[data-validate]').enableClientSideValidations(); helper.setup();});
   $('#new-form-teacher').modal('show');
-  helper.setup();
-  $('#new-form-teacher').on('shown', function(){$('#new-form-teacher form[data-validate]').enableClientSideValidations();});
-
 - else
   location.reload();

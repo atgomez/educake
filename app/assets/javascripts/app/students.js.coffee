@@ -105,7 +105,10 @@ window.studentObject =
         dateFormat: "mm-dd-yy",
         yearRange: "-40:+0",
         changeMonth: true,
-        changeYear: true
+        changeYear: true,
+        onClose: () ->
+          if($.trim($(this).val()) != "")
+            $(this).parents("form[data-validate]").resetClientSideValidations()
       })
     )
 

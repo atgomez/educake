@@ -1,6 +1,6 @@
 - if @sharing.errors.any?
   $("#render_invite_user").html("#{escape_javascript render :partial => 'form', :locals => {:url => invitations_path, :method => :post}}");
-  $("#render_invite_user").modal('show');
   $("#render_invite_user").on('shown', function(){$('.invitation-form').enableClientSideValidations();});
+  $("#render_invite_user").modal('show');  
 - else
   location.reload();

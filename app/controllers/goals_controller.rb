@@ -110,7 +110,7 @@ class GoalsController < ApplicationController
   def add_grade
     if find_user
       @student = @user.accessible_students.find_by_id(params[:student_id])
-      if @student 
+      if @student
         @goals = @student.goals.incomplete.map{|g| [g.name, g.id, {:goal_type => g.is_percentage}]}
       end
      
@@ -147,13 +147,14 @@ class GoalsController < ApplicationController
       end
 
       if @grade.new_record? && is_mobile_request?
+
         # Load students for mobile view.
         @students = @user.accessible_students
         # Prepare goals
         if @goals.blank?
           student = @students.first
           if student
-            @goals = student.goals.incomplete.map{|g| [g.name, g.id, {:goal_type => g.is_percentage}]}
+            @goals = student.goals.incomplete.map{|g| [g.id, g.name, {:goal_type => g.is_percentage}]}
           end
         end
       elsif is_mobile_request?
@@ -162,7 +163,7 @@ class GoalsController < ApplicationController
       end
     else
       flash[:warning] = I18n.t("common.error_unauthorized")
-    end   
+    end
   end
 
   # GET /goals/load_goals

@@ -3,7 +3,7 @@
 - curriculum_class = "active"
 - goal_class = ""
 - error_on_curriculum = are_all_errors_on_curriculum?(goal)
-- if !error_on_curriculum && !goal.errors.blank?
+- if (!error_on_curriculum && !goal.errors.blank?) || !goal.new_record?
   - curriculum_class = ""
   - goal_class = "active"
 
@@ -117,9 +117,9 @@
             = f.input :accuracy, :as => :string, :label => t("goal.accuracy"), 
                       :input_html => {:id => "accuracy-#{goal.id}", :class => "float_number"}
           .objective.hide
-            = f.input :goal_x, :label => t("goal.name"), :input_html => {:class => "pull-left valid_number"}
+            = f.input :goal_x, :as => :string, :label => t("goal.name"), :input_html => {:class => "pull-left valid_number"}
             .pull-left /
-            = f.input :goal_y, :label => false, :input_html => {:class => "pull-left valid_number"}
+            = f.input :goal_y, :as => :string, :label => false, :input_html => {:class => "pull-left valid_number"}
             .clearfix
             %center= f.error :accuracy, :class => "font-error"
 
@@ -131,10 +131,10 @@
             = f.input(:baseline, :as => :string, :label => t("goal.baseline"), 
                       :input_html => {:id => "baseline-#{goal.id}", :class => "float_number"})
           .objective.hide
-            = f.input :baseline_x, :label => t("goal.baseline"), 
+            = f.input :baseline_x, :as => :string, :label => t("goal.baseline"), 
                       :input_html => {:class => "pull-left valid_number"}
             .pull-left /
-            = f.input :baseline_y, :label => false, 
+            = f.input :baseline_y, :as => :string, :label => false, 
                       :input_html => {:class => "pull-left valid_number"}
             .clearfix
             %center= f.error :baseline, :class => "font-error"
@@ -183,5 +183,16 @@
     
     $(this).find(".modal-body").css({
       "max-height": form_max_height + "px"
+    });
+
+    $(window).resize(function() {
+      var win_height = $(window).height();
+      var form_max_height = win_height - 300;
+      if(form_max_height < 100)
+        form_max_height = 100;
+      
+      $($("##{id}")).find(".modal-body").css({
+        "max-height": form_max_height + "px"
+      });
     });
   });

@@ -6,35 +6,34 @@
     - else
       %title Educake Mobile
 
-    = stylesheet_link_tag "application.mobile", :media => "all"    
+    = stylesheet_link_tag "application.mobile", :media => "all"
+    = javascript_include_tag "//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"
+    = javascript_include_tag "app/mobile/init.js"
+    = javascript_include_tag "application.mobile"
     = csrf_meta_tags
     %meta{:name => "viewport", :content => "width=device-width, initial-scale=1, maximum-scale=1"}
     = yield :head
     %link{:href => path_to_image('favicon.ico'), :type => "image/x-icon", :rel => "shortcut icon"}
   %body{:class => "ui-mobile-viewport ui-overlay-c ui-body-c"}
-    .container#main.shadowed-box.rounded-bottom
+    .container#main.shadowed-box.rounded-bottom{"data-role" => "content"}
       #banner
         .pull-right= render(:partial => "shared/user_box") if user_signed_in?
-        .pull-right= link_to(t("devise.session.sign_in_action"), new_user_session_path) unless user_signed_in?
         .clearfix
         .header
           %a.logo{:href => "/"}
         #menu
       #flash
+        %a#flash-popup-trigger.ui-screen-hidden{"href" => "#flash-popup", "data-rel" => "popup",
+              "data-transition" => "pop", "data-position-to" => "window"}
         - if notice
-          %div{:class => "alert alert-success fade in", 'data-alert' => "alert"}
-            %a{:class => "close", 'data-dismiss' => 'alert', :href => "#"} &times;
-            = notice
+          #flash-popup{"data-role" => "popup", "data-theme" => "e"}
+            %p= notice
 
         - if alert
-          %div{:class => "alert alert-error fade in", 'data-alert' => "alert"}
-            %a{:class => "close", 'data-dismiss' => "alert", :href => "#"} &times;
-            = alert
+          #flash-popup{"data-role" => "popup", "data-theme" => "e"}
+            %p= alert
+
       = yield
     .footer
-      = render(:partial => "shared/version")
-
-    = javascript_include_tag "//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"
-    = javascript_include_tag "application.mobile"
-    =# javascript_include_tag "lib/mobile/jquery.mobile-1.2.0.min.js"
+      = render(:partial => "shared/version")    
     = yield :js

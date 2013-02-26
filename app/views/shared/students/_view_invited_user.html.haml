@@ -11,15 +11,19 @@
         %td.width-email= mail_to info.email
         %td.width-role= info.role.name
         %td.width-action
-          - if !invited_user.is_a?(User)
-            = link_to("", 
-                invitation_path(invited_user, :user_id => @user, :admin_id => @admin, :student_id => @student), 
-                :data => { :confirm => t("common.confirm_message") }, 
-                :class => "icon-trash color-pen", :method => :delete, 
-                :remote => true,
-                :title => t("common.delete"))
-          - else
-            (#{t("student.main_teacher")})
+          - if !@user.is?(:parent)
+            - if !invited_user.is_a?(User)  
+              = link_to("", 
+                  invitation_path(invited_user, :user_id => @user, :admin_id => @admin, :student_id => @student), 
+                  :data => { :confirm => t("common.confirm_message") }, 
+                  :class => "icon-trash color-pen", :method => :delete, 
+                  :remote => true,
+                  :title => t("common.delete"))
+            - elsif !invited_user.is?(:parent)
+              (#{t("student.main_teacher")}) 
+          - elsif invited_user.is_a?(User)
+            - unless invited_user.is?(:parent) 
+              (#{t("student.main_teacher")})
     
     - admin = current_student_admin
     %tr{:id => "admin-#{admin.id}"}
