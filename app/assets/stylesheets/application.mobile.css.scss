@@ -26,11 +26,15 @@ body {
   }
 
   .error {
-    .ui-shadow, .ui-shadow-inset {
+    .ui-shadow, .ui-shadow-inset, .ui-input-datebox {
       -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 6px #D59392;
       -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 6px #D59392;
       box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 6px #D59392;
       color: #B94A48;
+    }
+
+    .ui-input-datebox input{
+      color: #B94A48 !important;
     }
   }
 }

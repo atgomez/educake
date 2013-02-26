@@ -17,7 +17,7 @@
       = label_tag "grade_goal_id", nil, :class => 'select required control-label' do
         = t("goal.name")
       = select_tag("grade[goal_id]", options_for_select(@goals, @grade.goal_id), 
-                  {:id => "grade_goal_id", :prompt => "Select one", :disabled => @student.blank?})
+                  {:id => "grade_goal_id", :prompt => t("common.select_prompt"), :disabled => @student.blank?})
       = f.error :goal_id, :class => "font-error"   
 
     .clearfix
