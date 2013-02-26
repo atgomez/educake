@@ -162,7 +162,8 @@ en:
     view_as_title: "Now viewing as"
     back_to_super_admin: "Back to viewing as SuperAdmin."
     welcome_label: "Welcome,"
-    all_teachers: "All Teachers"    
+    all_teachers: "All Teachers"
+    mobile_no_students: "You have no student. Please go to standard view and add a new one."  
 
   student:
     created_successfully: "Student %{name} was created successfully."
