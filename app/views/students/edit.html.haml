@@ -15,7 +15,7 @@
   .invited-user
     .tabbable      
       .grade
-        = link_to(" " + t("invitation.new_title"), new_invitation_path(:user_id => @user.id), 
+        = link_to(" " + t("invitation.new_title"), new_invitation_path(:user_id => @user.id, :student_id => @student.id), 
                   :remote => true, :class => "icon-plus-sign add")
-        = render "shared/students/view_invited_user", :invited_users => @student.sharings, :student_id => @student.id
+        = render(:partial => "shared/students/view_invited_user", :locals => {:invited_users => @student.sharings, :student_id => @student.id})
         
