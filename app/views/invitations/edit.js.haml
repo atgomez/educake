@@ -1,2 +1,2 @@
-$("#render_invite_user").html("#{escape_javascript render :partial => 'form', :locals => {:url => invitation_path(@sharing), :method => :put}}");
+$("#render_invite_user").html("#{escape_javascript render :partial => 'form', :locals => {:url => invitation_path(@sharing), :method => :put, :student_id => params[:student_id]}}");
 $("#render_invite_user").modal('show');

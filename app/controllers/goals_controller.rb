@@ -146,7 +146,6 @@ class GoalsController < ApplicationController
     @grade = Grade.new
     @student = Student.find(params[:student_id])
     @goals = []
-    session[:student_id] = @student.id 
     if @student 
       @goals = @student.goals.incomplete.map{|g| [g.name, g.id]}
     end
