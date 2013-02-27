@@ -76,7 +76,7 @@ class StudentsController < ApplicationController
   
   def edit
     if find_user
-      @student = @user.accessible_students.find(params[:id])
+      @student = @user.accessible_students.find_by_id(params[:id])
       if @student
         @goals = @student.goals.order('is_completed ASC').load_data(filtered_params)
         sponsors = @student.sponsors
@@ -113,7 +113,7 @@ class StudentsController < ApplicationController
 
   def update
     if find_user
-      @student = @user.accessible_students.find(params[:id])
+      @student = @user.accessible_students.find_by_id(params[:id])
       if @student
         if @student.update_attributes(params[:student])
           message = I18n.t('student.updated_successfully', :name => @student.full_name)
