@@ -29,11 +29,11 @@
 
 <h2 id="oauth">OAuth</h2>
 
-<p>educake.co currently supports the <a href="http://oauth.net/2/">OAuth 2</a> draft specification. All OAuth2 requests MUST use the SSL endpoint available at <code>https://educake.co/api/:version</code> (SSL will be available)</p>
+<p>educake.co currently supports the <a href="http://oauth.net/2/">OAuth 2</a> draft specification. All OAuth2 requests MUST use the SSL endpoint available at <code>http://educake.co/api/:version</code> (SSL will be available)</p>
 
 <p>OAuth 2.0 is a simple and secure authentication mechanism. It allows applications to acquire an access token for educake.co via a quick redirect to the educake.co site. Once an application has an access token, it can access a user’s link metrics, and shorten links using that user’s educake.co account. Authentication with OAuth can be accomplished in the following steps:</p>
 
-<p>OAuth authentication is made by adding the <code>access_token</code> parameter with a users access token. All requests with OAuth tokens must be made over <strong>SSL</strong> to <code>https://educake.co/api/:version</code>.</p>
+<p>OAuth authentication is made by adding the <code>access_token</code> parameter with a users access token. All requests with OAuth tokens must be made over <strong>SSL</strong> to <code>http://educake.co/api/:version</code>.</p>
 
 <pre><code>access_token=**access_token**
 </code></pre>
@@ -47,7 +47,7 @@
     <p>Register your application <a href="http://educake.co/oauth_clients/new">here</a> – your application will be assigned a <code>client_id</code> (consumer_key) and a <code>client_secret</code> (consumer_secret).</p>
   </li>
   <li>
-    <p>Redirect the user to <code>https://educake.co/oauth/authorize</code>, using the <code>client_id</code> and <code>redirect_uri</code> parameters to pass your client ID and the page you would like to redirect to upon acquiring an access token. An example redirect URL looks like: <code>https://educake.co/oauth/authorize?client_id=...&amp;redirect_uri=http://myexamplewebapp.com/oauth_page</code></p>
+    <p>Redirect the user to <code>http://educake.co/oauth/authorize</code>, using the <code>client_id</code> and <code>redirect_uri</code> parameters to pass your client ID and the page you would like to redirect to upon acquiring an access token. An example redirect URL looks like: <code>http://educake.co/oauth/authorize?client_id=...&amp;redirect_uri=http://myexamplewebapp.com/oauth_page</code></p>
   </li>
   <li>
     <p>Upon authorizing your application, the user is directed to the page specified in the <code>redirect_uri</code> parameter. We append a <code>code</code> parameter to this URI, that contains a value that can be exchanged for an OAuth access token using the oauth/access_token endpoint documented below. For example, if you passed a <code>redirect_uri</code> value of <code>http://myexamplewebapp.com/oauth_page</code>, a successful authentication will redirect the user to <code>http://myexamplewebapp.com/oauth_page?code=....</code></p>
