@@ -97,25 +97,34 @@ class GoalsController < ApplicationController
 
     @goal = Goal.incomplete.find_by_id(params[:grade][:goal_id])
     if (@goal)
-      @grade = @goal.build_grade params[:grade]
-      if (@grade)
-        @grade = @goal.update_grade_state(@grade)
-        if @grade.save
-          @goal.update_all_grade
-          status_code = 201
-          result[:message] = I18n.t('grade.created_successfully')
-          flash[:notice] = result[:message]
+      # Simple validation
+      valid_grade = Grade.new params[:grade]
+      unless valid_grade.valid?
+        @grade = valid_grade
+        status_code = 400
+        result[:message] = I18n.t('grade.save_failed')
+        result[:html] = render_to_string(:partial => 'goals/form_grade')  
+      else
+        @grade = @goal.build_grade params[:grade]
+        if (@grade)
+          @grade = @goal.update_grade_state(@grade)
+          if @grade.save
+            @goal.update_all_grade
+            status_code = 201
+            result[:message] = I18n.t('grade.created_successfully')
+            flash[:notice] = result[:message]
+          else
+            status_code = 400
+            result[:message] = I18n.t('grade.save_failed')
+            result[:html] = render_to_string(:partial => 'goals/form_grade')
+          end
         else
+          @grade = Grade.new params[:grade]
+          @grade.errors.add(:due_date, :out_of_range)
           status_code = 400
           result[:message] = I18n.t('grade.save_failed')
           result[:html] = render_to_string(:partial => 'goals/form_grade')
         end
-      else
-        @grade = Grade.new params[:grade]
-        @grade.errors.add(:due_date, :out_of_range)
-        status_code = 400
-        result[:message] = I18n.t('grade.save_failed')
-        result[:html] = render_to_string(:partial => 'goals/form_grade')
       end
     else
       @grade = Grade.new params[:grade]

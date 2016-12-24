@@ -41,8 +41,8 @@ class Goal < ActiveRecord::Base
   # VALIDATION
   validates :accuracy, :numericality => true, :inclusion => {:in => 0..100, :message => :out_of_range_100}
   validates :baseline, :numericality => true, :inclusion => {:in => 0..100, :message => :out_of_range_100}
-  validates_presence_of :accuracy, :due_date, :curriculum_id, :subject_id, 
-                        :baseline_date, :baseline, :trial_days_total, :trial_days_actual
+  validates_presence_of :accuracy, :curriculum_id, :subject_id, 
+                        :baseline, :trial_days_total, :trial_days_actual
 
   # NESTED ATTRIBUTE
   accepts_nested_attributes_for :progresses, :reject_if => lambda { |progress| 
@@ -62,7 +62,7 @@ class Goal < ActiveRecord::Base
   attr_accessor :last_grade #For add/update purpose
 
   # CALLBACK
-  before_validation :update_progresses
+  before_validation :update_progresses, :valid_date_attribute?
   before_save :custom_validations
   after_save :update_all_grade  
 
@@ -192,6 +192,27 @@ class Goal < ActiveRecord::Base
 
   def baseline_date_string
     ::Util.date_to_string(self.baseline_date)
+  end
+
+  # Override property setter.
+  def due_date=(date)
+    if date.is_a?(String)
+      format_date = ::Util.format_date(date)
+      if format_date
+        date = format_date.to_date
+      end
+    end
+    self.send(:write_attribute, :due_date, date)
+  end
+
+  def baseline_date=(date)
+    if date.is_a?(String)
+      format_date = ::Util.format_date(date)
+      if format_date
+        date = format_date.to_date
+      end
+    end
+    self.send(:write_attribute, :baseline_date, date)
   end
 
   def last_grade
@@ -340,27 +361,6 @@ class Goal < ActiveRecord::Base
     end
   end
 
-  # Override property setter.
-  def due_date=(date)
-    if date.is_a?(String)
-      date = ::Util.format_date(date)
-      if date
-        date = date.to_date
-      end
-    end
-    self.send(:write_attribute, :due_date, date)
-  end
-
-  def baseline_date=(date)
-    if date.is_a?(String)
-      date = ::Util.format_date(date)
-      if date
-        date = date.to_date
-      end
-    end
-    self.send(:write_attribute, :baseline_date, date)
-  end
-
   def build_progresses
     count_progress = self.progresses.length
     # Create remaining progresses
@@ -369,7 +369,7 @@ class Goal < ActiveRecord::Base
 
   def build_grade(params, is_updatable = false)
     #Find progress
-    progress = self.progresses.find(:first, :conditions => ['due_date >= ?', params[:due_date]], :order => 'due_date ASC')
+    progress = self.progresses.order('due_date ASC').where('due_date >= ?', due_date).first
     grade = nil
     if is_updatable
       grade = self.grades.find_or_initialize_by_due_date(params[:due_date])
@@ -562,4 +562,9 @@ class Goal < ActiveRecord::Base
       end 
       return !existed
     end 
+
+    def valid_date_attribute?
+      ::Util.check_date_validation(self, @attributes, :baseline_date, true)
+      ::Util.check_date_validation(self, @attributes, :due_date, true)
+    end
 end

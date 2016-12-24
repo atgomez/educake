@@ -44,7 +44,6 @@ class Student < ActiveRecord::Base
     :message => I18n.t("student.error_duplicated_name") }
   validates_format_of :first_name, :with => /^[^0-9!@#\$%\^&*+_=]+$/
   validates_format_of :last_name, :with => /^[^0-9!@#\$%\^&*+_=]+$/
-  before_validation :valid_birthday?
 
   # validate :validate_type_of_image
   
@@ -60,10 +59,7 @@ class Student < ActiveRecord::Base
   }
 
   # CALL BACK
-  before_post_process :photo?
-  def photo?
-    !(photo_content_type =~ /^image.*/).nil?
-  end
+  before_validation :valid_date_attribute?
 
   # CLASS METHODS
 
@@ -388,7 +384,7 @@ class Student < ActiveRecord::Base
 
   protected
     
-    def valid_birthday?
-      self.errors.add(:birthday, :invalid) unless ::Util.try_to_parse_date(self.birthday)
+    def valid_date_attribute?
+      ::Util.check_date_validation(self, @attributes, :birthday, true)
     end
 end

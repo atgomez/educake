@@ -268,14 +268,18 @@ en:
               must_lower_than_goal: "must be lower than goal"
             baseline_date:
               must_lower_than_due_date: "must be before goal date"
+              invalid_format: "must be in format MM-DD-YYYY"
             trial_days_actual:
               must_lower_than_ideal: "must be lower than the ideal trial days"
+            due_date:
+              invalid_format: "must be in format MM-DD-YYYY"
         grade:
           attributes:
             due_date:
               must_eq_greater_than_goal_baseline: "must be equal or greater than goal baseline date"
               must_eq_less_than_goal_due_date: "must be less than or equal to goal due date"
               must_eq_less_than_goal_today: "must be less than or equal to today"
+              invalid_format: "must be in format MM-DD-YYYY"
         progress:
           attributes:
             due_date:
@@ -284,4 +288,4 @@ en:
         student:
           attributes:
             birthday:
-              invalid: "must be in format MM-DD-YYYY"
+              invalid_format: "must be in format MM-DD-YYYY"

@@ -32,12 +32,13 @@ class Grade < ActiveRecord::Base
   validates :accuracy, :numericality => true, 
             :inclusion => {:in => 0..100, :message => :out_of_range_100}
   validates :goal_id, :uniqueness => { :scope => :due_date, :message => :only_once_per_day }
-  validates_presence_of :accuracy, :due_date, :goal_id
+  validates_presence_of :accuracy, :goal_id
 
   # SCOPE
   scope :computable, where('is_unused = ?', false)
 
   # CALLBACK
+  before_validation :valid_date_attribute?
   before_save :validate_due_date
   
   # CLASS METHODS
@@ -78,19 +79,24 @@ class Grade < ActiveRecord::Base
   # Override property setter.
   def due_date=(date)
     if date.is_a?(String)
-      date = ::Util.format_date(date)      
+      format_date = ::Util.format_date(date)      
+      if format_date
+        date = format_date.to_date
+      end
     end
-
-    if date
-      date = date.to_date
-    end
+    
     self.send(:write_attribute, :due_date, date)
   end
   
   
   protected
 
+    def valid_date_attribute?
+      ::Util.check_date_validation(self, @attributes, :due_date, true)
+    end
+
     def validate_due_date
+
       if (self.goal.baseline_date > self.due_date)
         self.errors.add(:due_date, :must_eq_greater_than_goal_baseline)
         return false
